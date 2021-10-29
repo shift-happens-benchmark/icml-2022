@@ -1,7 +1,7 @@
 Shift Happens: Crowdsourcing metrics and test datasets beyond ImageNet
 ======================================================================
 
-Welcome! This is helper code for the ICLR2022 workshop proposal on crowdsourcing 
+Welcome! This is helper code for the ICLR 2022 workshop proposal on crowdsourcing 
 novel metrics and test datasets for model evaluation on ImageNet scale.
 
 Over the course of the workshop, the package will be populated with new tasks, metrics
