@@ -1,1 +1,1 @@
-# Shift Happens: Crowdsourcing metrics and datasets beyond ImageNet
+# Shift Happens: Crowdsourcing metrics and test datasets beyond ImageNet
