@@ -1,6 +1,7 @@
+from abc import ABC
+from abc import abstractmethod
 from typing import Dict
 from typing import Optional
-from abc import ABC, abstractmethod
 
 from models import model
 
@@ -21,20 +22,18 @@ class LabelTaskMixin:
 
 
 class Benchmark(ABC):
+
     def evaluate(self, model: model.Model) -> Optional[Dict[str, float]]:
         if issubclass(type(self), ConfidenceTaskMixin) and not issubclass(
-            type(model), model.ConfidenceModelMixin
-        ):
+                type(model), model.ConfidenceModelMixin):
             return False
 
         if issubclass(type(self), FeaturesTaskMixin) and not issubclass(
-            type(model), model.FeaturesModelMixin
-        ):
+                type(model), model.FeaturesModelMixin):
             return False
 
         if issubclass(type(self), LabelTaskMixin) and not issubclass(
-            type(model), model.LabelModelMixin
-        ):
+                type(model), model.LabelModelMixin):
             return False
 
         return self._evaluate(model)

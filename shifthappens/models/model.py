@@ -9,26 +9,29 @@ Model results should be converted to numpy arrays, and packed into an
 """
 
 import abc
-from typing import Tuple
-from typing import Optional
 
 import numpy as np
+
 
 class LabelModelMixin:
     """Inherit from this class if your model returns predicted labels."""
     pass
 
+
 class ConfidenceModelMixin:
     """Inherit from this class if you model returns confidences."""
     pass
+
 
 class UncertaintyModelMixin:
     """Inherit from this class if your model returns uncertainties."""
     pass
 
+
 class OODScoreModelMixin:
     """Inherit from this class if your model returns ood scores."""
     pass
+
 
 class FeaturesModelMixin:
     """Inherit from this class if your model returns features."""
@@ -69,13 +72,14 @@ class ModelResult:
         "features",
     ]
 
-    def __init__(self,
-            class_labels: np.ndarray,
-            confidences: np.ndarray = None,
-            uncertainties: np.ndarray = None,
-            ood_scores: np.ndarray = None,
-            features: np.ndarray = None,
-        ):
+    def __init__(
+        self,
+        class_labels: np.ndarray,
+        confidences: np.ndarray = None,
+        uncertainties: np.ndarray = None,
+        ood_scores: np.ndarray = None,
+        features: np.ndarray = None,
+    ):
         self.class_labels = class_labels
         self.confidences = confidences
         self.uncertainty = uncertainties
