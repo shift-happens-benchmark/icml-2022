@@ -15,26 +15,31 @@ import numpy as np
 
 class LabelModelMixin:
     """Inherit from this class if your model returns predicted labels."""
+
     pass
 
 
 class ConfidenceModelMixin:
     """Inherit from this class if you model returns confidences."""
+
     pass
 
 
 class UncertaintyModelMixin:
     """Inherit from this class if your model returns uncertainties."""
+
     pass
 
 
 class OODScoreModelMixin:
     """Inherit from this class if your model returns ood scores."""
+
     pass
 
 
 class FeaturesModelMixin:
     """Inherit from this class if your model returns features."""
+
     pass
 
 
@@ -59,14 +64,13 @@ class ModelResult:
             this is a measure of certainty of the given ``confidences`` and
             common e.g. in Bayesian Deep neural networks.
         ood_scores: optional, ``(N,)``, score for interpreting the sample
-            as an out-of-distribution class, in the range ``-inf`` to ``inf``. 
+            as an out-of-distribution class, in the range ``-inf`` to ``inf``.
         features: optional, ``(N, d)``, where ``d`` can be arbitrary, feature
             representation used to arrive at the given predictions.
     """
 
     __slots__ = [
-        "class_labels"
-        "confidences",
+        "class_labels" "confidences",
         "uncertainties",
         "ood_scores",
         "features",
