@@ -41,5 +41,4 @@ external contributions. All data used for creating new benchmarks should minimal
 available without constrains for research purposes, and optionally free for commercial 
 use as well.
 
-Datasets [without an explicit license statement](https://choosealicense.com/no-permission/)
-will not be accepted into the benchmark.
+Datasets `without an explicit license statement <https://choosealicense.com/no-permission/>`_ will not be accepted into the benchmark.
