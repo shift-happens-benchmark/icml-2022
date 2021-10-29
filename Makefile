@@ -15,5 +15,5 @@ test:
 	python -m pytest -vvv
 
 format:
-	yapf -i -p -r shifthappens/
+	black shifthappens/
 	isort shifthappens/

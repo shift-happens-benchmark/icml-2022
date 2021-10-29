@@ -6,7 +6,6 @@ import shifthappens.models as sh_models
 
 
 class _ReturnFeatures(nn.Module):
-
     def __init__(self, base):
         super().__init__()
         self._base = base
@@ -15,8 +14,12 @@ class _ReturnFeatures(nn.Module):
         return inputs, self._base(inputs)
 
 
-class ResNet50(sh_models.Model, sh_models.LabelModelMixin,
-               sh_models.ConfidenceModelMixin, sh_models.FeaturesModelMixin):
+class ResNet50(
+    sh_models.Model,
+    sh_models.LabelModelMixin,
+    sh_models.ConfidenceModelMixin,
+    sh_models.FeaturesModelMixin,
+):
     """Reference implementation for a torchvision ResNet50 model."""
 
     def __init__(self):
@@ -29,6 +32,8 @@ class ResNet50(sh_models.Model, sh_models.LabelModelMixin,
         features, logits = self._model(inputs)
         predictions = torch.topk(logits, k=5, largest=True, sorted=True)
 
-        return sh_models.ModelResult(class_labels=predictions.numpy(),
-                                     confidences=logits.numpy(),
-                                     features=features.numpy())
+        return sh_models.ModelResult(
+            class_labels=predictions.numpy(),
+            confidences=logits.numpy(),
+            features=features.numpy(),
+        )
