@@ -1,5 +1,5 @@
 # Task Description
-Add a short and general description of your task here.
+Add a short and general description of your task here. Ideally, also show some samples of the dataset.
 
 ## Dataset Creation
 Describe the collection/creation of the images present in this task.
