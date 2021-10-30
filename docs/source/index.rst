@@ -39,4 +39,4 @@ Task implementations
    :members:
    :show-inheritance:
    :noindex:
-
+   :private-members:
