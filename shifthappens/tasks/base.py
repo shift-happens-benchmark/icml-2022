@@ -5,22 +5,24 @@ from typing import Optional
 
 import shifthappens.models.base as sh_models
 
-class Benchmark(ABC):
+class Task(ABC):
+    """Task base class."""
+
     def evaluate(self, model: sh_models.Model) -> Optional[Dict[str, float]]:
         if issubclass(type(self), ConfidenceTaskMixin) and not issubclass(
             type(model), model.ConfidenceModelMixin
         ):
-            return False
+            return None
 
         if issubclass(type(self), FeaturesTaskMixin) and not issubclass(
             type(model), model.FeaturesModelMixin
         ):
-            return False
+            return None
 
         if issubclass(type(self), LabelTaskMixin) and not issubclass(
             type(model), model.LabelModelMixin
         ):
-            return False
+            return None
 
         return self._evaluate(model)
 
