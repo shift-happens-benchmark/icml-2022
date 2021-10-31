@@ -1,4 +1,0 @@
-sphinx
-pydata-sphinx-theme
-sphinx-copybutton
-sphinx-autodoc-typehints
