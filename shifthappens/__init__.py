@@ -1,1 +1,2 @@
+"""Shift Happens benchmark."""
 __version__ = "0.0.1-alpha"

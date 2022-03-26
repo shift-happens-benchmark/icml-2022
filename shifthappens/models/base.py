@@ -40,7 +40,8 @@ class ModelResult:
     """
 
     __slots__ = [
-        "class_labels" "confidences",
+        "class_labels",
+        "confidences",
         "uncertainties",
         "ood_scores",
         "features",
@@ -56,7 +57,7 @@ class ModelResult:
     ):
         self.class_labels = class_labels
         self.confidences = confidences
-        self.uncertainty = uncertainties
+        self.uncertainties = uncertainties
         self.ood_scores = ood_scores
         self.features = features
 
