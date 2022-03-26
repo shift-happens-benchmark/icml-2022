@@ -50,7 +50,8 @@ jobs:
         retry-with-backoff pip install -r requirements_dev.txt
     - name: pylint
       run: |
-        pylint . --count --show-source --statistics
+        pylint shifthappens
+        pylint tests
     - name: black
       run: |
         black --check --verbose .
