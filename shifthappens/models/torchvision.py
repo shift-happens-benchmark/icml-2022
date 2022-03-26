@@ -4,7 +4,7 @@ import torch
 from torch import nn as nn
 import torchvision
 
-import shifthappens.models.base as sh_models 
+import shifthappens.models.base as sh_models
 
 
 class _ReturnFeatures(nn.Module):

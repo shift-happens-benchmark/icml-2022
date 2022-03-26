@@ -77,6 +77,7 @@ class Model(abc.ABC):
         """
         raise NotImplementedError()
 
+
 class LabelModelMixin:
     """Inherit from this class if your model returns predicted labels."""
 

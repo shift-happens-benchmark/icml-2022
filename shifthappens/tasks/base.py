@@ -5,6 +5,7 @@ from typing import Optional
 
 import shifthappens.models.base as sh_models
 
+
 class Task(ABC):
     """Task base class."""
 
@@ -32,6 +33,7 @@ class Task(ABC):
     def _evaluate(model: sh_models.Model) -> Dict[str, float]:
         """Implement this function to evaluate the task and return a dictionary with the calculated metrics."""
         pass
+
 
 class LabelTaskMixin:
     """Indicates that the task requires the model to return the predicted labels."""
