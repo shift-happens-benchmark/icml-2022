@@ -12,7 +12,7 @@ class Task(ABC):
     """Task base class."""
 
     def evaluate(self, model: sh_models.Model) -> Optional[Dict[str, float]]:
-        """"Validates that the model is compatible with the task and then evaluates the model's
+        """Validates that the model is compatible with the task and then evaluates the model's
         performance using the _evaluate function of this class."""
         if issubclass(type(self), ConfidenceTaskMixin) and not issubclass(
             type(model), model.ConfidenceModelMixin
