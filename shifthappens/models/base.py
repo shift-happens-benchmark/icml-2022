@@ -80,6 +80,9 @@ class PredictionTargets:
 class Model(abc.ABC):
     """Model base class."""
 
+    def prepare(self, dataset):
+        pass
+
     def predict(self, inputs: np.ndarray, targets: PredictionTargets) -> ModelResult:
         """
         Args:

@@ -7,9 +7,51 @@ from typing import Optional
 
 import shifthappens.models.base as sh_models
 
+# TODO implement flags for the task
+# - dataloaders = {'stream', 'shuffle'}
 
+@dataclasses.dataclass
+class SpecifyDataLoaderMixin:
+
+    shuffle_data: bool = True
+
+    def _prepare(self):
+        if shuffle_data:
+            return ...
+        else:
+            return ...
+
+
+class ShuffleEvalTask(SpecifyDataLoaderMixin, Task):
+
+    blubb_my_arg: int = 42
+
+    _config = TaskConfig(
+        shuffle_data = [True, False],
+        blubb = [0, 1, 2]
+    )
+
+    def setup(self):
+        if self.blubb_my_arg == 73:
+            print("hallo")
+
+@dataclasses.dataclass
 class Task(ABC):
     """Task base class."""
+
+    def __post_init__(self):
+        self.setup()
+
+    @classmethod
+    def iterate_instances(cls) -> Task:
+        """Iterate over all possible task configurations."""
+        configs = product_dict(cls._config)
+        for config in configs:
+            yield cls(config)
+
+    @abc.abstractmethod
+    def setup(self):
+        raise NotImplementedError
 
     def evaluate(self, model: sh_models.Model) -> Optional[Dict[str, float]]:
         """"Validates that the model is compatible with the task and then evaluates the model's
@@ -29,13 +71,18 @@ class Task(ABC):
         ):
             return None
 
+        model.prepare(self._get_dataset())
         return self._evaluate(model)
+
+    @abstractmethod
+    def _prepare(self, model: sh_models.Model) -> Dataset:
+        raise NotImplementedError()
 
     @abstractmethod
     def _evaluate(self, model: sh_models.Model) -> Dict[str, float]:
         """Implement this function to evaluate the task and return a dictionary with the
         calculated metrics."""
-        pass
+        raise NotImplementedError()
 
 
 class LabelTaskMixin:
