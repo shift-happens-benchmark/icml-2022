@@ -9,7 +9,7 @@ Model results should be converted to numpy arrays, and packed into an
 """
 
 import abc
-
+import dataclasses
 import numpy as np
 
 
@@ -40,7 +40,8 @@ class ModelResult:
     """
 
     __slots__ = [
-        "class_labels" "confidences",
+        "class_labels",
+        "confidences",
         "uncertainties",
         "ood_scores",
         "features",
@@ -56,26 +57,70 @@ class ModelResult:
     ):
         self.class_labels = class_labels
         self.confidences = confidences
-        self.uncertainty = uncertainties
+        self.uncertainties = uncertainties
         self.ood_scores = ood_scores
         self.features = features
+
+
+@dataclasses.dataclass
+class PredictionTargets:
+    class_labels: bool = False
+    logits: bool = False
+    confidences: bool = False
+    uncertainties: bool = False
+    ood_scores: bool = False
+    features: bool = False
+
+    def __post_init__(self):
+        assert any(
+            [getattr(self, field.name) for field in dataclasses.fields(self)]
+        ), "At least one prediction target must be set."
 
 
 class Model(abc.ABC):
     """Model base class."""
 
-    @abc.abstractmethod
-    def predict(self, inputs: np.ndarray) -> ModelResult:
+    def predict(self, inputs: np.ndarray, targets: PredictionTargets) -> ModelResult:
         """
         Args:
-            inputs: Batch of images
+            inputs (np.ndarray): Batch of images.
+            targets (PredictionTargets): Indicates which kinds of targets should be predicted.
 
         Returns:
-            Prediction results for the given batch, including predicted labels,
-            and optionally, class confidences, class uncertainties, ood scores,
+            Prediction results for the given batch. Depending in the target arguments this
+            includes the predicted labels, class confidences, class uncertainties, ood scores,
+            and image features, all as ``np.array``s.
+        """
+
+        if issubclass(type(self), LabelModelMixin):
+            assert targets.logits
+        if issubclass(type(self), ConfidenceModelMixin):
+            assert targets.confidences
+        if issubclass(type(self), UncertaintyModelMixin):
+            assert targets.uncertainties
+        if issubclass(type(self), OODScoreModelMixin):
+            assert targets.ood_scores
+        if issubclass(type(self), FeaturesModelMixin):
+            assert targets.features
+
+        return self._predict(inputs, targets)
+
+    @abc.abstractmethod
+    def _predict(self, inputs: np.ndarray, targets: PredictionTargets) -> ModelResult:
+        """
+        Override this function for the specific model.
+
+        Args:
+            inputs (np.ndarray): Batch of images.
+            targets (PredictionTargets): Indicates which kinds of targets should be predicted.
+
+        Returns:
+            Prediction results for the given batch. Depending in the target arguments this
+            includes the predicted labels, class confidences, class uncertainties, ood scores,
             and image features, all as ``np.array``s.
         """
         raise NotImplementedError()
+
 
 class LabelModelMixin:
     """Inherit from this class if your model returns predicted labels."""

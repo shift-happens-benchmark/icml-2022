@@ -1,3 +1,5 @@
+"""Base definition of a class in the shift-happens benchmark."""
+
 from abc import ABC
 from abc import abstractmethod
 from typing import Dict
@@ -5,10 +7,13 @@ from typing import Optional
 
 import shifthappens.models.base as sh_models
 
+
 class Task(ABC):
     """Task base class."""
 
     def evaluate(self, model: sh_models.Model) -> Optional[Dict[str, float]]:
+        """"Validates that the model is compatible with the task and then evaluates the model's
+        performance using the _evaluate function of this class."""
         if issubclass(type(self), ConfidenceTaskMixin) and not issubclass(
             type(model), model.ConfidenceModelMixin
         ):
@@ -27,38 +32,37 @@ class Task(ABC):
         return self._evaluate(model)
 
     @abstractmethod
-    def _evaluate(model: sh_models.Model) -> Dict[str, float]:
-        """Implement this function to evaluate your task and return a dictionary with the calculated metrics."""
+    def _evaluate(self, model: sh_models.Model) -> Dict[str, float]:
+        """Implement this function to evaluate the task and return a dictionary with the
+        calculated metrics."""
         pass
 
+
 class LabelTaskMixin:
-    """Inherit from this class if your task returns predicted labels."""
+    """Indicates that the task requires the model to return the predicted labels."""
 
     pass
 
 
 class ConfidenceTaskMixin:
-    """Inherit from this class if you task returns confidences."""
+    """Indicates that the task requires the model to return the confidence scores."""
 
     pass
 
 
 class UncertaintyTaskMixin:
-    """Inherit from this class if your task returns uncertainties."""
+    """Indicates that the task requires the model to return the uncertainty scores."""
 
     pass
 
 
 class OODScoreTaskMixin:
-    """Inherit from this class if your task returns ood scores."""
+    """Indicates that the task requires the model to return the OOD scores."""
 
     pass
 
 
 class FeaturesTaskMixin:
-    """Inherit from this class if your task returns features."""
+    """Indicates that the task requires the model to return the raw features."""
 
     pass
-
-
-
