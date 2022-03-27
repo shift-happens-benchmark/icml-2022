@@ -1,18 +1,20 @@
-"""Base definition of a class in the shift-happens benchmark."""
+"""Base definition of a task in the shift-happens benchmark."""
 
 from abc import ABC
 from abc import abstractmethod
-from typing import Dict
+import dataclasses
+from typing import Dict, TypeVar, Tuple
 from typing import Optional
 
+import shifthappens.utils as sh_utils
 import shifthappens.models.base as sh_models
 
+"""
 # TODO implement flags for the task
 # - dataloaders = {'stream', 'shuffle'}
 
 @dataclasses.dataclass
 class SpecifyDataLoaderMixin:
-
     shuffle_data: bool = True
 
     def _prepare(self):
@@ -23,17 +25,36 @@ class SpecifyDataLoaderMixin:
 
 
 class ShuffleEvalTask(SpecifyDataLoaderMixin, Task):
-
     blubb_my_arg: int = 42
 
     _config = TaskConfig(
-        shuffle_data = [True, False],
-        blubb = [0, 1, 2]
+        shuffle_data=[True, False],
+        blubb=[0, 1, 2]
     )
 
     def setup(self):
         if self.blubb_my_arg == 73:
             print("hallo")
+"""
+
+T = TypeVar('T')
+
+
+def parameter(default: T, options: Tuple[T, ...], description: str = None):
+    """Register a task's parameter. Setting multiple options here allows automatically
+    creating different flavours of the test.
+
+    Args:
+        default (T): default value
+        options (Tuple(T)): allowed options
+        description (str): short description
+    """
+    assert len(options) > 0
+    return dataclasses.field(
+        default=default, repr=True,
+        metadata=dict(is_parameter=True, description=description, options=options)
+    )
+
 
 @dataclasses.dataclass
 class Task(ABC):
@@ -43,31 +64,48 @@ class Task(ABC):
         self.setup()
 
     @classmethod
-    def iterate_instances(cls) -> Task:
-        """Iterate over all possible task configurations."""
-        configs = product_dict(cls._config)
-        for config in configs:
-            yield cls(config)
+    def __get_all_parameters(cls):
+        parameters = []
+        fields = dataclasses.fields(cls)
+        for field in fields:
+            if field.metadata.get("is_parameter", False):
+                parameters.append(field)
+        return parameters
 
-    @abc.abstractmethod
+    @classmethod
+    def __get_all_parameter_options(cls):
+        parameters = cls.__get_all_parameters()
+        parameter_options = {}
+        for p in parameters:
+            parameter_options[p.name] = p.metadata["options"]
+        return parameter_options
+
+    @classmethod
+    def iterate_flavours(cls) -> "Task":
+        """Iterate over all possible task configurations, i.e. different settings of parameter fields."""
+        parameter_options = cls.__get_all_parameter_options()
+        for config in sh_utils.dict_product(parameter_options):
+            yield cls(**config)
+
+    @abstractmethod
     def setup(self):
-        raise NotImplementedError
+        pass
 
     def evaluate(self, model: sh_models.Model) -> Optional[Dict[str, float]]:
         """"Validates that the model is compatible with the task and then evaluates the model's
         performance using the _evaluate function of this class."""
         if issubclass(type(self), ConfidenceTaskMixin) and not issubclass(
-            type(model), model.ConfidenceModelMixin
+                type(model), model.ConfidenceModelMixin
         ):
             return None
 
         if issubclass(type(self), FeaturesTaskMixin) and not issubclass(
-            type(model), model.FeaturesModelMixin
+                type(model), model.FeaturesModelMixin
         ):
             return None
 
         if issubclass(type(self), LabelTaskMixin) and not issubclass(
-            type(model), model.LabelModelMixin
+                type(model), model.LabelModelMixin
         ):
             return None
 
@@ -75,7 +113,7 @@ class Task(ABC):
         return self._evaluate(model)
 
     @abstractmethod
-    def _prepare(self, model: sh_models.Model) -> Dataset:
+    def _prepare(self, model: sh_models.Model) -> "DataLoader":
         raise NotImplementedError()
 
     @abstractmethod
