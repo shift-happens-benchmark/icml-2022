@@ -1,4 +1,5 @@
 import numpy as np
+import pytest
 import torch
 from torch.utils.data import TensorDataset
 import shifthappens.data.torch as torch_data
@@ -46,3 +47,19 @@ def test_dataloader():
         assert 0 < len(values) <= 3
         for value in values:
             assert len(value) == 2
+
+
+def test_shuffle_data():
+    data = np.arange(100)
+
+    # check that arguments need to be passed as named arguments
+    with pytest.raises(TypeError):
+        base_data.shuffle_data(data)
+
+    with pytest.raises(TypeError):
+        base_data.shuffle_data(data, 1)
+
+    # check that seeding works
+    shuffle_1 = base_data.shuffle_data(data=data, seed=1)
+    shuffle_2 = base_data.shuffle_data(data=data, seed=1)
+    assert np.all(shuffle_1 == shuffle_2)
