@@ -18,6 +18,8 @@ sys.path.insert(0, os.path.abspath('../..'))
 import datetime
 import shifthappens
 
+autodoc_mock_imports = ['numpy', 'torch', 'torchvision']
+
 def get_years(start_year=2021):
     year = datetime.datetime.now().year
     if year > start_year:
@@ -72,8 +74,8 @@ html_theme_options = {
     }],
     "external_links": [
         {
-            "name": "Home",
-            "url" : "https://shift-happens-benchmark.github.io/"
+            "name": "ICML 2022",
+            "url" : "https://icml.cc/"
         }
     ],
     "collapse_navigation": False,
