@@ -48,10 +48,10 @@ jobs:
         }
         python -m pip install --upgrade pip setuptools wheel
         retry-with-backoff pip install -r requirements_dev.txt
-    - name: pylint
+    - name: flake8
       run: |
-        pylint shifthappens
-        pylint tests
+        flake8 shifthappens
+        flake8 tests
     - name: black
       run: |
         black --check --verbose .
