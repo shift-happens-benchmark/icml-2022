@@ -17,7 +17,7 @@ def test_indexed_torch_dataset():
             assert isinstance(value, np.ndarray)
 
 
-def test_indexed_torch_dataset():
+def test_torch_dataset():
     class DummyIterableDataset(torch.utils.data.IterableDataset):
         def __iter__(self):
             self.item = 0
@@ -54,10 +54,10 @@ def test_shuffle_data():
 
     # check that arguments need to be passed as named arguments
     with pytest.raises(TypeError):
-        base_data.shuffle_data(data)
+        base_data.shuffle_data(data)  # type: ignore
 
     with pytest.raises(TypeError):
-        base_data.shuffle_data(data, 1)
+        base_data.shuffle_data(data, 1)  # type: ignore
 
     # check that seeding works
     shuffle_1 = base_data.shuffle_data(data=data, seed=1)

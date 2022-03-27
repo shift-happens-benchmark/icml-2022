@@ -1,9 +1,7 @@
 from shifthappens.benchmark import register_task
 from shifthappens.tasks.metrics import Metric
-from .base import ConfidenceTaskMixin, Task
+from shifthappens.tasks.base import ConfidenceTaskMixin, Task
 from shifthappens.models import Model
-
-__all__ = ["..."]
 
 
 class ImageNetDataset(Dataset):
@@ -78,15 +76,4 @@ class ImageNetRAdapted(ImageNetRBase):
         acc = (scores.predicted_classes == self._labels).mean()
         return Result(
             accuracy=acc
-        )
-
-
-class TaskCollection():
-
-    def _evaluate():
-        # run all subtasks
-        results = ...
-        # do sth
-        return Result(
-            ...
         )

@@ -3,11 +3,13 @@
 from abc import ABC
 from abc import abstractmethod
 import dataclasses
-from typing import Dict, TypeVar, Tuple
+from typing import Dict, TypeVar, Tuple, Iterator
 from typing import Optional
 
 import shifthappens.utils as sh_utils
 import shifthappens.models.base as sh_models
+from shifthappens.data.base import DataLoader
+from shifthappens.tasks.task_result import TaskResult
 
 """
 # TODO implement flags for the task
@@ -81,7 +83,7 @@ class Task(ABC):
         return parameter_options
 
     @classmethod
-    def iterate_flavours(cls) -> "Task":
+    def iterate_flavours(cls) -> Iterator["Task"]:
         """Iterate over all possible task configurations, i.e. different settings of parameter fields."""
         parameter_options = cls.__get_all_parameter_options()
         for config in sh_utils.dict_product(parameter_options):
@@ -91,7 +93,7 @@ class Task(ABC):
     def setup(self):
         pass
 
-    def evaluate(self, model: sh_models.Model) -> Optional[Dict[str, float]]:
+    def evaluate(self, model: sh_models.Model) -> Optional[TaskResult]:
         """"Validates that the model is compatible with the task and then evaluates the model's
         performance using the _evaluate function of this class."""
         if issubclass(type(self), ConfidenceTaskMixin) and not issubclass(
@@ -109,15 +111,16 @@ class Task(ABC):
         ):
             return None
 
-        model.prepare(self._get_dataset())
+        dataloader = self._prepare_data()
+        model.prepare(dataloader)
         return self._evaluate(model)
 
     @abstractmethod
-    def _prepare(self, model: sh_models.Model) -> "DataLoader":
+    def _prepare_data(self) -> DataLoader:
         raise NotImplementedError()
 
     @abstractmethod
-    def _evaluate(self, model: sh_models.Model) -> Dict[str, float]:
+    def _evaluate(self, model: sh_models.Model) -> TaskResult:
         """Implement this function to evaluate the task and return a dictionary with the
         calculated metrics."""
         raise NotImplementedError()

@@ -12,6 +12,8 @@ import abc
 import dataclasses
 import numpy as np
 
+from shifthappens.data.base import DataLoader
+
 
 class ModelResult:
     """Emissions of a model after processing a batch of data.
@@ -80,7 +82,7 @@ class PredictionTargets:
 class Model(abc.ABC):
     """Model base class."""
 
-    def prepare(self, dataset):
+    def prepare(self, dataloader: DataLoader):
         pass
 
     def predict(self, inputs: np.ndarray, targets: PredictionTargets) -> ModelResult:
