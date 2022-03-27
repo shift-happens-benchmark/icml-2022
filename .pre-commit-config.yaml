@@ -1,17 +1,20 @@
 repos:
-- repo: local
+- repo: https://github.com/pycqa/flake8
+  rev: 4.0.1
   hooks:
-    - id: pylint
-      name: pylint
-      entry: pylint
-      language: system
-      types: [python]
-      args:
-        [
-          "--rcfile=pylintrc",
-        ]
+  - id: flake8
 - repo: https://github.com/ambv/black
   rev: 21.1.0
   hooks:
   - id: black
     language_version: python3.8
+- repo: https://github.com/ambv/black
+  rev: 21.1.0
+  hooks:
+  - id: black
+    language_version: python3.8
+- repo: https://github.com/pycqa/isort
+  rev: 5.10.1
+  hooks:
+    - id: isort
+      name: isort (python)
