@@ -18,6 +18,7 @@ def _convert_torch_value(value):
 
 class TorchDataset(Dataset):
     """Wraps a torch iterable dataset (i.e. torch.utils.data.IterableDataset)."""
+
     def __init__(self, torch_dataset: torch.utils.data.IterableDataset):
         self.torch_dataset = torch_dataset
 
@@ -32,6 +33,7 @@ class TorchDataset(Dataset):
 
 class IndexedTorchDataset(IndexedDataset):
     """Wraps a torch map-style dataset (i.e. torch.utils.data.Dataset)."""
+
     def __init__(self, torch_dataset: torch.utils.data.Dataset):
         self.torch_dataset = torch_dataset
 

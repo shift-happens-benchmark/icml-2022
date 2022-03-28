@@ -24,5 +24,5 @@ def evaluate_all_models():
 
 def score_models():
     """Calculates the relative performance for all models that have previously been
-     evaluated using ``evaluate_all_models``"""
+    evaluated using ``evaluate_all_models``"""
     raise NotImplementedError()

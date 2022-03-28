@@ -39,7 +39,7 @@ class ShuffleEvalTask(SpecifyDataLoaderMixin, Task):
             print("hallo")
 """
 
-T = TypeVar('T')
+T = TypeVar("T")
 
 
 def parameter(default: T, options: Tuple[T, ...], description: str = None):
@@ -53,8 +53,9 @@ def parameter(default: T, options: Tuple[T, ...], description: str = None):
     """
     assert len(options) > 0
     return dataclasses.field(
-        default=default, repr=True,
-        metadata=dict(is_parameter=True, description=description, options=options)
+        default=default,
+        repr=True,
+        metadata=dict(is_parameter=True, description=description, options=options),
     )
 
 
@@ -96,20 +97,20 @@ class Task(ABC):
         pass
 
     def evaluate(self, model: sh_models.Model) -> Optional[TaskResult]:
-        """"Validates that the model is compatible with the task and then evaluates the model's
+        """ "Validates that the model is compatible with the task and then evaluates the model's
         performance using the _evaluate function of this class."""
         if issubclass(type(self), ConfidenceTaskMixin) and not issubclass(
-                type(model), model.ConfidenceModelMixin
+            type(model), model.ConfidenceModelMixin
         ):
             return None
 
         if issubclass(type(self), FeaturesTaskMixin) and not issubclass(
-                type(model), model.FeaturesModelMixin
+            type(model), model.FeaturesModelMixin
         ):
             return None
 
         if issubclass(type(self), LabelTaskMixin) and not issubclass(
-                type(model), model.LabelModelMixin
+            type(model), model.LabelModelMixin
         ):
             return None
 
