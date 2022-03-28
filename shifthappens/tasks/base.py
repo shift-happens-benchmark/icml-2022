@@ -11,33 +11,6 @@ import shifthappens.models.base as sh_models
 from shifthappens.data.base import DataLoader
 from shifthappens.tasks.task_result import TaskResult
 
-"""
-# TODO implement flags for the task
-# - dataloaders = {'stream', 'shuffle'}
-
-@dataclasses.dataclass
-class SpecifyDataLoaderMixin:
-    shuffle_data: bool = True
-
-    def _prepare(self):
-        if shuffle_data:
-            return ...
-        else:
-            return ...
-
-
-class ShuffleEvalTask(SpecifyDataLoaderMixin, Task):
-    blubb_my_arg: int = 42
-
-    _config = TaskConfig(
-        shuffle_data=[True, False],
-        blubb=[0, 1, 2]
-    )
-
-    def setup(self):
-        if self.blubb_my_arg == 73:
-            print("hallo")
-"""
 
 T = TypeVar("T")
 
@@ -100,17 +73,17 @@ class Task(ABC):
         """ "Validates that the model is compatible with the task and then evaluates the model's
         performance using the _evaluate function of this class."""
         if issubclass(type(self), ConfidenceTaskMixin) and not issubclass(
-            type(model), model.ConfidenceModelMixin
+            type(model), sh_models.ConfidenceModelMixin
         ):
             return None
 
         if issubclass(type(self), FeaturesTaskMixin) and not issubclass(
-            type(model), model.FeaturesModelMixin
+            type(model), sh_models.FeaturesModelMixin
         ):
             return None
 
         if issubclass(type(self), LabelTaskMixin) and not issubclass(
-            type(model), model.LabelModelMixin
+            type(model), sh_models.LabelModelMixin
         ):
             return None
 

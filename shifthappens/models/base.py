@@ -10,6 +10,7 @@ Model results should be converted to numpy arrays, and packed into an
 
 import abc
 import dataclasses
+
 import numpy as np
 
 from shifthappens.data.base import DataLoader
@@ -75,7 +76,7 @@ class PredictionTargets:
 
     def __post_init__(self):
         assert any(
-            [getattr(self, field.name) for field in dataclasses.fields(self)]
+            getattr(self, field.name) for field in dataclasses.fields(self)
         ), "At least one prediction target must be set."
 
 
