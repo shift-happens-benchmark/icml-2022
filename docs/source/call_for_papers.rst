@@ -42,19 +42,19 @@ The implementation leverages our example API implementation:
 
 
 
-Submission types
+Submission types (TODO when API is final)
 ^^^^^^^^^^^^^^^^
 
 Besides compatibility to ImageNet scale models, the scope of possible
-benchmarks and datasets is intentionally broad: First, we encourage
-submissions that provide their own evaluation criterion and discuss its
-value in applications. Submissions should explain why the submitted
+benchmarks and datasets is intentionally broad:
+- Submissions that **provide their own evaluation criterion** and discuss its
+value in applications are particularly encouraged. Submissions should explain why the submitted
 dataset and metric are well-suited to inform about the specified
-property. Opening the benchmark to this form of submissions makes it
-possible for communities interested in problems besides standard,
-“accuracy-focused” settings. Second, we encourage submissions of
-datasets that can be evaluated with standard criteria. This form of
-submission imposes a low bar on developing new code contributions and
+property. Opening the benchmark to this form of submissions aims at reaching
+communities interested in problems besides standard,
+“accuracy-focused” settings.
+- It is also encouraged to submit datasets that can be evaluated with one or more of the following standard criteria:
+This form of submission imposes a low bar on developing new code contributions and
 makes it possible to contribute in the form of well-recorded datasets.
 Third, in both cases, it is possible to re-submit existing and
 potentially published benchmarks, datasets, and evaluation settings,
@@ -103,11 +103,6 @@ ImageNet-C is comprised of.
 Evaluation criteria
 ^^^^^^^^^^^^^^^^^^^
 
-Successful and accepted submissions to the workshop will contain a
-technical report about the dataset design and data collection procedure
-along with a code submission (under a suitable open-source license) that
-will be added to the benchmark. After our workshop, this will ensure
-that all benchmarks are accessible to the community.
 
 Submissions will be judged according to the following criteria:
 
@@ -116,19 +111,17 @@ Submissions will be judged according to the following criteria:
    visible on the images. During the review of large datasets, random
    samples and the worst mistakes of some models will be checked. The
    correctness will mainly be reviewed based on the submitted dataset
-   (raw images), and the technical report. The main goal is to exclude
-   “edge cases” and low-effort submissions from the benchmark that are
-   not interesting to the community, and might be hard to spot by
-   automated evaluation.
+   and the technical report.
 
 2. Novelty: Datasets which allow for a more insightful evaluation beyond
    the standard test accuracy of ImageNet are encouraged. This will be
-   formally benchmarked by evaluating a set of standard models on the
-   provided dataset. In the initial package, we will include (1) a set
+   formally benchmarked by evaluating a set of standard models
+   (including robustified, task specific ones) on the
+   provided dataset. Together with the API, we include (1) a set
    of (robustified) ResNet models, (2) models that provide an explicit
    OOD detection score, as well as (3) recent test-time adaptation
-   methods. Evaluation should be done by the authors and included in
-   their technical report. Models for evaluating a dataset will become
+   methods. **Evaluation should be done by the authors and included in
+   their technical report.** Submitted Models for evaluating a dataset will become
    part of the provided reference implementation. For accepted
    benchmarks, we will verify the author’s results before posting the
    results on the public leaderboard.
@@ -166,7 +159,8 @@ The short report should
 - state if there are special requirements on the models to be evaluated,
 - detail the evaluation procedure,
 - outline how evaluation outputs can be interpreted,
-- provide a short analysis how the task is challenging for some existing models,
+- provide a short analysis how the task is challenging for some existing models
+  (including the relevant provided ones),
 - and establish context within related works.
 
 The report should be limited to at most 4 pages without references, but can include an Appendix, for example including additional sample images and technical details.
@@ -244,6 +238,11 @@ In more detail, reviewing will be done in the following stages:
    changes to the benchmark. The best contributions from this phase will
    get a short talk (time depends on the number of contributions) at the
    workshop.
+   
+7. All accepted submissions will be added to the shifthappens benchmark suite. 
+   This will ensure that after the workshop all benchmarks are accessible
+   to the community.
+
 
 We should note that we will make submission of code for review as easy
 and convenient as possible for the authors: For example, the reference
