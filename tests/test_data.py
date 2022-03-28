@@ -2,8 +2,9 @@ import numpy as np
 import pytest
 import torch
 from torch.utils.data import TensorDataset
-import shifthappens.data.torch as torch_data
+
 import shifthappens.data.base as base_data
+import shifthappens.data.torch as torch_data
 
 
 def test_indexed_torch_dataset():

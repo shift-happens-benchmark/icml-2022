@@ -1,13 +1,14 @@
-import pytest
 import dataclasses
-from typing import Dict
 
-from shifthappens.data.base import DataLoader
-from shifthappens.tasks.base import Task, parameter
-from shifthappens.models import base as sh_models
-from shifthappens.tasks.task_result import TaskResult
-from shifthappens.tasks.metrics import Metric
+import pytest
+
 import shifthappens.benchmark as sh_benchmark
+from shifthappens.data.base import DataLoader
+from shifthappens.models import base as sh_models
+from shifthappens.tasks.base import parameter
+from shifthappens.tasks.base import Task
+from shifthappens.tasks.metrics import Metric
+from shifthappens.tasks.task_result import TaskResult
 
 
 def test_iterate_flavours():
@@ -20,17 +21,17 @@ def test_iterate_flavours():
         def setup(self):
             pass
 
-        def _evaluate(self, model: sh_models.Model) -> Dict[str, float]:
+        def _evaluate(self, model: sh_models.Model) -> TaskResult:
             pass
 
-        def _prepare(self, model: sh_models.Model) -> "DataLoader":
+        def _prepare(self, model: sh_models.Model) -> DataLoader:
             pass
 
         def _prepare_data(self) -> DataLoader:
             pass
 
     flavours = list(DummyTask.iterate_flavours(data_root="test"))
-    assert len(flavours) == 2*2*2
+    assert len(flavours) == 2 * 2 * 2
     for flavour in flavours:
         assert isinstance(flavour.a, int)
         assert isinstance(flavour.b, int)
@@ -47,14 +48,15 @@ def test_register_unregister_task():
         def setup(self):
             pass
 
-        def _evaluate(self, model: sh_models.Model) -> Dict[str, float]:
+        def _evaluate(self, model: sh_models.Model) -> TaskResult:
             pass
 
-        def _prepare(self, model: sh_models.Model) -> "DataLoader":
+        def _prepare(self, model: sh_models.Model) -> DataLoader:
             pass
 
         def _prepare_data(self) -> DataLoader:
             pass
+
     assert len(sh_benchmark.get_registered_tasks()) == n_previous_registered_tasks + 1
     assert DummyTask in sh_benchmark.get_registered_tasks()
 
@@ -74,10 +76,10 @@ def test_data_folder():
         def setup(self):
             pass
 
-        def _evaluate(self, model: sh_models.Model) -> Dict[str, float]:
+        def _evaluate(self, model: sh_models.Model) -> TaskResult:
             pass
 
-        def _prepare(self, model: sh_models.Model) -> "DataLoader":
+        def _prepare(self, model: sh_models.Model) -> DataLoader:
             pass
 
         def _prepare_data(self) -> DataLoader:
@@ -89,6 +91,13 @@ def test_task_result():
         TaskResult(accuracy=1, error=0, confidence=0)
 
     with pytest.raises(AssertionError):
-        TaskResult(summary_metrics=dict(a="accuracy"), accuracy=1, error=0, confidence=0)
+        TaskResult(
+            summary_metrics=dict(a="accuracy"), accuracy=1, error=0, confidence=0
+        )
 
-    TaskResult(summary_metrics={Metric.Robustness: "accuracy"}, accuracy=1, error=0, confidence=0)
+    TaskResult(
+        summary_metrics={Metric.Robustness: "accuracy"},
+        accuracy=1,
+        error=0,
+        confidence=0,
+    )
