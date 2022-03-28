@@ -114,23 +114,26 @@ Submissions will be judged according to the following criteria:
    and the technical report.
 
 2. Novelty: Datasets which allow for a more insightful evaluation beyond
-   the standard test accuracy of ImageNet are encouraged. This will be
-   formally benchmarked by evaluating a set of standard models
-   (including robustified, task specific ones) on the
-   provided dataset. Together with the API, we include (1) a set
-   of (robustified) ResNet models, (2) models that provide an explicit
-   OOD detection score, as well as (3) recent test-time adaptation
-   methods. **Evaluation should be done by the authors and included in
-   their technical report.** Submitted Models for evaluating a dataset will become
-   part of the provided reference implementation. For accepted
-   benchmarks, we will verify the author’s results before posting the
-   results on the public leaderboard.
-
+   the standard test accuracy of ImageNet are encouraged. 
+   This can include well motivated new criteria, new datasets with emphasized 
+   practical relevance, as well as tasks that demonstrate theoretically
+   predicted weaknesses of certain popular models.
+   
 3. Difficulty for current models: If the task can easily be solved by
    humans but some models fail moderately or spectacularly, it is an
-   interesting addition to the benchmark. As with the Novelty criterion,
-   we expect authors to evaluate this score based on the provided
-   reference implementation.
+   interesting addition to the benchmark.
+   This will be
+   formally benchmarked by evaluating a set of standard models
+   (including robustified, task specific ones) on the
+   provided dataset. Together with the reference implementation,
+   we include
+   (1) a set of (robustified) ResNet models,
+   (2) models that provide an explicit OOD detection score, as well as
+   (3) recent test-time adaptation methods.
+   **Evaluation should be done by the authors and included in
+   their technical report.**
+   It should include all applicable reference models as well as relevant
+   baselines and potentially proposed improvements.
 
 Besides the robustness and out-of-distribution detection communities
 directly addressed by the default benchmark items mentioned above, this
