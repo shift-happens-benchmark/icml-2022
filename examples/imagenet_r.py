@@ -1,79 +1,81 @@
-from shifthappens.benchmark import register_task
+"""Example for a Shift Happens task: ImageNet-R"""
+
+import dataclasses
+import os
+
+import numpy as np
+import torchvision.datasets as tv_datasets
+import torchvision.transforms as tv_transforms
+
+import shifthappens.data.base as sh_data
+import shifthappens.data.torch as sh_data_torch
+import shifthappens.utils as sh_utils
+from shifthappens import benchmark as sh_benchmark
+from shifthappens.data.base import DataLoader
+from shifthappens.models import base as sh_models
+from shifthappens.models.base import PredictionTargets
+from shifthappens.tasks.base import Task
 from shifthappens.tasks.metrics import Metric
-from shifthappens.tasks.base import ConfidenceTaskMixin, Task
-from shifthappens.models import Model
+from shifthappens.tasks.task_result import TaskResult
 
 
-class ImageNetDataset(Dataset):
-
-    def __init__(self):
-        pass
-
-    def __iter__(self):
-        pass
-
-
+@sh_benchmark.register_task(
+    name="ImageNet-R", relative_data_folder="imagenet_r", standalone=True
+)
+@dataclasses.dataclass
 class ImageNetRBase(Task):
-    ...
+    resources = [
+        (
+            "imagenet-r.tar",
+            "https://people.eecs.berkeley.edu/~hendrycks/imagenet-r.tar",
+            "A61312130A589D0CA1A8FCA1F2BD3337",
+        )
+    ]
 
-    def setup():
-        # pull data
-        self._data = np.zeros(50000, ...)
-        self._labels = np.zeros(50000, ...)
-        self._dataset = TensorDataset(...)
+    def setup(self):
+        dataset_folder = os.path.join(self.data_root, "imagenet-r")
+        if not os.path.exists(dataset_folder):
+            # download data
+            for file_name, url, md5 in self.resources:
+                sh_utils.download_and_extract_archive(
+                    url, self.data_root, md5, file_name
+                )
 
-        ###
+        test_transform = tv_transforms.Compose(
+            [
+                tv_transforms.ToTensor(),
+                tv_transforms.Lambda(lambda x: x.permute(1, 2, 0)),
+            ]
+        )
 
+        self.ch_dataset = tv_datasets.ImageFolder(
+            root=dataset_folder, transform=test_transform
+        )
+        self.images_only_dataset = sh_data_torch.IndexedTorchDataset(
+            sh_data_torch.ImagesOnlyTorchDataset(self.ch_dataset)
+        )
 
-class ImageNetRAdHoc(ImageNetRBase):
+    def _prepare_data(self) -> DataLoader:
+        return sh_data.DataLoader(self.images_only_dataset, max_batch_size=None)
 
-    def _evaluate():
-        dataloader = Dataloader(..., max_batchsize=1)
-        scores = model.eval(dataloader)
-        acc = (scores.predicted_classes == self._labels).mean()
-        return Result(
-            accuracy=acc
+    def _evaluate(self, model: sh_models.Model) -> TaskResult:
+        dataloader = self._prepare_data()
+
+        all_predicted_labels_list = []
+        for predictions in model.predict(
+            dataloader, PredictionTargets(class_labels=True)
+        ):
+            all_predicted_labels_list.append(predictions.class_labels)
+        all_predicted_labels = np.concatenate(all_predicted_labels_list, 0)
+
+        accuracy = all_predicted_labels == np.array(self.ch_dataset.targets)
+
+        return TaskResult(
+            accuracy=accuracy, summary_metrics={Metric.Robustness: "accuracy"}
         )
 
 
-@register_task(name=..., standalone=True)
-class ImageNetRBatchSizeAdapted(ImageNetRBase, ConfidenceTaskMixin):
-    """ 
-    index                          columns
-    name    adapt_batch_size    |  accuracy , ... , ...
+if __name__ == "__main__":
+    from shifthappens.models.torchvision import resnet18
 
-    Summary metrics --> percentile (?)
-    task       metric     | value
-    ImageNet-R error      | 50%
-    ImageNet-R calbration | 20%
-    """
-
-    adapt_batch_size: int = parameter(default=5, options=(2, 5, 9), doc="the batch size")
-
-    def _evaluate(self, model: Model):
-        dataloader = Dataloader(self.dataset, max_batchsize=self.adapt_batch_size)  # for performance reasons
-        scores = model.eval(dataloader)
-        acc = (scores.predicted_classes == self._labels).mean()
-        return Result(
-            accuracy=acc,
-            brier=brier_score,
-            summary_metrics={
-                Metric.Robustness: ("error", "mCE"),
-                Metric.Calibration: "calibration_score",
-            }
-        )
-
-
-class ImageNetRAdapted(ImageNetRBase):
-
-    def _prepare():
-        dataloader = Dataloader(self.dataset, max_batchsize=None)
-        self.model.prepare(dataloader)
-
-    def _evaluate():
-        dataloader = Dataloader(self.dataset, max_batchsize=None)  # for performance reasons
-        scores = model.eval(dataloader)
-        acc = (scores.predicted_classes == self._labels).mean()
-        return Result(
-            accuracy=acc
-        )
+    sh_benchmark.evaluate_model(resnet18(), "data")

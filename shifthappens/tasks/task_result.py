@@ -13,15 +13,20 @@ class TaskResult:
         self,
         *,
         summary_metrics: Dict[Metric, Union[str, Tuple[str, ...]]],
-        **metrics: Union[float, int]
+        **metrics: Union[float, int],
     ):
         # validate that metrics referenced in summary metrics exist
         for sm in summary_metrics:
             assert isinstance(sm, Metric), "Invalid summary metric key."
-            if isinstance(summary_metrics[sm], str):
-                tms = (summary_metrics[sm],)
+            smv = summary_metrics[sm]
+            if isinstance(smv, str):
+                tms = (smv,)
+            elif isinstance(smv, tuple):
+                tms = smv
             else:
-                tms = summary_metrics[sm]
+                raise ValueError(
+                    f"Value for metric key `{sm}` is neither str nor tuple of str."
+                )
             for tm in tms:
                 assert tm in metrics
 

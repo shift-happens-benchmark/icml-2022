@@ -1,4 +1,9 @@
+import collections
+import typing
+from typing import Sequence
+
 import torch
+import torch.utils.data as ch_data
 
 from .base import Dataset
 from .base import IndexedDataset
@@ -21,7 +26,7 @@ def _convert_torch_value(value):
 class TorchDataset(Dataset):
     """Wraps a torch iterable dataset (i.e. torch.utils.data.IterableDataset)."""
 
-    def __init__(self, torch_dataset: torch.utils.data.IterableDataset):
+    def __init__(self, torch_dataset: ch_data.IterableDataset):
         self.torch_dataset = torch_dataset
 
     def __iter__(self):
@@ -36,7 +41,7 @@ class TorchDataset(Dataset):
 class IndexedTorchDataset(IndexedDataset):
     """Wraps a torch map-style dataset (i.e. torch.utils.data.Dataset)."""
 
-    def __init__(self, torch_dataset: torch.utils.data.Dataset):
+    def __init__(self, torch_dataset: ch_data.Dataset):
         self.torch_dataset = torch_dataset
 
     def __len__(self):
@@ -45,3 +50,19 @@ class IndexedTorchDataset(IndexedDataset):
     def __getitem__(self, item):
         value = self.torch_dataset[item]
         return _convert_torch_value(value)
+
+
+class ImagesOnlyTorchDataset(ch_data.Dataset):
+    """Wraps a torch map-style dataset returning images and labels such that only the images are returned."""
+
+    def __init__(self, dataset: ch_data.Dataset):
+        assert hasattr(dataset, "__getitem__") and hasattr(
+            dataset, "__len__"
+        ), "Dataset must be map-style, i.e. implement a __len__ and __getitem__ method"
+        self.dataset: Sequence = typing.cast(collections.Sequence, dataset)
+
+    def __getitem__(self, index):
+        return self.dataset[index][0]
+
+    def __len__(self):
+        return len(self.dataset)

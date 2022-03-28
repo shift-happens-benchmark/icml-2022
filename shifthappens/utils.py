@@ -1,7 +1,9 @@
 import errno
 import os
 import sys
+import urllib.error
 from itertools import product
+from typing import Optional
 
 
 def dict_product(d):
@@ -90,3 +92,29 @@ def is_pathname_valid(pathname: str) -> bool:
     # (e.g., a bug). Permit this exception to unwind the call stack.
     #
     # Did we mention this should be shipped with Python already?
+
+
+# from https://github.com/pytorch/vision/blob/0cba9b7845795d6be7b164037461ea6e9265f6a2/torchvision/datasets/utils.py
+def download_and_extract_archive(
+    url: str,
+    data_folder: str,
+    md5: str,
+    filename: Optional[str],
+    remove_finished: bool = False,
+    n_retries: int = 3,
+) -> None:
+    if not filename:
+        filename = os.path.basename(url)
+
+    import torchvision.datasets.utils as tv_utils
+
+    for _ in range(n_retries):
+        try:
+            tv_utils.download_url(url, data_folder, filename, md5)
+            break
+        except urllib.error.URLError:
+            print(f"Download of {url} failed; trying again.")
+
+    archive = os.path.join(data_folder, filename)
+    print(f"Extracting {archive} to {data_folder}")
+    tv_utils.extract_archive(archive, data_folder, remove_finished)

@@ -1,6 +1,7 @@
 import abc
 from typing import Iterator
 from typing import List
+from typing import Optional
 from typing import Union
 
 import numpy as np
@@ -62,7 +63,7 @@ class DataLoader:
     (e.g. max batch size) for models.
     """
 
-    def __init__(self, dataset, max_batch_size):
+    def __init__(self, dataset: Dataset, max_batch_size: Optional[int]):
         self._dataset = dataset
         self.__max_batch_size = max_batch_size
 
@@ -71,7 +72,8 @@ class DataLoader:
         return self.__max_batch_size
 
     def iterate(self, batch_size) -> Iterator[List[np.ndarray]]:
-        batch_size = min(batch_size, self.max_batch_size)
+        if self.max_batch_size is not None:
+            batch_size = min(batch_size, self.max_batch_size)
 
         dataset_exhausted = False
         ds_iter = iter(self._dataset)

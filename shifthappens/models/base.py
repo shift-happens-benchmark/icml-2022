@@ -10,6 +10,7 @@ Model results should be converted to numpy arrays, and packed into an
 
 import abc
 import dataclasses
+from typing import Iterator
 
 import numpy as np
 
@@ -68,7 +69,6 @@ class ModelResult:
 @dataclasses.dataclass
 class PredictionTargets:
     class_labels: bool = False
-    logits: bool = False
     confidences: bool = False
     uncertainties: bool = False
     ood_scores: bool = False
@@ -86,10 +86,12 @@ class Model(abc.ABC):
     def prepare(self, dataloader: DataLoader):
         pass
 
-    def predict(self, inputs: np.ndarray, targets: PredictionTargets) -> ModelResult:
+    def predict(
+        self, input_dataloader: DataLoader, targets: PredictionTargets
+    ) -> Iterator[ModelResult]:
         """
         Args:
-            inputs (np.ndarray): Batch of images.
+            input_dataloader (DataLoader): Dataloader producing batches of data.
             targets (PredictionTargets): Indicates which kinds of targets should be predicted.
 
         Returns:
@@ -98,21 +100,23 @@ class Model(abc.ABC):
             and image features, all as ``np.array``s.
         """
 
-        if issubclass(type(self), LabelModelMixin):
-            assert targets.logits
-        if issubclass(type(self), ConfidenceModelMixin):
-            assert targets.confidences
-        if issubclass(type(self), UncertaintyModelMixin):
-            assert targets.uncertainties
-        if issubclass(type(self), OODScoreModelMixin):
-            assert targets.ood_scores
-        if issubclass(type(self), FeaturesModelMixin):
-            assert targets.features
+        if targets.class_labels:
+            assert issubclass(type(self), LabelModelMixin)
+        if targets.confidences:
+            assert issubclass(type(self), ConfidenceModelMixin)
+        if targets.uncertainties:
+            assert issubclass(type(self), UncertaintyModelMixin)
+        if targets.ood_scores:
+            assert issubclass(type(self), OODScoreModelMixin)
+        if targets.features:
+            assert issubclass(type(self), FeaturesModelMixin)
 
-        return self._predict(inputs, targets)
+        return self._predict(input_dataloader, targets)
 
     @abc.abstractmethod
-    def _predict(self, inputs: np.ndarray, targets: PredictionTargets) -> ModelResult:
+    def _predict(
+        self, input_dataloader: DataLoader, targets: PredictionTargets
+    ) -> Iterator[ModelResult]:
         """
         Override this function for the specific model.
 
@@ -121,8 +125,9 @@ class Model(abc.ABC):
             targets (PredictionTargets): Indicates which kinds of targets should be predicted.
 
         Returns:
-            Prediction results for the given batch. Depending in the target arguments this
-            includes the predicted labels, class confidences, class uncertainties, ood scores,
+            Yields prediction results for all batches yielded by the dataloader.
+            Depending in the target arguments the model results may include the
+            predicted labels, class confidences, class uncertainties, ood scores,
             and image features, all as ``np.array``s.
         """
         raise NotImplementedError()
