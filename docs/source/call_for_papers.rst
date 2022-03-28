@@ -9,7 +9,10 @@ Call for Submissions
 Deadlines
 ^^^^^^^^^^^^^^^^
 
-- TBD
+- Submission Deadline: June 1, 2022 (TODO)
+- Acceptance notification: June 13, 2022 (TODO)
+- ICML 2022 Workshop dates: July 22 and 23
+
 
 Submission quickstart
 ^^^^^^^^^^^^^^^^^^^^^
@@ -67,17 +70,17 @@ Within these three submission types, the design of the benchmark will
 focus in particular on datasets falling into one or more of categories
 below:
 
-1. Robustness to domain shifts (classification accuracy): A labeled
+1. **Robustness to domain shifts (classification accuracy):** A labeled
    dataset where the labels are (a subset of) the 1000 labels of
    ImageNet-2012. Optionally, model calibration, uncertainty, or open
    set adaptation can be tested. We especially encourage submissions
    focusing on practically relevant distribution shifts.
 
-2. Out-of-distribution detection: A labeled or unlabeled dataset of
+2. **Out-of-distribution detection:** A labeled or unlabeled dataset of
    images that do not contain objects from any of the 1000 ImageNet-2012
    classes.
 
-3. New robustness datasets: Beyond the standard robustness evaluation
+3. **New robustness datasets:** Beyond the standard robustness evaluation
    settings (with covariate shift, label shift, …), the workshop format
    enables submission of datasets that evaluate non-standard metrics
    such as the consistency of predictions, influence of spurious
@@ -111,7 +114,7 @@ that all benchmarks are accessible to the community.
 
 Submissions will be judged according to the following criteria:
 
-1. Correctness: For labeled datasets, the labels should make sense to a
+1. **Correctness:** For labeled datasets, the labels should make sense to a
    human reviewer. For OOD datasets, no in-distribution objects can be
    visible on the images. During the review of large datasets, random
    samples and the worst mistakes of some models will be checked. The
@@ -121,7 +124,7 @@ Submissions will be judged according to the following criteria:
    not interesting to the community, and might be hard to spot by
    automated evaluation.
 
-2. Novelty: Datasets which allow for a more insightful evaluation beyond
+2. **Novelty:** Datasets which allow for a more insightful evaluation beyond
    the standard test accuracy of ImageNet are encouraged. This will be
    formally benchmarked by evaluating a set of standard models on the
    provided dataset. In the initial package, we will include (1) a set
@@ -133,7 +136,7 @@ Submissions will be judged according to the following criteria:
    benchmarks, we will verify the author’s results before posting the
    results on the public leaderboard.
 
-3. Difficulty for current models: If the task can easily be solved by
+3. **Difficulty for current models:** If the task can easily be solved by
    humans but some models fail moderately or spectacularly, it is an
    interesting addition to the benchmark. As with the Novelty criterion,
    we expect authors to evaluate this score based on the provided

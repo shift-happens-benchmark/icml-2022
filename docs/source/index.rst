@@ -3,6 +3,7 @@ Shift happens: Crowdsourcing metrics and test datasets beyond ImageNet
 
 *ICML 2022 workshop*
 
+
 While the popularity of robustness benchmarks and new test datasets
 increased over the past years, the performance of computer vision models
 is still largely evaluated on ImageNet directly, or on simulated or
@@ -53,8 +54,8 @@ between models.
 Important Deadlines
 -------------------
 
-- Submission Deadline: TBD
-- Acceptance notification: TBD
+- Submission Deadline: June 1, 2022 (TODO)
+- Acceptance notification: June 13, 2022 (TODO)
 - ICML 2022 Workshop dates: July 22 and 23
 
 Additional information about submission dates and the submission format can be found in :doc:`call_for_papers`.
@@ -120,13 +121,13 @@ Organizers
 .. image:: organizer_speaker_pics/matthias_hein.jpg
     :width: 150px
 
-
 .. |overview.svg| image:: overview.svg
+
 
 .. toctree::
     :maxdepth: 2
     :hidden:
 
-    Call for Submissions <call_for_papers>
+    Call for Papers <call_for_papers>
     Call for Reviewers <call_for_reviewers>
     Benchmark API Docs <api>
