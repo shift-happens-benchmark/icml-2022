@@ -1,7 +1,7 @@
-from itertools import product
-import os
 import errno
+import os
 import sys
+from itertools import product
 
 
 def dict_product(d):

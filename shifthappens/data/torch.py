@@ -1,5 +1,7 @@
-from .base import Dataset, IndexedDataset
 import torch
+
+from .base import Dataset
+from .base import IndexedDataset
 
 
 def _convert_torch_value(value):

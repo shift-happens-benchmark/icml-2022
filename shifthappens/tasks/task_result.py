@@ -1,4 +1,7 @@
-from typing import Dict, Tuple, Union
+from typing import Dict
+from typing import Tuple
+from typing import Union
+
 from .metrics import Metric
 
 

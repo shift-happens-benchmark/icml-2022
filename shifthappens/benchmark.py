@@ -1,11 +1,16 @@
 import os
 from dataclasses import dataclass
-from typing import Tuple, Dict, List, Optional, Type, Set
+from typing import Dict
+from typing import List
+from typing import Optional
+from typing import Set
+from typing import Tuple
+from typing import Type
 
-from shifthappens.models import Model
-from shifthappens.tasks.task_result import TaskResult
-from shifthappens.tasks.base import Task
 import shifthappens.utils as sh_utils
+from shifthappens.models import Model
+from shifthappens.tasks.base import Task
+from shifthappens.tasks.task_result import TaskResult
 
 __all__ = ["get_registered_tasks", "evaluate_model", "register_task"]
 

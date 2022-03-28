@@ -1,5 +1,8 @@
 import abc
-from typing import Iterator, List, Union
+from typing import Iterator
+from typing import List
+from typing import Union
+
 import numpy as np
 
 

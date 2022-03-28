@@ -1,16 +1,18 @@
 """Base definition of a task in the shift-happens benchmark."""
 
+import dataclasses
 from abc import ABC
 from abc import abstractmethod
-import dataclasses
-from typing import Dict, TypeVar, Tuple, Iterator
+from typing import Dict
+from typing import Iterator
 from typing import Optional
+from typing import Tuple
+from typing import TypeVar
 
-import shifthappens.utils as sh_utils
 import shifthappens.models.base as sh_models
+import shifthappens.utils as sh_utils
 from shifthappens.data.base import DataLoader
 from shifthappens.tasks.task_result import TaskResult
-
 
 T = TypeVar("T")
 
