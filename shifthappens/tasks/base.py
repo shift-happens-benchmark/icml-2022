@@ -62,6 +62,8 @@ def parameter(default: T, options: Tuple[T, ...], description: str = None):
 class Task(ABC):
     """Task base class."""
 
+    data_root: str
+
     def __post_init__(self):
         self.setup()
 
@@ -83,11 +85,11 @@ class Task(ABC):
         return parameter_options
 
     @classmethod
-    def iterate_flavours(cls) -> Iterator["Task"]:
+    def iterate_flavours(cls, **kwargs) -> Iterator["Task"]:
         """Iterate over all possible task configurations, i.e. different settings of parameter fields."""
         parameter_options = cls.__get_all_parameter_options()
         for config in sh_utils.dict_product(parameter_options):
-            yield cls(**config)
+            yield cls(**config, **kwargs)
 
     @abstractmethod
     def setup(self):

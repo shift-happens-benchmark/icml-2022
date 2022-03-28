@@ -2,10 +2,12 @@ import pytest
 import dataclasses
 from typing import Dict
 
+from shifthappens.data.base import DataLoader
 from shifthappens.tasks.base import Task, parameter
 from shifthappens.models import base as sh_models
 from shifthappens.tasks.task_result import TaskResult
 from shifthappens.tasks.metrics import Metric
+import shifthappens.benchmark as sh_benchmark
 
 
 def test_iterate_flavours():
@@ -24,12 +26,62 @@ def test_iterate_flavours():
         def _prepare(self, model: sh_models.Model) -> "DataLoader":
             pass
 
-    flavours = list(DummyTask.iterate_flavours())
+        def _prepare_data(self) -> DataLoader:
+            pass
+
+    flavours = list(DummyTask.iterate_flavours(data_root="test"))
     assert len(flavours) == 2*2*2
     for flavour in flavours:
         assert isinstance(flavour.a, int)
         assert isinstance(flavour.b, int)
         assert isinstance(flavour.c, int)
+
+
+def test_register_unregister_task():
+    n_previous_registered_tasks = len(sh_benchmark.get_registered_tasks())
+
+    # check whether registration works
+    @sh_benchmark.register_task(name="dummy_task", relative_data_folder="dummy_task")
+    @dataclasses.dataclass
+    class DummyTask(Task):
+        def setup(self):
+            pass
+
+        def _evaluate(self, model: sh_models.Model) -> Dict[str, float]:
+            pass
+
+        def _prepare(self, model: sh_models.Model) -> "DataLoader":
+            pass
+
+        def _prepare_data(self) -> DataLoader:
+            pass
+    assert len(sh_benchmark.get_registered_tasks()) == n_previous_registered_tasks + 1
+    assert DummyTask in sh_benchmark.get_registered_tasks()
+
+    # check whether unregistration works
+    sh_benchmark.unregister_task(DummyTask)
+    assert len(sh_benchmark.get_registered_tasks()) == n_previous_registered_tasks
+    assert DummyTask not in sh_benchmark.get_registered_tasks()
+
+    # check whether unregistration only works for registered tasks
+    with pytest.raises(ValueError):
+        sh_benchmark.unregister_task(DummyTask)
+
+
+def test_data_folder():
+    @dataclasses.dataclass
+    class DummyTask(Task):
+        def setup(self):
+            pass
+
+        def _evaluate(self, model: sh_models.Model) -> Dict[str, float]:
+            pass
+
+        def _prepare(self, model: sh_models.Model) -> "DataLoader":
+            pass
+
+        def _prepare_data(self) -> DataLoader:
+            pass
 
 
 def test_task_result():
