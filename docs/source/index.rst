@@ -63,11 +63,25 @@ Also, please consider our :doc:`call_for_reviewers`.
 Invited Speakers
 ----------------
 
-- Invited Talk 1: TBA
-- Invited Talk 2: TBA
-- Invited Talk 3: TBA
-- Invited Talk 4: TBA
+`Aleksander Mądry <https://people.csail.mit.edu/madry/>`__ [confirmed]
+######################################################################
+Aleksander Madry is the Cadence Design Systems Professor of Computing at MIT, leads the MIT Center for Deployable Machine Learning as well as is a faculty co-lead for the MIT AI Policy Forum. His research interests span algorithms, continuous optimization, and understanding machine learning from a robustness and deployability perspectives.
+.. image:: docs/source/organizer_speaker_pics/aleksander_madry.png
 
+`Chelsea Finn <https://ai.stanford.edu/~cbfinn/>`__ [confirmed]
+###############################################################
+Chelsea Finn is an Assistant Professor in Computer Science and Electrical Engineering at Stanford University. Her lab, IRIS, studies intelligence through robotic interaction at scale, and is affiliated with SAIL and the ML Group. Chelsea also spends time at Google as a part of the Google Brain team. She is interested in the capability of robots and other agents to develop broadly intelligent behavior through learning and interaction.
+.. image:: docs/source/organizer_speaker_pics/chelsea_finn.png
+
+`Ludwig Schmidt <https://people.csail.mit.edu/ludwigs/>`__ [confirmed]
+######################################################################
+Ludwig Schmidt is an assistant professor in the Paul G. Allen School of Computer Science & Engineering at the University of Washington. Ludwig’s research interests revolve around the empirical and theoretical foundations of machine learning, often with a focus on datasets, evaluation, and reliable methods. Ludwig completed his PhD at MIT under the supervision of Piotr Indyk and was a postdoc at UC Berkeley with Benjamin Recht and Moritz Hardt. Ludwig received a Google PhD fellowship, a Microsoft Simons fellowship, a new horizons award at EAAMO, a best paper award at ICML, and the Sprowls dissertation award from MIT.
+.. image:: docs/source/organizer_speaker_pics/ludwig_schmidt.png
+
+`Alexei Efros <https://people.eecs.berkeley.edu/~efros/>`__ [tentatively confirmed]
+###################################################################################
+Alexei is a professor at EECS Department at UC Berkeley, where he is part of the Berkeley Artificial Intelligence Research Lab (BAIR). Before that, he spent nine years on the faculty of the Robotics Institute at CMU. Starting in 2007, Alexei have also been closely collaborating with Team WILLOW at École Normale Supérieure / INRIA in Paris. The central goal of Alexei’s research is to use vast amounts of unlabelled visual data to understand, model, and recreate the visual world around us. 
+.. image:: docs/source/organizer_speaker_pics/alexei_efros.png
 
 Organizers
 ----------
