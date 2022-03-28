@@ -33,7 +33,7 @@ def parameter(default: T, options: Tuple[T, ...], description: str = None):
     )
 
 
-@dataclasses.dataclass
+@dataclasses.dataclass  # type: ignore
 class Task(ABC):
     """Task base class."""
 

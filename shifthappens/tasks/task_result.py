@@ -20,7 +20,7 @@ class TaskResult:
             assert isinstance(sm, Metric), "Invalid summary metric key."
             smv = summary_metrics[sm]
             if isinstance(smv, str):
-                tms = (smv,)
+                tms: Tuple[str, ...] = (smv,)
             elif isinstance(smv, tuple):
                 tms = smv
             else:

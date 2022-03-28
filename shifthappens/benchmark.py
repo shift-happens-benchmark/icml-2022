@@ -28,12 +28,12 @@ class TaskRegistration:
 __registered_tasks: Set[TaskRegistration] = set()
 
 
-def get_registered_tasks() -> Tuple[TaskRegistration]:
+def get_registered_tasks() -> Tuple[Type[Task], ...]:
     """All tasks currently registered as part of the benchmark."""
     return tuple([x.cls for x in __registered_tasks])
 
 
-def get_task_registrations() -> Tuple[TaskRegistration]:
+def get_task_registrations() -> Tuple[TaskRegistration, ...]:
     """Registrations for all tasks currently registered as part of the benchmark."""
     return tuple(__registered_tasks)
 
