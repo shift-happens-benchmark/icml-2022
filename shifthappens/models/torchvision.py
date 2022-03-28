@@ -15,7 +15,7 @@ from shifthappens.data.base import DataLoader
 class __TorchModel(
     sh_models.Model, sh_models.LabelModelMixin, sh_models.ConfidenceModelMixin
 ):
-    """Reference implementation for a torchvision ResNet50 model."""
+    """Wraps a torchvision model."""
 
     def __init__(self, model: nn.Module, max_batch_size: int, device: str = "cpu"):
         self.model = model

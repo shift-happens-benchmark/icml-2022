@@ -1,4 +1,4 @@
-"""Base definition of a task in the shift-happens benchmark."""
+"""Base definition of a task in the shift happens benchmark."""
 
 import dataclasses
 from abc import ABC
