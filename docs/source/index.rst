@@ -107,22 +107,22 @@ Organizers
 .. image:: organizer_speaker_pics/julian_bitterwolf.png
     :width: 150px
 - `Evgenia Rusak <https://scholar.google.com/citations?user=XKc19kkAAAAJ&hl=en&oi=ao>`__
-.. image:: organizer_speaker_pics/evgenia_rusak.jpg
+.. image:: organizer_speaker_pics/evgenia_rusak.png
     :width: 150px
 - `Steffen Schneider <https://stes.io>`__
 .. image:: organizer_speaker_pics/steffen_schneider.jpeg
     :width: 150px
 - `Roland S Zimmermann <https://rzimmermann.com/>`__
-.. image:: organizer_speaker_pics/roland_zimmermann.jpg
+.. image:: organizer_speaker_pics/roland_zimmermann.png
     :width: 150px
 - `Matthias Bethge <http://bethgelab.org/>`__
-.. image:: organizer_speaker_pics/matthias_bethge.jpeg
+.. image:: organizer_speaker_pics/matthias_bethge.png
     :width: 150px
 - `Wieland Brendel <https://scholar.google.com/citations?user=v-JL-hsAAAAJ&hl=en&oi=ao>`__
 .. image:: organizer_speaker_pics/wieland_brendel.png
     :width: 150px
 - `Matthias Hein <https://uni-tuebingen.de/fakultaeten/mathematisch-naturwissenschaftliche-fakultaet/fachbereiche/informatik/lehrstuehle/maschinelles-lernen/team/prof-dr-matthias-hein/>`__
-.. image:: organizer_speaker_pics/matthias_hein.jpg
+.. image:: organizer_speaker_pics/matthias_hein.png
     :width: 150px
 
 .. |overview.svg| image:: overview.svg
