@@ -56,10 +56,11 @@ dataset and metric are well-suited to inform about the specified
 property. Opening the benchmark to this form of submissions aims at reaching
 communities interested in problems besides standard,
 “accuracy-focused” settings.
-- It is also encouraged to submit datasets that can be evaluated with one or more of the following standard criteria:
+- It is also encouraged to submit **datasets** that can be evaluated with one
+or more of the following **standard criteria**:
 This form of submission imposes a low bar on developing new code contributions and
 makes it possible to contribute in the form of well-recorded datasets.
-Third, in both cases, it is possible to re-submit existing and
+- Third, in both cases, it is possible to re-submit existing and
 potentially published benchmarks, datasets, and evaluation settings,
 known only in a particular community and make these datasets available
 to a broader audience as part of a curated benchmark package. Examples
@@ -86,22 +87,42 @@ below:
    such as the consistency of predictions, influence of spurious
    correlations in the dataset.
 
-We ensure standardization of submitted datasets and evaluations
-algorithms by providing a reference implementation with pre-defined
-interfaces. These interfaces allow writing datasets and benchmarks that
-are guaranteed to be compatible with a broad class of models. A critical
-decision is to limit submissions to models compatible with ImageNet
-pre-training: Given a batch of images, models will provide (at least)
-class predictions and optionally features, class confidences, and an OOD
-score. Given this information, each benchmark needs to define the
-necessary mechanisms for evaluating and returning scores. Our reference
-implementation (which will be extended in the coming weeks) is available
-at https://github.com/shift-happens-benchmark/iclr-2022.
-
-Submissions will be allowed to contain multiple related datasets, e.g.,
+Submissions are be allowed to contain multiple related datasets, e.g.,
 a dataset like ImageNet-C could have been submitted as a collection of
 15 evaluation datasets, corresponding to the different corruptions
 ImageNet-C is comprised of.
+
+Correspondingly, tasks to not need to output one single number. For example, a 
+submission might include multiple (related) OOD datasets and demand that an
+ideal model be not fooled by any of them. It might of course makes sense for a
+multi-score benchmark to *also* calculate an average performance.
+
+
+Report Instructions
+^^^^^^^^^^^^^^^^
+
+
+The short report should
+
+- motivate why the submitted task is interesting,
+- describe how introduced data was collected,
+- give an overview of the data,
+- state if there are special requirements on the models to be evaluated,
+- detail the evaluation procedure,
+- outline how evaluation outputs can be interpreted,
+- provide a short analysis how the task is challenging for some existing models
+  (including the relevant provided ones),
+- and establish context within related works.
+
+The report should be limited to 2-4 pages without references.
+If it includes an Appendix, it should be reserved for including additional 
+sample images and technical details.
+
+The report should be formatted according to the `ICML style instructions
+<https://icml.cc/Conferences/2022/StyleAuthorInstructions>`__, by using the
+provided `LaTeX files <https://media.icml.cc/Conferences/ICML2022/Styles/icml2022.zip>`__.
+
+
 
 Evaluation criteria
 ^^^^^^^^^^^^^^^^^^^
@@ -125,11 +146,10 @@ Submissions will be judged according to the following criteria:
 3. **Difficulty for current models**: If the task can easily be solved by
    humans but some models fail moderately or spectacularly, it is an
    interesting addition to the benchmark.
-   This will be
-   formally benchmarked by evaluating a set of standard models
+   This will be formally benchmarked by evaluating a set of standard models
    (including robustified, task specific ones) on the
    provided dataset. Together with the reference implementation,
-   we include
+   we have included
    (1) a set of (robustified) ResNet models,
    (2) models that provide an explicit OOD detection score, as well as
    (3) recent test-time adaptation methods.
@@ -137,6 +157,20 @@ Submissions will be judged according to the following criteria:
    their technical report.**
    It should include all applicable reference models as well as relevant
    baselines and potentially proposed improvements.
+
+
+
+
+Removed Paragraphs (for now)
+^^^^^^^^^^^^^^^^
+
+
+We should note that we will make submission of code for review as easy
+and convenient as possible for the authors: For example, the reference
+package will make it possible to submit benchmark datasets with standard
+metrics (e.g., accuracy on a new dataset), with a minimal code
+submission, using helper functions already provided in the package.
+
 
 Besides the robustness and out-of-distribution detection communities
 directly addressed by the default benchmark items mentioned above, this
@@ -155,27 +189,23 @@ developed in the future. Furthermore, we will host an online forum in
 the period between the camera-ready deadline and the workshop to
 facilitate constructive discussions about the accepted datasets.
 
-Report Instructions
-^^^^^^^^^^^^^^^^
-The short report should
-
-- motivate why the submitted task is interesting,
-- describe how introduced data was collected,
-- give an overview of the data,
-- state if there are special requirements on the models to be evaluated,
-- detail the evaluation procedure,
-- outline how evaluation outputs can be interpreted,
-- provide a short analysis how the task is challenging for some existing models
-  (including the relevant provided ones),
-- and establish context within related works.
-
-The report should be limited to at most 4 pages without references, but can include an Appendix, for example including additional sample images and technical details.
-
-The report should be formatted according to the `ICML style instructions <https://icml.cc/Conferences/2022/StyleAuthorInstructions>`__, by using the provided `LaTeX files <https://media.icml.cc/Conferences/ICML2022/Styles/icml2022.zip>`__.
+We ensure standardization of submitted datasets and evaluations
+algorithms by providing a reference implementation with pre-defined
+interfaces. These interfaces allow writing datasets and benchmarks that
+are guaranteed to be compatible with a broad class of models. A critical
+decision is to limit submissions to models compatible with ImageNet
+pre-training: Given a batch of images, models will provide (at least)
+class predictions and optionally features, class confidences, and an OOD
+score. Given this information, each benchmark needs to define the
+necessary mechanisms for evaluating and returning scores. Our reference
+implementation (which will be extended in the coming weeks) is available
+at https://github.com/shift-happens-benchmark/iclr-2022.
 
 
 
-Submission Procedure and Reviewing
+
+
+Submission Procedure and Reviewing -> move mostly to call for reviewers?
 ----------------------------------
 
 To meet the goals outlined above, we will organize a review process that
@@ -249,9 +279,3 @@ In more detail, reviewing will be done in the following stages:
    This will ensure that after the workshop all benchmarks are accessible
    to the community.
 
-
-We should note that we will make submission of code for review as easy
-and convenient as possible for the authors: For example, the reference
-package will make it possible to submit benchmark datasets with standard
-metrics (e.g., accuracy on a new dataset), with a minimal code
-submission, using helper functions already provided in the package.

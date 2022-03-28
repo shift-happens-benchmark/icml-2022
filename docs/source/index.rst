@@ -51,6 +51,8 @@ community dealing with ImageNet size models, including practitioners
 interested in seeing practically relevant properties and trade-offs
 between models.
 
+
+
 Important Deadlines
 -------------------
 
@@ -88,13 +90,15 @@ Ludwig Schmidt is an assistant professor in the Paul G. Allen School of Computer
     :width: 150px
     :align: center
 
-`Alexei Efros <https://people.eecs.berkeley.edu/~efros/>`__ [tentatively confirmed]
+`Alexei Efros <https://people.eecs.berkeley.edu/~efros/>`__ [TBD]
 ###################################################################################
-Alexei is a professor at EECS Department at UC Berkeley, where he is part of the Berkeley Artificial Intelligence Research Lab (BAIR). Before that, he spent nine years on the faculty of the Robotics Institute at CMU. Starting in 2007, Alexei have also been closely collaborating with Team WILLOW at École Normale Supérieure / INRIA in Paris. The central goal of Alexei’s research is to use vast amounts of unlabelled visual data to understand, model, and recreate the visual world around us. 
+..
+	Alexei is a professor at EECS Department at UC Berkeley, where he is part of the Berkeley Artificial Intelligence Research Lab (BAIR). Before that, he spent nine years on the faculty of the Robotics Institute at CMU. Starting in 2007, Alexei have also been closely collaborating with Team WILLOW at École Normale Supérieure / INRIA in Paris. The central goal of Alexei’s research is to use vast amounts of unlabelled visual data to understand, model, and recreate the visual world around us. 
 
-.. image:: organizer_speaker_pics/alexey_efros.jpg
-    :width: 150px
-    :align: center
+	.. image:: organizer_speaker_pics/alexey_efros.jpg
+	    :width: 150px
+	    :align: center
+
 
 Organizers
 ----------
