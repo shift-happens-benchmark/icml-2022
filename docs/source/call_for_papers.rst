@@ -1,4 +1,4 @@
-Call for Papers
+Call for Submissions
 ===============
 
 .. note::
@@ -20,6 +20,9 @@ Submissions consist of
 - An implementation of the task, metrics and/or datasets, comprised of a plugin to the ``shifthappens`` benchmark package, and all required external data files
 
 Both components will be submitted via Openreview (**submission link tba**).
+Submissions do not need to be anonymized.
+The workshop will not have any official proceedings, so it is non-archival.
+Tasks that have been part of a recent submission/publication are allowed, in which case the overlapping works should be mentioned.
 
 The implementation leverages our example API implementation:
 
@@ -152,6 +155,25 @@ on (3) currently unavailable evaluations that would be desirable to be
 developed in the future. Furthermore, we will host an online forum in
 the period between the camera-ready deadline and the workshop to
 facilitate constructive discussions about the accepted datasets.
+
+Report Instructions
+^^^^^^^^^^^^^^^^
+The short report should
+
+- motivate why the submitted task is interesting,
+- describe how introduced data was collected,
+- give an overview of the data,
+- state if there are special requirements on the models to be evaluated,
+- detail the evaluation procedure,
+- outline how evaluation outputs can be interpreted,
+- provide a short analysis how the task is challenging for some existing models,
+- and establish context within related works.
+
+The report should be limited to at most 4 pages without references, but can include an Appendix, for example including additional sample images and technical details.
+
+The report should be formatted according to the `ICML style instructions <https://icml.cc/Conferences/2022/StyleAuthorInstructions>`__, by using the provided `LaTeX files <https://media.icml.cc/Conferences/ICML2022/Styles/icml2022.zip>`__.
+
+
 
 Submission Procedure and Reviewing
 ----------------------------------
