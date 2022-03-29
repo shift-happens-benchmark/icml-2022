@@ -12,8 +12,7 @@ TL;DR
 Submissions consist of 
 
 - A short report of the task, metrics and datasets,
-- An implementation of the task, metrics and/or datasets, comprised of a plugin to the ``shifthappens``
-benchmark package, and all required external data files.
+- An implementation of the task, metrics and/or datasets, comprised of a plugin to the ``shifthappens`` benchmark package, and all required external data files.
 
 Both components will be submitted via OpenReview, and reviewing is double-blind (**submission link tba**).
 The workshop will not have any official proceedings, so it is non-archival.
@@ -58,16 +57,16 @@ benchmarks and datasets is intentionally broad:
   - Robustness to domain shifts (classification accuracy)
   - Out-of-distribution detection (AUROC, FPR, AUPR)
 
-- In both cases, it is possible to re-submit existing and potentially published benchmarks,
-datasets, and evaluation settings, known only in a particular community, in order to make these datasets available
-to a broader audience as part of a curated benchmark package. Examples include small datasets that test an
-interesting distribution shift, such as shifts occurring due to applications in the real world, and
-insightful benchmarks that you might have included in a publication highlighting the advantages or problems
-of certain models.
-
 - Any other form of dataset and task that can be evaluated on a pre-trained (standard or non-standard training) ImageNet model.
 There are *no constraints* on the possible metrics, as long as they are based on the features, class scores,
 class uncertainties and in distribution scores of such a model.
+
+In all cases, it is possible to re-submit existing and potentially published benchmarks, datasets, and evaluation settings, 
+known only in a particular community, in order to make these datasets available to a broader audience as part of a curated 
+benchmark package. Examples include small datasets that test an
+interesting distribution shift, such as shifts occurring due to applications in the real world, and
+insightful benchmarks that you might have included in a publication highlighting the advantages or problems
+of certain models.
 
 Within these submission types, the design of the benchmark will
 focus in particular on datasets falling into one or more of the categories
