@@ -19,8 +19,8 @@ Submission quickstart
 
 Submissions consist of 
 
-- A short report of the task, metrics and datasets
-- An implementation of the task, metrics and/or datasets, comprised of a plugin to the ``shifthappens`` benchmark package, and all required external data files
+- A short report of the task, metrics and datasets,
+- An implementation of the task, metrics and/or datasets, comprised of a plugin to the ``shifthappens`` benchmark package, and all required external data files.
 
 Both components will be submitted via OpenReview, and reviewing is double-blind (**submission link tba**).
 The workshop will not have any official proceedings, so it is non-archival.
@@ -49,22 +49,12 @@ Submission types (TODO when API is final)
 
 Besides compatibility to ImageNet scale models, the scope of possible
 benchmarks and datasets is intentionally broad:
-- Submissions that **provide their own evaluation criterion** and discuss its
-value in applications are particularly encouraged. Submissions should explain why the submitted
-dataset and metric are well-suited to inform about the specified
-property. Opening the benchmark to this form of submissions aims at reaching
-communities interested in problems besides standard,
-“accuracy-focused” settings.
-- It is also encouraged to submit **datasets** that can be evaluated with one
-or more of the following **standard criteria**:
-This form of submission imposes a low bar on developing new code contributions and
-makes it possible to contribute in the form of well-recorded datasets.
-- Third, in both cases, it is possible to re-submit existing and
-potentially published benchmarks, datasets, and evaluation settings,
-known only in a particular community and make these datasets available
-to a broader audience as part of a curated benchmark package. Examples
-include small datasets that test an interesting distribution shift, such
-as shifts occurring due to applications in the real world.
+
+- Submissions that **provide their own evaluation criterion** and discuss its value in applications are particularly encouraged. Submissions should explain why the submitted dataset and metric are well-suited to inform about the specified property. Opening the benchmark to this form of submissions aims at reaching communities interested in problems besides standard, “accuracy-focused” settings.
+
+- It is also encouraged to submit **datasets** that can be evaluated with one or more of the following **standard criteria**: This form of submission imposes a low bar on developing new code contributions and makes it possible to contribute in the form of well-recorded datasets.
+
+- Third, in both cases, it is possible to re-submit existing and potentially published benchmarks, datasets, and evaluation settings, known only in a particular community and make these datasets available to a broader audience as part of a curated benchmark package. Examples include small datasets that test an interesting distribution shift, such as shifts occurring due to applications in the real world.
 
 Within these three submission types, the design of the benchmark will
 focus in particular on datasets falling into one or more of categories
@@ -116,12 +106,11 @@ Report Instructions
 The short report should
 
 - motivate why the submitted task is interesting,
-- describe how introduced data was collected,
-- give an overview of the data,
+- describe how the data was collected, as well as give an overview over the data,
 - state how the data can be accessed,
 - specify if there are special requirements on the models to be evaluated,
 - detail the evaluation procedure,
-- outline how evaluation outputs can be interpreted,
+- outline how the evaluation outputs can be interpreted,
 - provide a short analysis how the task is challenging for some existing models
   (including the relevant provided ones),
 - and establish context within related works.
@@ -204,9 +193,9 @@ In more detail, reviewing will be done in the following stages:
 4. While adding comments on OpenReview will be limited to the reviewers, code
    review (and proposal of improvements) on GitHub is open to the public
    — this also includes criticism of the data collection process
-   described in the technical report. Thus OpenReview comments are limited to
+   described in the technical report. Thus, OpenReview comments are limited to
    a number of “formal” reviews. At the
-   same time public discussion — and community building relevant for the
+   same time, public discussion — and community building relevant for the
    benchmark after the workshop ends — will be encouraged on GitHub.
 
 5. In the discussion phase, authors are allowed to update both their

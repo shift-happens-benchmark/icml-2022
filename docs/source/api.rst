@@ -13,7 +13,7 @@ Welcome to the API docs of the ShiftHappens benchmark!
 
 While the popularity of robustness benchmarks and new test datasets increased over the past years, 
 the performance of computer vision models is still largely evaluated on ImageNet directly, or on simulated 
-or isolated distribution shifts like in ImageNet-C. The goal of this two-stage workshop is twofold: First, 
+or isolated distribution shifts like in ImageNet-C. The goal of this workshop is twofold: First, 
 we aim to enhance the landscape of robustness evaluation datasets for computer vision and devise new test settings
 and metrics for quantifying desirable properties of computer vision models. Second, we expect that these improvements 
 in the model evaluation lead to a better guided and, thus, more efficient phase for the development of new models. 
