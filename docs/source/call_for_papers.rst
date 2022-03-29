@@ -22,8 +22,7 @@ Submissions consist of
 - A short report of the task, metrics and datasets
 - An implementation of the task, metrics and/or datasets, comprised of a plugin to the ``shifthappens`` benchmark package, and all required external data files
 
-Both components will be submitted via Openreview (**submission link tba**).
-Submissions do not need to be anonymized.
+Both components will be submitted via OpenReview, and reviewing is double-blind (**submission link tba**).
 The workshop will not have any official proceedings, so it is non-archival.
 Tasks that have been part of a recent submission/publication are allowed, in which case the overlapping works should be mentioned.
 
@@ -97,6 +96,18 @@ submission might include multiple (related) OOD datasets and demand that an
 ideal model be not fooled by any of them. It might of course makes sense for a
 multi-score benchmark to *also* calculate an average performance.
 
+Code and Data Instructions (TODO when API is final)
+^^^^^^^^^^^^^^^^
+
+Submissions must include a link to the dataset (hosted on a suitable platform),
+as well as code (building on top of the provided `reference implementation
+<https://shift-happens-benchmark.github.io/icml-2022/>`__) for 
+running the evaluation process.
+
+Used data/images need to be usable for research purposes. Their license should
+be stated in the report and README.
+
+TODO: Code license
 
 Report Instructions
 ^^^^^^^^^^^^^^^^
@@ -107,7 +118,8 @@ The short report should
 - motivate why the submitted task is interesting,
 - describe how introduced data was collected,
 - give an overview of the data,
-- state if there are special requirements on the models to be evaluated,
+- state how the data can be accessed,
+- specify if there are special requirements on the models to be evaluated,
 - detail the evaluation procedure,
 - outline how evaluation outputs can be interpreted,
 - provide a short analysis how the task is challenging for some existing models
@@ -124,7 +136,7 @@ provided `LaTeX files <https://media.icml.cc/Conferences/ICML2022/Styles/icml202
 
 
 
-Evaluation criteria
+Evaluation Criteria
 ^^^^^^^^^^^^^^^^^^^
 
 
@@ -160,6 +172,70 @@ Submissions will be judged according to the following criteria:
 
 
 
+Post-Submission and Reviewing
+^^^^^^^^^^^^^^^^^^^
+
+To eventually obtain a benchmark that is useful for and usable by the research
+community, the review process will somewhat differ from usual paper review processes
+*by centering around the code and data submission*.
+Including the community in an open review process will be an opportunity
+to increase chances for later adaptations of the benchmark. The tools
+that will be made available for facilitating the reviewers' jobs will
+later be released as open-source tools.
+
+In more detail, reviewing will be done in the following stages:
+
+1. As preparation for the review stage, all anonymized submissions will
+   be public on OpenReview. In addition, the organizers will create (anonymized)
+   pull requests on the benchmark repository based on the submissions.
+   Authors are responsible for preparing their submissions accordingly,
+   and documentation for doing this correctly (and testing the
+   submission prior to uploading on OpenReview) will be made available
+   on the workshop page.
+
+2. In the reviewing phase, reviewers will judge the quality of both
+   technical reports (on OpenReview) and submitted code (on GitHub),
+   according to the above `evaluation criteria <call_for_papers.html#evaluation-criteria>`__.
+
+3. In parallel to the reviewing phase, the workshop organizers will
+   start running tests on the submitted benchmarks for an extended
+   collection of established vision models.
+   
+4. While adding comments on OpenReview will be limited to the reviewers, code
+   review (and proposal of improvements) on GitHub is open to the public
+   — this also includes criticism of the data collection process
+   described in the technical report. Thus OpenReview comments are limited to
+   a number of “formal” reviews. At the
+   same time public discussion — and community building relevant for the
+   benchmark after the workshop ends — will be encouraged on GitHub.
+
+5. In the discussion phase, authors are allowed to update both their
+   technical report and the submitted code.
+
+6. After the final decisions, all submissions will be de-anonymized both
+   on OpenReview and on GitHub. 
+   
+7. The outlined review process will ensure
+   that for this final set of camera-ready submissions, a set of
+   datasets with reviewed descriptions (submitted reports), and
+   high-quality code ready to merge into the benchmark will be
+   available. After the camera-ready phase, and after ensuring technical
+   soundness of the submitted pull requests, an initial version of
+   the benchmark will be released that allows for contributing of additional
+   models and techniques, as well as for making suggestions on improving
+   the benchmarks and metrics.
+   
+8. Two weeks prior to the workshop, a *hackathon* aimed at
+   community building around the benchmark will be hosted by the workshop
+   organizers. For this, discussions will
+   happen on GitHub, and the community will be able to contribute
+   changes to the benchmark. The best contributions from this phase will
+   get a short talk (time depends on the number of contributions) at the
+   workshop.
+   
+9. All accepted submissions will be added to the shifthappens benchmark suite. 
+   This will ensure that after the workshop all benchmarks are accessible
+   to the community.
 
 Removed Paragraphs (for now)
 ^^^^^^^^^^^^^^^^
@@ -204,78 +280,4 @@ at https://github.com/shift-happens-benchmark/iclr-2022.
 
 
 
-
-Submission Procedure and Reviewing -> move mostly to call for reviewers?
-----------------------------------
-
-To meet the goals outlined above, we will organize a review process that
-places a strong focus on the quality of the submitted datasets and
-metrics and their implementation.
-
-Besides encouraging community building around the benchmark, the
-proposed review process will also be an experiment for implementing *a
-review process that centers around the code submission*. We think that
-including the community in an open review process will be an opportunity
-to increase chances for later adaptations of the benchmark. Tools
-developed for setting up this review process will later be released as
-open-source tools.
-
-In more detail, reviewing will be done in the following stages:
-
-1. Submission of a short, 2–4 page technical report on the dataset,
-   including a description of how images were acquired, which evaluation
-   metrics will be used, usage information, and plans to make the
-   dataset accessible. The technical report should include reference
-   results from running the provided models on the new dataset, and
-   optionally additional experiments. Submissions must include a link to
-   the dataset (hosted on a suitable platform), as well as code
-   (building on top of the provided reference implementation) for
-   implementing the evaluation process. Submissions will be coordinated
-   on OpenReview, and reviewing is double-blind.
-
-2. As preparation for the review stage, all anonymized submissions will
-   be public on OpenReview. In addition, we will create (anonymized)
-   pull requests on the benchmark repository based on the submissions.
-   Authors are responsible for preparing their submissions accordingly,
-   and documentation for doing this correctly (and testing the
-   submission prior to uploading on OpenReview) will be made available
-   on the workshop page.
-
-3. In the reviewing phase, reviewers will judge the quality of both
-   technical reports (on OpenReview) and submitted code (on GitHub),
-   according to the criteria introduced above. In parallel to the
-   reviewing phase, we will start running tests on the submitted
-   benchmarks for a collection of established vision models. While
-   adding comments on OpenReview will be limited to the reviewers, code
-   review (and proposal of improvements) on GitHub is open to the public
-   — this also includes criticism of the data collection process
-   described in the technical report. Our rationale is to limit
-   OpenReview comments to a limited number of “formal” reviews. At the
-   same time public discussion — and community building relevant for the
-   benchmark after the workshop ends — will be encouraged on GitHub.
-
-4. In the discussion phase, authors are allowed to update both their
-   technical report and the submitted code.
-
-5. After the final decisions, all submissions will be de-anonymized both
-   on OpenReview and on GitHub. The outlined review process will ensure
-   that for this final set of camera-ready submissions, a set of
-   datasets with reviewed descriptions (submitted reports), and
-   high-quality code ready to merge into the benchmark will be
-   available. After the camera-ready phase, and after ensuring technical
-   soundness of the submitted PRs, we will release a first version of
-   the benchmark that is already suitable for contributing additional
-   models, and techniques, as well as making suggestions on improving
-   the benchmarks and metrics.
-
-6. Two weeks prior to the workshop, we will host a “hackathon” aimed at
-   community building around the benchmark. For this, discussions will
-   happen on GitHub, and the community will be able to contribute
-   changes to the benchmark. The best contributions from this phase will
-   get a short talk (time depends on the number of contributions) at the
-   workshop.
-   
-7. All accepted submissions will be added to the shifthappens benchmark suite. 
-   This will ensure that after the workshop all benchmarks are accessible
-   to the community.
 

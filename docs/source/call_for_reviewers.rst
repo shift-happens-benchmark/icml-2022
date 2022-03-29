@@ -2,12 +2,22 @@ Call for Reviewers
 ==================
 
 We will list all participating reviewers as our Program Committee on the Workshop website.
+ 
+Reviewers will assess the submissions according to the `evaluation criteria <call_for_papers.html#evaluation-criteria>`__
+as part of the `process outlined here <call_for_papers.html#post-submission-and-reviewing>`__.
 
 If you wish to become a reviewer:
 ---------------------------------
-Please send an e-mail to shifthappens@bethgelab.org with the following information: your full name and affiliation, and whether you submitted a paper to the ShiftHappens Workshop.
+Please fill out the form at https://forms.gle/NzykpxQYycMZSB4b7.
+In case of questions you can use the remarks field or email shifthappens@bethgelab.org.
 
 
 If you wish to recommend a reviewer:
 ------------------------------------
-Please direct the candidate reviewer to this website and ask them to send us their full name, affiliation, and whether they have submitted a paper to the ShiftHappens Workshop.
+Please direct the candidate reviewer to this website and ask them to fill out the form.
+
+
+
+
+
+
