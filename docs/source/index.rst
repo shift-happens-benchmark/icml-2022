@@ -8,11 +8,11 @@ While the popularity of robustness benchmarks and new test datasets
 increased over the past years, the performance of computer vision models
 is still largely evaluated on ImageNet directly, or on simulated or
 isolated distribution shifts like in ImageNet-C. The goal of this
-two-stage workshop is twofold: First, we aim to enhance the landscape of
+workshop is twofold: First, we aim to enhance the landscape of
 robustness evaluation datasets for computer vision and devise new test
 settings and metrics for quantifying desirable properties of computer
 vision models. Second, we expect that these improvements in the model
-evaluation lead to a better guided and, thus, more efficient phase for
+evaluation will lead to a better guided and, thus, more efficient phase for
 the development of new models. This incentivizes development of models
 and inference methods with meaningful improvements over existing
 approaches with respect to a broad scope of desirable properties. Our
