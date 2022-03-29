@@ -6,7 +6,7 @@ Call for Submissions
     This page is still under construction and might contain inaccurate information.
     Please wait with the preparation of your submission until this note disappears.
 
-TLDR
+TL;DR
 ^^^^
 
 Submissions consist of 
@@ -22,24 +22,26 @@ works should be mentioned.
 
 **Examples** of possible contributions:
 
-- New collections of images "compatible" for existing tasks like classification or OOD detection (e.g. like ImageNet-A).
+- Collections of images to be evaluated w.r.t. one or more existing tasks like classification or OOD detection (e.g. like ImageNet-A).
   Submissions of this type can consist of images only.
 - Re-definitions of tasks/new metrics on existing datasets
-  (e.g. new calibration metrics, fairness metrics, ...). 
-- Completely new tasks and datasets, that highlight differences between ImageNet models (see below for details).
+  (e.g. new calibration metrics, fairness metrics, ...).
+- Completely new tasks and datasets that highlight differences between ImageNet models (see below for details).
 
+Submissions creating links to communities interested in problems besides standard, “accuracy-focused” settings
+are very welcome.
 
 Deadlines
 ^^^^^^^^^^^^^^^^
 
 - Submission Deadline: mid-end May, 2022 (final date TBA)
-- Reviews posted: June 3, 2022
-- Acceptance notification: June 6, 2022
+- Reviews Posted: June 3, 2022
+- Acceptance Notification: June 6, 2022
 - Camera and Dataset Ready: July 1, 2022
 - ICML 2022 Workshop dates: July 22 and 23 (final date TBA)
 
 Please note that it is **not required** to post the final dataset by the submission deadline.
-It is sufficient to start working on final dataset collections after the acceptance notification until the
+It is sufficient to start working on the final dataset collection after the acceptance notification until the
 camera ready deadline.
 
 
@@ -49,29 +51,29 @@ Detailed Information on Submission Types
 Besides compatibility to ImageNet scale models, the scope of possible
 benchmarks and datasets is intentionally broad:
 
-- Submissions that **provide their own evaluation criterion** and discuss its value in applications
-are particularly encouraged. Submissions should explain why the submitted dataset and metric are well-suited
-to inform about the specified property. Opening the benchmark to this form of submissions aims at reaching
-communities interested in problems besides standard, “accuracy-focused” settings.
+- Submissions that **provide their own evaluation criterion** and discuss its value in applications are particularly encouraged. Submissions should explain why the submitted dataset and metric are well-suited to inform about the specified property.
 
-- It is also encouraged to submit **datasets** that can be evaluated with one or more of the following
-**standard criteria**: This form of submission imposes a low bar on developing new code contributions
-and makes it possible to contribute in the form of well-recorded datasets.
+- It is also encouraged to submit **datasets** that can be evaluated with one or more of the following **standard criteria**:
+ 
+  - Robustness to domain shifts (classification accuracy)
+  - Out-of-distribution detection (AUROC, FPR, AUPR)
 
-- Third, in both cases, it is possible to re-submit existing and potentially published benchmarks,
-datasets, and evaluation settings, known only in a particular community and make these datasets available
+- In both cases, it is possible to re-submit existing and potentially published benchmarks,
+datasets, and evaluation settings, known only in a particular community, in order to make these datasets available
 to a broader audience as part of a curated benchmark package. Examples include small datasets that test an
-interesting distribution shift, such as shifts occurring due to applications in the real world.
+interesting distribution shift, such as shifts occurring due to applications in the real world, and
+insightful benchmarks that you might have included in a publication highlighting the advantages or problems
+of certain models.
 
-- Any other form of dataset and task that is solvable by a pre-trained ImageNet model.
+- Any other form of dataset and task that can be evaluated on a pre-trained (standard or non-standard training) ImageNet model.
 There are *no constraints* on the possible metrics, as long as they are based on the features, class scores,
 class uncertainties and in distribution scores of such a model.
 
-Within these three submission types, the design of the benchmark will
-focus in particular on datasets falling into one or more of categories
+Within these submission types, the design of the benchmark will
+focus in particular on datasets falling into one or more of the categories
 below:
 
-1. **Robustness to domain shifts (classification accuracy):** A labeled
+1. **Robustness to domain shifts:** A labeled
    dataset where the labels are (a subset of) the 1000 labels of
    ImageNet-2012. Optionally, model calibration, uncertainty, or open
    set adaptation can be tested. We especially encourage submissions
@@ -116,7 +118,7 @@ The report should be limited to 2-4 pages without references.
 If it includes an Appendix, it should be reserved for including additional 
 sample images and technical details.
 
-The report should be formatted according to the `ICML style instructions
+For the submission, the report should be formatted according to the `ICML style instructions
 <https://icml.cc/Conferences/2022/StyleAuthorInstructions>`__, by using the
 provided `LaTeX files <https://media.icml.cc/Conferences/ICML2022/Styles/icml2022.zip>`__.
 
@@ -128,8 +130,8 @@ as well as code (building on top of the provided `reference implementation
 <https://shift-happens-benchmark.github.io/icml-2022/>`__) for 
 running the evaluation process.
 
-Used data/images need to be usable for research purposes. Their license should
-be stated in the report and README.
+The data/images need to be usable for research purposes. Their license should
+be stated in the report.
 
 
 The implementation leverages our example API implementation:
@@ -146,9 +148,7 @@ The implementation leverages our example API implementation:
             return Result(
                 accuracy = 0.42,
                 calibration = 0.44
-            ) 
-
-TODO: Code license
+            )
 
 
 Evaluation Criteria
@@ -186,42 +186,3 @@ Submissions will be judged according to the following criteria:
 
 
 
-Removed Paragraphs (for now)
-^^^^^^^^^^^^^^^^
-
-
-We should note that we will make submission of code for review as easy
-and convenient as possible for the authors: For example, the reference
-package will make it possible to submit benchmark datasets with standard
-metrics (e.g., accuracy on a new dataset), with a minimal code
-submission, using helper functions already provided in the package.
-
-
-Besides the robustness and out-of-distribution detection communities
-directly addressed by the default benchmark items mentioned above, this
-workshop pre-eminently is meant to bring together different communities
-that can contribute assets in the form of datasets and interesting
-evaluation tasks. For example, researchers who work primarily on
-modeling 3D objects might provide an interesting puzzle piece to be
-integrated in a comprehensive evaluation suite.
-
-During the workshop, we will encourage discussion on (1) model
-properties that are often overlooked when evaluating machine learning
-models and should be included in a comprehensive benchmark, on (2)
-important practical properties of evaluation datasets and criteria, and
-on (3) currently unavailable evaluations that would be desirable to be
-developed in the future. Furthermore, we will host an online forum in
-the period between the camera-ready deadline and the workshop to
-facilitate constructive discussions about the accepted datasets.
-
-We ensure standardization of submitted datasets and evaluations
-algorithms by providing a reference implementation with pre-defined
-interfaces. These interfaces allow writing datasets and benchmarks that
-are guaranteed to be compatible with a broad class of models. A critical
-decision is to limit submissions to models compatible with ImageNet
-pre-training: Given a batch of images, models will provide (at least)
-class predictions and optionally features, class confidences, and an OOD
-score. Given this information, each benchmark needs to define the
-necessary mechanisms for evaluating and returning scores. Our reference
-implementation (which will be extended in the coming weeks) is available
-at https://github.com/shift-happens-benchmark/iclr-2022.
