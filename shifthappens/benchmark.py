@@ -1,3 +1,4 @@
+import dataclasses
 import os
 from dataclasses import dataclass
 from typing import Dict
@@ -29,6 +30,8 @@ class TaskRegistration:
 
 __registered_tasks: Set[TaskRegistration] = set()
 
+__TASK_REGISTRATION_FIELD = "__task_registration__"
+
 
 def get_registered_tasks() -> Tuple[Type[Task], ...]:
     """All tasks currently registered as part of the benchmark."""
@@ -57,16 +60,35 @@ def register_task(*, name: str, relative_data_folder: str, standalone: bool = Tr
 
     def _inner_register_task(cls: Type[Task]):
         assert issubclass(cls, Task)
+        # make sure the class was not registered before
         if cls in [t.cls for t in __registered_tasks]:
             return
-        __registered_tasks.add(
-            TaskRegistration(
-                cls,
-                name=name,
-                relative_data_folder=relative_data_folder,
-                standalone=standalone,
-            )
+
+        # check whether the task is marked as a dataclass
+        # (i.e. defines its own _FIELDS attribute and does not use that of the base task)
+        assert getattr(cls, getattr(dataclasses, "_FIELDS")) is not getattr(
+            Task, getattr(dataclasses, "_FIELDS")
+        ), (
+            "Tasks need to be dataclasses (i.e. add a @dataclass decorator)"
+        )  # type: ignore
+        # check that the class did not define any fields the benchmark uses internally
+        forbidden_fields = [__TASK_REGISTRATION_FIELD]
+        for forbidden_field in forbidden_fields:
+            assert not hasattr(
+                cls, forbidden_field
+            ), f"Tasks must not have an attribute called `{forbidden_field}`"
+
+        registration = TaskRegistration(
+            cls,
+            name=name,
+            relative_data_folder=relative_data_folder,
+            standalone=standalone,
         )
+
+        # add registration to class definition
+        setattr(cls, __TASK_REGISTRATION_FIELD, registration)
+
+        __registered_tasks.add(registration)
         return cls
 
     return _inner_register_task
@@ -77,6 +99,7 @@ def unregister_task(cls: Type[Task]):
     for cls_reg in __registered_tasks:
         if cls_reg.cls == cls:
             __registered_tasks.remove(cls_reg)
+            delattr(cls, __TASK_REGISTRATION_FIELD)
             return
     raise ValueError(f"Task `{cls}` is not registered.")
 

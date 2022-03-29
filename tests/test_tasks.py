@@ -101,3 +101,46 @@ def test_task_result():
         error=0,
         confidence=0,
     )
+
+
+def test_task_is_dataclass():
+    with pytest.raises(AssertionError):
+
+        @sh_benchmark.register_task(
+            name="dummy_task", relative_data_folder="dummy_task"
+        )
+        class DummyTask(Task):
+            def setup(self):
+                pass
+
+            def _evaluate(self, model: sh_models.Model) -> TaskResult:
+                pass
+
+            def _prepare(self, model: sh_models.Model) -> DataLoader:
+                pass
+
+            def _prepare_dataloader(self) -> DataLoader:
+                pass
+
+
+def test_task_registration_attribute():
+    with pytest.raises(AssertionError):
+
+        @sh_benchmark.register_task(
+            name="dummy_task", relative_data_folder="dummy_task"
+        )
+        @dataclasses.dataclass
+        class DummyTask(Task):
+            __task_registration__ = None
+
+            def setup(self):
+                pass
+
+            def _evaluate(self, model: sh_models.Model) -> TaskResult:
+                pass
+
+            def _prepare(self, model: sh_models.Model) -> DataLoader:
+                pass
+
+            def _prepare_dataloader(self) -> DataLoader:
+                pass

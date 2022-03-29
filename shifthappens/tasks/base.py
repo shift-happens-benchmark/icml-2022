@@ -90,11 +90,12 @@ class Task(ABC):
             return None
 
         dataloader = self._prepare_dataloader()
-        model.prepare(dataloader)
+        if dataloader is not None:
+            model.prepare(dataloader)
         return self._evaluate(model)
 
     @abstractmethod
-    def _prepare_dataloader(self) -> DataLoader:
+    def _prepare_dataloader(self) -> Optional[DataLoader]:
         """Prepares a dataloader for just the images (i.e. no labels, etc.) which will be passed to the model
         before the actual evaluation. This allows models to, e.g., run unsupervised domain adaptation techniques."""
         raise NotImplementedError()
