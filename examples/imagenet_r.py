@@ -23,7 +23,7 @@ from shifthappens.tasks.task_result import TaskResult
     name="ImageNet-R", relative_data_folder="imagenet_r", standalone=True
 )
 @dataclasses.dataclass
-class ImageNetRBase(Task):
+class ImageNetR(Task):
     resources = [
         (
             "imagenet-r.tar",
