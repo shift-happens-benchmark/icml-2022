@@ -265,8 +265,3 @@ score. Given this information, each benchmark needs to define the
 necessary mechanisms for evaluating and returning scores. Our reference
 implementation (which will be extended in the coming weeks) is available
 at https://github.com/shift-happens-benchmark/iclr-2022.
-
-
-
-
-

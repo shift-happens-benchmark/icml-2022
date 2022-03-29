@@ -15,9 +15,3 @@ In case of questions you can use the remarks field or email shifthappens@bethgel
 If you wish to recommend a reviewer:
 ------------------------------------
 Please direct the candidate reviewer to this website and ask them to fill out the form.
-
-
-
-
-
-
