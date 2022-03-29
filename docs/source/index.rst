@@ -35,8 +35,8 @@ vision models and guides the way towards the next generation of models.
 | computer vision models.*                                              |
 +-----------------------------------------------------------------------+
 
-Submissions & Information
--------------------------
+Submissions
+-----------
 
 The benchmark will be available on
 `github.com/shift-happens-benchmark/icml-2022 <https://github.com/shift-happens-benchmark/icml-2022>`__.
@@ -56,8 +56,9 @@ between models.
 Important Deadlines
 -------------------
 
-- Submission Deadline: June 1, 2022 (TODO)
-- Acceptance notification: June 13, 2022 (TODO)
+- Submission Deadline: mid-end May
+- Reviews posted: June 3, 2022
+- Acceptance notification: June 6, 2022
 - ICML 2022 Workshop dates: July 22 and 23
 
 Additional information about submission dates and the submission format can be found in :doc:`call_for_papers`.
@@ -133,7 +134,7 @@ Organizers
     :hidden:
 
     Call for Submissions <call_for_papers>
-    Reviewing <call_for_reviewers>
+    Call for Reviewers <call_for_reviewers>
     Community Benchmark <community_benchmark>
     Main Event <main_event>
     Benchmark API Docs <api>

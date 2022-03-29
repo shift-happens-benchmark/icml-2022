@@ -20,7 +20,7 @@ If you wish to recommend a reviewer:
 Please direct the candidate reviewer to this website and ask them to fill out the form.
 
 
-Reviewing Process
+Review Process
 ^^^^^^^^^^^^^^^^
 
 To eventually obtain a benchmark that is useful for and usable by the research
