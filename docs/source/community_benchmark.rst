@@ -5,7 +5,7 @@ Building the Community Benchmark
 Post-Submission
 ^^^^^^^^^^^^^^^^^^^
 
-- The `review process <call_for_reviewers.html#reviewing-process> will center around the code and data submission. Including the community in an open review process will be an opportunity to increase chances for later adaptations of the benchmark. The tools that will be made available for facilitating the reviewers' jobs will later be released as open-source tools.
+- The `review process <call_for_reviewers.html#reviewing-process>`__ will center around the code and data submission. Including the community in an open review process will be an opportunity to increase chances for later adaptations of the benchmark. The tools that will be made available for facilitating the reviewers' jobs will later be released as open-source tools.
 
 - In parallel to the reviewing phase, the workshop organizers will start running tests on the submitted benchmarks for an extended collection of established vision models.
 
