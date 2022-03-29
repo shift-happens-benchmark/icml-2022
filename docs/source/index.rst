@@ -3,56 +3,48 @@ Shift happens: Crowdsourcing metrics and test datasets beyond ImageNet
 
 *ICML 2022 workshop*
 
-We aim to build a community-build benchmark suite for ImageNet models
-...
+**We aim to create a community-built benchmark suite for ImageNet models comprised of new datasets for OOD robustness
+and detection, as well as new tasks for existing OOD datasets.**
 
 
 While the popularity of robustness benchmarks and new test datasets
 increased over the past years, the performance of computer vision models
 is still largely evaluated on ImageNet directly, or on simulated or
-isolated distribution shifts like in ImageNet-C. The goal of this
-workshop is twofold: First, we aim to enhance the landscape of
-robustness evaluation datasets for computer vision and devise new test
-settings and metrics for quantifying desirable properties of computer
-vision models. Second, we expect that these improvements in the model
-evaluation will lead to a better guided and, thus, more efficient phase for
-the development of new models. This incentivizes development of models
-and inference methods with meaningful improvements over existing
-approaches with respect to a broad scope of desirable properties. Our
-goal is to bring the robustness, domain adaptation, and
-out-of-distribution detection communities together to work on a new
-broad-scale benchmark that tests diverse aspects of current computer
+isolated distribution shifts like in ImageNet-C. 
+
+**Motivation:** The goal of this workshop is to enhance the landscape of robustness evaluation datasets for
+computer vision and devise new test sets and metrics for quantifying desirable 
+properties of computer vision models. Our goal is to bring the robustness, domain
+adaptation, and out-of-distribution detection communities together to work on a new
+**broad-scale benchmark** that tests diverse aspects of current computer
 vision models and guides the way towards the next generation of models.
 
 +-----------------------------------------------------------------------+
 | |overview.svg|                                                        |
 +=======================================================================+
-| *Illustration of the envisioned procedure and outcome of this         |
-| workshop: We will crowdsource and curate a collection of tasks and    |
-| corresponding datasets highlighting interesting aspects of            |
-| ImageNet-scale models. A set of reference models will be evaluated on |
-| these datasets during the benchmark, yielding an initial set of       |
-| scorecards for commonly used ImageNet models. Following the benchmark |
-| creation, more models and new techniques can be evaluated, enabling a |
-| more holistic view on the performance of practically relevant         |
-| computer vision models.*                                              |
+| *Overview over the benchmark suite: We will crowdsource and curate a  |
+| collection of tasks and corresponding datasets highlighting           |
+| interesting aspects of ImageNet-scale models. We will benchmark a set |
+| of reference models on the benchmark suite and report the results as  |
+| scorecards.*                                                          |
 +-----------------------------------------------------------------------+
+
+**All accepted submissions will be part of the** ``shifthappens`` **benchmark suite. This will ensure that after the workshop all benchmarks are accessible to the community.**
+
+Focus Topics:
+-------------
+
+- New datasets testing robustness to domain shifts
+- New datasets for out-of-distribution detection
+- New metrics for existing datasets
 
 Submissions
 -----------
 
-The benchmark will be available on
+The benchmark suite will be available at
 `github.com/shift-happens-benchmark/icml-2022 <https://github.com/shift-happens-benchmark/icml-2022>`__.
-API docs are available on
-`shift-happens-benchmark.github.io/icml-2022/ <https://shift-happens-benchmark.github.io/icml-2022/>`__.
-
-The workshop aims to build up a range of evaluation datasets that
-together allow for a detailed overview of a model’s strengths and
-weaknesses across a variety of tasks. The workshop will result in a
-software package of datasets and benchmarks interesting to a large
-community dealing with ImageNet size models, including practitioners
-interested in seeing practically relevant properties and trade-offs
-between models.
+Benchmark API docs are available at `shift-happens-benchmark.github.io/icml-2022/ <https://shift-happens-benchmark.github.io/icml-2022/>`__.
+Please see our :doc:`call_for_papers` for more details.
 
 
 
@@ -118,12 +110,12 @@ Organizers
 .. |finn| image:: organizer_speaker_pics/chelsea_finn.jpg
 .. |schmidt| image:: organizer_speaker_pics/ludwig_schmidt.jpg
 .. |julian| image:: organizer_speaker_pics/julian_bitterwolf.png
-.. |evgenia| image:: organizer_speaker_pics/evgenia_rusak.jpg
+.. |evgenia| image:: organizer_speaker_pics/evgenia_rusak.png
 .. |steffen| image:: organizer_speaker_pics/steffen_schneider.jpeg
-.. |roland| image:: organizer_speaker_pics/roland_zimmermann.jpg
-.. |matthiasb| image:: organizer_speaker_pics/matthias_bethge.jpeg
+.. |roland| image:: organizer_speaker_pics/roland_zimmermann.png
+.. |matthiasb| image:: organizer_speaker_pics/matthias_bethge.png
 .. |wieland| image:: organizer_speaker_pics/wieland_brendel.png
-.. |matthiash| image:: organizer_speaker_pics/matthias_hein.jpg
+.. |matthiash| image:: organizer_speaker_pics/matthias_hein.png
 
 
 
