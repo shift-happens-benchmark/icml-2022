@@ -11,16 +11,21 @@ Welcome to the API docs of the ShiftHappens benchmark!
     This page is still under construction and might contain inaccurate information.
     Please wait with the preparation of your submission until this note disappears.
 
-While the popularity of robustness benchmarks and new test datasets increased over the past years, 
-the performance of computer vision models is still largely evaluated on ImageNet directly, or on simulated 
-or isolated distribution shifts like in ImageNet-C. The goal of this workshop is twofold: First, 
-we aim to enhance the landscape of robustness evaluation datasets for computer vision and devise new test settings
-and metrics for quantifying desirable properties of computer vision models. Second, we expect that these improvements 
-in the model evaluation lead to a better guided and, thus, more efficient phase for the development of new models. 
-This incentivizes development of models and inference methods with meaningful improvements over existing approaches
-with respect to a broad scope of desirable properties. Our goal is to bring the robustness, domain adaptation, and 
-out-of-distribution detection communities together to work on a new broad-scale benchmark that tests diverse aspects 
-of current computer vision models and guides the way towards the next generation of models.
+**We aim to create a community-built benchmark suite for ImageNet models comprised of new datasets for OOD robustness
+and detection, as well as new tasks for existing OOD datasets.**
+
+
+While the popularity of robustness benchmarks and new test datasets
+increased over the past years, the performance of computer vision models
+is still largely evaluated on ImageNet directly, or on simulated or
+isolated distribution shifts like in ImageNet-C. 
+
+**Motivation:** The goal of this workshop is to enhance the landscape of robustness evaluation datasets for
+computer vision and devise new test sets and metrics for quantifying desirable 
+properties of computer vision models. Our goal is to bring the robustness, domain
+adaptation, and out-of-distribution detection communities together to work on a new
+**broad-scale benchmark** that tests diverse aspects of current computer
+vision models and guides the way towards the next generation of models.
 
 
 Model implementations

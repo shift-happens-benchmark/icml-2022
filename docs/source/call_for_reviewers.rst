@@ -1,8 +1,5 @@
-Reviewing
-==================
-
 Call for Reviewers 
-^^^^^^^^^^^^^^^^
+==================
 
 We will list all participating reviewers as our Program Committee on the Workshop website.
  
@@ -21,7 +18,7 @@ Please direct the candidate reviewer to this website and ask them to fill out th
 
 
 Review Process
-^^^^^^^^^^^^^^^^
+==================
 
 To eventually obtain a benchmark that is useful for and usable by the research
 community, the review process will somewhat differ from usual paper review processes
@@ -40,9 +37,10 @@ community, the review process will somewhat differ from usual paper review proce
    technical reports (on OpenReview) and submitted code (on GitHub),
    according to the above `evaluation criteria <call_for_papers.html#evaluation-criteria>`__.
 
+3. After the final decisions, all submissions will be de-anonymized both on OpenReview and on GitHub. 
 
-3. In the discussion phase, authors are allowed to update both their
+.. 3. In the discussion phase, authors are allowed to update both their
    technical report and the submitted code.
    
-4. After the final decisions, all submissions will be de-anonymized both on OpenReview and on GitHub. 
+
 
