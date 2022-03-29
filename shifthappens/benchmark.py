@@ -15,14 +15,21 @@ from shifthappens.tasks.task_result import TaskResult
 __all__ = ["get_registered_tasks", "evaluate_model", "register_task"]
 
 
+@dataclass(frozen=True, eq=True)
+class TaskMetadata:
+    """Data for storing a task's metadata."""
+
+    name: str
+    relative_data_folder: str
+    standalone: bool = True
+
+
 @dataclass
 class TaskRegistration:
     """Data for storing a task's registration."""
 
     cls: Type[Task]
-    name: str
-    relative_data_folder: str
-    standalone: bool = True
+    metadata: TaskMetadata
 
     def __hash__(self):
         return hash(self.cls)
@@ -30,7 +37,7 @@ class TaskRegistration:
 
 __registered_tasks: Set[TaskRegistration] = set()
 
-__TASK_REGISTRATION_FIELD = "__task_registration__"
+_TASK_METADATA_FIELD = "__task_metadata__"
 
 
 def get_registered_tasks() -> Tuple[Type[Task], ...]:
@@ -58,7 +65,7 @@ def register_task(*, name: str, relative_data_folder: str, standalone: bool = Tr
         relative_data_folder
     ), "relative_data_folder must only contain valid characters for a path"
 
-    def _inner_register_task(cls: Type[Task]):
+    def _inner_register_task(cls: Type[Task], /):
         assert issubclass(cls, Task)
         # make sure the class was not registered before
         if cls in [t.cls for t in __registered_tasks]:
@@ -68,26 +75,24 @@ def register_task(*, name: str, relative_data_folder: str, standalone: bool = Tr
         # (i.e. defines its own _FIELDS attribute and does not use that of the base task)
         assert getattr(cls, getattr(dataclasses, "_FIELDS")) is not getattr(
             Task, getattr(dataclasses, "_FIELDS")
-        ), (
-            "Tasks need to be dataclasses (i.e. add a @dataclass decorator)"
-        )  # type: ignore
+        ), "Tasks need to be dataclasses (i.e. add a @dataclasses.dataclass() decorator)"
         # check that the class did not define any fields the benchmark uses internally
-        forbidden_fields = [__TASK_REGISTRATION_FIELD]
+        forbidden_fields = [_TASK_METADATA_FIELD]
         for forbidden_field in forbidden_fields:
             assert not hasattr(
                 cls, forbidden_field
             ), f"Tasks must not have an attribute called `{forbidden_field}`"
 
-        registration = TaskRegistration(
-            cls,
+        # add metadata to class definition
+        metadata = TaskMetadata(
             name=name,
             relative_data_folder=relative_data_folder,
             standalone=standalone,
         )
+        setattr(cls, _TASK_METADATA_FIELD, metadata)
 
-        # add registration to class definition
-        setattr(cls, __TASK_REGISTRATION_FIELD, registration)
-
+        # finally register class
+        registration = TaskRegistration(cls, metadata=metadata)
         __registered_tasks.add(registration)
         return cls
 
@@ -99,7 +104,6 @@ def unregister_task(cls: Type[Task]):
     for cls_reg in __registered_tasks:
         if cls_reg.cls == cls:
             __registered_tasks.remove(cls_reg)
-            delattr(cls, __TASK_REGISTRATION_FIELD)
             return
     raise ValueError(f"Task `{cls}` is not registered.")
 
@@ -114,7 +118,7 @@ def evaluate_model(
     model (Model): Model to evaluate.
     data_root (str): Folder where individual tasks can store their data.
 
-    Returns (dict): Associates ``shifthappens.benchmark.TaskRegistration``s
+    Returns (dict): Associates ``shifthappens.benchmark.TaskMetadata``s
         with the respective ``shifthappens.tasks.task_result.TaskResult``s.
 
     """
@@ -122,10 +126,13 @@ def evaluate_model(
     results = dict()
 
     for task_registration in get_task_registrations():
-        if not task_registration.standalone:
+        if not task_registration.metadata.standalone:
             continue
         for task in task_registration.cls.iterate_flavours(
-            data_root=os.path.join(data_root, task_registration.relative_data_folder)
+            data_root=os.path.join(
+                data_root, task_registration.metadata.relative_data_folder
+            )
         ):
-            results[task_registration] = task.evaluate(model)
+            flavored_task_metadata = getattr(task, _TASK_METADATA_FIELD)
+            results[flavored_task_metadata] = task.evaluate(model)
     return results

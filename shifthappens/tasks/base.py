@@ -8,6 +8,7 @@ from typing import Optional
 from typing import Tuple
 from typing import TypeVar
 
+import shifthappens.benchmark
 import shifthappens.models.base as sh_models
 import shifthappens.utils as sh_utils
 from shifthappens.data.base import DataLoader
@@ -62,9 +63,27 @@ class Task(ABC):
     @classmethod
     def iterate_flavours(cls, **kwargs) -> Iterator["Task"]:
         """Iterate over all possible task configurations, i.e. different settings of parameter fields."""
+        assert hasattr(
+            cls, shifthappens.benchmark._TASK_METADATA_FIELD
+        ), "Flavors can only be iterated once a task has been registered"
+        metadata = getattr(cls, shifthappens.benchmark._TASK_METADATA_FIELD)
         parameter_options = cls.__get_all_parameter_options()
         for config in sh_utils.dict_product(parameter_options):
-            yield cls(**config, **kwargs)
+            flavored_task = cls(**config, **kwargs)
+            name_sfx = ""
+            for _, v in config.items():
+                name_sfx += f"_{repr(v)}"
+            flavored_metadata = shifthappens.benchmark.TaskMetadata(
+                name=metadata.name + name_sfx,
+                relative_data_folder=metadata.relative_data_folder,
+                standalone=metadata.standalone,
+            )
+            setattr(
+                flavored_task,
+                shifthappens.benchmark._TASK_METADATA_FIELD,
+                flavored_metadata,
+            )
+            yield flavored_task
 
     @abstractmethod
     def setup(self):

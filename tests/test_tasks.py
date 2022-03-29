@@ -12,6 +12,7 @@ from shifthappens.tasks.task_result import TaskResult
 
 
 def test_iterate_flavours():
+    @sh_benchmark.register_task(name="dummy_task", relative_data_folder="test")
     @dataclasses.dataclass
     class DummyTask(Task):
         a: int = parameter(default=0, options=(0, 1))
@@ -22,9 +23,6 @@ def test_iterate_flavours():
             pass
 
         def _evaluate(self, model: sh_models.Model) -> TaskResult:
-            pass
-
-        def _prepare(self, model: sh_models.Model) -> DataLoader:
             pass
 
         def _prepare_dataloader(self) -> DataLoader:
@@ -38,6 +36,26 @@ def test_iterate_flavours():
         assert isinstance(flavour.c, int)
 
 
+def test_iterate_flavours_unregistered_class():
+    @dataclasses.dataclass
+    class DummyTask(Task):
+        a: int = parameter(default=0, options=(0, 1))
+        b: int = parameter(default=2, options=(2, 3))
+        c: int = parameter(default=4, options=(4, 5))
+
+        def setup(self):
+            pass
+
+        def _evaluate(self, model: sh_models.Model) -> TaskResult:
+            pass
+
+        def _prepare_dataloader(self) -> DataLoader:
+            pass
+
+    with pytest.raises(AssertionError):
+        flavours = list(DummyTask.iterate_flavours(data_root="test"))
+
+
 def test_register_unregister_task():
     n_previous_registered_tasks = len(sh_benchmark.get_registered_tasks())
 
@@ -49,9 +67,6 @@ def test_register_unregister_task():
             pass
 
         def _evaluate(self, model: sh_models.Model) -> TaskResult:
-            pass
-
-        def _prepare(self, model: sh_models.Model) -> DataLoader:
             pass
 
         def _prepare_dataloader(self) -> DataLoader:
@@ -77,9 +92,6 @@ def test_data_folder():
             pass
 
         def _evaluate(self, model: sh_models.Model) -> TaskResult:
-            pass
-
-        def _prepare(self, model: sh_models.Model) -> DataLoader:
             pass
 
         def _prepare_dataloader(self) -> DataLoader:
@@ -116,14 +128,11 @@ def test_task_is_dataclass():
             def _evaluate(self, model: sh_models.Model) -> TaskResult:
                 pass
 
-            def _prepare(self, model: sh_models.Model) -> DataLoader:
-                pass
-
             def _prepare_dataloader(self) -> DataLoader:
                 pass
 
 
-def test_task_registration_attribute():
+def test_task_metadata_attribute():
     with pytest.raises(AssertionError):
 
         @sh_benchmark.register_task(
@@ -131,15 +140,12 @@ def test_task_registration_attribute():
         )
         @dataclasses.dataclass
         class DummyTask(Task):
-            __task_registration__ = None
+            __task_metadata__ = None
 
             def setup(self):
                 pass
 
             def _evaluate(self, model: sh_models.Model) -> TaskResult:
-                pass
-
-            def _prepare(self, model: sh_models.Model) -> DataLoader:
                 pass
 
             def _prepare_dataloader(self) -> DataLoader:
