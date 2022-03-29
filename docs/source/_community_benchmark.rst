@@ -21,7 +21,7 @@ Post-Submission
    
 - During a `community hackathon <community_benchmark.html#hackathon>`__, the benchmark will be polished.
    
-- All accepted submissions will be part of the shifthappens benchmark suite. This will ensure that after the workshop all benchmarks are accessible to the community.
+- All accepted submissions will be part of the ``shifthappens`` benchmark suite. This will ensure that after the workshop all benchmarks are accessible to the community.
 
 - $$$
 

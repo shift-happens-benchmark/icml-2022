@@ -6,55 +6,66 @@ Call for Submissions
     This page is still under construction and might contain inaccurate information.
     Please wait with the preparation of your submission until this note disappears.
 
-Deadlines
-^^^^^^^^^^^^^^^^
-
-- Submission Deadline: June 1, 2022 (TODO)
-- Acceptance notification: June 13, 2022 (TODO)
-- ICML 2022 Workshop dates: July 22 and 23
-
-
-Submission Quickstart
-^^^^^^^^^^^^^^^^^^^^^
+TLDR
+^^^^
 
 Submissions consist of 
 
 - A short report of the task, metrics and datasets,
-- An implementation of the task, metrics and/or datasets, comprised of a plugin to the ``shifthappens`` benchmark package, and all required external data files.
+- An implementation of the task, metrics and/or datasets, comprised of a plugin to the ``shifthappens``
+benchmark package, and all required external data files.
 
 Both components will be submitted via OpenReview, and reviewing is double-blind (**submission link tba**).
 The workshop will not have any official proceedings, so it is non-archival.
-Tasks that have been part of a recent submission/publication are allowed, in which case the overlapping works should be mentioned.
+Tasks that have been part of a recent submission/publication are allowed, in which case the overlapping
+works should be mentioned.
 
-The implementation leverages our example API implementation:
+**Examples** of possible contributions:
 
-.. code:: python 
-
-    from shifthappens.task import Result, Task, register
-    
-    @register
-    class MyExampleTask(Task):
-
-        def _evaluate(self, model):
-            ...
-            return Result(
-                accuracy = 0.42,
-                calibration = 0.44
-            ) 
+- New collections of images "compatible" for existing tasks like classification or OOD detection (e.g. like ImageNet-A).
+  Submissions of this type can consist of images only.
+- Re-definitions of tasks/new metrics on existing datasets
+  (e.g. new calibration metrics, fairness metrics, ...). 
+- Completely new tasks and datasets, that highlight differences between ImageNet models (see below for details).
 
 
-
-Submission Types (TODO when API is final)
+Deadlines
 ^^^^^^^^^^^^^^^^
+
+- Submission Deadline: mid-end May, 2022 (final date TBA)
+- Reviews posted: June 3, 2022
+- Acceptance notification: June 6, 2022
+- Camera and Dataset Ready: July 1, 2022
+- ICML 2022 Workshop dates: July 22 and 23 (final date TBA)
+
+Please note that it is **not required** to post the final dataset by the submission deadline.
+It is sufficient to start working on final dataset collections after the acceptance notification until the
+camera ready deadline.
+
+
+Detailed Information on Submission Types 
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 Besides compatibility to ImageNet scale models, the scope of possible
 benchmarks and datasets is intentionally broad:
 
-- Submissions that **provide their own evaluation criterion** and discuss its value in applications are particularly encouraged. Submissions should explain why the submitted dataset and metric are well-suited to inform about the specified property. Opening the benchmark to this form of submissions aims at reaching communities interested in problems besides standard, “accuracy-focused” settings.
+- Submissions that **provide their own evaluation criterion** and discuss its value in applications
+are particularly encouraged. Submissions should explain why the submitted dataset and metric are well-suited
+to inform about the specified property. Opening the benchmark to this form of submissions aims at reaching
+communities interested in problems besides standard, “accuracy-focused” settings.
 
-- It is also encouraged to submit **datasets** that can be evaluated with one or more of the following **standard criteria**: This form of submission imposes a low bar on developing new code contributions and makes it possible to contribute in the form of well-recorded datasets.
+- It is also encouraged to submit **datasets** that can be evaluated with one or more of the following
+**standard criteria**: This form of submission imposes a low bar on developing new code contributions
+and makes it possible to contribute in the form of well-recorded datasets.
 
-- Third, in both cases, it is possible to re-submit existing and potentially published benchmarks, datasets, and evaluation settings, known only in a particular community and make these datasets available to a broader audience as part of a curated benchmark package. Examples include small datasets that test an interesting distribution shift, such as shifts occurring due to applications in the real world.
+- Third, in both cases, it is possible to re-submit existing and potentially published benchmarks,
+datasets, and evaluation settings, known only in a particular community and make these datasets available
+to a broader audience as part of a curated benchmark package. Examples include small datasets that test an
+interesting distribution shift, such as shifts occurring due to applications in the real world.
+
+- Any other form of dataset and task that is solvable by a pre-trained ImageNet model.
+There are *no constraints* on the possible metrics, as long as they are based on the features, class scores,
+class uncertainties and in distribution scores of such a model.
 
 Within these three submission types, the design of the benchmark will
 focus in particular on datasets falling into one or more of categories
@@ -86,22 +97,8 @@ submission might include multiple (related) OOD datasets and demand that an
 ideal model be not fooled by any of them. It might of course makes sense for a
 multi-score benchmark to *also* calculate an average performance.
 
-Code and Data Instructions (TODO when API is final)
-^^^^^^^^^^^^^^^^
-
-Submissions must include a link to the dataset (hosted on a suitable platform),
-as well as code (building on top of the provided `reference implementation
-<https://shift-happens-benchmark.github.io/icml-2022/>`__) for 
-running the evaluation process.
-
-Used data/images need to be usable for research purposes. Their license should
-be stated in the report and README.
-
-TODO: Code license
-
 Report Instructions
 ^^^^^^^^^^^^^^^^
-
 
 The short report should
 
@@ -123,11 +120,39 @@ The report should be formatted according to the `ICML style instructions
 <https://icml.cc/Conferences/2022/StyleAuthorInstructions>`__, by using the
 provided `LaTeX files <https://media.icml.cc/Conferences/ICML2022/Styles/icml2022.zip>`__.
 
+Code and Data Instructions
+^^^^^^^^^^^^^^^^
+
+Submissions must include a link to the dataset (hosted on a suitable platform),
+as well as code (building on top of the provided `reference implementation
+<https://shift-happens-benchmark.github.io/icml-2022/>`__) for 
+running the evaluation process.
+
+Used data/images need to be usable for research purposes. Their license should
+be stated in the report and README.
+
+
+The implementation leverages our example API implementation:
+
+.. code:: python 
+
+    from shifthappens.task import Result, Task, register
+    
+    @register
+    class MyExampleTask(Task):
+
+        def _evaluate(self, model):
+            ...
+            return Result(
+                accuracy = 0.42,
+                calibration = 0.44
+            ) 
+
+TODO: Code license
 
 
 Evaluation Criteria
 ^^^^^^^^^^^^^^^^^^^
-
 
 Submissions will be judged according to the following criteria:
 
