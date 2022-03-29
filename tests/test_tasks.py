@@ -27,7 +27,7 @@ def test_iterate_flavours():
         def _prepare(self, model: sh_models.Model) -> DataLoader:
             pass
 
-        def _prepare_data(self) -> DataLoader:
+        def _prepare_dataloader(self) -> DataLoader:
             pass
 
     flavours = list(DummyTask.iterate_flavours(data_root="test"))
@@ -54,7 +54,7 @@ def test_register_unregister_task():
         def _prepare(self, model: sh_models.Model) -> DataLoader:
             pass
 
-        def _prepare_data(self) -> DataLoader:
+        def _prepare_dataloader(self) -> DataLoader:
             pass
 
     assert len(sh_benchmark.get_registered_tasks()) == n_previous_registered_tasks + 1
@@ -82,7 +82,7 @@ def test_data_folder():
         def _prepare(self, model: sh_models.Model) -> DataLoader:
             pass
 
-        def _prepare_data(self) -> DataLoader:
+        def _prepare_dataloader(self) -> DataLoader:
             pass
 
 

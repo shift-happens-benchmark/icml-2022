@@ -16,6 +16,8 @@ __all__ = ["get_registered_tasks", "evaluate_model", "register_task"]
 
 @dataclass
 class TaskRegistration:
+    """Data for storing a task's registration."""
+
     cls: Type[Task]
     name: str
     relative_data_folder: str
@@ -86,10 +88,11 @@ def evaluate_model(
     Runs all tasks of the benchmarks for the supplied model.
 
     Args:
-    model (Model):
+    model (Model): Model to evaluate.
     data_root (str): Folder where individual tasks can store their data.
 
-    Returns:
+    Returns (dict): Associates ``shifthappens.benchmark.TaskRegistration``s
+        with the respective ``shifthappens.tasks.task_result.TaskResult``s.
 
     """
 

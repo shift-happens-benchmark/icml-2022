@@ -68,10 +68,11 @@ class Task(ABC):
 
     @abstractmethod
     def setup(self):
+        """Set the task up, i.e., download, load and prepare the dataset."""
         pass
 
     def evaluate(self, model: sh_models.Model) -> Optional[TaskResult]:
-        """ "Validates that the model is compatible with the task and then evaluates the model's
+        """Validates that the model is compatible with the task and then evaluates the model's
         performance using the _evaluate function of this class."""
         if issubclass(type(self), ConfidenceTaskMixin) and not issubclass(
             type(model), sh_models.ConfidenceModelMixin
@@ -88,12 +89,14 @@ class Task(ABC):
         ):
             return None
 
-        dataloader = self._prepare_data()
+        dataloader = self._prepare_dataloader()
         model.prepare(dataloader)
         return self._evaluate(model)
 
     @abstractmethod
-    def _prepare_data(self) -> DataLoader:
+    def _prepare_dataloader(self) -> DataLoader:
+        """Prepares a dataloader for just the images (i.e. no labels, etc.) which will be passed to the model
+        before the actual evaluation. This allows models to, e.g., run unsupervised domain adaptation techniques."""
         raise NotImplementedError()
 
     @abstractmethod

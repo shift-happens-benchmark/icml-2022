@@ -55,11 +55,11 @@ class ImageNetRBase(Task):
             sh_data_torch.ImagesOnlyTorchDataset(self.ch_dataset)
         )
 
-    def _prepare_data(self) -> DataLoader:
+    def _prepare_dataloader(self) -> DataLoader:
         return sh_data.DataLoader(self.images_only_dataset, max_batch_size=None)
 
     def _evaluate(self, model: sh_models.Model) -> TaskResult:
-        dataloader = self._prepare_data()
+        dataloader = self._prepare_dataloader()
 
         all_predicted_labels_list = []
         for predictions in model.predict(

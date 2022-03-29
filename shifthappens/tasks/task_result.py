@@ -7,7 +7,13 @@ from .metrics import Metric
 
 class TaskResult:
     """Contains the results of a result, which can be arbitrary metrics.
-    At least one of these metrics must be references as a summary metric."""
+    At least one of these metrics must be references as a summary metric.
+
+    Args:
+        summary_metrics (dict): Associates ``shifthappens.tasks.metrics.Metric``s
+            to the name of metrics calculated by the task.
+        **metrics (float, int): Metrics' names and their values.
+    """
 
     def __init__(
         self,

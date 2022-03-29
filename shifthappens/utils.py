@@ -1,12 +1,14 @@
 import errno
 import os
 import sys
+import time
 import urllib.error
 from itertools import product
 from typing import Optional
 
 
 def dict_product(d):
+    """Computes the product of a dict of sequences."""
     keys = d.keys()
     for element in product(*d.values()):
         yield dict(zip(keys, element))
@@ -103,6 +105,18 @@ def download_and_extract_archive(
     remove_finished: bool = False,
     n_retries: int = 3,
 ) -> None:
+    """
+    Downloads and extracts and archive using torchvision.
+
+    Args:
+        url (str): URL to download.
+        data_folder (str): Where to save the downloaded file.
+        md5 (str): MD5 hash of the archive.
+        filename (str, optional): Name under which the archive will be saved locally.
+        remove_finished (bool, optional): Remove archive after extraction?
+        n_retries (int): How often to retry the download in case of connectivity issues.
+    """
+
     if not filename:
         filename = os.path.basename(url)
 
@@ -113,7 +127,8 @@ def download_and_extract_archive(
             tv_utils.download_url(url, data_folder, filename, md5)
             break
         except urllib.error.URLError:
-            print(f"Download of {url} failed; trying again.")
+            print(f"Download of {url} failed; wait 5s and then try again.")
+            time.sleep(5)
 
     archive = os.path.join(data_folder, filename)
     print(f"Extracting {archive} to {data_folder}")
