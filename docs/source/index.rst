@@ -133,7 +133,7 @@ Organizers
     :hidden:
 
     Call for Submissions <call_for_papers>
-    Call for Reviewers <call_for_reviewers>
+    Reviewing <call_for_reviewers>
     Community Benchmark <community_benchmark>
     Main Event <main_event>
     Benchmark API Docs <api>

@@ -14,7 +14,7 @@ Deadlines
 - ICML 2022 Workshop dates: July 22 and 23
 
 
-Submission quickstart
+Submission Quickstart
 ^^^^^^^^^^^^^^^^^^^^^
 
 Submissions consist of 
@@ -44,7 +44,7 @@ The implementation leverages our example API implementation:
 
 
 
-Submission types (TODO when API is final)
+Submission Types (TODO when API is final)
 ^^^^^^^^^^^^^^^^
 
 Besides compatibility to ImageNet scale models, the scope of possible
@@ -160,71 +160,6 @@ Submissions will be judged according to the following criteria:
    baselines and potentially proposed improvements.
 
 
-
-Post-Submission and Reviewing
-^^^^^^^^^^^^^^^^^^^
-
-To eventually obtain a benchmark that is useful for and usable by the research
-community, the review process will somewhat differ from usual paper review processes
-*by centering around the code and data submission*.
-Including the community in an open review process will be an opportunity
-to increase chances for later adaptations of the benchmark. The tools
-that will be made available for facilitating the reviewers' jobs will
-later be released as open-source tools.
-
-In more detail, reviewing will be done in the following stages:
-
-1. As preparation for the review stage, all anonymized submissions will
-   be public on OpenReview. In addition, the organizers will create (anonymized)
-   pull requests on the benchmark repository based on the submissions.
-   Authors are responsible for preparing their submissions accordingly,
-   and documentation for doing this correctly (and testing the
-   submission prior to uploading on OpenReview) will be made available
-   on the workshop page.
-
-2. In the reviewing phase, reviewers will judge the quality of both
-   technical reports (on OpenReview) and submitted code (on GitHub),
-   according to the above `evaluation criteria <call_for_papers.html#evaluation-criteria>`__.
-
-3. In parallel to the reviewing phase, the workshop organizers will
-   start running tests on the submitted benchmarks for an extended
-   collection of established vision models.
-   
-4. While adding comments on OpenReview will be limited to the reviewers, code
-   review (and proposal of improvements) on GitHub is open to the public
-   — this also includes criticism of the data collection process
-   described in the technical report. Thus, OpenReview comments are limited to
-   a number of “formal” reviews. At the
-   same time, public discussion — and community building relevant for the
-   benchmark after the workshop ends — will be encouraged on GitHub.
-
-5. In the discussion phase, authors are allowed to update both their
-   technical report and the submitted code.
-
-6. After the final decisions, all submissions will be de-anonymized both
-   on OpenReview and on GitHub. 
-   
-7. The outlined review process will ensure
-   that for this final set of camera-ready submissions, a set of
-   datasets with reviewed descriptions (submitted reports), and
-   high-quality code ready to merge into the benchmark will be
-   available. After the camera-ready phase, and after ensuring technical
-   soundness of the submitted pull requests, an initial version of
-   the benchmark will be released that allows for contributing of additional
-   models and techniques, as well as for making suggestions on improving
-   the benchmarks and metrics.
-   
-8. Two weeks prior to the workshop, a *hackathon* aimed at
-   community building around the benchmark will be hosted by the workshop
-   organizers. For this, discussions will
-   happen on GitHub, and the community will be able to contribute
-   changes to the benchmark. The best contributions from this phase will
-   get a short talk (time depends on the number of contributions) at the
-   workshop.
-   
-9. All accepted submissions will be added to the shifthappens benchmark suite. 
-   This will ensure that after the workshop all benchmarks are accessible
-   to the community.
 
 Removed Paragraphs (for now)
 ^^^^^^^^^^^^^^^^
