@@ -12,8 +12,8 @@ increased over the past years, the performance of computer vision models
 is still largely evaluated on ImageNet directly, or on simulated or
 isolated distribution shifts like in ImageNet-C. 
 
-**Motivation:** The goal of this workshop is to enhance the landscape of robustness evaluation datasets for
-computer vision and devise new test sets and metrics for quantifying desirable 
+**Goal:** This workshop aims to enhance the landscape of robustness evaluation datasets for
+computer vision and collect new test sets and metrics for quantifying desirable or problematic
 properties of computer vision models. Our goal is to bring the robustness, domain
 adaptation, and out-of-distribution detection communities together to work on a new
 **broad-scale benchmark** that tests diverse aspects of current computer
@@ -24,19 +24,20 @@ vision models and guides the way towards the next generation of models.
 +=======================================================================+
 | *Overview over the benchmark suite: We will crowdsource and curate a  |
 | collection of tasks and corresponding datasets highlighting           |
-| interesting aspects of ImageNet-scale models. We will benchmark a set |
-| of reference models on the benchmark suite and report the results as  |
-| scorecards.*                                                          |
+| interesting aspects of ImageNet-scale models. We will evaluate        |
+| current and future models on the benchmark suite and make the         |
+| results intuitively accessible in the form of scorecards.*            |
 +-----------------------------------------------------------------------+
 
 **All accepted submissions will be part of the** ``shifthappens`` **benchmark suite. This will ensure that after the workshop all benchmarks are accessible to the community.**
 
-Focus Topics:
+Focus Topics
 -------------
 
-- New datasets testing robustness to domain shifts
-- New datasets for out-of-distribution detection
-- New metrics for existing datasets
+- Datasets testing robustness to domain shifts
+- Datasets for out-of-distribution detection
+- New metrics on existing datasets
+
 
 Submissions
 -----------
