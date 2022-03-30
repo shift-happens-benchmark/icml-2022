@@ -6,18 +6,18 @@ We will list all participating reviewers as our Program Committee on the Worksho
 Reviewers will assess the submissions according to the `evaluation criteria <call_for_papers.html#evaluation-criteria>`__
 as part of the `process outlined here <call_for_papers.html#post-submission-and-reviewing>`__.
 
-If you wish to become a reviewer:
+Becoming a Reviewer:
 ---------------------------------
 Please fill out the form at https://forms.gle/NzykpxQYycMZSB4b7.
 In case of questions you can use the remarks field or email shifthappens@bethgelab.org.
 
 
-If you wish to recommend a reviewer:
+Recommending a Reviewer:
 ------------------------------------
 Please direct the candidate reviewer to this website and ask them to fill out the form.
 
 
-Review Process
+Reviewing Process
 ==================
 
 To eventually obtain a benchmark that is useful for and usable by the research
@@ -35,7 +35,7 @@ community, the review process will somewhat differ from usual paper review proce
 
 2. In the reviewing phase, reviewers will judge the quality of both
    technical reports (on OpenReview) and submitted code (on GitHub),
-   according to the above `evaluation criteria <call_for_papers.html#evaluation-criteria>`__.
+   according to the `Evaluation Criteria <call_for_papers.html#evaluation-criteria>`__.
 
 3. After the final decisions, all submissions will be de-anonymized both on OpenReview and on GitHub. 
 

@@ -7,22 +7,22 @@ Call for Submissions
     Please wait with the preparation of your submission until this note disappears.
 
 TL;DR
-^^^^
+^^^^^^^^
 
 Submissions consist of 
 
 - A short report of the task, metrics and datasets,
 - An implementation of the task, metrics and/or datasets, comprised of a plugin to the ``shifthappens`` benchmark package, and all required external data files.
 
-Both components will be submitted via OpenReview, and reviewing is double-blind (**submission link tba**).
+Both components will be submitted via OpenReview, and reviewing is double-blind (**submission link TBA**).
 The workshop will not have any official proceedings, so it is non-archival.
 Tasks that have been part of a recent submission/publication are allowed, in which case the overlapping
 works should be mentioned.
 
 **Examples** of possible contributions:
 
-- Collections of images to be evaluated w.r.t. one or more existing tasks like classification or OOD detection (e.g. like ImageNet-A).
-  Submissions of this type can consist of images only.
+- Collections of images to be evaluated w.r.t. one or more existing tasks like classification or OOD detection (e.g. ImageNet-A).
+  Submissions of this type can consist of (labeled) images only.
 - Re-definitions of tasks/new metrics on existing datasets
   (e.g. new calibration metrics, fairness metrics, ...).
 - Completely new tasks and datasets that highlight differences between ImageNet models (see below for details).
@@ -59,8 +59,8 @@ benchmarks and datasets is intentionally broad:
 
 - Any other form of dataset and task that can be evaluated on a pre-trained (standard or non-standard training) ImageNet model.
 There are *no constraints* on the possible metrics, as long as they are based on the features, class scores,
-class uncertainties and in distribution scores of such a model (also see our `reference implementation
-<https://shift-happens-benchmark.github.io/icml-2022/>`__).
+class uncertainties and in-distribution scores of such a model (also see our `reference implementation
+<https://shift-happens-benchmark.github.io/icml-2022/>`__ for examples).
 
 In all cases, it is possible to re-submit **existing and potentially published** benchmarks, datasets, and evaluation tasks to
 consolidate them in one benchmark suite and/or if they are known only to a particular community. Examples include small datasets that test an
@@ -94,7 +94,7 @@ The short report should
 - and establish context within related works.
 
 The report should be limited to 2-4 pages without references.
-If it includes an Appendix, it should be reserved for including additional 
+If it includes an Appendix, it should be reserved for additional 
 sample images and technical details.
 
 For the submission, the report should be formatted according to the `ICML style instructions
@@ -113,8 +113,9 @@ running the evaluation process. Datasets can be hosted on `zenodo <https://zenod
 The data/images need to be usable for research purposes. Their license should
 be stated in the report.
 
+The implementation leverages our example `API <api.html>`__ implementation:
 
-The implementation leverages our example API implementation:
+
 
 .. code:: python 
 
