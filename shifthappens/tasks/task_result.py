@@ -19,7 +19,7 @@ class TaskResult:
         self,
         *,
         summary_metrics: Dict[Metric, Union[str, Tuple[str, ...]]],
-        **metrics: Union[float, int],
+        **metrics: float,
     ):
         # validate that metrics referenced in summary metrics exist
         for sm in summary_metrics:
@@ -38,3 +38,12 @@ class TaskResult:
 
         self._metrics = metrics
         self.summary_metrics = summary_metrics
+
+    def __getitem__(self, item) -> float:
+        return self._metrics[item]
+
+    def __getattr__(self, item) -> float:
+        if item in self._metrics:
+            return self[item]
+        else:
+            return super().__getattribute__(item)
