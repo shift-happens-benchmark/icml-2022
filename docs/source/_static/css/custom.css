@@ -18,3 +18,19 @@
         display: none;
     }
 }
+
+.organizers {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.organizers > div {
+    flex: 1 0 20%;
+    text-align: center;
+    margin: 5px;
+}
+
+.speakers {
+    display: grid;
+    grid-auto-rows: auto;
+}
