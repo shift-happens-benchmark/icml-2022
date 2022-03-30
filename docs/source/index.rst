@@ -85,6 +85,13 @@ It is sufficient to start working on final dataset collections after the accepta
 Additional information about submission dates and the submission format can be found in :doc:`call_for_papers`.
 Also, please consider our :doc:`call_for_reviewers`.
 
+
+Prizes and Travel Grants
+-------------------
+
+To be announced soon.
+
+
 Invited Speakers
 ----------------
 
