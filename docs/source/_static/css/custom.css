@@ -7,3 +7,14 @@
     margin-top: auto!important;
     margin-bottom: auto!important;
 }
+
+.navbar-toggler {
+    margin-left: 10px;
+    order: -1;
+}
+
+@media (max-width: 960px){
+    .bd-sidebar {
+        display: none;
+    }
+}
