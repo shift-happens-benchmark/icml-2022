@@ -1,8 +1,8 @@
 """Torchvision baselines."""
 
 import torch
-from torch import nn
 import torchvision
+from torch import nn
 
 import shifthappens.models.base as sh_models
 
