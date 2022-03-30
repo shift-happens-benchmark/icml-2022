@@ -21,6 +21,10 @@ import datetime
 import shifthappens
 
 
+autodoc_mock_imports = ["numpy", "torch", "torchvision"]
+
+
+
 def get_years(start_year=2021):
     year = datetime.datetime.now().year
     if year > start_year:
@@ -30,8 +34,10 @@ def get_years(start_year=2021):
 
 
 # -- Project information -----------------------------------------------------
-project = "shifthappens"
-author = "Julian Bitterwolf, Evgenia Rusak, Steffen Schneider, Roland S Zimmermann"
+
+project = "Shift Happens (ICML 2022)"
+author = "Julian Bitterwolf, Evgenia Rusak, Steffen Schneider, Roland S. Zimmermann"
+
 copyright = f"{get_years(2021)}, {author} and contributors. Released under an Apache 2.0 License"
 release = shifthappens.__version__
 
@@ -62,6 +68,7 @@ html_theme = "pydata_sphinx_theme"
 html_theme_options = {
     "nosidebar": True,
     "icon_links": [
+
         {
             "name": "Github",
             "url": "https://github.com/shift-happens-benchmark/iclr-2022",
@@ -77,10 +84,13 @@ html_theme_options = {
             "url": "mailto:shifthappens@bethgelab.org",
             "icon": "fas fa-envelope",
         },
+
     ],
     "external_links": [
         {"name": "Home", "url": "https://shift-happens-benchmark.github.io/"}
+
     ],
+    # "external_links": [{"name": "ICML 2022", "url": "https://icml.cc/"}],
     "collapse_navigation": False,
     "navigation_depth": 4,
     "navbar_align": "content",
