@@ -155,6 +155,6 @@ Submissions will be judged according to the following criteria:
    interesting addition to the benchmark.
    This will formally be benchmarked by evaluating a set of standard models
    (including robustified, task-specific ones) on the
-   provided dataset.
+   provided task.
 
 
