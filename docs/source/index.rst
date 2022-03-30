@@ -124,7 +124,7 @@ Organizers
     * - `Julian Bitterwolf <https://uni-tuebingen.de/fakultaeten/mathematisch-naturwissenschaftliche-fakultaet/fachbereiche/informatik/lehrstuehle/maschinelles-lernen/team/julian-bitterwolf-msc/>`__
       - `Evgenia Rusak <https://scholar.google.com/citations?user=XKc19kkAAAAJ&hl=en&oi=ao>`__
       - `Steffen Schneider <https://stes.io>`__
-      - `Roland S Zimmermann <https://rzimmermann.com/>`__
+      - `Roland S. Zimmermann <https://rzimmermann.com/>`__
     * - |matthiasb|
       - |wieland|
       - |matthiash| 
