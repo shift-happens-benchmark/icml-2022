@@ -71,8 +71,10 @@ class Task(ABC):
             if field.metadata is not None and field.metadata.get(
                 "is_abstract_variable", False
             ):
-                raise NotImplementedError(
-                    f"Field {field.name} is marked as an abstract (non initializable) variable and must overriden with an actual value"
+                raise TypeError(
+                    f"Cannot initialize class {type(self)} since field {field.name} is "
+                    f"marked as an abstract (i.e., not available via __init__) variable and "
+                    f"must be overridden with an actual value."
                 )
 
     @classmethod

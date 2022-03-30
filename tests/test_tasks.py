@@ -5,8 +5,10 @@ import pytest
 import shifthappens.benchmark as sh_benchmark
 from shifthappens.data.base import DataLoader
 from shifthappens.models import base as sh_models
+from shifthappens.tasks.base import abstract_variable
 from shifthappens.tasks.base import parameter
 from shifthappens.tasks.base import Task
+from shifthappens.tasks.base import variable
 from shifthappens.tasks.metrics import Metric
 from shifthappens.tasks.task_result import TaskResult
 
@@ -150,3 +152,45 @@ def test_task_metadata_attribute():
 
             def _prepare_dataloader(self) -> DataLoader:
                 pass
+
+
+def test_task_abstract_variable():
+    @sh_benchmark.register_task(name="dummy_task", relative_data_folder="dummy_task")
+    @dataclasses.dataclass
+    class DummyTask(Task):
+        dummy_variable: str = abstract_variable()
+
+        def setup(self):
+            pass
+
+        def _evaluate(self, model: sh_models.Model) -> TaskResult:
+            pass
+
+        def _prepare_dataloader(self) -> DataLoader:
+            pass
+
+    with pytest.raises(TypeError):
+        DummyTask(data_root="data")
+
+
+def test_task_variable():
+    @dataclasses.dataclass
+    class DummyTask(Task):
+        dummy_variable: str = variable("test")
+
+        def setup(self):
+            pass
+
+        def _evaluate(self, model: sh_models.Model) -> TaskResult:
+            pass
+
+        def _prepare_dataloader(self) -> DataLoader:
+            pass
+
+    # check that we don't have to pass variables
+    task = DummyTask(data_root="data")
+    assert task.dummy_variable == "test"
+
+    # check that we must not pass variables
+    with pytest.raises(TypeError):
+        DummyTask(data_root="data", dummy_variable="not test")
