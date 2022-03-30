@@ -26,7 +26,7 @@ community, the review process will somewhat differ from usual paper review proce
 
 1. As preparation for the review stage, all anonymized submissions will
    be public on OpenReview. In addition, the organizers will create (anonymized)
-   pull requests on the benchmark repository based on the submissions.
+   pull requests to the benchmark repository based on the submissions.
    Authors are responsible for preparing their submissions accordingly,
    and documentation for doing this correctly (and testing the
    submission prior to uploading on OpenReview) will be made available
