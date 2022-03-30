@@ -75,8 +75,6 @@ class Task(ABC):
                     f"Field {field.name} is marked as an abstract (non initializable) variable and must overriden with an actual value"
                 )
 
-        self.setup()
-
     @classmethod
     def __get_all_parameters(cls):
         parameters = []

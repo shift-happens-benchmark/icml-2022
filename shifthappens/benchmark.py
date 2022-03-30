@@ -133,6 +133,7 @@ def evaluate_model(
                 data_root, task_registration.metadata.relative_data_folder
             )
         ):
+            task.setup()
             flavored_task_metadata = getattr(task, _TASK_METADATA_FIELD)
             results[flavored_task_metadata] = task.evaluate(model)
     return results
