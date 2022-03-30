@@ -1,15 +1,16 @@
 Call for Reviewers 
 ==================
 
-We will list all participating reviewers as our Program Committee on the Workshop website.
+We will list all participating reviewers as our Program Committee on the workshop website.
  
 Reviewers will assess the submissions according to the `evaluation criteria <call_for_papers.html#evaluation-criteria>`__
 as part of the `process outlined here <call_for_papers.html#post-submission-and-reviewing>`__.
 
 Becoming a Reviewer:
 ---------------------------------
-Please fill out the form at https://forms.gle/NzykpxQYycMZSB4b7.
-In case of questions you can use the remarks field or email shifthappens@bethgelab.org.
+Please fill out this `form <https://forms.gle/NzykpxQYycMZSB4b7>`__.
+
+In case of questions, you can use the remarks field or email shifthappens@bethgelab.org.
 
 
 Recommending a Reviewer:

@@ -18,3 +18,23 @@
         display: none;
     }
 }
+
+.organizers {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+
+}
+
+.organizers > div {
+    text-align: center;
+    margin: 5px;
+}
+
+.organizers > div > img {
+    max-width: 150px;
+}
+
+.speakers {
+    display: grid;
+    grid-auto-rows: auto;
+}

@@ -95,58 +95,17 @@ To be announced soon.
 
 Invited Speakers
 ----------------
-
-.. list-table:: 
-    :widths: 70 30
-    :header-rows: 0
-    
-    * - `Aleksander Mądry <https://people.csail.mit.edu/madry/>`__  is the Cadence Design Systems Professor of Computing at MIT, leads the MIT Center for Deployable Machine Learning as well as is a faculty co-lead for the MIT AI Policy Forum. His research interests span algorithms, continuous optimization, and understanding machine learning from a robustness and deployability perspectives. 
-      - |madry|
-    * - `Chelsea Finn <https://ai.stanford.edu/~cbfinn/>`__ is an Assistant Professor in Computer Science and Electrical Engineering at Stanford University. Her lab, IRIS, studies intelligence through robotic interaction at scale, and is affiliated with SAIL and the ML Group. Chelsea also spends time at Google as a part of the Google Brain team. She is interested in the capability of robots and other agents to develop broadly intelligent behavior through learning and interaction.
-      - |finn|
-    * - `Ludwig Schmidt <https://people.csail.mit.edu/ludwigs/>`__ is an assistant professor in the Paul G. Allen School of Computer Science & Engineering at the University of Washington. Ludwig’s research interests revolve around the empirical and theoretical foundations of machine learning, often with a focus on datasets, evaluation, and reliable methods. Ludwig completed his PhD at MIT under the supervision of Piotr Indyk and was a postdoc at UC Berkeley with Benjamin Recht and Moritz Hardt. Ludwig received a Google PhD fellowship, a Microsoft Simons fellowship, a new horizons award at EAAMO, a best paper award at ICML, and the Sprowls dissertation award from MIT.
-      - |schmidt|
-    * - Additional speakers TBA
-      - ...
-
-
+.. raw:: html
+    :file: speakers.html
 
 Organizers
 ----------
 
-.. list-table:: 
-    :widths: 25 25 25 25
-
-    * - |julian|
-      - |evgenia|
-      - |steffen|
-      - |roland|
-    * - `Julian Bitterwolf <https://uni-tuebingen.de/fakultaeten/mathematisch-naturwissenschaftliche-fakultaet/fachbereiche/informatik/lehrstuehle/maschinelles-lernen/team/julian-bitterwolf-msc/>`__
-      - `Evgenia Rusak <https://scholar.google.com/citations?user=XKc19kkAAAAJ&hl=en&oi=ao>`__
-      - `Steffen Schneider <https://stes.io>`__
-      - `Roland S. Zimmermann <https://rzimmermann.com/>`__
-    * - |matthiasb|
-      - |wieland|
-      - |matthiash| 
-      -
-    * - `Matthias Bethge <http://bethgelab.org/>`__
-      - `Wieland Brendel <https://scholar.google.com/citations?user=v-JL-hsAAAAJ&hl=en&oi=ao>`__
-      - `Matthias Hein <https://uni-tuebingen.de/fakultaeten/mathematisch-naturwissenschaftliche-fakultaet/fachbereiche/informatik/lehrstuehle/maschinelles-lernen/team/prof-dr-matthias-hein/>`__
-      -
+.. raw:: html
+    :file: organizers.html
 
 
 .. |overview.svg| image:: overview.svg
-.. |madry| image:: organizer_speaker_pics/aleksander_madry.png
-.. |finn| image:: organizer_speaker_pics/chelsea_finn.jpg
-.. |schmidt| image:: organizer_speaker_pics/ludwig_schmidt.jpg
-.. |julian| image:: organizer_speaker_pics/julian_bitterwolf.png
-.. |evgenia| image:: organizer_speaker_pics/evgenia_rusak.png
-.. |steffen| image:: organizer_speaker_pics/steffen_schneider.jpeg
-.. |roland| image:: organizer_speaker_pics/roland_zimmermann.png
-.. |matthiasb| image:: organizer_speaker_pics/matthias_bethge.png
-.. |wieland| image:: organizer_speaker_pics/wieland_brendel.png
-.. |matthiash| image:: organizer_speaker_pics/matthias_hein.png
-
 
 
 .. toctree::
