@@ -12,7 +12,7 @@ increased over the past years, the performance of computer vision models
 is still largely evaluated on ImageNet directly, or on simulated or
 isolated distribution shifts like in ImageNet-C. 
 
-**Goal:** This workshop aims to enhance the landscape of robustness evaluation datasets for
+**Goal:** This workshop aims to enhance and consolidate the landscape of robustness evaluation datasets for
 computer vision and collect new test sets and metrics for quantifying desirable or problematic
 properties of computer vision models. Our goal is to bring the robustness, domain
 adaptation, and out-of-distribution detection communities together to work on a new
@@ -47,6 +47,7 @@ The benchmark suite will be available at
 Benchmark API docs are available at `shift-happens-benchmark.github.io/icml-2022/ <https://shift-happens-benchmark.github.io/icml-2022/>`__.
 Please see our :doc:`call_for_papers` for more details.
 
+Participants will have the opportunity to co-author a paper summarizing their contributions to the benchmark suite.
 
 
 Important Deadlines

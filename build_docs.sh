@@ -7,4 +7,4 @@ add requirements.txt requirements.txt
 run pip install --no-cache -r requirements.txt
 EOF
 
-docker run --rm -v $(pwd)/docs:/docs -v $(pwd):/code -e PYTHONPATH=/code $DOCKERNAME make html
+docker run --rm --user $(id -u) -v $(pwd)/docs:/docs -v $(pwd):/code -e PYTHONPATH=/code $DOCKERNAME make html
