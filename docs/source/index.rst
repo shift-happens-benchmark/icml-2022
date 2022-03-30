@@ -34,11 +34,31 @@ vision models and guides the way towards the next generation of models.
 Focus Topics
 -------------
 
-- Datasets testing robustness to domain shifts
-- Datasets for out-of-distribution detection
-- New metrics on existing datasets
+Submissions to the benchmark suite will focus on datasets and evaluation algorithms falling into one or more of the categories
+below:
 
+1. **Robustness to domain shifts:** A labeled
+   dataset where the labels are (a subset of) the 1000 labels of
+   ImageNet-2012. Optionally, model calibration, uncertainty, or open
+   set adaptation can be tested. We especially encourage submissions
+   focusing on practically relevant distribution shifts.
 
+2. **Out-of-distribution detection:** A labeled or unlabeled dataset of
+   images that do not contain objects from any of the 1000 ImageNet-2012
+   classes.
+
+3. **New robustness datasets:** Beyond the standard robustness evaluation
+   settings (with covariate shift, label shift, …), the workshop format
+   enables submission of datasets that evaluate non-standard metrics
+   such as the consistency of predictions, influence of spurious
+   correlations in the dataset.
+
+4. **New model characteristics:** Metrics and evaluation techniques that
+   help examine the strengths, weaknesses and peculiarities of models in newly
+   highlighted respects. Evaluations can utilize established datasets (or 
+   subsets thereof) or come with their own dataset.
+   
+   
 Submissions
 -----------
 
@@ -93,7 +113,7 @@ Organizers
       - |evgenia|
       - |steffen|
       - |roland|
-    * - `Julian Bitterwolf <https://scholar.google.com/citations?view_op=search_authors&mauthors=julian+bitterwolf&hl=en&oi=ao>`__
+    * - `Julian Bitterwolf <https://uni-tuebingen.de/fakultaeten/mathematisch-naturwissenschaftliche-fakultaet/fachbereiche/informatik/lehrstuehle/maschinelles-lernen/team/julian-bitterwolf-msc/>`__
       - `Evgenia Rusak <https://scholar.google.com/citations?user=XKc19kkAAAAJ&hl=en&oi=ao>`__
       - `Steffen Schneider <https://stes.io>`__
       - `Roland S Zimmermann <https://rzimmermann.com/>`__

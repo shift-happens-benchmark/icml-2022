@@ -52,43 +52,23 @@ benchmarks and datasets is intentionally broad:
 
 - Submissions that **provide their own evaluation criterion** and discuss its value in applications are particularly encouraged. Submissions should explain why the submitted dataset and metric are well-suited to inform about the specified property.
 
-- It is also encouraged to submit **datasets** that can be evaluated with one or more of the following **standard criteria**:
+- It is also encouraged to submit **datasets** that can be evaluated with one of the following **standard criteria**:
  
   - Robustness to domain shifts (classification accuracy)
   - Out-of-distribution detection (AUROC, FPR, AUPR)
 
 - Any other form of dataset and task that can be evaluated on a pre-trained (standard or non-standard training) ImageNet model.
-There are *no constraints* on the possible metrics, as long as they are based on the features, class scores,
-class uncertainties and in distribution scores of such a model.
+There are **no constraints** on the possible metrics, as long as they are based on the features, class scores,
+class uncertainties and in distribution scores of such a model (also see API).
 
-In all cases, it is possible to re-submit existing and potentially published benchmarks, datasets, and evaluation settings, 
+In all cases, it is possible to re-submit **existing and potentially published** benchmarks, datasets, and evaluation settings, 
 known only in a particular community, in order to make these datasets available to a broader audience as part of a curated 
 benchmark package. Examples include small datasets that test an
 interesting distribution shift, such as shifts occurring due to applications in the real world, and
 insightful benchmarks that you might have included in a publication highlighting the advantages or problems
 of certain models.
 
-Within these submission types, the design of the benchmark will
-focus in particular on datasets falling into one or more of the categories
-below:
-
-1. **Robustness to domain shifts:** A labeled
-   dataset where the labels are (a subset of) the 1000 labels of
-   ImageNet-2012. Optionally, model calibration, uncertainty, or open
-   set adaptation can be tested. We especially encourage submissions
-   focusing on practically relevant distribution shifts.
-
-2. **Out-of-distribution detection:** A labeled or unlabeled dataset of
-   images that do not contain objects from any of the 1000 ImageNet-2012
-   classes.
-
-3. **New robustness datasets:** Beyond the standard robustness evaluation
-   settings (with covariate shift, label shift, …), the workshop format
-   enables submission of datasets that evaluate non-standard metrics
-   such as the consistency of predictions, influence of spurious
-   correlations in the dataset.
-
-Submissions are be allowed to contain multiple related datasets, e.g.,
+Submissions are allowed to contain **multiple related datasets**, e.g.,
 a dataset like ImageNet-C could have been submitted as a collection of
 15 evaluation datasets, corresponding to the different corruptions
 ImageNet-C is comprised of.
@@ -96,7 +76,7 @@ ImageNet-C is comprised of.
 Correspondingly, tasks to not need to output one single number. For example, a 
 submission might include multiple (related) OOD datasets and demand that an
 ideal model be not fooled by any of them. It might of course makes sense for a
-multi-score benchmark to *also* calculate an average performance.
+**multi-score** benchmark to *also* calculate an average performance.
 
 Report Instructions
 ^^^^^^^^^^^^^^^^
@@ -182,6 +162,7 @@ Submissions will be judged according to the following criteria:
    their technical report.**
    It should include all applicable reference models as well as relevant
    baselines and potentially proposed improvements.
+   
 
 
 
