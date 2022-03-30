@@ -22,14 +22,15 @@ vision models and guides the way towards the next generation of models.
 +-----------------------------------------------------------------------+
 | |overview.svg|                                                        |
 +=======================================================================+
-| *Overview over the benchmark suite: We will crowdsource and curate a  |
-| collection of tasks and corresponding datasets highlighting           |
+| *Overview over the benchmark suite: You can contribute tasks and      |
+| corresponding datasets highlighting                                   |
 | interesting aspects of ImageNet-scale models. We will evaluate        |
-| current and future models on the benchmark suite and make the         |
+| current and future models on the benchmark suite, testing their       |
+| robustness, calibration, odd detection, and consistency, and make the |
 | results intuitively accessible in the form of scorecards.*            |
 +-----------------------------------------------------------------------+
 
-**All accepted submissions will be part of the** ``shifthappens`` **benchmark suite. This will ensure that after the workshop all benchmarks are accessible to the community.**
+**All accepted submissions will be part of the open-source** ``shifthappens`` **benchmark suite. This will ensure that after the workshop all benchmarks are accessible to the community.**
 
 Focus Topics
 -------------
@@ -62,9 +63,9 @@ below:
 Submissions
 -----------
 
-The benchmark suite will be available at
-`github.com/shift-happens-benchmark/icml-2022 <https://github.com/shift-happens-benchmark/icml-2022>`__.
-Benchmark API docs are available at `shift-happens-benchmark.github.io/icml-2022/ <https://shift-happens-benchmark.github.io/icml-2022/>`__.
+The benchmark suite will be available on 
+`GitHub <https://github.com/shift-happens-benchmark/icml-2022>`__.
+The documentation for the benchmark's API is available `here <https://shift-happens-benchmark.github.io/icml-2022/>`__.
 Please see our :doc:`call_for_papers` for more details.
 
 Participants will have the opportunity to co-author a paper summarizing their contributions to the benchmark suite.
@@ -79,7 +80,7 @@ Important Deadlines
 - Camera and Dataset Ready: July 1, 2022
 - ICML 2022 Workshop Dates: July 22 and 23 (final date TBA)
 
-Please note that it is **not required** to post the final dataset by the submission deadline.
+Please note that it is **not required** to post the final dataset by the submission deadline since we are interested in new ideas for feasible datasets.
 It is sufficient to start working on final dataset collections after the acceptance notification until the camera ready deadline.
 
 Additional information about submission dates and the submission format can be found in :doc:`call_for_papers`.
