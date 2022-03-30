@@ -57,13 +57,10 @@ benchmarks and datasets is intentionally broad:
   - Robustness to domain shifts (classification accuracy)
   - Out-of-distribution detection (AUROC, FPR, AUPR)
 
-- Any other form of dataset and task that can be evaluated on a pre-trained (standard or non-standard training) ImageNet model.
-There are *no constraints* on the possible metrics, as long as they are based on the features, class scores,
-class uncertainties and in distribution scores of such a model.
+- Any other form of dataset and task that can be evaluated on a pre-trained (standard or non-standard training) ImageNet model. There are *no constraints* on the possible metrics, as long as they are based on the features, class scores, class uncertainties and in distribution scores of such a model. The design of our API is flexible and supports all metrics requiring a forward pass through the model. 
 
-In all cases, it is possible to re-submit existing and potentially published benchmarks, datasets, and evaluation settings, 
-known only in a particular community, in order to make these datasets available to a broader audience as part of a curated 
-benchmark package. Examples include small datasets that test an
+In all above cases, it is possible to re-submit existing and potentially published benchmarks, datasets, and evaluation tasks 
+to consolidate them in one benchmark suite and/or if they are known only to a particular community. Examples include small datasets that test an
 interesting distribution shift, such as shifts occurring due to applications in the real world, and
 insightful benchmarks that you might have included in a publication highlighting the advantages or problems
 of certain models.
@@ -88,15 +85,18 @@ below:
    such as the consistency of predictions, influence of spurious
    correlations in the dataset.
 
-Submissions are be allowed to contain multiple related datasets, e.g.,
+Submissions are allowed to contain multiple related datasets, e.g.,
 a dataset like ImageNet-C could have been submitted as a collection of
 15 evaluation datasets, corresponding to the different corruptions
 ImageNet-C is comprised of.
 
-Correspondingly, tasks to not need to output one single number. For example, a 
+Correspondingly, tasks do not need to output one single number. For example, a 
 submission might include multiple (related) OOD datasets and demand that an
 ideal model be not fooled by any of them. It might of course makes sense for a
 multi-score benchmark to *also* calculate an average performance.
+
+
+
 
 Report Instructions
 ^^^^^^^^^^^^^^^^
@@ -107,8 +107,7 @@ The short report should
 - describe how the data was collected, as well as give an overview over the data,
 - state how the data can be accessed,
 - specify if there are special requirements on the models to be evaluated,
-- detail the evaluation procedure,
-- outline how the evaluation outputs can be interpreted,
+- detail the evaluation procedure and outline how the evaluation outputs can be interpreted,
 - provide a short analysis how the task is challenging for some existing models
   (including the relevant provided ones),
 - and establish context within related works.
@@ -122,12 +121,13 @@ For the submission, the report should be formatted according to the `ICML style 
 provided `LaTeX files <https://media.icml.cc/Conferences/ICML2022/Styles/icml2022.zip>`__.
 
 Code and Data Instructions
-^^^^^^^^^^^^^^^^
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 Submissions must include a link to the dataset (hosted on a suitable platform),
 as well as code (building on top of the provided `reference implementation
 <https://shift-happens-benchmark.github.io/icml-2022/>`__) for 
-running the evaluation process.
+running the evaluation process. Datasets can be hosted on `zenodo <https://zenodo.org/>`__, 
+`google drive <https://www.google.com/drive/>`__ (by only providing an anonymous google drive ID), or other platforms.
 
 The data/images need to be usable for research purposes. Their license should
 be stated in the report.
@@ -164,15 +164,15 @@ Submissions will be judged according to the following criteria:
 
 2. **Novelty**: Datasets which allow for a more insightful evaluation beyond
    the standard test accuracy of ImageNet are encouraged. 
-   This can include well motivated new criteria, new datasets with emphasized 
+   This can include well-motivated new criteria, new datasets with emphasized 
    practical relevance, as well as tasks that demonstrate theoretically
    predicted weaknesses of certain popular models.
    
 3. **Difficulty for current models**: If the task can easily be solved by
    humans but some models fail moderately or spectacularly, it is an
    interesting addition to the benchmark.
-   This will be formally benchmarked by evaluating a set of standard models
-   (including robustified, task specific ones) on the
+   This will formally be benchmarked by evaluating a set of standard models
+   (including robustified, task-specific ones) on the
    provided dataset. Together with the reference implementation,
    we have included
    (1) a set of (robustified) ResNet models,
