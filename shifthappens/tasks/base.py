@@ -17,7 +17,7 @@ from shifthappens.tasks.task_result import TaskResult
 T = TypeVar("T")
 
 
-def parameter(default: T, options: Tuple[T, ...], description: str = None):
+def parameter(default: T, options: Tuple[T, ...], description: Optional[str] = None):
     """Register a task's parameter. Setting multiple options here allows automatically
     creating different flavours of the test.
 
@@ -34,6 +34,31 @@ def parameter(default: T, options: Tuple[T, ...], description: str = None):
     )
 
 
+def variable(value: T):
+    """Creates a non-parametric variable for a task.
+
+    Args:
+        value (T): value of the constant
+    """
+    return dataclasses.field(
+        default_factory=lambda: value,
+        init=False,
+        repr=False,
+    )
+
+
+def abstract_variable():
+    """Marks a variable as abstract such that a child class needs to override it
+    with a non-abstract variable.
+    """
+
+    return dataclasses.field(
+        default=None,
+        init=False,
+        metadata=dict(is_abstract_variable=True),
+    )
+
+
 @dataclasses.dataclass  # type: ignore
 class Task(ABC):
     """Task base class."""
@@ -41,6 +66,15 @@ class Task(ABC):
     data_root: str
 
     def __post_init__(self):
+        # check for abstract variables
+        for field in dataclasses.fields(self):
+            if field.metadata is not None and field.metadata.get(
+                "is_abstract_variable", False
+            ):
+                raise NotImplementedError(
+                    f"Field {field.name} is marked as an abstract (non initializable) variable and must overriden with an actual value"
+                )
+
         self.setup()
 
     @classmethod
