@@ -34,11 +34,31 @@ vision models and guides the way towards the next generation of models.
 Focus Topics
 -------------
 
-- Datasets testing robustness to domain shifts
-- Datasets for out-of-distribution detection
-- New metrics on existing datasets
+Submissions to the benchmark suite will focus on datasets and evaluation algorithms falling into one or more of the categories
+below:
 
+1. **Robustness to domain shifts:** A labeled
+   dataset where the labels are (a subset of) the 1000 labels of
+   ImageNet-2012. Optionally, model calibration, uncertainty, or open
+   set adaptation can be tested. We especially encourage submissions
+   focusing on practically relevant distribution shifts.
 
+2. **Out-of-distribution detection:** A labeled or unlabeled dataset of
+   images that do not contain objects from any of the 1000 ImageNet-2012
+   classes.
+
+3. **New robustness datasets:** Beyond the standard robustness evaluation
+   settings (with covariate shift, label shift, …), the workshop format
+   enables submission of datasets that evaluate non-standard metrics
+   such as the consistency of predictions, influence of spurious
+   correlations in the dataset.
+
+4. **New model characteristics:** Metrics and evaluation techniques that
+   help examine the strengths, weaknesses and peculiarities of models in newly
+   highlighted respects. Evaluations can utilize established datasets (or 
+   subsets thereof) or come with their own dataset.
+   
+   
 Submissions
 -----------
 
@@ -54,10 +74,10 @@ Important Deadlines
 -------------------
 
 - Submission Deadline: mid-end May, 2022 (final date TBA)
-- Reviews posted: June 3, 2022
-- Acceptance notification: June 6, 2022
+- Reviews Posted: June 3, 2022
+- Acceptance Notification: June 6, 2022
 - Camera and Dataset Ready: July 1, 2022
-- ICML 2022 Workshop dates: July 22 and 23 (final date TBA)
+- ICML 2022 Workshop Dates: July 22 and 23 (final date TBA)
 
 Please note that it is **not required** to post the final dataset by the submission deadline.
 It is sufficient to start working on final dataset collections after the acceptance notification until the camera ready deadline.
@@ -93,7 +113,7 @@ Organizers
       - |evgenia|
       - |steffen|
       - |roland|
-    * - `Julian Bitterwolf <https://scholar.google.com/citations?view_op=search_authors&mauthors=julian+bitterwolf&hl=en&oi=ao>`__
+    * - `Julian Bitterwolf <https://uni-tuebingen.de/fakultaeten/mathematisch-naturwissenschaftliche-fakultaet/fachbereiche/informatik/lehrstuehle/maschinelles-lernen/team/julian-bitterwolf-msc/>`__
       - `Evgenia Rusak <https://scholar.google.com/citations?user=XKc19kkAAAAJ&hl=en&oi=ao>`__
       - `Steffen Schneider <https://stes.io>`__
       - `Roland S Zimmermann <https://rzimmermann.com/>`__
