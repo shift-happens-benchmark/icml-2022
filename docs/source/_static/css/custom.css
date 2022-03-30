@@ -20,14 +20,18 @@
 }
 
 .organizers {
-    display: flex;
-    flex-wrap: wrap;
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+
 }
 
 .organizers > div {
-    flex: 1 0 20%;
     text-align: center;
     margin: 5px;
+}
+
+.organizers > div > img {
+    max-width: 150px;
 }
 
 .speakers {
