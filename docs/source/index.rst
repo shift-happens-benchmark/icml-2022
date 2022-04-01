@@ -115,3 +115,11 @@ Organizers
     Call for Submissions <call_for_papers>
     Call for Reviewers <call_for_reviewers>
     Benchmark API Docs <api>
+
+.. meta::
+      :title: Shift happens 2022: Crowdsourcing metrics and test datasets beyond ImageNet
+
+      :description lang=en:
+         This workshop at ICML 2022 aims to enhance and consolidate the landscape of robustness evaluation datasets for
+         computer vision and collect new test sets and metrics for quantifying desirable or problematic
+         properties of computer vision models.
