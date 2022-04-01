@@ -1,14 +1,16 @@
 name: Tests
 
+# Controls when the workflow will run
 on:
+  pull_request:
+    branches:
+        - main
   push:
     branches:
       - main
-  pull_request:
 
 jobs:
-  build:
-
+  tests:
     runs-on: ubuntu-latest
     strategy:
       max-parallel: 20
