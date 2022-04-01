@@ -13,6 +13,7 @@
 
 import os
 import sys
+from typing import List
 
 sys.path.insert(0, os.path.abspath("../.."))
 
@@ -20,9 +21,7 @@ import datetime
 
 import shifthappens
 
-
 autodoc_mock_imports = ["numpy", "torch", "torchvision"]
-
 
 
 def get_years(start_year=2021):
@@ -60,7 +59,7 @@ autodoc_member_order = "bysource"
 
 templates_path = ["_templates"]
 
-exclude_patterns = []
+exclude_patterns: List[str] = []
 
 html_theme = "pydata_sphinx_theme"
 
@@ -68,7 +67,6 @@ html_theme = "pydata_sphinx_theme"
 html_theme_options = {
     "nosidebar": True,
     "icon_links": [
-
         {
             "name": "Github",
             "url": "https://github.com/shift-happens-benchmark/iclr-2022",
@@ -84,11 +82,9 @@ html_theme_options = {
             "url": "mailto:shifthappens@bethgelab.org",
             "icon": "fas fa-envelope",
         },
-
     ],
     "external_links": [
         {"name": "Home", "url": "https://shift-happens-benchmark.github.io/"}
-
     ],
     # "external_links": [{"name": "ICML 2022", "url": "https://icml.cc/"}],
     "collapse_navigation": False,
