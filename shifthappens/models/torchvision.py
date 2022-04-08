@@ -13,7 +13,7 @@ from shifthappens.data.base import DataLoader
 
 
 class __TorchModel(
-    sh_models.Model, sh_models.LabelModelMixin, sh_models.ConfidenceModelMixin
+    sh_models.Model, sh_models.LabelModelMixin, sh_models.ConfidenceModelMixin, sh_models.OODScoreModelMixin
 ):
     """Wraps a torchvision model."""
 
@@ -43,10 +43,10 @@ class __TorchModel(
             inputs = self._pre_process(batch)
             logits = self.model(inputs).cpu()
             probabilities = torch.softmax(logits, -1)
-            predictions = logits.argmax(-1)
+            max_confidences, predictions = probabilities.max(-1)
 
             yield sh_models.ModelResult(
-                class_labels=predictions.numpy(), confidences=probabilities.numpy()
+                class_labels=predictions.numpy(), confidences=probabilities.numpy(), ood_scores=-max_confidences.numpy()
             )
 
 
