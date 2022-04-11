@@ -70,6 +70,10 @@ Please see our :doc:`call_for_papers` for more details.
 
 Participants will have the opportunity to co-author a paper summarizing their contributions to the benchmark suite.
 
+For general questions about preparations of submissions, clarifications around the submission score and 
+discussions about the ``shifthappens`` API, please feel free to write us as [shifthappens@bethgelab.org](mailto:shifthappens@bethgelab.org)
+or [join our slack channel](https://join.slack.com/t/shifthappensicml2022/shared_invite/zt-16ewcukds-6jW6xC5DbtRvLCCkhZ~NLg).
+
 
 Important Deadlines
 -------------------
