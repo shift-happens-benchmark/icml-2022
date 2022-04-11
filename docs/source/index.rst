@@ -32,6 +32,10 @@ vision models and guides the way towards the next generation of models.
 
 **All accepted submissions will be part of the open-source** ``shifthappens`` **benchmark suite. This will ensure that after the workshop all benchmarks are accessible to the community.**
 
+A central part of our package is to facilitate the evaluation of models on different datasets testing their generalization capabilities and providing fine-grained information on model performance using score-cards. To make sure all contributing authors as well as all authors of used (modified or not) pre-existing datasets will get credit for their efforts, we will release a bibtex file and a 'cite' macro for LaTeX which will include all contributions and underlying works.
+
+In addition, participants will have the opportunity to co-author a paper summarizing the benchmark suite and all included contributions.
+
 Focus Topics
 -------------
 
@@ -68,12 +72,10 @@ The benchmark suite will be available on
 The documentation for the benchmark's API is available `here <https://shift-happens-benchmark.github.io/icml-2022/>`__.
 Please see our :doc:`call_for_papers` for more details.
 
-Participants will have the opportunity to co-author a paper summarizing their contributions to the benchmark suite.
 
 For general questions about preparations of submissions, clarifications around the submission score and 
 discussions about the ``shifthappens`` API, please feel free to write us as [shifthappens@bethgelab.org](mailto:shifthappens@bethgelab.org)
 or [join our slack channel](https://join.slack.com/t/shifthappensicml2022/shared_invite/zt-16ewcukds-6jW6xC5DbtRvLCCkhZ~NLg).
-
 
 Important Deadlines
 -------------------
