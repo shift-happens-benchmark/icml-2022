@@ -80,7 +80,7 @@ html_theme_options = {
         {
             "name": "Slack",
             "url": "https://join.slack.com/t/shifthappensicml2022/shared_invite/zt-16ewcukds-6jW6xC5DbtRvLCCkhZ~NLg",
-            "icon" : "fab fa-slack",
+            "icon": "fab fa-slack",
         },
         {
             "name": "Contact us!",
