@@ -84,7 +84,7 @@ Important Deadlines
 - Reviews Posted: June 3, 2022
 - Acceptance Notification: June 6, 2022
 - Camera and Dataset Ready: July 1, 2022
-- ICML 2022 Workshop Dates: July 22 and 23 (final date TBA)
+- ICML 2022 Workshop Dates: July 22
 
 Please note that it is **not required** to post the final dataset by the submission deadline since we are interested in new ideas for feasible datasets.
 It is sufficient to start working on final dataset collections after the acceptance notification until the camera ready deadline.
