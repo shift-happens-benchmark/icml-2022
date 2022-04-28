@@ -14,7 +14,8 @@ Submissions consist of
 - A short report of the task, metrics and datasets,
 - An implementation of the task, metrics and/or datasets, comprised of a plugin to the ``shifthappens`` benchmark package, and all required external data files.
 
-Both components will be submitted via OpenReview, and reviewing is double-blind (**submission link TBA**).
+Both components will be submitted via OpenReview, and reviewing is double-blind.
+Please submit your paper `here <https://openreview.net/group?id=ICML.cc/2022/Workshop/Shift_Happens>`__. 
 The workshop will not have any official proceedings, so it is non-archival.
 Tasks that have been part of a recent submission/publication are allowed, in which case the overlapping
 works should be mentioned.
