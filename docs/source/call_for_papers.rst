@@ -1,5 +1,5 @@
 Call for Submissions
-===============
+====================
 
 .. note::
 
@@ -7,7 +7,7 @@ Call for Submissions
     Please wait with the preparation of your submission until this note disappears.
 
 TL;DR
-^^^^^^^^
+^^^^^
 
 Submissions consist of 
 
@@ -62,6 +62,7 @@ benchmarks and datasets is intentionally broad:
   - Out-of-distribution detection (AUROC, FPR, AUPR)
 
 - Any other form of dataset and task that can be evaluated on a pre-trained (standard or non-standard training) ImageNet model.
+
 There are *no constraints* on the possible metrics, as long as they are based on the features, class scores,
 class uncertainties and in-distribution scores of such a model (also see our `reference implementation
 <https://shift-happens-benchmark.github.io/icml-2022/>`__ for examples).
@@ -84,7 +85,7 @@ ideal model be not fooled by any of them. It might of course makes sense for a
 
 
 Report Instructions
-^^^^^^^^^^^^^^^^
+^^^^^^^^^^^^^^^^^^^
 
 The short report should
 
@@ -106,7 +107,7 @@ For the submission, the report should be formatted according to the `ICML style 
 provided `LaTeX files <https://media.icml.cc/Conferences/ICML2022/Styles/icml2022.zip>`__.
 
 Code and Data Instructions
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 Submissions must include a link to the dataset (hosted on a suitable platform),
 as well as code (building on top of the provided `reference implementation
@@ -137,7 +138,7 @@ The implementation leverages our example `API <api.html>`__ implementation:
 
 
 Evaluation Criteria for Submissions
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 Submissions will be judged according to the following criteria:
 
@@ -160,5 +161,3 @@ Submissions will be judged according to the following criteria:
    This will formally be benchmarked by evaluating a set of standard models
    (including robustified, task-specific ones) on the
    provided task.
-
-

@@ -1,9 +1,9 @@
 Building the Community Benchmark 
-==================
+================================
 
 
 Post-Submission
-^^^^^^^^^^^^^^^^^^^
+^^^^^^^^^^^^^^^
 
 - The `review process <call_for_reviewers.html#reviewing-process>`__ will center around the code and data submission. Including the community in an open review process will be an opportunity to increase chances for later adaptations of the benchmark. The tools that will be made available for facilitating the reviewers' jobs will later be released as open-source tools.
 
@@ -28,7 +28,7 @@ Post-Submission
 
 
 Community Hackathon
-^^^^^^^^^^^^^^^^
+^^^^^^^^^^^^^^^^^^^
 
 Two weeks prior to the workshop, a hackathon aimed at
 community building around the benchmark will be hosted by the workshop
@@ -39,11 +39,11 @@ get a short talk (time depends on the number of contributions) at the
 workshop.
    
 Ensuring Long-Term Access
-^^^^^^^^^^^^^^^^
+^^^^^^^^^^^^^^^^^^^^^^^^^
 
 
 Removed Paragraphs (for now)
-^^^^^^^^^^^^^^^^
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 
 We should note that we will make submission of code for review as easy

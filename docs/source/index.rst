@@ -94,7 +94,7 @@ Also, please consider our :doc:`call_for_reviewers`.
 
 
 Prizes and Travel Grants
--------------------
+------------------------
 
 To be announced soon.
 
