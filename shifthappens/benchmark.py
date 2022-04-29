@@ -8,11 +8,10 @@ from typing import Type
 
 import shifthappens.utils as sh_utils
 from shifthappens.models import Model
-from shifthappens.tasks.base import Task
-from shifthappens.tasks.task_result import TaskResult
 from shifthappens.task_data import task_metadata
 from shifthappens.task_data.task_registration import TaskRegistration
-
+from shifthappens.tasks.base import Task
+from shifthappens.tasks.task_result import TaskResult
 
 __all__ = ["get_registered_tasks", "evaluate_model", "register_task"]
 __registered_tasks: Set[TaskRegistration] = set()

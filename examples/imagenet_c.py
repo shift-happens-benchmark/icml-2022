@@ -20,6 +20,7 @@ import torchvision.transforms as tv_transforms
 
 import shifthappens.data.base as sh_data
 import shifthappens.data.torch as sh_data_torch
+import shifthappens.task_data.task_metadata
 import shifthappens.utils as sh_utils
 from shifthappens import benchmark as sh_benchmark
 from shifthappens.data.base import DataLoader
@@ -31,7 +32,6 @@ from shifthappens.tasks.base import Task
 from shifthappens.tasks.base import variable
 from shifthappens.tasks.metrics import Metric
 from shifthappens.tasks.task_result import TaskResult
-import shifthappens.task_data.task_metadata
 
 
 @dataclasses.dataclass

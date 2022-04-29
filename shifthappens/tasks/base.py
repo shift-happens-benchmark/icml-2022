@@ -8,8 +8,8 @@ from typing import Optional
 from typing import Tuple
 from typing import TypeVar
 
-import shifthappens.task_data.task_metadata
 import shifthappens.models.base as sh_models
+import shifthappens.task_data.task_metadata
 import shifthappens.utils as sh_utils
 from shifthappens.data.base import DataLoader
 from shifthappens.tasks.task_result import TaskResult
