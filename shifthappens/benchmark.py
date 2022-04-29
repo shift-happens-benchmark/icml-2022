@@ -11,33 +11,12 @@ import shifthappens.utils as sh_utils
 from shifthappens.models import Model
 from shifthappens.tasks.base import Task
 from shifthappens.tasks.task_result import TaskResult
+from shifthappens.task_data import task_metadata
+from shifthappens.task_data.task_registration import TaskRegistration
+
 
 __all__ = ["get_registered_tasks", "evaluate_model", "register_task"]
-
-
-@dataclass(frozen=True, eq=True)
-class TaskMetadata:
-    """Data for storing a task's metadata."""
-
-    name: str
-    relative_data_folder: str
-    standalone: bool = True
-
-
-@dataclass
-class TaskRegistration:
-    """Data for storing a task's registration."""
-
-    cls: Type[Task]
-    metadata: TaskMetadata
-
-    def __hash__(self):
-        return hash(self.cls)
-
-
 __registered_tasks: Set[TaskRegistration] = set()
-
-_TASK_METADATA_FIELD = "__task_metadata__"
 
 
 def get_registered_tasks() -> Tuple[Type[Task], ...]:
@@ -77,19 +56,19 @@ def register_task(*, name: str, relative_data_folder: str, standalone: bool = Tr
             Task, getattr(dataclasses, "_FIELDS")
         ), "Tasks need to be dataclasses (i.e. add a @dataclasses.dataclass() decorator)"
         # check that the class did not define any fields the benchmark uses internally
-        forbidden_fields = [_TASK_METADATA_FIELD]
+        forbidden_fields = [task_metadata._TASK_METADATA_FIELD]
         for forbidden_field in forbidden_fields:
             assert not hasattr(
                 cls, forbidden_field
             ), f"Tasks must not have an attribute called `{forbidden_field}`"
 
         # add metadata to class definition
-        metadata = TaskMetadata(
+        metadata = task_metadata.TaskMetadata(
             name=name,
             relative_data_folder=relative_data_folder,
             standalone=standalone,
         )
-        setattr(cls, _TASK_METADATA_FIELD, metadata)
+        setattr(cls, task_metadata._TASK_METADATA_FIELD, metadata)
 
         # finally register class
         registration = TaskRegistration(cls, metadata=metadata)
@@ -134,6 +113,6 @@ def evaluate_model(
             )
         ):
             task.setup()
-            flavored_task_metadata = getattr(task, _TASK_METADATA_FIELD)
+            flavored_task_metadata = getattr(task, task_metadata._TASK_METADATA_FIELD)
             results[flavored_task_metadata] = task.evaluate(model)
     return results

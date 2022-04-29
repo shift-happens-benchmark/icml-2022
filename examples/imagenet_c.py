@@ -31,6 +31,7 @@ from shifthappens.tasks.base import Task
 from shifthappens.tasks.base import variable
 from shifthappens.tasks.metrics import Metric
 from shifthappens.tasks.task_result import TaskResult
+import shifthappens.task_data.task_metadata
 
 
 @dataclasses.dataclass
@@ -367,9 +368,6 @@ class ImageNetCSeparateCorruptions(Task):
         return None
 
     def _evaluate(self, model: sh_models.Model) -> TaskResult:
-        import pdb
-
-        pdb.set_trace()
         results = {}
         accuracies, mces = [], []
         for flavored_corruption_task in self.flavored_corruption_tasks:
@@ -382,7 +380,8 @@ class ImageNetCSeparateCorruptions(Task):
                 continue
 
             corruption_name = getattr(
-                flavored_corruption_task, sh_benchmark._TASK_METADATA_FIELD
+                flavored_corruption_task,
+                shifthappens.task_data.task_metadata._TASK_METADATA_FIELD,
             )  # type: ignore
             results[f"accuracy_{corruption_name}"] = corruption_result["accuracy"]
             results[f"mCE_{corruption_name}"] = corruption_result["mce"]
