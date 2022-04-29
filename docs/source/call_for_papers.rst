@@ -1,10 +1,6 @@
 Call for Submissions
 ===============
 
-.. note::
-
-    This page is still under construction and might contain inaccurate information.
-    Please wait with the preparation of your submission until this note disappears.
 
 TL;DR
 ^^^^^^^^
