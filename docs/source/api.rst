@@ -8,8 +8,7 @@ Welcome to the API docs of the ShiftHappens benchmark!
 
 .. note::
 
-    This page is still under construction and might contain inaccurate information.
-    Please wait with the preparation of your submission until this note disappears.
+    We are working on writing and extending the documentation for the API and on creating helper functions and classes to make the user experience more convenient.
 
 **We aim to create a community-built benchmark suite for ImageNet models comprised of new datasets for OOD robustness
 and detection, as well as new tasks for existing OOD datasets.**
