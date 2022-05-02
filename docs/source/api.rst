@@ -33,12 +33,10 @@ Model implementations
 .. automodule:: shifthappens.models.base
    :members:
    :show-inheritance:
-   :noindex:
 
 .. automodule:: shifthappens.models.torchvision
    :members:
    :show-inheritance:
-   :noindex:
 
 
 Task implementations
@@ -47,6 +45,15 @@ Task implementations
 .. automodule:: shifthappens.tasks.base
    :members:
    :show-inheritance:
-   :noindex:
    :private-members:
+
+Data loading
+------------
+.. automodule:: shifthappens.data.base
+   :members:
+   :show-inheritance:
+
+.. automodule:: shifthappens.data.torch
+   :members:
+   :show-inheritance:
 
