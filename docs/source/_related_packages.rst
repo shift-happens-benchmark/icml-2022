@@ -1,5 +1,5 @@
 Related Software Packages
-====================================
+=========================
 
 Below we list a set of related works in open-source software, benchmarks
 and datasets released in the past years and gained popularity in

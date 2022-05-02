@@ -42,6 +42,3 @@ community, the review process will somewhat differ from usual paper review proce
 
 .. 3. In the discussion phase, authors are allowed to update both their
    technical report and the submitted code.
-   
-
-
