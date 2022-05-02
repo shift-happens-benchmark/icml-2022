@@ -50,3 +50,16 @@ Task implementations
    :noindex:
    :private-members:
 
+.. automodule:: shifthappens.tasks.task_result
+   :members:
+   :show-inheritance:
+   :noindex:
+   :private-members:
+
+Data implementations
+--------------------
+
+.. automodule:: shifthappens.data.base
+   :members:
+   :show-inheritance:
+   :noindex:

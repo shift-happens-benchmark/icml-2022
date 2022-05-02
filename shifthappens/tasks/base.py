@@ -1,4 +1,11 @@
-"""Base definition of a task in the shift happens benchmark."""
+"""Base classes and helper functions for adding tasks to the benchmark.
+
+To add a new task, implement a new wrapper class inheriting
+from shifthappens.base.Task, and from any of the Mixins defined in this module.
+
+Model results should be stored as a dictionary,
+and packed into an ``shifthappens.base.TaskResult`` instance.
+"""
 
 import dataclasses
 from abc import ABC
@@ -96,7 +103,10 @@ class Task(ABC):
 
     @classmethod
     def iterate_flavours(cls, **kwargs) -> Iterator["Task"]:
-        """Iterate over all possible task configurations, i.e. different settings of parameter fields."""
+        """Iterate over all possible task configurations,
+        i.e. different settings of parameter fields. Parameters should be defined
+        with ``shifthappens.task.base.parameter``, where option argument
+        corresponds to possible configurations of particular parameter."""
         assert hasattr(
             cls, shifthappens.task_data.task_metadata._TASK_METADATA_FIELD
         ), "Flavors can only be iterated once a task has been registered"
@@ -127,8 +137,13 @@ class Task(ABC):
         pass
 
     def evaluate(self, model: sh_models.Model) -> Optional[TaskResult]:
-        """Validates that the model is compatible with the task and then evaluates the model's
-        performance using the _evaluate function of this class."""
+        """Validates that the model is compatible with the task and then evaluates
+        the model's performance using the _evaluate function of this class.
+
+        Args:
+        model (sh_models.Model): A model inherited from``shifthappens.base.Model``.
+
+        """
         if issubclass(type(self), ConfidenceTaskMixin) and not issubclass(
             type(model), sh_models.ConfidenceModelMixin
         ):
