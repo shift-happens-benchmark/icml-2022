@@ -1,4 +1,5 @@
 """Torchvision baselines."""
+
 from typing import Iterator
 from typing import List
 
