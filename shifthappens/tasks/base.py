@@ -1,19 +1,19 @@
 """Base definition of a task in the shift happens benchmark.
 
-Fully defined tasks should subclass the ``Task`` abstract base class, and implement all
+Fully defined tasks should subclass the :py:class:`Task` abstract base class, and implement all
 mixins based on the required model outputs to evaluate the task, also part of this module.
 
 Implementing a new task consists of the following steps:
 
-1. Subclass the ``Task`` class and implement its abstract methods to specify the task
+1. Subclass the :py:class:`Task` class and implement its abstract methods to specify the task
    setup and evaluation scheme
 2. Implement any number of mixins specified in this module. You just need to include
    the mixin in the class definition, e.g. ``class MyTask(Task, ConfidenceTaskMixin)``,
    and do not need to implement additional methods. My specifying the mixin, it will be
    assured that your task gets the correct model outputs.
-   See the individual mixin classes, or the ``shifthappens.models.models.base.ModelResult``
+   See the individual mixin classes, or the :py:class:`shifthappens.models.models.base.ModelResult`
    class for further details.
-3. Register your class to the benchmark using the ``shifthappens.benchmark.register_task``
+3. Register your class to the benchmark using the :py:func`shifthappens.benchmark.register_task`
    decorator, along with a name and data path for your benchmark. 
 """
 
@@ -80,12 +80,12 @@ def abstract_variable():
 class Task(ABC):
     """Task base class.
 
-    Override the ``setup``, ``_prepare_dataloader`` and ``_evaluate`` methods to define
-    your task. Also make sure to add in additional mixins from ``shifthappens.tasks.mixins`` to specify
+    Override the :py:meth:`setup`, :py:meth:`_prepare_dataloader` and :py:meth:`_evaluate` methods to define
+    your task. Also make sure to add in additional mixins from :py:mod:`shifthappens.tasks.base` to specify
     which models your task is compatible to (e.g., specify that your task needs labels, or confidences from
     a model).
 
-    To include the task in the benchmark, use the ``shifthappens.benchmark.register_task`` decorator.
+    To include the task in the benchmark, use the :py:func:`shifthappens.benchmark.register_task` decorator.
     """
 
     data_root: str
@@ -179,12 +179,12 @@ class Task(ABC):
         """Prepare a dataloader for just the images (i.e. no labels, etc.) which will be passed to the model
         before the actual evaluation. This allows models to, e.g., run unsupervised domain adaptation techniques.
 
-        If intended, the implementation of this function should call the ``shifthappens.models.model.Model.prepare``
+        If intended, the implementation of this function should call the :py:func:`shifthappens.models.model.Model.prepare`
         function and pass (parts) of the data through a data loader. The model could potentially use this data for
         test-time adaptation, calibration, or orther purposes.
 
         Note that this function could also be used to create domain shift for such adaptation methods, by passing
-        a different dataloader in this prepare function than used during ``evaluate()``.
+        a different dataloader in this prepare function than used during :py:meth:`evaluate`.
         """
         raise NotImplementedError()
 
@@ -193,11 +193,11 @@ class Task(ABC):
         """Evaluate the task and return a dictionary with the calculated metrics.
 
         model: The passed model implementents a ``predict`` function returning an iterator
-        over ``shifthappens.models.base.ModelResult``. Each result contains predictions such as
+        over :py:meth:`shifthappens.models.base.ModelResult`. Each result contains predictions such as
         the class labels assigned to the images, confidences, etc., based on which mixins were
         implemented by this task to request these prediction outputs.
 
-        This function should return a ``shifthappens.tasks.task_result.TaskResult`` which can
+        This function should return a :py:class:`shifthappens.tasks.task_result.TaskResult` which can
         contain an arbitrary dictionary of metrics, along with a specifiction of which of these
         metrics are main results/summary metrics for the task.
         """
@@ -208,7 +208,7 @@ class LabelTaskMixin:
     """Indicates that the task requires the model to return the predicted labels.
 
     Tasks implementing this mixin will be provided with the ``class_labels`` attribute in the
-    ``shifthappens.models.base.ModelResult`` returned during evaluation.
+    :py:class:`shifthappens.models.base.ModelResult` returned during evaluation.
     """
 
     pass
@@ -218,7 +218,7 @@ class ConfidenceTaskMixin:
     """Indicates that the task requires the model to return the confidence scores.
 
     Tasks implementing this mixin will be provided with the ``confidences`` attribute in the
-    ``shifthappens.models.base.ModelResult`` returned during evaluation.
+    :py:class:`shifthappens.models.base.ModelResult` returned during evaluation.
     """
 
     pass
@@ -228,7 +228,7 @@ class UncertaintyTaskMixin:
     """Indicates that the task requires the model to return the uncertainty scores.
 
     Tasks implementing this mixin will be provided with the ``uncertainties`` attribute in the
-    ``shifthappens.models.base.ModelResult`` returned during evaluation.
+    :py:class:`shifthappens.models.base.ModelResult` returned during evaluation.
     """
 
     pass
@@ -238,7 +238,7 @@ class OODScoreTaskMixin:
     """Indicates that the task requires the model to return the OOD scores.
 
     Tasks implementing this mixin will be provided with the ``ood_scores`` attribute in the
-    ``shifthappens.models.base.ModelResult`` returned during evaluation.
+    :py:class:`shifthappens.models.base.ModelResult` returned during evaluation.
     """
 
     pass
@@ -248,7 +248,7 @@ class FeaturesTaskMixin:
     """Indicates that the task requires the model to return the raw features.
 
     Tasks implementing this mixin will be provided with the ``features`` attribute in the
-    ``shifthappens.models.base.ModelResult`` returned during evaluation.
+    :py:class:`shifthappens.models.base.ModelResult` returned during evaluation.
     """
 
     pass
