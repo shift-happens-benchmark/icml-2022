@@ -43,6 +43,7 @@ release = shifthappens.__version__
 # -- General configuration ---------------------------------------------------
 
 extensions = [
+    "sphinx.ext.viewcode",
     "sphinx.ext.autodoc",
     "sphinx.ext.napoleon",
     "sphinx_autodoc_typehints",
