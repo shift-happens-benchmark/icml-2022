@@ -11,9 +11,9 @@ Implementing a new task consists of the following steps:
    the mixin in the class definition, e.g. ``class MyTask(Task, ConfidenceTaskMixin)``,
    and do not need to implement additional methods. My specifying the mixin, it will be
    assured that your task gets the correct model outputs.
-   See the individual mixin classes, or the :py:class:`shifthappens.models.models.base.ModelResult`
+   See the individual mixin classes, or the :py:class:`ModelResult <shifthappens.models.base.ModelResult>`
    class for further details.
-3. Register your class to the benchmark using the :py:func`shifthappens.benchmark.register_task`
+3. Register your class to the benchmark using the :py:func:`register_task <shifthappens.benchmark.register_task>`
    decorator, along with a name and data path for your benchmark. 
 """
 
@@ -85,7 +85,8 @@ class Task(ABC):
     which models your task is compatible to (e.g., specify that your task needs labels, or confidences from
     a model).
 
-    To include the task in the benchmark, use the :py:func:`shifthappens.benchmark.register_task` decorator.
+    To include the task in the benchmark, use the :py:func:`register_task <shifthappens.benchmark.register_task>`
+    decorator.
     """
 
     data_root: str
@@ -179,9 +180,10 @@ class Task(ABC):
         """Prepare a dataloader for just the images (i.e. no labels, etc.) which will be passed to the model
         before the actual evaluation. This allows models to, e.g., run unsupervised domain adaptation techniques.
 
-        If intended, the implementation of this function should call the :py:func:`shifthappens.models.model.Model.prepare`
-        function and pass (parts) of the data through a data loader. The model could potentially use this data for
-        test-time adaptation, calibration, or orther purposes.
+        If intended, the implementation of this function should call the
+        :py:meth:`Model.prepare <shifthappens.models.base.Model.prepare>` function and pass (parts) of the data
+        through a data loader. The model could potentially use this data for
+        test-time adaptation, calibration, or other purposes.
 
         Note that this function could also be used to create domain shift for such adaptation methods, by passing
         a different dataloader in this prepare function than used during :py:meth:`evaluate`.

@@ -84,6 +84,7 @@ class Model(abc.ABC):
     """Model base class."""
 
     def prepare(self, dataloader: DataLoader):
+        """If the model uses unsupervised adaptation mechanisms, it will run those."""
         pass
 
     def predict(

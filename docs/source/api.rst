@@ -21,7 +21,7 @@ adaptation, and out-of-distribution detection communities together to work on a 
 **broad-scale benchmark** that tests diverse aspects of current computer
 vision models and guides the way towards the next generation of models.
 
-Submissions to the workshop will be comprised of an addition of a ``Task``, which will be used to test the performance 
+Submissions to the workshop will be comprised of an addition of a :py:class:`Task <shifthappens.tasks.base.Task>`, which will be used to test the performance
 of various computer vision models on a new evaluation task you specify with your submission. Below we provide documentation
 for the ``shifthappens`` API.
 
@@ -34,6 +34,11 @@ Task implementations
 --------------------
 
 .. automodule:: shifthappens.tasks.base
+   :members:
+   :show-inheritance:
+   :private-members:
+
+.. automodule:: shifthappens.tasks.task_result
    :members:
    :show-inheritance:
    :private-members:
@@ -56,5 +61,12 @@ Model implementations
    :show-inheritance:
 
 .. automodule:: shifthappens.models.torchvision
+   :members:
+   :show-inheritance:
+
+
+Benchmark
+---------
+.. automodule:: shifthappens.benchmark
    :members:
    :show-inheritance:
