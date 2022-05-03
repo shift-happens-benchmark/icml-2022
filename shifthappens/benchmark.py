@@ -1,3 +1,13 @@
+"""Base functions to register new tasks to the benchmark and evaluate models.
+
+To register add a new task decorate a task class inherited from
+``shifthappens.base.Task`` with ``shifthappens.benchmark.register_task``
+function.
+
+To evaluate model on all the registered tasks run
+``shifthappens.evaluate_model``.
+"""
+
 import dataclasses
 import os
 from typing import Dict
@@ -13,7 +23,7 @@ from shifthappens.task_data.task_registration import TaskRegistration
 from shifthappens.tasks.base import Task
 from shifthappens.tasks.task_result import TaskResult
 
-__all__ = ["get_registered_tasks", "evaluate_model", "register_task"]
+__all__ = ["evaluate_model", "register_task", "get_registered_tasks"]
 __registered_tasks: Set[TaskRegistration] = set()
 
 
@@ -28,14 +38,25 @@ def get_task_registrations() -> Tuple[TaskRegistration, ...]:
 
 
 def register_task(*, name: str, relative_data_folder: str, standalone: bool = True):
-    """Register as task as part of the benchmark.
+    """Register Task class as task as part of the benchmark.
 
     Args:
-    name (str): Name of the task (can contain spaces or special characters).
-    relative_data_folder (str): Name of the folder in which the data for this dataset will be saved for this task
-        relative to the root folder of the benchmark.
-    standalone (bool): Is this task meaningful as a stand-alone task or
-        will this only be relevant as a part of a collection of tasks?
+        name (str): Name of the task (can contain spaces or special characters).
+        relative_data_folder (str): Name of the folder in which the data for
+            this dataset will be saved for this task relative to the root folder
+            of the benchmark.
+        standalone (bool): Is this task meaningful as a stand-alone task or
+            will this only be relevant as a part of a collection of tasks?
+
+    Examples:
+        >>> @sh_benchmark.register_task(
+                name="CustomTask",
+                relative_data_folder="path_to_store_task_data",
+                standalone=True
+            )
+        >>> @dataclasses.dataclass
+        >>> class CustomTaskClass(Task):
+                ...
     """
 
     assert sh_utils.is_pathname_valid(
@@ -89,14 +110,16 @@ def evaluate_model(
     model: Model, data_root: str
 ) -> Dict[TaskRegistration, Optional[TaskResult]]:
     """
-    Runs all tasks of the benchmarks for the supplied model.
+    Runs all registered tasks of the benchmark
+    which are supported by the supplied model.
 
     Args:
-    model (Model): Model to evaluate.
-    data_root (str): Folder where individual tasks can store their data.
+        model (shifthappens.models.Model): Model to evaluate.
+        data_root (str): Folder where individual tasks can store their data.
 
-    Returns (dict): Associates ``shifthappens.benchmark.TaskMetadata``s
-        with the respective ``shifthappens.tasks.task_result.TaskResult``s.
+    Returns:
+        Associates ``shifthappens.benchmark.TaskMetadata``s with the respective
+        ``shifthappens.tasks.task_result.TaskResult``s.
 
     """
 

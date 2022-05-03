@@ -116,7 +116,7 @@ class Task(ABC):
     def iterate_flavours(cls, **kwargs) -> Iterator["Task"]:
         """Iterate over all possible task configurations,
         i.e. different settings of parameter fields. Parameters should be defined
-        with ``shifthappens.task.base.parameter``, where option argument
+        with ``shifthappens.task.base.parameter``, where ``options`` argument
         corresponds to possible configurations of particular parameter."""
         assert hasattr(
             cls, shifthappens.task_data.task_metadata._TASK_METADATA_FIELD

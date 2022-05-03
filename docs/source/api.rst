@@ -26,6 +26,13 @@ adaptation, and out-of-distribution detection communities together to work on a 
 **broad-scale benchmark** that tests diverse aspects of current computer
 vision models and guides the way towards the next generation of models.
 
+Benchmark
+____________________
+
+.. automodule:: shifthappens.benchmark
+   :members:
+   :show-inheritance:
+   :noindex:
 
 Model implementations
 ---------------------
