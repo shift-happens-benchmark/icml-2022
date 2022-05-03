@@ -192,14 +192,17 @@ class Task(ABC):
     def _evaluate(self, model: sh_models.Model) -> TaskResult:
         """Evaluate the task and return a dictionary with the calculated metrics.
 
-        model: The passed model implementents a ``predict`` function returning an iterator
-        over :py:meth:`shifthappens.models.base.ModelResult`. Each result contains predictions such as
-        the class labels assigned to the images, confidences, etc., based on which mixins were
-        implemented by this task to request these prediction outputs.
+        Args:
+            model: The passed model implementents a ``predict`` function returning an iterator
+            over :py:meth:`shifthappens.models.base.ModelResult`. Each result contains predictions such as
+            the class labels assigned to the images, confidences, etc., based on which mixins were
+            implemented by this task to request these prediction outputs.
 
-        This function should return a :py:class:`shifthappens.tasks.task_result.TaskResult` which can
-        contain an arbitrary dictionary of metrics, along with a specifiction of which of these
-        metrics are main results/summary metrics for the task.
+        Returns:
+            :py:class:`shifthappens.tasks.task_result.TaskResult`: The results of the task in the
+            form of a :py:class:`shifthappens.tasks.task_result.TaskResult` containing an 
+            arbitrary dictionary of metrics, along with a specifiction of which of these
+            metrics are main results/summary metrics for the task.
         """
         raise NotImplementedError()
 
