@@ -54,3 +54,7 @@ Model implementations
 .. automodule:: shifthappens.models.base
    :members:
    :show-inheritance:
+
+.. automodule:: shifthappens.models.torchvision
+   :members:
+   :show-inheritance:
