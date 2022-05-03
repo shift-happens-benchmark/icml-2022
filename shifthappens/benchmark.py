@@ -31,11 +31,11 @@ def register_task(*, name: str, relative_data_folder: str, standalone: bool = Tr
     """Register as task as part of the benchmark.
 
     Args:
-    name (str): Name of the task (can contain spaces or special characters).
-    relative_data_folder (str): Name of the folder in which the data for this dataset will be saved for this task
-        relative to the root folder of the benchmark.
-    standalone (bool): Is this task meaningful as a stand-alone task or
-        will this only be relevant as a part of a collection of tasks?
+        name (str): Name of the task (can contain spaces or special characters).
+        relative_data_folder (str): Name of the folder in which the data for this dataset will be saved for this task
+            relative to the root folder of the benchmark.
+        standalone (bool): Is this task meaningful as a stand-alone task or
+            will this only be relevant as a part of a collection of tasks?
     """
 
     assert sh_utils.is_pathname_valid(
@@ -92,11 +92,12 @@ def evaluate_model(
     Runs all tasks of the benchmarks for the supplied model.
 
     Args:
-    model (Model): Model to evaluate.
-    data_root (str): Folder where individual tasks can store their data.
+        model (Model): Model to evaluate.
+        data_root (str): Folder where individual tasks can store their data.
 
-    Returns (dict): Associates ``shifthappens.benchmark.TaskMetadata``s
-        with the respective ``shifthappens.tasks.task_result.TaskResult``s.
+    Returns (dict):
+        Associates :py:class:`shifthappens.task_data.task_metadata.TaskMetadata` objects
+        with the respective :py:class:`shifthappens.tasks.task_result.TaskResult` values.
 
     """
 
