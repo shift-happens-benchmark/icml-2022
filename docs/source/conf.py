@@ -48,7 +48,15 @@ extensions = [
     "sphinx.ext.napoleon",
     "sphinx_autodoc_typehints",
     "sphinx_copybutton",
+    "sphinx.ext.intersphinx",
 ]
+
+intersphinx_mapping = {
+    "numpy": ("http://docs.scipy.org/doc/numpy/", None),
+    "python": ("https://docs.python.org/3", None),
+}
+
+# napoleon_use_param = True
 
 coverage_show_missing_items = True
 
@@ -57,6 +65,11 @@ copybutton_prompt_text = r">>> |\$ "
 copybutton_prompt_is_regexp = True
 copybutton_only_copy_prompt_lines = True
 autodoc_member_order = "bysource"
+
+typehints_defaults = "comma"
+always_document_param_types = True
+simplify_optional_unions = True
+
 
 templates_path = ["_templates"]
 

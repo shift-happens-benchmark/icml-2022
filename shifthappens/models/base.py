@@ -1,11 +1,11 @@
 """Base classes and helper functions for adding models to the benchmark.
 
 To add a new model, implement a new wrapper class inheriting from
-``shifthappens.base.Model``, and from any of the Mixins defined
+:py:class:`shifthappens.models.base.Model`, and from any of the Mixins defined
 in this module.
 
-Model results should be converted to numpy arrays, and packed into an
-``shifthappens.base.ModelResult`` instance.
+Model results should be converted to :py:class:`numpy.ndarray` objects, and packed into an
+:py:class:`shifthappens.models.base.ModelResult` instance.
 """
 
 import abc
@@ -25,21 +25,21 @@ class ModelResult:
     regarding the ordering of labels.
 
     Args:
-        class_labels: ``(N, k)`` array containing top-k predictions for
+        class_labels: ``(N, k)``, top-k predictions for
             each sample in the batch. Choice of ``k`` can be selected by
             the user, and potentially influences the type of accuracy
             based benchmarks that the model can be run on. For standard
             ImageNet, ImageNet-C evaluation, choose at least ``k=5``.
-        confidences: optional, ``(N, 1000)`` confidences for each class.
+        confidences: ``(N, 1000)``, confidences for each class.
             Standard PyTorch ImageNet class label order is expected for
             this array. Scores can be in the range ``-inf`` to ``inf``.
-        uncertainties: optional, ``(N, 1000)``, uncertainties for the
+        uncertainties: ``(N, 1000)``, uncertainties for the
             different class predictions. Different from the ``confidences``,
             this is a measure of certainty of the given ``confidences`` and
             common e.g. in Bayesian Deep neural networks.
-        ood_scores: optional, ``(N,)``, score for interpreting the sample
+        ood_scores: ``(N,)``, score for interpreting the sample
             as an out-of-distribution class, in the range ``-inf`` to ``inf``.
-        features: optional, ``(N, d)``, where ``d`` can be arbitrary, feature
+        features: ``(N, d)``, where ``d`` can be arbitrary, feature
             representation used to arrive at the given predictions.
     """
 
