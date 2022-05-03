@@ -200,7 +200,7 @@ class Task(ABC):
 
         Returns:
             :py:class:`shifthappens.tasks.task_result.TaskResult`: The results of the task in the
-            form of a :py:class:`shifthappens.tasks.task_result.TaskResult` containing an 
+            form of a :py:class:`shifthappens.tasks.task_result.TaskResult` containing an
             arbitrary dictionary of metrics, along with a specifiction of which of these
             metrics are main results/summary metrics for the task.
         """
