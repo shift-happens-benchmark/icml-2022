@@ -121,6 +121,9 @@ def evaluate_model(
         Associates ``shifthappens.benchmark.TaskMetadata``s with the respective
         ``shifthappens.tasks.task_result.TaskResult``s.
 
+    Examples:
+        >>> model = CustomModel() # model inherited from shifthappens.models.base.Model and ModelMixin's
+        >>> shifthappens.benchmark.evaluate_model(model, "path_to_store_tasks_data")
     """
 
     results = dict()
