@@ -26,12 +26,23 @@ T = TypeVar("T")
 
 def parameter(default: T, options: Tuple[T, ...], description: Optional[str] = None):
     """Register a task's parameter. Setting multiple options here allows automatically
-    creating different flavours of the test.
+    creating different flavours of the task.
 
     Args:
         default (T): default value
         options (Tuple(T)): allowed options
         description (str): short description
+
+    Examples:
+        >>> import dataclasses
+        >>> from shifthappens.tasks.base import Task
+        >>> @dataclasses.dataclass
+        >>> class CustomTask(Task):
+                max_batch_size: Optional[int] = parameter(
+                    default=typing.cast(Optional[int], None),
+                    options=(32, 64, 128, None), #None corresponds to dataset-sized batch
+                    description="maximum size of batches fed to the model during evaluation",
+                    )
     """
     assert len(options) > 0
     return dataclasses.field(
