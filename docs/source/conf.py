@@ -57,7 +57,8 @@ intersphinx_mapping = {
     "python": ("https://docs.python.org/3", None),
 }
 
-# napoleon_use_param = True
+# ignore link checks for generic types/TypeVars
+nitpick_ignore = [('py:class', 'T')]
 
 coverage_show_missing_items = True
 
