@@ -58,7 +58,7 @@ intersphinx_mapping = {
 }
 
 # ignore link checks for generic types/TypeVars
-nitpick_ignore = [('py:class', 'T')]
+nitpick_ignore = [("py:class", "T")]
 
 coverage_show_missing_items = True
 
