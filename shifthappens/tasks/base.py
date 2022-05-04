@@ -31,6 +31,7 @@ import shifthappens.utils as sh_utils
 from shifthappens.data.base import DataLoader
 from shifthappens.tasks.task_result import TaskResult
 
+#: A generic representing arbitrary types.
 T = TypeVar("T")
 
 
@@ -39,9 +40,9 @@ def parameter(default: T, options: Tuple[T, ...], description: Optional[str] = N
     creating different flavours of the test.
 
     Args:
-        default (T): default value
-        options (Tuple(T)): allowed options
-        description (str): short description
+        default: default value
+        options: allowed options
+        description: short description
     """
     assert len(options) > 0
     return dataclasses.field(
@@ -154,7 +155,11 @@ class Task(ABC):
 
     def evaluate(self, model: sh_models.Model) -> Optional[TaskResult]:
         """Validates that the model is compatible with the task and then evaluates the model's
-        performance using the _evaluate function of this class."""
+        performance using the :py:meth:`_evaluate` function of this class.
+
+        Args:
+            model: The model to evaluate. See :py:meth:`_evaluate` for more details.
+        """
         if issubclass(type(self), ConfidenceTaskMixin) and not issubclass(
             type(model), sh_models.ConfidenceModelMixin
         ):
@@ -196,9 +201,9 @@ class Task(ABC):
 
         Args:
             model: The passed model implementents a ``predict`` function returning an iterator
-            over :py:meth:`shifthappens.models.base.ModelResult`. Each result contains predictions such as
-            the class labels assigned to the images, confidences, etc., based on which mixins were
-            implemented by this task to request these prediction outputs.
+                over :py:meth:`shifthappens.models.base.ModelResult`. Each result contains predictions such as
+                the class labels assigned to the images, confidences, etc., based on which mixins were
+                implemented by this task to request these prediction outputs.
 
         Returns:
             :py:class:`shifthappens.tasks.task_result.TaskResult`: The results of the task in the

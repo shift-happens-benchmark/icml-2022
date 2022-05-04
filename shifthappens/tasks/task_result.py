@@ -10,7 +10,7 @@ class TaskResult:
     At least one of these metrics must be references as a summary metric.
 
     Args:
-        summary_metrics (dict): Associates ``shifthappens.tasks.metrics.Metric``s
+        summary_metrics (dict): Associates :py:class:`shifthappens.tasks.metrics.Metric` values
             to the name of metrics calculated by the task.
         **metrics (float, int): Metrics' names and their values.
     """

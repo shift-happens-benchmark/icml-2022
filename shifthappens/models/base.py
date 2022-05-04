@@ -90,17 +90,17 @@ class Model(abc.ABC):
     def predict(
         self, input_dataloader: DataLoader, targets: PredictionTargets
     ) -> Iterator[ModelResult]:
-        """
+        """Yield all the predictions of the model for all data samples contained in the data loader
+
         Args:
-            input_dataloader (DataLoader): Dataloader producing batches of data.
-            targets (PredictionTargets): Indicates which kinds of targets should be predicted.
+            input_dataloader: Dataloader producing batches of data.
+            targets: Indicates which kinds of targets should be predicted.
 
         Returns:
             Prediction results for the given batch. Depending in the target arguments this
             includes the predicted labels, class confidences, class uncertainties, ood scores,
-            and image features, all as ``np.array``s.
+            and image features, all as :py:class:`numpy.ndarray` objects.
         """
-
         if targets.class_labels:
             assert issubclass(type(self), LabelModelMixin)
         if targets.confidences:

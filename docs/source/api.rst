@@ -43,6 +43,11 @@ Task implementations
    :show-inheritance:
    :private-members:
 
+.. automodule:: shifthappens.tasks.metrics
+   :members:
+   :show-inheritance:
+   :private-members:
+
 Data loading
 ------------
 .. automodule:: shifthappens.data.base
@@ -68,5 +73,15 @@ Model implementations
 Benchmark
 ---------
 .. automodule:: shifthappens.benchmark
+   :members:
+   :show-inheritance:
+
+Storing tasks within the benchmark
+----------------------------------
+.. automodule:: shifthappens.task_data.task_metadata
+   :members:
+   :show-inheritance:
+
+.. automodule:: shifthappens.task_data.task_registration
    :members:
    :show-inheritance:
