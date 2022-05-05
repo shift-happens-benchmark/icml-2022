@@ -1,4 +1,5 @@
-"""Wrappers for PyTorch datasets such that they can be used as datasets for the benchmark."""
+"""Wrappers for PyTorch datasets such that they can be used as datasets
+for the benchmark."""
 import collections
 import typing
 from typing import Sequence
@@ -25,7 +26,8 @@ def _convert_torch_value(value):
 
 
 class TorchDataset(Dataset):
-    """Wraps a torch iterable dataset (i.e. torch.utils.data.IterableDataset)."""
+    """Wraps a torch iterable dataset
+    (i.e. :py:class:`torch.utils.data.IterableDataset`)."""
 
     def __init__(self, torch_dataset: ch_data.IterableDataset):
         self.torch_dataset = torch_dataset
@@ -40,7 +42,8 @@ class TorchDataset(Dataset):
 
 
 class IndexedTorchDataset(IndexedDataset):
-    """Wraps a torch map-style dataset (i.e. torch.utils.data.Dataset)."""
+    """Wraps a torch map-style dataset
+    (i.e. :py:class:`torch.utils.data.Dataset`)."""
 
     def __init__(self, torch_dataset: ch_data.Dataset):
         self.torch_dataset = torch_dataset
@@ -54,7 +57,8 @@ class IndexedTorchDataset(IndexedDataset):
 
 
 class ImagesOnlyTorchDataset(ch_data.Dataset):
-    """Wraps a torch map-style dataset returning images and labels such that only the images are returned."""
+    """Wraps a torch map-style dataset returning images and labels such that
+    only the images are returned."""
 
     def __init__(self, dataset: ch_data.Dataset):
         assert hasattr(dataset, "__getitem__") and hasattr(

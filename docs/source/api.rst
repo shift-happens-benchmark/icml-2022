@@ -32,7 +32,6 @@ ____________________
 .. automodule:: shifthappens.benchmark
    :members:
    :show-inheritance:
-   :noindex:
 
 Model implementations
 ---------------------
@@ -57,7 +56,6 @@ Task implementations
 .. automodule:: shifthappens.tasks.task_result
    :members:
    :show-inheritance:
-   :noindex:
    :private-members:
 
 Data loading

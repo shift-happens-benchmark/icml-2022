@@ -4,8 +4,8 @@ To add a new model, implement a new wrapper class inheriting from
 :py:class:`shifthappens.models.base.Model`, and from any of the Mixins defined
 in this module.
 
-Model results should be converted to :py:class:`numpy.ndarray` objects, and packed into an
-:py:class:`shifthappens.models.base.ModelResult` instance.
+Model results should be converted to :py:class:`numpy.ndarray` objects, and
+packed into an :py:class:`shifthappens.models.base.ModelResult` instance.
 """
 
 import abc
@@ -92,12 +92,14 @@ class Model(abc.ABC):
         """
         Args:
             input_dataloader (DataLoader): Dataloader producing batches of data.
-            targets (PredictionTargets): Indicates which kinds of targets should be predicted.
+            targets (PredictionTargets): Indicates which kinds of targets should
+                be predicted.
 
         Returns:
-            Prediction results for the given batch. Depending in the target arguments this
-            includes the predicted labels, class confidences, class uncertainties, ood scores,
-            and image features, all as ``np.array``s.
+            Prediction results for the given batch. Depending on the target
+            arguments this includes the predicted labels, class confidences,
+            class uncertainties, ood scores, and image features, all as
+            :py:class:`numpy.ndarray` objects.
         """
 
         if targets.class_labels:
@@ -122,13 +124,14 @@ class Model(abc.ABC):
 
         Args:
             inputs (np.ndarray): Batch of images.
-            targets (PredictionTargets): Indicates which kinds of targets should be predicted.
+            targets (PredictionTargets): Indicates which kinds of targets should
+            be predicted.
 
         Returns:
             Yields prediction results for all batches yielded by the dataloader.
-            Depending in the target arguments the model results may include the
+            Depending on the target arguments the model results may include the
             predicted labels, class confidences, class uncertainties, ood scores,
-            and image features, all as ``np.array``s.
+            and image features, all as :py:class:`numpy.ndarray` objects.
         """
         raise NotImplementedError()
 

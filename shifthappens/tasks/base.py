@@ -1,10 +1,10 @@
 """Base classes and helper functions for adding tasks to the benchmark.
 
 To add a new task, implement a new wrapper class inheriting
-from :py:class:`shifthappens.base.Task`, and from any of the Mixins defined in this module.
+from :py:class:`shifthappens.tasks.base.Task`, and from any of the Mixins defined in this module.
 
 Model results should be stored as a dictionary,
-and packed into an :py:class:`shifthappens.base.TaskResult` instance.
+and packed into an :py:class:`shifthappens.tasks.task_result.TaskResult` instance.
 """
 
 import dataclasses
@@ -116,7 +116,7 @@ class Task(ABC):
     def iterate_flavours(cls, **kwargs) -> Iterator["Task"]:
         """Iterate over all possible task configurations,
         i.e. different settings of parameter fields. Parameters should be defined
-        with :py:meth:`shifthappens.task.base.parameter`, where ``options`` argument
+        with :py:meth:`shifthappens.tasks.base.parameter`, where ``options`` argument
         corresponds to possible configurations of particular parameter."""
         assert hasattr(
             cls, shifthappens.task_data.task_metadata._TASK_METADATA_FIELD
@@ -152,7 +152,7 @@ class Task(ABC):
         the model's performance using the _evaluate function of this class.
 
         Args:
-            model (shifthappens.base.Model): A model inherited from :py:class:`shifthappens.base.Model`.
+            model (shifthappens.models.base.Model): A model inherited from :py:class:`shifthappens.models.base.Model`.
 
         """
         if issubclass(type(self), ConfidenceTaskMixin) and not issubclass(
@@ -177,8 +177,9 @@ class Task(ABC):
 
     @abstractmethod
     def _prepare_dataloader(self) -> Optional[DataLoader]:
-        """Prepares a dataloader for just the images (i.e. no labels, etc.) which will be passed to the model
-        before the actual evaluation. This allows models to, e.g., run unsupervised domain adaptation techniques."""
+        """Prepares a dataloader for just the images (i.e. no labels, etc.)
+        which will be passed to the model before the actual evaluation.
+        This allows models to, e.g., run unsupervised domain adaptation techniques."""
         raise NotImplementedError()
 
     @abstractmethod

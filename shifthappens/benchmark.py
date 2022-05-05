@@ -1,11 +1,11 @@
 """Base functions to register new tasks to the benchmark and evaluate models.
 
 To register add a new task decorate a task class inherited from
-``shifthappens.base.Task`` with ``shifthappens.benchmark.register_task``
+:py:class:`shifthappens.tasks.base.Task` with :py:meth:`shifthappens.benchmark.register_task`
 function.
 
 To evaluate model on all the registered tasks run
-``shifthappens.evaluate_model``.
+:py:meth:`shifthappens.benchmark.evaluate_model`.
 """
 
 import dataclasses
@@ -28,7 +28,12 @@ __registered_tasks: Set[TaskRegistration] = set()
 
 
 def get_registered_tasks() -> Tuple[Type[Task], ...]:
-    """All tasks currently registered as part of the benchmark."""
+    """All tasks currently registered as part of the benchmark.
+
+    Returns:
+        A tuple of all currently registered tasks as part of the benchmark. This
+        tuple used for task iteration in :py:meth:`shifthappens.benchmark.evaluate_model`.
+    """
     return tuple([x.cls for x in __registered_tasks])
 
 
@@ -45,8 +50,9 @@ def register_task(*, name: str, relative_data_folder: str, standalone: bool = Tr
         relative_data_folder (str): Name of the folder in which the data for
             this dataset will be saved for this task relative to the root folder
             of the benchmark.
-        standalone (bool): Is this task meaningful as a stand-alone task or
-            will this only be relevant as a part of a collection of tasks?
+        standalone (bool): Boolean which represents if this task meaningful as a
+            standalone task or will this only be relevant as a part of a
+            collection of tasks.
 
     Examples:
         >>> @sh_benchmark.register_task(
@@ -118,8 +124,8 @@ def evaluate_model(
         data_root (str): Folder where individual tasks can store their data.
 
     Returns:
-        Associates ``shifthappens.benchmark.TaskMetadata``s with the respective
-        ``shifthappens.tasks.task_result.TaskResult``s.
+        Associates :py:class:`shifthappens.task_data.task_metadata.TaskMetadata` with the
+        respective :py:class:`shifthappens.tasks.task_result.TaskResult`.
 
     Examples:
         >>> model = CustomModel() # model inherited from shifthappens.models.base.Model and ModelMixin's

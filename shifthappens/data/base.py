@@ -70,7 +70,8 @@ class DataLoader:
 def shuffle_data(
     *, data: Union[List[np.ndarray], np.ndarray], seed: int
 ) -> Union[List[np.ndarray], np.ndarray]:
-    """Randomly shuffles an numpy array/list of numpy arrays with a fixed random seed."""
+    """Randomly shuffles an :py:class:`numpy.ndarray`/list of
+    :py:class:`numpy.ndarray` objects with a fixed random seed."""
     undo_list = False
     if not isinstance(data, List):
         undo_list = True
