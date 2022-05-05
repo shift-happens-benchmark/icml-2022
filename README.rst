@@ -55,6 +55,8 @@ on robustness datasets. You can think about examples/scenarios that might be of 
 applications just as well as purely academic examples - as long as the new tasks/datasets highlight 
 an interesting behavior of existing models, it fits into this package! 
 
+New tasks should be added to the ``shifthappens.tasks`` module.
+
 Please refer to the `API documentation <https://shift-happens-benchmark.github.io/api.html>`_ for 
 more details, as well as minimal examples. Moreover, inside the `examples <examples>`_ folder you can 
 find implementations example implementations of tasks for the benchmark.
