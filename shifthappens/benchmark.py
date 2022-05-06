@@ -43,7 +43,8 @@ def get_task_registrations() -> Tuple[TaskRegistration, ...]:
 
 
 def register_task(*, name: str, relative_data_folder: str, standalone: bool = True):
-    """Register Task class as task as part of the benchmark.
+    """Registers a task class inherited from :py:class:`shifthappens.tasks.base.Task`
+    as task as part of the benchmark.
 
     Args:
         name (str): Name of the task (can contain spaces or special characters).
