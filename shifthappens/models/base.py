@@ -84,12 +84,14 @@ class Model(abc.ABC):
     """Model base class."""
 
     def prepare(self, dataloader: DataLoader):
+        """If the model uses unsupervised adaptation mechanisms, it will run those."""
         pass
 
     def predict(
         self, input_dataloader: DataLoader, targets: PredictionTargets
     ) -> Iterator[ModelResult]:
-        """
+        """Yield all the predictions of the model for all data samples contained in the data loader
+
         Args:
             input_dataloader (DataLoader): Dataloader producing batches of data.
             targets (PredictionTargets): Indicates which kinds of targets should

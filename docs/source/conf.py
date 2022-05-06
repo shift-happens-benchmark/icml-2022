@@ -53,10 +53,12 @@ extensions = [
 
 intersphinx_mapping = {
     "numpy": ("http://docs.scipy.org/doc/numpy/", None),
+    "torch": ("https://pytorch.org/docs/stable/", None),
     "python": ("https://docs.python.org/3", None),
 }
 
-# napoleon_use_param = True
+# ignore link checks for generic types/TypeVars
+nitpick_ignore = [("py:class", "T")]
 
 coverage_show_missing_items = True
 
@@ -125,3 +127,5 @@ html_scaled_image_link = False
 # so a file named "default.css" will overwrite the builtin "default.css".
 html_static_path = ["_static"]
 html_css_files = ["css/custom.css"]
+
+add_function_parentheses = False
