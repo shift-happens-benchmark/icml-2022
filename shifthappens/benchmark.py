@@ -56,7 +56,7 @@ def register_task(*, name: str, relative_data_folder: str, standalone: bool = Tr
             collection of tasks.
 
     Examples:
-        >>> @sh_benchmark.register_task(
+        >>> @shifthappens.benchmark.register_task(
                 name="CustomTask",
                 relative_data_folder="path_to_store_task_data",
                 standalone=True
@@ -121,7 +121,7 @@ def evaluate_model(
     which are supported by the supplied model.
 
     Args:
-        model (shifthappens.models.Model): Model to evaluate.
+        model (shifthappens.models.base.Model): Model to evaluate.
         data_root (str): Folder where individual tasks can store their data.
 
     Returns:
@@ -129,7 +129,11 @@ def evaluate_model(
         respective :py:class:`shifthappens.tasks.task_result.TaskResult`.
 
     Examples:
-        >>> model = CustomModel() # model inherited from shifthappens.models.base.Model and ModelMixin's
+        >>> import shifthappens.benchmark
+        >>> from shifthappens.models.torchvision import resnet18
+        >>> # import existing model or create a custom one inherited from
+        >>> # shifthappens.models.base.Model and ModelMixin's
+        >>> model = resnet18()
         >>> shifthappens.benchmark.evaluate_model(model, "path_to_store_tasks_data")
     """
 

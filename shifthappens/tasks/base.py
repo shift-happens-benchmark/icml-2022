@@ -37,26 +37,23 @@ T = TypeVar("T")
 
 def parameter(default: T, options: Tuple[T, ...], description: Optional[str] = None):
     """Register a task's parameter. Setting multiple options here allows automatically
-    creating different flavours of the task.
+    creating different flavours of the task. Use this field for storing values of hyperparameter,
+    if you want to run task with the different values for the hyperparameter
 
     Args:
-        default: default value
-        options: allowed options
-        description: short description
-        default (T): default value
-        options (Tuple(T)): allowed options
-        description (str): short description
+        default (T): default value.
+        options (Tuple(T)): allowed options.
+        description (str): short description.
 
     Examples:
-        >>> import dataclasses
-        >>> from shifthappens.tasks.base import Task
         >>> @dataclasses.dataclass
         >>> class CustomTask(Task):
-                max_batch_size: Optional[int] = parameter(
-                    default=typing.cast(Optional[int], None),
-                    options=(32, 64, 128, None), #None corresponds to dataset-sized batch
-                    description="maximum size of batches fed to the model during evaluation",
-                    )
+        >>>     max_batch_size: Optional[int] = shifthappens.tasks.base.parameter(
+        >>>     default=typing.cast(Optional[int], None),
+        >>>     options=(32, 64, 128, None), #None corresponds to dataset-sized batch
+        >>>     description="maximum size of batches fed to the model during evaluation",
+        >>>     )
+                ...
     """
     assert len(options) > 0
     return dataclasses.field(
@@ -67,11 +64,19 @@ def parameter(default: T, options: Tuple[T, ...], description: Optional[str] = N
 
 
 def variable(value: T):
-    """Creates a non-parametric variable for a task.
+    """Creates a non-parametric variable for a task
+    which will not passed to __init__. Use it store constants.
 
     Args:
-        value (T): value of the constant
+        value (T): value of the constant.
+
+    Examples:
+        >>> @dataclasses.dataclass
+        >>> class CustomTask(Task):
+        >>>     constant: str = shifthappens.tasks.base.variable("your constant")
+                ...
     """
+
     return dataclasses.field(
         default_factory=lambda: value,
         init=False,
@@ -82,6 +87,16 @@ def variable(value: T):
 def abstract_variable():
     """Marks a variable as abstract such that a child class needs to override it
     with a non-abstract variable.
+
+    Examples:
+        >>> @dataclasses.dataclass
+        >>> class CustomTask(Task):
+        >>>     constant: str = shifthappens.tasks.base.abstract_variable()
+                ...
+        >>> @dataclasses.dataclass
+        >>> class InheritedTask(CustomTask):
+        >>>     constant: str = shifthappens.tasks.base.variable("your constant")
+                ...
     """
 
     return dataclasses.field(
@@ -102,6 +117,11 @@ class Task(ABC):
 
     To include the task in the benchmark, use the :py:func:`register_task <shifthappens.benchmark.register_task>`
     decorator.
+
+    Args:
+        data_root: Folder where individual tasks can store their data.
+            This field is initialized with the value passed to
+            :py:meth:`shifthappens.benchmark.evaluate_model`.
     """
 
     data_root: str
@@ -167,7 +187,25 @@ class Task(ABC):
 
     @abstractmethod
     def setup(self):
-        """Set the task up, i.e., download, load and prepare the dataset."""
+        """Set the task up, i.e., download, load and prepare the dataset.
+
+        Examples:
+            >>> # imagenet_r example
+            >>> @shifthappens.benchmark.register_task(
+            >>> ...
+            >>> )
+            >>> @dataclasses.dataclass
+            >>> class ImageNetR(Task):
+            >>>     ...
+            >>>     def setup(self):
+            >>>         dataset_folder = os.path.join(self.data_root, "imagenet-r")
+            >>>         if not os.path.exists(dataset_folder): # download data
+            >>>             for file_name, url, md5 in self.resources:
+            >>>                 sh_utils.download_and_extract_archive(
+            >>>                     url, self.data_root, md5, file_name
+            >>>                 )
+            >>>         ...
+        """
         pass
 
     def evaluate(self, model: sh_models.Model) -> Optional[TaskResult]:
@@ -199,16 +237,28 @@ class Task(ABC):
 
     @abstractmethod
     def _prepare_dataloader(self) -> Optional[DataLoader]:
-        """Prepare a dataloader for just the images (i.e. no labels, etc.) which will be passed to the model
-        before the actual evaluation. This allows models to, e.g., run unsupervised domain adaptation techniques.
+        """Prepare a dataloader for just the images (i.e. no labels, etc.) which
+        will be passed to the model before the actual evaluation. This allows models
+        to, e.g., run unsupervised domain adaptation techniques.
 
         If intended, the implementation of this function should call the
-        :py:meth:`Model.prepare <shifthappens.models.base.Model.prepare>` function and pass (parts) of the data
-        through a data loader. The model could potentially use this data for
-        test-time adaptation, calibration, or other purposes.
+        :py:meth:`Model.prepare <shifthappens.models.base.Model.prepare>`
+        function and pass (parts) of the data through a data loader. The model
+        could potentially use this data for test-time adaptation, calibration,
+        or other purposes.
 
-        Note that this function could also be used to create domain shift for such adaptation methods, by passing
-        a different dataloader in this prepare function than used during :py:meth:`evaluate`.
+        Note that this function could also be used to create domain shift for such
+        adaptation methods, by passing a different dataloader in this prepare function
+        than used during :py:meth:`evaluate`.
+
+        Examples:
+            >>> @dataclasses.dataclass
+            >>> class CustomTask(Task):
+            >>>     ...
+            >>>     def _prepare_dataloader(self) -> DataLoader:
+            >>>         ...
+            >>>         return shifthappens.data.base.DataLoader(dataset, max_batch_size)
+            >>>     ...
         """
         raise NotImplementedError()
 

@@ -43,6 +43,7 @@ Task implementations
 .. automodule:: shifthappens.tasks.base
    :members:
    :show-inheritance:
+   :private-members:
 
 .. automodule:: shifthappens.tasks.task_result
    :members:
@@ -53,16 +54,6 @@ Task implementations
    :members:
    :show-inheritance:
    :private-members:
-
-Data loading
-------------
-.. automodule:: shifthappens.data.base
-   :members:
-   :show-inheritance:
-
-.. automodule:: shifthappens.data.torch
-   :members:
-   :show-inheritance:
 
 Model implementations
 ---------------------
@@ -75,10 +66,13 @@ Model implementations
    :members:
    :show-inheritance:
 
+Data loading
+------------
+.. automodule:: shifthappens.data.base
+   :members:
+   :show-inheritance:
 
-Benchmark
----------
-.. automodule:: shifthappens.benchmark
+.. automodule:: shifthappens.data.torch
    :members:
    :show-inheritance:
 
