@@ -63,8 +63,12 @@ Model implementations
    :show-inheritance:
    :private-members:
 
+.. automodule:: shifthappens.models.mixins
+   :members:
+   :show-inheritance:
+
 Model implementations from torchvision
-^^^^^^^^^^^^^^^^^^^^
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 .. automodule:: shifthappens.models.torchvision
    :members:

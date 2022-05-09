@@ -2,7 +2,7 @@
 
 To add a new model, implement a new wrapper class inheriting from
 :py:class:`shifthappens.models.base.Model`, and from any of the Mixins defined
-in this module.
+in :py:mod:`shifthappens.models.mixins`.
 
 Model results should be converted to :py:class:`numpy.ndarray` objects, and
 packed into an :py:class:`shifthappens.models.base.ModelResult` instance.
@@ -13,7 +13,7 @@ import dataclasses
 from typing import Iterator
 
 import numpy as np
-
+from shifthappens.models import mixins
 from shifthappens.data.base import DataLoader
 
 
@@ -99,9 +99,9 @@ class Model(abc.ABC):
     If your model uses unsupervised adaptation mechanisms override :py:meth:`prepare`
     as well.
 
-    Also make sure that your model is inherited from  at mixins from ``shifthappens.model.base``
-    corresponding to your model predictions type (e.g., :py:class:`LabelModelMixin` for labels
-    or :py:class:`ConfidenceModelMixin`  for confidences).
+    Also make sure that your model inherits from the mixins from :py:mod:`shifthappens.models.mixins`
+    corresponding to your model predictions type (e.g., :py:class:`LabelModelMixin <shifthappens.models.mixins.LabelModelMixin>` for labels
+    or :py:class:`ConfidenceModelMixin <shifthappens.models.mixins.ConfidenceModelMixin>` for confidences).
 
     """
 
@@ -132,15 +132,15 @@ class Model(abc.ABC):
         """
 
         if targets.class_labels:
-            assert issubclass(type(self), LabelModelMixin)
+            assert issubclass(type(self), mixins.LabelModelMixin)
         if targets.confidences:
-            assert issubclass(type(self), ConfidenceModelMixin)
+            assert issubclass(type(self), mixins.ConfidenceModelMixin)
         if targets.uncertainties:
-            assert issubclass(type(self), UncertaintyModelMixin)
+            assert issubclass(type(self), mixins.UncertaintyModelMixin)
         if targets.ood_scores:
-            assert issubclass(type(self), OODScoreModelMixin)
+            assert issubclass(type(self), mixins.OODScoreModelMixin)
         if targets.features:
-            assert issubclass(type(self), FeaturesModelMixin)
+            assert issubclass(type(self), mixins.FeaturesModelMixin)
 
         return self._predict(input_dataloader, targets)
 
@@ -162,33 +162,3 @@ class Model(abc.ABC):
             and image features, all as :py:class:`numpy.ndarray` objects.
         """
         raise NotImplementedError()
-
-
-class LabelModelMixin:
-    """Inherit from this class if your model returns predicted labels."""
-
-    pass
-
-
-class ConfidenceModelMixin:
-    """Inherit from this class if your model returns confidences."""
-
-    pass
-
-
-class UncertaintyModelMixin:
-    """Inherit from this class if your model returns uncertainties."""
-
-    pass
-
-
-class OODScoreModelMixin:
-    """Inherit from this class if your model returns ood scores."""
-
-    pass
-
-
-class FeaturesModelMixin:
-    """Inherit from this class if your model returns features."""
-
-    pass

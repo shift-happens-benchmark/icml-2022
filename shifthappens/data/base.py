@@ -11,7 +11,7 @@ import numpy as np
 
 class Dataset(abc.ABC):
     """
-    An abstract class representing an iterable dataset (https://pytorch.org/docs/stable/data.html#iterable-style-datasets).
+    An abstract class representing an `iterable dataset <https://pytorch.org/docs/stable/data.html#iterable-style-datasets>`_.
     Your iterable datasets should be inherited from this class.
     """
 
@@ -22,7 +22,7 @@ class Dataset(abc.ABC):
 
 class IndexedDataset(Dataset):
     """
-    A class representing a map-style dataset (https://pytorch.org/docs/stable/data.html#map-style-datasets).
+    A class representing a `map-style dataset <https://pytorch.org/docs/stable/data.html#map-style-datasets>`_.
     Your map-style datasets should be inherited from this class.
     """
 

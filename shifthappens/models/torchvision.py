@@ -9,12 +9,13 @@ import torchvision
 from torch import nn
 from torchvision.transforms import functional as tv_functional
 
+import shifthappens.models.mixins as sh_mixins
 import shifthappens.models.base as sh_models
 from shifthappens.data.base import DataLoader
 
 
 class __TorchModel(
-    sh_models.Model, sh_models.LabelModelMixin, sh_models.ConfidenceModelMixin
+    sh_models.Model, sh_mixins.LabelModelMixin, sh_mixins.ConfidenceModelMixin
 ):
     """Wraps a torchvision model.
 
