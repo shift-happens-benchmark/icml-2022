@@ -61,10 +61,12 @@ Model implementations
 .. automodule:: shifthappens.models.base
    :members:
    :show-inheritance:
+   :private-members:
 
 .. automodule:: shifthappens.models.torchvision
    :members:
    :show-inheritance:
+   :private-members:
 
 Data loading
 ------------

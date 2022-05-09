@@ -99,7 +99,7 @@ class Model(abc.ABC):
     If your model uses unsupervised adaptation mechanisms override :py:meth:`prepare`
     as well.
 
-    Also make sure that your model is inherited from  at mixins from :py:mod:`shifthappens.model.base`
+    Also make sure that your model is inherited from  at mixins from ``shifthappens.model.base``
     corresponding to your model predictions type (e.g., :py:class:`LabelModelMixin` for labels
     or :py:class:`ConfidenceModelMixin`  for confidences).
 
@@ -153,8 +153,7 @@ class Model(abc.ABC):
 
         Args:
             input_dataloader: Dataloader producing batches of data.
-            targets: Indicates which kinds of targets should
-            be predicted.
+            targets: Indicates which kinds of targets should be predicted.
 
         Returns:
             Yields prediction results for all batches yielded by the dataloader.

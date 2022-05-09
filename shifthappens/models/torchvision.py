@@ -16,7 +16,13 @@ from shifthappens.data.base import DataLoader
 class __TorchModel(
     sh_models.Model, sh_models.LabelModelMixin, sh_models.ConfidenceModelMixin
 ):
-    """Wraps a torchvision model."""
+    """Wraps a torchvision model.
+
+    Args:
+        model: Pretrained torchvision model.
+        max_batch_size: How many samples allowed per batch to load.
+        device: Selected device to run the model on.
+    """
 
     def __init__(self, model: nn.Module, max_batch_size: int, device: str = "cpu"):
         self.model = model
@@ -52,6 +58,13 @@ class __TorchModel(
 
 
 def resnet18(max_batch_size: int = 16, device: str = "cpu"):
+    """
+    Torchvision resnet-18 model implementation.
+
+    Args:
+        max_batch_size: How many samples allowed per batch to load.
+        device: Selected device to run the model on.
+    """
     return __TorchModel(
         torchvision.models.resnet18(pretrained=True),
         max_batch_size=max_batch_size,
