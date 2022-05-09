@@ -27,8 +27,8 @@ from typing import TypeVar
 
 import shifthappens.models.base as sh_models
 import shifthappens.models.mixins as shm_mixins
-import shifthappens.tasks.mixins as sht_mixins
 import shifthappens.task_data.task_metadata
+import shifthappens.tasks.mixins as sht_mixins
 import shifthappens.utils as sh_utils
 from shifthappens.data.base import DataLoader
 from shifthappens.tasks.task_result import TaskResult
