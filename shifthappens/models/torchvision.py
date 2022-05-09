@@ -1,4 +1,4 @@
-"""Torchvision baselines."""
+"""Model baselines from torchvision."""
 
 from typing import Iterator
 from typing import List
@@ -59,7 +59,7 @@ class __TorchModel(
 
 def resnet18(max_batch_size: int = 16, device: str = "cpu"):
     """
-    Torchvision resnet-18 model implementation.
+    Torchvision ResNet-18 implementation.
 
     Args:
         max_batch_size: How many samples allowed per batch to load.

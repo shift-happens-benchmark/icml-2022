@@ -63,6 +63,9 @@ Model implementations
    :show-inheritance:
    :private-members:
 
+Model implementations from torchvision
+^^^^^^^^^^^^^^^^^^^^
+
 .. automodule:: shifthappens.models.torchvision
    :members:
    :show-inheritance:

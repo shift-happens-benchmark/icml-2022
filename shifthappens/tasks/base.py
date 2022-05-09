@@ -37,8 +37,9 @@ T = TypeVar("T")
 
 def parameter(default: T, options: Tuple[T, ...], description: Optional[str] = None):
     """Register a task's parameter. Setting multiple options here allows automatically
-    creating different flavours of the task. Use this field for storing values of hyperparameter,
-    if you want to run task with the different values for the hyperparameter
+    creating different flavours of the task. Use this field for storing values of a hyperparameter
+    if you want to run task with different hyperparameter. For example, you can use this mechanism
+    to create tasks with varying difficulties without creating multiple classes/tasks.
 
     Args:
         default: default value.
@@ -64,8 +65,8 @@ def parameter(default: T, options: Tuple[T, ...], description: Optional[str] = N
 
 
 def variable(value: T):
-    """Creates a non-parametric variable for a task
-    which will not passed to __init__. Use it store constants.
+    """Creates a non-parametric variable for a task, i.e. its value won't be passed to the constructor.
+    Use it to store constants such as links to the data.
 
     Args:
         value: value of the constant.
@@ -86,7 +87,8 @@ def variable(value: T):
 
 def abstract_variable():
     """Marks a variable as abstract such that a child class needs to override it
-    with a non-abstract variable.
+    with a non-abstract variable. See :py:func:`variable` for the non-abstract
+    counterpart.
 
     Examples:
         >>> @dataclasses.dataclass
