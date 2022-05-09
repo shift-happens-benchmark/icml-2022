@@ -47,11 +47,11 @@ def register_task(*, name: str, relative_data_folder: str, standalone: bool = Tr
     as task as part of the benchmark.
 
     Args:
-        name (str): Name of the task (can contain spaces or special characters).
-        relative_data_folder (str): Name of the folder in which the data for
+        name: Name of the task (can contain spaces or special characters).
+        relative_data_folder: Name of the folder in which the data for
             this dataset will be saved for this task relative to the root folder
             of the benchmark.
-        standalone (bool): Boolean which represents if this task meaningful as a
+        standalone: Boolean which represents if this task meaningful as a
             standalone task or will this only be relevant as a part of a
             collection of tasks.
 
@@ -121,8 +121,8 @@ def evaluate_model(
     which are supported by the supplied model.
 
     Args:
-        model (shifthappens.models.base.Model): Model to evaluate.
-        data_root (str): Folder where individual tasks can store their data.
+        model: Model to evaluate.
+        data_root: Folder where individual tasks can store their data.
 
     Returns:
         Associates :py:class:`shifthappens.task_data.task_metadata.TaskMetadata` with the

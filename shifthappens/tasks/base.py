@@ -41,9 +41,9 @@ def parameter(default: T, options: Tuple[T, ...], description: Optional[str] = N
     if you want to run task with the different values for the hyperparameter
 
     Args:
-        default (T): default value.
-        options (Tuple(T)): allowed options.
-        description (str): short description.
+        default: default value.
+        options: allowed options.
+        description: short description.
 
     Examples:
         >>> @dataclasses.dataclass
@@ -68,7 +68,7 @@ def variable(value: T):
     which will not passed to __init__. Use it store constants.
 
     Args:
-        value (T): value of the constant.
+        value: value of the constant.
 
     Examples:
         >>> @dataclasses.dataclass
@@ -213,7 +213,8 @@ class Task(ABC):
         performance using the :py:meth:`_evaluate` function of this class.
 
         Args:
-            model: The model to evaluate. See :py:meth:`_evaluate` for more details.
+            model: The model to evaluate.
+                See :py:meth:`_evaluate` for more details.
         """
         if issubclass(type(self), ConfidenceTaskMixin) and not issubclass(
             type(model), sh_models.ConfidenceModelMixin
@@ -267,7 +268,7 @@ class Task(ABC):
         """Evaluate the task and return a dictionary with the calculated metrics.
 
         Args:
-            model: The passed model implementents a ``predict`` function returning an iterator
+            model (shifthappens.models.base.Model): The passed model implementents a ``predict`` function returning an iterator
                 over :py:meth:`shifthappens.models.base.ModelResult`. Each result contains predictions such as
                 the class labels assigned to the images, confidences, etc., based on which mixins were
                 implemented by this task to request these prediction outputs.
@@ -277,6 +278,30 @@ class Task(ABC):
             form of a :py:class:`shifthappens.tasks.task_result.TaskResult` containing an
             arbitrary dictionary of metrics, along with a specifiction of which of these
             metrics are main results/summary metrics for the task.
+
+        Examples:
+            >>> # imagenet_r example
+            >>> @shifthappens.benchmark.register_task(
+            >>> ...
+            >>> )
+            >>> @dataclasses.dataclass
+            >>> class ImageNetR(Task):
+            >>>     ...
+            >>>         def _evaluate(self, model: shifthappens.models.base.Model) -> TaskResult:
+            >>>             dataloader = self._prepare_dataloader()
+            >>>             all_predicted_labels_list = []
+            >>>             for predictions in model.predict(
+            >>>                 dataloader, PredictionTargets(class_labels=True)
+            >>>             ):
+            >>>                 all_predicted_labels_list.append(predictions.class_labels)
+            >>>             all_predicted_labels = np.concatenate(all_predicted_labels_list, 0)
+            >>>
+            >>>             accuracy = all_predicted_labels == np.array(self.ch_dataset.targets)
+            >>>
+            >>>             return TaskResult(
+            >>>                 accuracy=accuracy, summary_metrics={Metric.Robustness: "accuracy"}
+            >>>             )
+            >>>         ...
         """
         raise NotImplementedError()
 

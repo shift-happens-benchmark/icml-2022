@@ -68,6 +68,18 @@ class ModelResult:
 
 @dataclasses.dataclass
 class PredictionTargets:
+    """Contains boolean flags of which type of targets model is predicting. Note
+    that at least one flag should be set as ``True`` and model should be inherited
+    from corresponding ModelMixin.
+
+    Args:
+        class_labels: Set to ``True`` if model returns predicted labels.
+        confidences: Set to ``True`` if model returns confidences.
+        uncertainties: Set to ``True`` if model returns uncertainties.
+        ood_scores: Set to ``True`` if model returns ood scores.
+        features: Set to ``True`` if model returns features.
+    """
+
     class_labels: bool = False
     confidences: bool = False
     uncertainties: bool = False
@@ -81,20 +93,35 @@ class PredictionTargets:
 
 
 class Model(abc.ABC):
-    """Model base class."""
+    """Model base class.
+
+    Override the :py:meth:`_predict` method to define predictions type of your specific model.
+    If your model uses unsupervised adaptation mechanisms override :py:meth:`prepare`
+    as well.
+
+    Also make sure that your model is inherited from  at mixins from :py:mod:`shifthappens.model.base`
+    corresponding to your model predictions type (e.g., :py:class:`LabelModelMixin` for labels
+    or :py:class:`ConfidenceModelMixin`  for confidences).
+
+    """
 
     def prepare(self, dataloader: DataLoader):
-        """If the model uses unsupervised adaptation mechanisms, it will run those."""
+        """If the model uses unsupervised adaptation mechanisms, it will run those.
+
+        Args:
+            dataloader: Dataloader producing batches of data.
+        """
         pass
 
     def predict(
         self, input_dataloader: DataLoader, targets: PredictionTargets
     ) -> Iterator[ModelResult]:
-        """Yield all the predictions of the model for all data samples contained in the data loader
+        """Yield all the predictions of the model for all data samples contained
+        in the dataloader
 
         Args:
-            input_dataloader (DataLoader): Dataloader producing batches of data.
-            targets (PredictionTargets): Indicates which kinds of targets should
+            input_dataloader: Dataloader producing batches of data.
+            targets: Indicates which kinds of targets should
                 be predicted.
 
         Returns:
@@ -125,8 +152,8 @@ class Model(abc.ABC):
         Override this function for the specific model.
 
         Args:
-            inputs (np.ndarray): Batch of images.
-            targets (PredictionTargets): Indicates which kinds of targets should
+            input_dataloader: Dataloader producing batches of data.
+            targets: Indicates which kinds of targets should
             be predicted.
 
         Returns:
@@ -145,7 +172,7 @@ class LabelModelMixin:
 
 
 class ConfidenceModelMixin:
-    """Inherit from this class if you model returns confidences."""
+    """Inherit from this class if your model returns confidences."""
 
     pass
 
