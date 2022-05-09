@@ -13,8 +13,9 @@ import dataclasses
 from typing import Iterator
 
 import numpy as np
-from shifthappens.models import mixins
+
 from shifthappens.data.base import DataLoader
+from shifthappens.models import mixins
 
 
 class ModelResult:

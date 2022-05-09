@@ -9,8 +9,8 @@ import torchvision
 from torch import nn
 from torchvision.transforms import functional as tv_functional
 
-import shifthappens.models.mixins as sh_mixins
 import shifthappens.models.base as sh_models
+import shifthappens.models.mixins as sh_mixins
 from shifthappens.data.base import DataLoader
 
 

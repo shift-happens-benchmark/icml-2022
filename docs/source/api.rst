@@ -45,10 +45,13 @@ Task implementations
    :show-inheritance:
    :private-members:
 
-.. automodule:: shifthappens.tasks.task_result
+.. automodule:: shifthappens.tasks.mixins
    :members:
    :show-inheritance:
 
+.. automodule:: shifthappens.tasks.task_result
+   :members:
+   :show-inheritance:
 
 .. automodule:: shifthappens.tasks.metrics
    :members:

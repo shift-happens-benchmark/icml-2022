@@ -7,9 +7,9 @@ Implementing a new task consists of the following steps:
 
 1. Subclass the :py:class:`Task` class and implement its abstract methods to specify the task
    setup and evaluation scheme
-2. Implement any number of mixins specified in this module. You just need to include
+2. Implement any number of mixins specified in :py:mod:`shifthappens.tasks.mixins`. You just need to include
    the mixin in the class definition, e.g. ``class MyTask(Task, ConfidenceTaskMixin)``,
-   and do not need to implement additional methods. My specifying the mixin, it will be
+   and do not need to implement additional methods. By specifying the mixin, it will be
    assured that your task gets the correct model outputs.
    See the individual mixin classes, or the :py:class:`ModelResult <shifthappens.models.base.ModelResult>`
    class for further details.
@@ -26,6 +26,8 @@ from typing import Tuple
 from typing import TypeVar
 
 import shifthappens.models.base as sh_models
+import shifthappens.models.mixins as shm_mixins
+import shifthappens.tasks.mixins as sht_mixins
 import shifthappens.task_data.task_metadata
 import shifthappens.utils as sh_utils
 from shifthappens.data.base import DataLoader
@@ -218,18 +220,18 @@ class Task(ABC):
             model: The model to evaluate.
                 See :py:meth:`_evaluate` for more details.
         """
-        if issubclass(type(self), ConfidenceTaskMixin) and not issubclass(
-            type(model), sh_models.ConfidenceModelMixin
+        if issubclass(type(self), sht_mixins.ConfidenceTaskMixin) and not issubclass(
+            type(model), shm_mixins.ConfidenceModelMixin
         ):
             return None
 
-        if issubclass(type(self), FeaturesTaskMixin) and not issubclass(
-            type(model), sh_models.FeaturesModelMixin
+        if issubclass(type(self), sht_mixins.FeaturesTaskMixin) and not issubclass(
+            type(model), shm_mixins.FeaturesModelMixin
         ):
             return None
 
-        if issubclass(type(self), LabelTaskMixin) and not issubclass(
-            type(model), sh_models.LabelModelMixin
+        if issubclass(type(self), sht_mixins.LabelTaskMixin) and not issubclass(
+            type(model), shm_mixins.LabelModelMixin
         ):
             return None
 
@@ -270,7 +272,7 @@ class Task(ABC):
         """Evaluate the task and return a dictionary with the calculated metrics.
 
         Args:
-            model (shifthappens.models.base.Model): The passed model implementents a ``predict`` function returning an iterator
+            model (shifthappens.models.base.Model): The passed model implements a ``predict`` function returning an iterator
                 over :py:meth:`shifthappens.models.base.ModelResult`. Each result contains predictions such as
                 the class labels assigned to the images, confidences, etc., based on which mixins were
                 implemented by this task to request these prediction outputs.
@@ -278,7 +280,7 @@ class Task(ABC):
         Returns:
             :py:class:`shifthappens.tasks.task_result.TaskResult`: The results of the task in the
             form of a :py:class:`shifthappens.tasks.task_result.TaskResult` containing an
-            arbitrary dictionary of metrics, along with a specifiction of which of these
+            arbitrary dictionary of metrics, along with a specification of which of these
             metrics are main results/summary metrics for the task.
 
         Examples:
@@ -306,53 +308,3 @@ class Task(ABC):
             >>>         ...
         """
         raise NotImplementedError()
-
-
-class LabelTaskMixin:
-    """Indicates that the task requires the model to return the predicted labels.
-
-    Tasks implementing this mixin will be provided with the ``class_labels`` attribute in the
-    :py:class:`shifthappens.models.base.ModelResult` returned during evaluation.
-    """
-
-    pass
-
-
-class ConfidenceTaskMixin:
-    """Indicates that the task requires the model to return the confidence scores.
-
-    Tasks implementing this mixin will be provided with the ``confidences`` attribute in the
-    :py:class:`shifthappens.models.base.ModelResult` returned during evaluation.
-    """
-
-    pass
-
-
-class UncertaintyTaskMixin:
-    """Indicates that the task requires the model to return the uncertainty scores.
-
-    Tasks implementing this mixin will be provided with the ``uncertainties`` attribute in the
-    :py:class:`shifthappens.models.base.ModelResult` returned during evaluation.
-    """
-
-    pass
-
-
-class OODScoreTaskMixin:
-    """Indicates that the task requires the model to return the OOD scores.
-
-    Tasks implementing this mixin will be provided with the ``ood_scores`` attribute in the
-    :py:class:`shifthappens.models.base.ModelResult` returned during evaluation.
-    """
-
-    pass
-
-
-class FeaturesTaskMixin:
-    """Indicates that the task requires the model to return the raw features.
-
-    Tasks implementing this mixin will be provided with the ``features`` attribute in the
-    :py:class:`shifthappens.models.base.ModelResult` returned during evaluation.
-    """
-
-    pass
