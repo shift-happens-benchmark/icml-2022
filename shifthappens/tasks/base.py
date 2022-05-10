@@ -249,7 +249,7 @@ class Task(ABC):
 
         Note that this function could also be used to introduce domain shifts for such adaptation methods, by creating
         a different dataloader in this prepare function than used during :py:meth:`evaluate`.
-        
+
         By default no `DataLoader <shifthappens.data.base.DataLoader>` is returned, i.e., the models do not get access to the unlabeled data.
 
         Examples:
