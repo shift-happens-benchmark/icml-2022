@@ -1,4 +1,4 @@
-"""Torchvision baselines."""
+"""Model baselines from torchvision."""
 
 from typing import Iterator
 from typing import List
@@ -10,13 +10,20 @@ from torch import nn
 from torchvision.transforms import functional as tv_functional
 
 import shifthappens.models.base as sh_models
+import shifthappens.models.mixins as sh_mixins
 from shifthappens.data.base import DataLoader
 
 
 class __TorchModel(
-    sh_models.Model, sh_models.LabelModelMixin, sh_models.ConfidenceModelMixin
+    sh_models.Model, sh_mixins.LabelModelMixin, sh_mixins.ConfidenceModelMixin
 ):
-    """Wraps a torchvision model."""
+    """Wraps a torchvision model.
+
+    Args:
+        model: Pretrained torchvision model.
+        max_batch_size: How many samples allowed per batch to load.
+        device: Selected device to run the model on.
+    """
 
     def __init__(self, model: nn.Module, max_batch_size: int, device: str = "cpu"):
         self.model = model
@@ -52,6 +59,13 @@ class __TorchModel(
 
 
 def resnet18(max_batch_size: int = 16, device: str = "cpu"):
+    """
+    Torchvision ResNet-18 implementation.
+
+    Args:
+        max_batch_size: How many samples allowed per batch to load.
+        device: Selected device to run the model on.
+    """
     return __TorchModel(
         torchvision.models.resnet18(pretrained=True),
         max_batch_size=max_batch_size,

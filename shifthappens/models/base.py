@@ -2,10 +2,10 @@
 
 To add a new model, implement a new wrapper class inheriting from
 :py:class:`shifthappens.models.base.Model`, and from any of the Mixins defined
-in this module.
+in :py:mod:`shifthappens.models.mixins`.
 
-Model results should be converted to :py:class:`numpy.ndarray` objects, and packed into an
-:py:class:`shifthappens.models.base.ModelResult` instance.
+Model results should be converted to :py:class:`numpy.ndarray` objects, and
+packed into an :py:class:`shifthappens.models.base.ModelResult` instance.
 """
 
 import abc
@@ -15,6 +15,7 @@ from typing import Iterator
 import numpy as np
 
 from shifthappens.data.base import DataLoader
+from shifthappens.models import mixins
 
 
 class ModelResult:
@@ -68,6 +69,18 @@ class ModelResult:
 
 @dataclasses.dataclass
 class PredictionTargets:
+    """Contains boolean flags of which type of targets model is predicting. Note
+    that at least one flag should be set as ``True`` and model should be inherited
+    from corresponding ModelMixin.
+
+    Args:
+        class_labels: Set to ``True`` if model returns predicted labels.
+        confidences: Set to ``True`` if model returns confidences.
+        uncertainties: Set to ``True`` if model returns uncertainties.
+        ood_scores: Set to ``True`` if model returns ood scores.
+        features: Set to ``True`` if model returns features.
+    """
+
     class_labels: bool = False
     confidences: bool = False
     uncertainties: bool = False
@@ -81,36 +94,54 @@ class PredictionTargets:
 
 
 class Model(abc.ABC):
-    """Model base class."""
+    """Model base class.
+
+    Override the :py:meth:`_predict` method to define predictions type of your specific model.
+    If your model uses unsupervised adaptation mechanisms override :py:meth:`prepare`
+    as well.
+
+    Also make sure that your model inherits from the mixins from :py:mod:`shifthappens.models.mixins`
+    corresponding to your model predictions type (e.g., :py:class:`LabelModelMixin <shifthappens.models.mixins.LabelModelMixin>` for labels
+    or :py:class:`ConfidenceModelMixin <shifthappens.models.mixins.ConfidenceModelMixin>` for confidences).
+
+    """
 
     def prepare(self, dataloader: DataLoader):
-        """If the model uses unsupervised adaptation mechanisms, it will run those."""
+        """If the model uses unsupervised adaptation mechanisms, it will run those.
+
+        Args:
+            dataloader: Dataloader producing batches of data.
+        """
         pass
 
     def predict(
         self, input_dataloader: DataLoader, targets: PredictionTargets
     ) -> Iterator[ModelResult]:
-        """Yield all the predictions of the model for all data samples contained in the data loader
+        """Yield all the predictions of the model for all data samples contained
+        in the dataloader
 
         Args:
             input_dataloader: Dataloader producing batches of data.
-            targets: Indicates which kinds of targets should be predicted.
+            targets: Indicates which kinds of targets should
+                be predicted.
 
         Returns:
-            Prediction results for the given batch. Depending in the target arguments this
-            includes the predicted labels, class confidences, class uncertainties, ood scores,
-            and image features, all as :py:class:`numpy.ndarray` objects.
+            Prediction results for the given batch. Depending on the target
+            arguments this includes the predicted labels, class confidences,
+            class uncertainties, ood scores, and image features, all as
+            :py:class:`numpy.ndarray` objects.
         """
+
         if targets.class_labels:
-            assert issubclass(type(self), LabelModelMixin)
+            assert issubclass(type(self), mixins.LabelModelMixin)
         if targets.confidences:
-            assert issubclass(type(self), ConfidenceModelMixin)
+            assert issubclass(type(self), mixins.ConfidenceModelMixin)
         if targets.uncertainties:
-            assert issubclass(type(self), UncertaintyModelMixin)
+            assert issubclass(type(self), mixins.UncertaintyModelMixin)
         if targets.ood_scores:
-            assert issubclass(type(self), OODScoreModelMixin)
+            assert issubclass(type(self), mixins.OODScoreModelMixin)
         if targets.features:
-            assert issubclass(type(self), FeaturesModelMixin)
+            assert issubclass(type(self), mixins.FeaturesModelMixin)
 
         return self._predict(input_dataloader, targets)
 
@@ -122,43 +153,13 @@ class Model(abc.ABC):
         Override this function for the specific model.
 
         Args:
-            inputs (np.ndarray): Batch of images.
-            targets (PredictionTargets): Indicates which kinds of targets should be predicted.
+            input_dataloader: Dataloader producing batches of data.
+            targets: Indicates which kinds of targets should be predicted.
 
         Returns:
             Yields prediction results for all batches yielded by the dataloader.
-            Depending in the target arguments the model results may include the
+            Depending on the target arguments the model results may include the
             predicted labels, class confidences, class uncertainties, ood scores,
-            and image features, all as ``np.array``s.
+            and image features, all as :py:class:`numpy.ndarray` objects.
         """
         raise NotImplementedError()
-
-
-class LabelModelMixin:
-    """Inherit from this class if your model returns predicted labels."""
-
-    pass
-
-
-class ConfidenceModelMixin:
-    """Inherit from this class if you model returns confidences."""
-
-    pass
-
-
-class UncertaintyModelMixin:
-    """Inherit from this class if your model returns uncertainties."""
-
-    pass
-
-
-class OODScoreModelMixin:
-    """Inherit from this class if your model returns ood scores."""
-
-    pass
-
-
-class FeaturesModelMixin:
-    """Inherit from this class if your model returns features."""
-
-    pass
