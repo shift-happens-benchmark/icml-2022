@@ -242,19 +242,15 @@ class Task(ABC):
 
     @abstractmethod
     def _prepare_dataloader(self) -> Optional[DataLoader]:
-        """Prepare a dataloader for just the images (i.e. no labels, etc.) which
-        will be passed to the model before the actual evaluation. This allows models
-        to, e.g., run unsupervised domain adaptation techniques.
+        """Prepare a :py:class:`shifthappens.data.base.DataLoader` based on just the *unlabeled* images which will be passed to the model
+        before the actual evaluation. This allows models to, e.g., run unsupervised domain adaptation techniques.
+        This method can be used to give models access to the unlabeled data in case they want to run some
+        kind of unsupervised adaptation mechanism such as re-calibration.
 
-        If intended, the implementation of this function should call the
-        :py:meth:`Model.prepare <shifthappens.models.base.Model.prepare>`
-        function and pass (parts) of the data through a data loader. The model
-        could potentially use this data for test-time adaptation, calibration,
-        or other purposes.
-
-        Note that this function could also be used to create domain shift for such
-        adaptation methods, by passing a different dataloader in this prepare function
-        than used during :py:meth:`evaluate`.
+        Note that this function could also be used to introduce domain shifts for such adaptation methods, by creating
+        a different dataloader in this prepare function than used during :py:meth:`evaluate`.
+        
+        By default no `DataLoader <shifthappens.data.base.DataLoader>` is returned, i.e., the models do not get access to the unlabeled data.
 
         Examples:
             >>> @dataclasses.dataclass
