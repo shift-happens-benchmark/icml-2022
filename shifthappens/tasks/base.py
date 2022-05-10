@@ -180,7 +180,6 @@ class Task(ABC):
             model.prepare(dataloader)
         return self._evaluate(model)
 
-    @abstractmethod
     def _prepare_dataloader(self) -> Optional[DataLoader]:
         """Prepare a dataloader for just the images (i.e. no labels, etc.) which will be passed to the model
         before the actual evaluation. This allows models to, e.g., run unsupervised domain adaptation techniques.
@@ -193,7 +192,7 @@ class Task(ABC):
         Note that this function could also be used to create domain shift for such adaptation methods, by passing
         a different dataloader in this prepare function than used during :py:meth:`evaluate`.
         """
-        raise NotImplementedError()
+        return None
 
     @abstractmethod
     def _evaluate(self, model: sh_models.Model) -> TaskResult:
