@@ -6,16 +6,16 @@ from typing import List
 import numpy as np
 import torch
 import torchvision
+from surgeon_pytorch import Inspect
 from torch import nn
 from torchvision.transforms import functional as tv_functional
 
 import shifthappens.models.base as sh_models
 from shifthappens.data.base import DataLoader
-from surgeon_pytorch import Inspect
 
 
 class TorchvisionPreProcessingMixin:
-    def _pre_process(self, batch: List[np.ndarray]) -> torch.Tensor:
+    def _pre_process(self, batch: List[np.ndarray], device: str) -> torch.Tensor:
         inputs = []
         for item in batch:
             assert isinstance(item, np.ndarray)
@@ -25,18 +25,29 @@ class TorchvisionPreProcessingMixin:
             inputs.append(item_t)
 
         inputs_t = torch.stack(inputs, 0)
-        inputs_t = inputs_t.to(self.device)
+        inputs_t = inputs_t.to(device)
         return inputs_t
 
 
 class __TorchvisionModel(
-    sh_models.Model, TorchvisionPreProcessingMixin,
-    sh_models.LabelModelMixin, sh_models.ConfidenceModelMixin, sh_models.FeaturesModelMixin,
+    sh_models.Model,
+    TorchvisionPreProcessingMixin,
+    sh_models.LabelModelMixin,
+    sh_models.ConfidenceModelMixin,
+    sh_models.FeaturesModelMixin,
 ):
     """Wraps a torchvision model."""
 
-    def __init__(self, model: nn.Module, feature_layer: str, max_batch_size: int, device: str = "cpu"):
-        assert not issubclass(type(model), torch.nn.DataParallel), "Parallel models are not yet supported"
+    def __init__(
+        self,
+        model: nn.Module,
+        feature_layer: str,
+        max_batch_size: int,
+        device: str = "cpu",
+    ):
+        assert not issubclass(
+            type(model), torch.nn.DataParallel
+        ), "Parallel models are not yet supported"
         self.model = model
         self.max_batch_size = max_batch_size
         self.device = device
@@ -48,7 +59,7 @@ class __TorchvisionModel(
     ) -> Iterator[sh_models.ModelResult]:
         for batch in input_dataloader.iterate(self.max_batch_size):
             # pre-process batch
-            inputs = self._pre_process(batch)
+            inputs = self._pre_process(batch, self.device)
             logits, features = self.hooked_model(inputs)
             features = features.view(len(features), -1)
             logits, features = logits.cpu(), features.cpu()
@@ -56,14 +67,39 @@ class __TorchvisionModel(
             predictions = logits.argmax(-1)
 
             yield sh_models.ModelResult(
-                class_labels=predictions.numpy(), confidences=probabilities.numpy(),
-                features=features.numpy()
+                class_labels=predictions.numpy(),
+                confidences=probabilities.numpy(),
+                features=features.numpy(),
             )
 
 
 def resnet18(max_batch_size: int = 16, device: str = "cpu"):
+    """Load a ResNet18 network trained on the ImageNet 2012 train set from torchvision.
+    See :py:func:`torchvision.models.resnet18` for details."""
     return __TorchvisionModel(
         torchvision.models.resnet18(pretrained=True),
+        "avgpool",
+        max_batch_size=max_batch_size,
+        device=device,
+    )
+
+
+def resnet50(max_batch_size: int = 16, device: str = "cpu"):
+    """Load a ResNet50 network trained on the ImageNet 2012 train set from torchvision.
+    See :py:func:`torchvision.models.resnet50` for details."""
+    return __TorchvisionModel(
+        torchvision.models.resnet50(pretrained=True),
+        "avgpool",
+        max_batch_size=max_batch_size,
+        device=device,
+    )
+
+
+def vgg16(max_batch_size: int = 16, device: str = "cpu"):
+    """Load a VGG16 network trained on the ImageNet 2012 train set from torchvision.
+    See :py:func:`torchvision.models.vgg16` for details."""
+    return __TorchvisionModel(
+        torchvision.models.vgg16(pretrained=True),
         "avgpool",
         max_batch_size=max_batch_size,
         device=device,
