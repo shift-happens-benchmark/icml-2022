@@ -64,6 +64,11 @@ class DataLoader:
             except StopIteration:
                 dataset_exhausted = True
 
+                # at the end of the dataset we need to check whether there is
+                # any data left to return; otherwise, leave this iterator
+                if len(batch) == 0:
+                    return
+
             yield batch
 
 

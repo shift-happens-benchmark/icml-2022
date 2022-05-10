@@ -101,6 +101,7 @@ class Model(abc.ABC):
             includes the predicted labels, class confidences, class uncertainties, ood scores,
             and image features, all as :py:class:`numpy.ndarray` objects.
         """
+
         if targets.class_labels:
             assert issubclass(type(self), LabelModelMixin)
         if targets.confidences:
