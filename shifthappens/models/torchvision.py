@@ -91,7 +91,7 @@ def resnet18(max_batch_size: int = 16, device: str = "cpu"):
         max_batch_size: How many samples allowed per batch to load.
         device: Selected device to run the model on.
     """
-    return __TorchModel(
+    return __TorchvisionModel(
         torchvision.models.resnet18(pretrained=True),
         "avgpool",
         max_batch_size=max_batch_size,
