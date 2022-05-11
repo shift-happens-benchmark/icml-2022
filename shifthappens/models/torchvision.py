@@ -17,7 +17,7 @@ from shifthappens.data.base import DataLoader
 
 class __TorchvisionPreProcessingMixin:
     """Performs the default preprocessing for torchvision ImageNet classifiers."""
-    
+
     def _pre_process(self, batch: List[np.ndarray], device: str) -> torch.Tensor:
         inputs = []
         for item in batch:
@@ -35,9 +35,9 @@ class __TorchvisionPreProcessingMixin:
 class __TorchvisionModel(
     sh_models.Model,
     __TorchvisionPreProcessingMixin,
-    sh_models.LabelModelMixin,
-    sh_models.ConfidenceModelMixin,
-    sh_models.FeaturesModelMixin,
+    sh_mixins.LabelModelMixin,
+    sh_mixins.ConfidenceModelMixin,
+    sh_mixins.FeaturesModelMixin,
 ):
     """Wraps a torchvision model.
 
@@ -102,7 +102,7 @@ def resnet18(max_batch_size: int = 16, device: str = "cpu"):
 def resnet50(max_batch_size: int = 16, device: str = "cpu"):
     """Load a ResNet50 network trained on the ImageNet 2012 train set from torchvision.
     See :py:func:`torchvision.models.resnet50` for details.
-    
+
     Args:
         max_batch_size: How many samples allowed per batch to load.
         device: Selected device to run the model on.
@@ -118,7 +118,7 @@ def resnet50(max_batch_size: int = 16, device: str = "cpu"):
 def vgg16(max_batch_size: int = 16, device: str = "cpu"):
     """Load a VGG16 network trained on the ImageNet 2012 train set from torchvision.
     See :py:func:`torchvision.models.vgg16` for details.
-    
+
     Args:
         max_batch_size: How many samples allowed per batch to load.
         device: Selected device to run the model on.
