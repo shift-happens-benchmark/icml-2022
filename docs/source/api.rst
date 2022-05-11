@@ -29,6 +29,13 @@ Also make sure to look at the `examples <https://github.com/shift-happens-benchm
 in the github repository. If in doubt or if the API is not yet sufficiently flexible to fit your needs, consider
 opening an issue on github or join our slack channel.
 
+Benchmark
+____________________
+
+.. automodule:: shifthappens.benchmark
+   :members:
+   :show-inheritance:
+
 
 Task implementations
 --------------------
@@ -38,12 +45,35 @@ Task implementations
    :show-inheritance:
    :private-members:
 
+.. automodule:: shifthappens.tasks.mixins
+   :members:
+   :show-inheritance:
+
 .. automodule:: shifthappens.tasks.task_result
+   :members:
+   :show-inheritance:
+
+.. automodule:: shifthappens.tasks.metrics
    :members:
    :show-inheritance:
    :private-members:
 
-.. automodule:: shifthappens.tasks.metrics
+Model implementations
+---------------------
+
+.. automodule:: shifthappens.models.base
+   :members:
+   :show-inheritance:
+   :private-members:
+
+.. automodule:: shifthappens.models.mixins
+   :members:
+   :show-inheritance:
+
+Model implementations from torchvision
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. automodule:: shifthappens.models.torchvision
    :members:
    :show-inheritance:
    :private-members:
@@ -55,24 +85,6 @@ Data loading
    :show-inheritance:
 
 .. automodule:: shifthappens.data.torch
-   :members:
-   :show-inheritance:
-
-Model implementations
----------------------
-
-.. automodule:: shifthappens.models.base
-   :members:
-   :show-inheritance:
-
-.. automodule:: shifthappens.models.torchvision
-   :members:
-   :show-inheritance:
-
-
-Benchmark
----------
-.. automodule:: shifthappens.benchmark
    :members:
    :show-inheritance:
 

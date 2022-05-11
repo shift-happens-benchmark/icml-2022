@@ -1,4 +1,4 @@
-"""Torchvision baselines."""
+"""Model baselines from torchvision."""
 
 from typing import Iterator
 from typing import List
@@ -11,10 +11,13 @@ from torch import nn
 from torchvision.transforms import functional as tv_functional
 
 import shifthappens.models.base as sh_models
+import shifthappens.models.mixins as sh_mixins
 from shifthappens.data.base import DataLoader
 
 
-class TorchvisionPreProcessingMixin:
+class __TorchvisionPreProcessingMixin:
+    """Performs the default preprocessing for torchvision ImageNet classifiers."""
+    
     def _pre_process(self, batch: List[np.ndarray], device: str) -> torch.Tensor:
         inputs = []
         for item in batch:
@@ -31,12 +34,18 @@ class TorchvisionPreProcessingMixin:
 
 class __TorchvisionModel(
     sh_models.Model,
-    TorchvisionPreProcessingMixin,
+    __TorchvisionPreProcessingMixin,
     sh_models.LabelModelMixin,
     sh_models.ConfidenceModelMixin,
     sh_models.FeaturesModelMixin,
 ):
-    """Wraps a torchvision model."""
+    """Wraps a torchvision model.
+
+    Args:
+        model: Pretrained torchvision model.
+        max_batch_size: How many samples allowed per batch to load.
+        device: Selected device to run the model on.
+    """
 
     def __init__(
         self,
@@ -74,9 +83,15 @@ class __TorchvisionModel(
 
 
 def resnet18(max_batch_size: int = 16, device: str = "cpu"):
-    """Load a ResNet18 network trained on the ImageNet 2012 train set from torchvision.
-    See :py:func:`torchvision.models.resnet18` for details."""
-    return __TorchvisionModel(
+    """
+    Load a ResNet18 network trained on the ImageNet 2012 train set from torchvision.
+    See :py:func:`torchvision.models.resnet18` for details.
+
+    Args:
+        max_batch_size: How many samples allowed per batch to load.
+        device: Selected device to run the model on.
+    """
+    return __TorchModel(
         torchvision.models.resnet18(pretrained=True),
         "avgpool",
         max_batch_size=max_batch_size,
@@ -86,7 +101,12 @@ def resnet18(max_batch_size: int = 16, device: str = "cpu"):
 
 def resnet50(max_batch_size: int = 16, device: str = "cpu"):
     """Load a ResNet50 network trained on the ImageNet 2012 train set from torchvision.
-    See :py:func:`torchvision.models.resnet50` for details."""
+    See :py:func:`torchvision.models.resnet50` for details.
+    
+    Args:
+        max_batch_size: How many samples allowed per batch to load.
+        device: Selected device to run the model on.
+    """
     return __TorchvisionModel(
         torchvision.models.resnet50(pretrained=True),
         "avgpool",
@@ -97,7 +117,12 @@ def resnet50(max_batch_size: int = 16, device: str = "cpu"):
 
 def vgg16(max_batch_size: int = 16, device: str = "cpu"):
     """Load a VGG16 network trained on the ImageNet 2012 train set from torchvision.
-    See :py:func:`torchvision.models.vgg16` for details."""
+    See :py:func:`torchvision.models.vgg16` for details.
+    
+    Args:
+        max_batch_size: How many samples allowed per batch to load.
+        device: Selected device to run the model on.
+    """
     return __TorchvisionModel(
         torchvision.models.vgg16(pretrained=True),
         "avgpool",

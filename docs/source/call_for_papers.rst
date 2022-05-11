@@ -1,6 +1,10 @@
 Call for Submissions
 ====================
 
+.. note::
+  
+  We extended the deadline for submissions to May 27. Please make sure to register your submission and submit your abstract until May 17.
+  Submission is possible now `on OpenReview <https://openreview.net/group?id=ICML.cc/2022/Workshop/Shift_Happens>`__
 
 TL;DR
 ^^^^^
@@ -11,7 +15,7 @@ Submissions consist of
 - An implementation of the task, metrics and/or datasets, comprised of a plugin to the ``shifthappens`` benchmark package, and all required external data files.
 
 Both components will be submitted via OpenReview, and reviewing is double-blind.
-Please submit your paper `here <https://openreview.net/group?id=ICML.cc/2022/Workshop/Shift_Happens>`__. 
+Please submit your paper `on OpenReview <https://openreview.net/group?id=ICML.cc/2022/Workshop/Shift_Happens>`__. 
 The workshop will not have any official proceedings, so it is non-archival.
 Tasks that have been part of a recent submission/publication are allowed, in which case the overlapping
 works should be mentioned.
@@ -34,15 +38,27 @@ or `join our slack channel <https://join.slack.com/t/shifthappensicml2022/shared
 Deadlines
 ^^^^^^^^^^^^^^^^
 
-- Submission Deadline: mid-end May, 2022 (final date TBA)
+You can find all deadlines as well as the submission page also directly `on OpenReview <https://openreview.net/group?id=ICML.cc/2022/Workshop/Shift_Happens>`__.
+
+- `Abstract Deadline <https://openreview.net/group?id=ICML.cc/2022/Workshop/Shift_Happens>`__: May 17, 2022 (please see notes below)
+- `Submission Deadline <https://openreview.net/group?id=ICML.cc/2022/Workshop/Shift_Happens>`__: May 27, 2022 (please see notes below)
 - Reviews Posted: June 3, 2022
 - Acceptance Notification: June 6, 2022
 - Camera and Dataset Ready: July 1, 2022
 - ICML 2022 Workshop dates: July 22 and 23 (final date TBA)
 
 Please note that it is **not required** to post the final dataset by the submission deadline.
-It is sufficient to start working on the final dataset collection after the acceptance notification until the
-camera ready deadline.
+It is sufficient to start working on the final dataset collection as well as the finalizing the code associated with the submission after the acceptance notification until the camera ready deadline.
+
+Please also note that it is **not required** to post a full implementation for adding your benchmark to the ``shifthappens`` package by the submission deadline. You can submit any implementation along with your submission, as long at is demonstrates the applicability of your model/task to the problem setup of the workshop. We will work with all authors towards adding all accepted submissions into the final benchmark package until the camera ready deadline.
+
+
+Abstract Preparation
+^^^^^^^^^^^^^^^^^^^^
+
+We invite all authors to **register** their ideas in form of an abstract submission **until May 17**. The title, abstract and even the author list do not need to be final, and can be changed even after the abstract deadline. Still, please refrain from submitting "placeholder abstracts". The scope of the dataset or task you intend to submit should become clear from the submitted abstract.
+
+Register your abstract now `on OpenReview <https://openreview.net/group?id=ICML.cc/2022/Workshop/Shift_Happens>`__!
 
 
 Detailed Information on Submission Types 
@@ -106,7 +122,9 @@ provided `LaTeX files <https://media.icml.cc/Conferences/ICML2022/Styles/icml202
 Code and Data Instructions
 ^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Submissions must include a link to the dataset (hosted on a suitable platform),
+**Submissions** should demonstrate the full capability of your dataset/task/benchmark, but do not need to contain a final implementation, a full dataset, etc. yet. Make sure to submit a code sample and (parts of) the dataset as supplementary material to your paper submission, directly on OpenReview. Please make sure that from the submitted code it becomes clear how a model would be evaluated. While we invite you to directly build on top of the provided `reference implementation <https://shift-happens-benchmark.github.io/icml-2022/>`__, this is not a requirement at submission time (for example, it it acceptable to provide code for a reference run of a ResNet50 model, or whatever is suitable for your task, even outside the ``shifthappens`` package). If you have questions about implementation, please do not hesitate to reach out via email or our slack channel. We will continue to assist authors of accepted submissions to make their submission ready for integration to the ``shifthappens`` package.
+
+Until the camera-ready deadline, all submissions need to be updated to include a link to the dataset (hosted on a suitable platform),
 as well as code (building on top of the provided `reference implementation
 <https://shift-happens-benchmark.github.io/icml-2022/>`__) for 
 running the evaluation process. Datasets can be hosted on `zenodo <https://zenodo.org/>`__, 
@@ -115,23 +133,7 @@ running the evaluation process. Datasets can be hosted on `zenodo <https://zenod
 The data/images need to be usable for research purposes. Their license should
 be stated in the report.
 
-The implementation leverages our example `API <api.html>`__ implementation:
-
-
-
-.. code:: python 
-
-    from shifthappens.task import Result, Task, register
-    
-    @register
-    class MyExampleTask(Task):
-
-        def _evaluate(self, model):
-            ...
-            return Result(
-                accuracy = 0.42,
-                calibration = 0.44
-            )
+Please refer to the `API Docs <https://shift-happens-benchmark.github.io/api.html>`__ for further information on how to implement benchmarks and datasets directly in the ``shifthappens`` package (not required, but encouraged at submission time).
 
 
 Evaluation Criteria for Submissions
