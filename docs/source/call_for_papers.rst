@@ -2,6 +2,8 @@ Call for Submissions
 ====================
 
 .. note::
+
+  We can offer up to 5 free registrations to the ICML as prizes for outstanding submissions.
   
   We extended the deadline for submissions to May 27. Please make sure to register your submission and submit your abstract until May 17.
   Submission is possible now `on OpenReview <https://openreview.net/group?id=ICML.cc/2022/Workshop/Shift_Happens>`__
