@@ -96,7 +96,7 @@ Also, please consider our :doc:`call_for_reviewers`.
 Prizes and Travel Grants
 ------------------------
 
-To be announced soon.
+We can offer up to 5 free registrations to the ICML for outstanding submissions.
 
 
 Invited Speakers
