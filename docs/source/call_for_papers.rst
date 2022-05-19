@@ -3,32 +3,44 @@ Call for Submissions
 
 .. note::
 
-  We can offer up to 5 free registrations to the ICML as prizes for outstanding submissions!
+  We offer up to 5 free registrations to the ICML as prizes for outstanding submissions!
   
-  We extended the deadline for submissions to **June 3**. Please make sure to register your submission and submit your abstract until **May 27**. For authors of the `Neurips Datasets & Benchmarks Track submissions <https://neurips.cc/Conferences/2022/CallForDatasetsBenchmarks#:~:text=Abstract%20submission%20deadline%3A%20Monday%2C%20June,2022%2001%3A00%20PM%20PDT.>`__, we offer a special deadline for **June 9**. 
+  We extended the submission deadlines:
   
-  **NEW**: We invite submissions in the form of `extended abstracts <https://drive.google.com/file/d/1bRp0Pp2ek_KbuQILyNPuOgJcUD3EuCR3/view?usp=sharing>`__.
+  The new deadline for registering abstracts is **May 27**.
+  All submissions (either an extended abstract, or a full submission in form of a technical report proof-of-concept implementation)
+  are due on **June 3**.
+  For authors of the `Neurips Datasets & Benchmarks Track submissions <https://neurips.cc/Conferences/2022/CallForDatasetsBenchmarks#:~:text=Abstract%20submission%20deadline%3A%20Monday%2C%20June,2022%2001%3A00%20PM%20PDT.>`__, we offer another deadline extension until **June 9**.
   
-  Submission is possible now `on OpenReview <https://openreview.net/group?id=ICML.cc/2022/Workshop/Shift_Happens>`_.
+  Submit your contribution `on OpenReview <https://openreview.net/group?id=ICML.cc/2022/Workshop/Shift_Happens>`_.
 
 TL;DR
 ^^^^^
 
-We accept the following submission types: Full submissions and extended abstracts.
+We accept the following submission types:
+Full submissions and extended abstracts (`example <https://drive.google.com/file/d/1bRp0Pp2ek_KbuQILyNPuOgJcUD3EuCR3/view?usp=sharing>`__).
 
 **Full submissions** consist of:
 
-- A short report of the task, metrics and datasets,
-- An implementation of the task, metrics and/or datasets, comprised of a plugin to the ``shifthappens`` benchmark package, and all required external data files.
+- a short technical report of the task, metrics and datasets
+- an implementation of the task, metrics and/or datasets, and all required external data files.
 
 Both components will be submitted via OpenReview, and reviewing is double-blind.
 
-**Extended abstracts** typically consist of a 1-2 page paper with one Figure, see `this example <https://drive.google.com/file/d/1bRp0Pp2ek_KbuQILyNPuOgJcUD3EuCR3/view?usp=sharing>`__. In an extended abstract, the authors describe an idea for an interesting dataset or task they intend working on in the near future to get peer feed-back on their idea.
+Please not that at submission time, a proof-of-concept implementation is sufficient.
+Until the camera-ready deadline, the implementation should be comprised of a plugin to the ``shifthappens`` benchmark package, and the final version of the dataset needs to be provided.
+
+**Extended abstracts** consist of:
+
+- a one or two page PDF with one figure (`example <https://drive.google.com/file/d/1bRp0Pp2ek_KbuQILyNPuOgJcUD3EuCR3/view?usp=sharing>`__)
+
+In an extended abstract, the authors describe an idea for an interesting dataset or task they intend working on in the near future to get peer feedback.
+
+**Submission**
 
 Please submit your paper `on OpenReview <https://openreview.net/group?id=ICML.cc/2022/Workshop/Shift_Happens>`__. 
-The workshop will not have any official proceedings, so it is non-archival.
-Tasks that have been part of a recent submission/publication are allowed, in which case the overlapping
-works should be mentioned.
+The workshop will not have any official proceedings (besides OpenReview), so it is non-archival.
+Tasks that have been part of a recent submission or publication are allowed and encouraged.
 
 **Examples** of possible contributions:
 
@@ -38,8 +50,7 @@ works should be mentioned.
   (e.g. new calibration metrics, fairness metrics, ...).
 - Completely new tasks and datasets that highlight differences between ImageNet models (see below for details).
 
-Submissions creating links to communities interested in problems besides standard, “accuracy-focused” settings
-are very welcome.
+Submissions creating links to communities interested in problems besides standard, “accuracy-focused” settings are very welcome and encouraged.
 
 For general questions about preparations of submissions, clarifications around the submission score and 
 discussions about the ``shifthappens`` API, please feel free to write us as `shifthappens@bethgelab.org <mailto:shifthappens@bethgelab.org>`__
@@ -75,17 +86,20 @@ We invite all authors to **register** their ideas in form of an abstract submiss
 Register your abstract now `on OpenReview <https://openreview.net/group?id=ICML.cc/2022/Workshop/Shift_Happens>`__!
 
 
-Detailed Information on Submission Types and Topics: 
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Detailed Information on Submission Types and Topics 
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Submission Types:
-*****************
+Submission Types
+****************
 
-- Extended abstracts: 1-2 page (1 page preferred) extended abstracts, include a figure, `example <https://drive.google.com/file/d/1bRp0Pp2ek_KbuQILyNPuOgJcUD3EuCR3/view?usp=sharing>`__.
-- Full submissions: 2 page tech reports + code contribution
+Extended abstracts are one to two page descriptions of an idea for a task, dataset or benchmark that will not be actively collected and integrated as part of the benchmark. The submission should contain at least one summary figure and should use the standard ICML submission template.
+You can find an example `here <https://drive.google.com/file/d/1bRp0Pp2ek_KbuQILyNPuOgJcUD3EuCR3/view?usp=sharing>`__.
+If you are submitting an extended abstract, no additional supplementary material is allowed.
 
-Topics:
-*******
+Full submissions are comprised of a two page technical report, along with a code contribution submitted as supplementary material. The code should be a proof-of-concept implementation, which we will later integrate into the ``shifthappens`` package. If you submit a dataset, provide at least sample data along with your code as supplementary material. For large submissions, we encourage to host data externally and include instructions for downloading.
+
+Topics
+******
 
 Besides compatibility to ImageNet scale models, the scope of possible
 benchmarks and datasets is intentionally broad:
