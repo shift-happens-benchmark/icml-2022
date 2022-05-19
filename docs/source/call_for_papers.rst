@@ -19,8 +19,8 @@ We accept the following submission types: Full submissions and extended abstract
 **Full submissions** consist of:
 
 - A short report of the task, metrics and datasets,
-
 - An implementation of the task, metrics and/or datasets, comprised of a plugin to the ``shifthappens`` benchmark package, and all required external data files.
+
 Both components will be submitted via OpenReview, and reviewing is double-blind.
 
 **Extended abstracts** typically consist of a 1-2 page paper with one Figure, see `this example <https://drive.google.com/file/d/1bRp0Pp2ek_KbuQILyNPuOgJcUD3EuCR3/view?usp=sharing>`__. In an extended abstract, the authors describe an idea for an interesting dataset or task they intend working on in the near future to get peer feed-back on their idea.
@@ -51,9 +51,9 @@ Deadlines
 You can find all deadlines as well as the submission page also directly `on OpenReview <https://openreview.net/group?id=ICML.cc/2022/Workshop/Shift_Happens>`__.
 
 - `Abstract Deadline <https://openreview.net/group?id=ICML.cc/2022/Workshop/Shift_Happens>`__: May 27, 2022 (previously: May 17)
+  
+  - Register all short abstracts/intention to submit on OpenReview. We need this information to plan the review.  
 
-    - Register all short abstracts/intention to submit on OpenReview. We need this information to plan the review.
-    
 - `Submission Deadline for all extended abstracts and full submissions <https://openreview.net/group?id=ICML.cc/2022/Workshop/Shift_Happens>`__: June 3, 2022 (previously: May 27)
 - `Special submission Deadline <https://openreview.net/group?id=ICML.cc/2022/Workshop/Shift_Happens>`__  for all authors of the `Neurips Datasets & Benchmarks Track submissions <https://neurips.cc/Conferences/2022/CallForDatasetsBenchmarks#:~:text=Abstract%20submission%20deadline%3A%20Monday%2C%20June,2022%2001%3A00%20PM%20PDT.>`__: June 9, 2022
 - Reviews Posted: June 13, 2022
@@ -82,7 +82,6 @@ Submission Types:
 *****************
 
 - Extended abstracts: 1-2 page (1 page preferred) extended abstracts, include a figure, `example <https://drive.google.com/file/d/1bRp0Pp2ek_KbuQILyNPuOgJcUD3EuCR3/view?usp=sharing>`__.
-
 - Full submissions: 2 page tech reports + code contribution
 
 Topics:
@@ -92,9 +91,7 @@ Besides compatibility to ImageNet scale models, the scope of possible
 benchmarks and datasets is intentionally broad:
 
 - Submissions that **provide their own evaluation criterion** and discuss its value in applications are particularly encouraged. Submissions should explain why the submitted dataset and metric are well-suited to inform about the specified property.
-
 - It is also encouraged to submit **datasets** that can be evaluated with one of the following **standard criteria**:
- 
   - Robustness to domain shifts (classification accuracy)
   - Out-of-distribution detection (AUROC, FPR, AUPR)
 
