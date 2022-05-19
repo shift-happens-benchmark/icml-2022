@@ -3,20 +3,28 @@ Call for Submissions
 
 .. note::
 
-  We can offer up to 5 free registrations to the ICML as prizes for outstanding submissions.
+  We can offer up to 5 free registrations to the ICML as prizes for outstanding submissions!
   
-  We extended the deadline for submissions to May 27. Please make sure to register your submission and submit your abstract until May 17.
-  Submission is possible now `on OpenReview <https://openreview.net/group?id=ICML.cc/2022/Workshop/Shift_Happens>`__
+  We extended the deadline for submissions to **June 3**. Please make sure to register your submission and submit your abstract until **May 27**. For authors of the `Neurips Datasets & Benchmarks Track submissions <https://neurips.cc/Conferences/2022/CallForDatasetsBenchmarks#:~:text=Abstract%20submission%20deadline%3A%20Monday%2C%20June,2022%2001%3A00%20PM%20PDT.>`__, we offer a special deadline for **June 9**. 
+  
+  **NEW**: We invite submissions in the form of `extended abstracts <https://drive.google.com/file/d/1bRp0Pp2ek_KbuQILyNPuOgJcUD3EuCR3/view?usp=sharing>`__.
+  
+  Submission is possible now `on OpenReview <https://openreview.net/group?id=ICML.cc/2022/Workshop/Shift_Happens>`_.
 
 TL;DR
 ^^^^^
 
-Submissions consist of 
+We accept the following submission types: Full submissions and extended abstracts.
+
+**Full submissions** consist of:
 
 - A short report of the task, metrics and datasets,
 - An implementation of the task, metrics and/or datasets, comprised of a plugin to the ``shifthappens`` benchmark package, and all required external data files.
 
 Both components will be submitted via OpenReview, and reviewing is double-blind.
+
+**Extended abstracts** typically consist of a 1-2 page paper with one Figure, see `this example <https://drive.google.com/file/d/1bRp0Pp2ek_KbuQILyNPuOgJcUD3EuCR3/view?usp=sharing>`__. In an extended abstract, the authors describe an idea for an interesting dataset or task they intend working on in the near future to get peer feed-back on their idea.
+
 Please submit your paper `on OpenReview <https://openreview.net/group?id=ICML.cc/2022/Workshop/Shift_Happens>`__. 
 The workshop will not have any official proceedings, so it is non-archival.
 Tasks that have been part of a recent submission/publication are allowed, in which case the overlapping
@@ -42,12 +50,16 @@ Deadlines
 
 You can find all deadlines as well as the submission page also directly `on OpenReview <https://openreview.net/group?id=ICML.cc/2022/Workshop/Shift_Happens>`__.
 
-- `Abstract Deadline <https://openreview.net/group?id=ICML.cc/2022/Workshop/Shift_Happens>`__: May 17, 2022 (please see notes below)
-- `Submission Deadline <https://openreview.net/group?id=ICML.cc/2022/Workshop/Shift_Happens>`__: May 27, 2022 (please see notes below)
-- Reviews Posted: June 3, 2022
-- Acceptance Notification: June 6, 2022
+- `Abstract Deadline <https://openreview.net/group?id=ICML.cc/2022/Workshop/Shift_Happens>`__: May 27, 2022 (previously: May 17)
+  
+  - Register all short abstracts/intention to submit on OpenReview. We need this information to plan the review.  
+
+- `Submission Deadline for all extended abstracts and full submissions <https://openreview.net/group?id=ICML.cc/2022/Workshop/Shift_Happens>`__: June 3, 2022 (previously: May 27)
+- `Special submission Deadline <https://openreview.net/group?id=ICML.cc/2022/Workshop/Shift_Happens>`__  for all authors of the `Neurips Datasets & Benchmarks Track submissions <https://neurips.cc/Conferences/2022/CallForDatasetsBenchmarks#:~:text=Abstract%20submission%20deadline%3A%20Monday%2C%20June,2022%2001%3A00%20PM%20PDT.>`__: June 9, 2022
+- Reviews Posted: June 13, 2022
+- Acceptance Notification: June 13, 2022
 - Camera and Dataset Ready: July 1, 2022
-- ICML 2022 Workshop dates: July 22 and 23 (final date TBA)
+- ICML 2022 Workshop dates: July 22
 
 Please note that it is **not required** to post the final dataset by the submission deadline.
 It is sufficient to start working on the final dataset collection as well as the finalizing the code associated with the submission after the acceptance notification until the camera ready deadline.
@@ -58,21 +70,28 @@ Please also note that it is **not required** to post a full implementation for a
 Abstract Preparation
 ^^^^^^^^^^^^^^^^^^^^
 
-We invite all authors to **register** their ideas in form of an abstract submission **until May 17**. The title, abstract and even the author list do not need to be final, and can be changed even after the abstract deadline. Still, please refrain from submitting "placeholder abstracts". The scope of the dataset or task you intend to submit should become clear from the submitted abstract.
+We invite all authors to **register** their ideas in form of an abstract submission **until May 27 (previously: May 17)**. The title, abstract and even the author list do not need to be final, and can be changed even after the abstract deadline. Still, please refrain from submitting "placeholder abstracts". The scope of the dataset or task you intend to submit should become clear from the submitted abstract.
 
 Register your abstract now `on OpenReview <https://openreview.net/group?id=ICML.cc/2022/Workshop/Shift_Happens>`__!
 
 
-Detailed Information on Submission Types 
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Detailed Information on Submission Types and Topics: 
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Submission Types:
+*****************
+
+- Extended abstracts: 1-2 page (1 page preferred) extended abstracts, include a figure, `example <https://drive.google.com/file/d/1bRp0Pp2ek_KbuQILyNPuOgJcUD3EuCR3/view?usp=sharing>`__.
+- Full submissions: 2 page tech reports + code contribution
+
+Topics:
+*******
 
 Besides compatibility to ImageNet scale models, the scope of possible
 benchmarks and datasets is intentionally broad:
 
 - Submissions that **provide their own evaluation criterion** and discuss its value in applications are particularly encouraged. Submissions should explain why the submitted dataset and metric are well-suited to inform about the specified property.
-
 - It is also encouraged to submit **datasets** that can be evaluated with one of the following **standard criteria**:
- 
   - Robustness to domain shifts (classification accuracy)
   - Out-of-distribution detection (AUROC, FPR, AUPR)
 
