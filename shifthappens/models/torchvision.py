@@ -6,6 +6,7 @@ from typing import List
 import numpy as np
 import torch
 import torchvision
+from surgeon_pytorch import Inspect
 from torch import nn
 from torchvision.transforms import functional as tv_functional
 
@@ -14,8 +15,29 @@ import shifthappens.models.mixins as sh_mixins
 from shifthappens.data.base import DataLoader
 
 
-class __TorchModel(
-    sh_models.Model, sh_mixins.LabelModelMixin, sh_mixins.ConfidenceModelMixin
+class __TorchvisionPreProcessingMixin:
+    """Performs the default preprocessing for torchvision ImageNet classifiers."""
+
+    def _pre_process(self, batch: List[np.ndarray], device: str) -> torch.Tensor:
+        inputs = []
+        for item in batch:
+            assert isinstance(item, np.ndarray)
+            item_t = torch.tensor(item.transpose((2, 0, 1)))
+            item_t = tv_functional.resize(item_t, 256)
+            item_t = tv_functional.center_crop(item_t, 224)
+            inputs.append(item_t)
+
+        inputs_t = torch.stack(inputs, 0)
+        inputs_t = inputs_t.to(device)
+        return inputs_t
+
+
+class __TorchvisionModel(
+    sh_models.Model,
+    __TorchvisionPreProcessingMixin,
+    sh_mixins.LabelModelMixin,
+    sh_mixins.ConfidenceModelMixin,
+    sh_mixins.FeaturesModelMixin,
 ):
     """Wraps a torchvision model.
 
@@ -25,22 +47,20 @@ class __TorchModel(
         device: Selected device to run the model on.
     """
 
-    def __init__(self, model: nn.Module, max_batch_size: int, device: str = "cpu"):
+    def __init__(
+        self,
+        model: nn.Module,
+        feature_layer: str,
+        max_batch_size: int,
+        device: str = "cpu",
+    ):
+        assert not issubclass(
+            type(model), torch.nn.DataParallel
+        ), "Parallel models are not yet supported"
         self.model = model
         self.max_batch_size = max_batch_size
         self.device = device
-
-    def _pre_process(self, batch: List[np.ndarray]) -> torch.Tensor:
-        inputs = []
-        for item in batch:
-            item_t = torch.tensor(item.transpose((2, 0, 1)))
-            item_t = tv_functional.resize(item_t, 256)
-            item_t = tv_functional.center_crop(item_t, 224)
-            inputs.append(item_t)
-
-        inputs_t = torch.stack(inputs, 0)
-        inputs_t = inputs_t.to(self.device)
-        return inputs_t
+        self.hooked_model = Inspect(self.model, layer=feature_layer)
 
     @torch.no_grad()
     def _predict(
@@ -48,26 +68,64 @@ class __TorchModel(
     ) -> Iterator[sh_models.ModelResult]:
         for batch in input_dataloader.iterate(self.max_batch_size):
             # pre-process batch
-            inputs = self._pre_process(batch)
-            logits = self.model(inputs).cpu()
+            inputs = self._pre_process(batch, self.device)
+            logits, features = self.hooked_model(inputs)
+            features = features.view(len(features), -1)
+            logits, features = logits.cpu(), features.cpu()
             probabilities = torch.softmax(logits, -1)
             predictions = logits.argmax(-1)
 
             yield sh_models.ModelResult(
-                class_labels=predictions.numpy(), confidences=probabilities.numpy()
+                class_labels=predictions.numpy(),
+                confidences=probabilities.numpy(),
+                features=features.numpy(),
             )
 
 
 def resnet18(max_batch_size: int = 16, device: str = "cpu"):
     """
-    Torchvision ResNet-18 implementation.
+    Load a ResNet18 network trained on the ImageNet 2012 train set from torchvision.
+    See :py:func:`torchvision.models.resnet18` for details.
 
     Args:
         max_batch_size: How many samples allowed per batch to load.
         device: Selected device to run the model on.
     """
-    return __TorchModel(
+    return __TorchvisionModel(
         torchvision.models.resnet18(pretrained=True),
+        "avgpool",
+        max_batch_size=max_batch_size,
+        device=device,
+    )
+
+
+def resnet50(max_batch_size: int = 16, device: str = "cpu"):
+    """Load a ResNet50 network trained on the ImageNet 2012 train set from torchvision.
+    See :py:func:`torchvision.models.resnet50` for details.
+
+    Args:
+        max_batch_size: How many samples allowed per batch to load.
+        device: Selected device to run the model on.
+    """
+    return __TorchvisionModel(
+        torchvision.models.resnet50(pretrained=True),
+        "avgpool",
+        max_batch_size=max_batch_size,
+        device=device,
+    )
+
+
+def vgg16(max_batch_size: int = 16, device: str = "cpu"):
+    """Load a VGG16 network trained on the ImageNet 2012 train set from torchvision.
+    See :py:func:`torchvision.models.vgg16` for details.
+
+    Args:
+        max_batch_size: How many samples allowed per batch to load.
+        device: Selected device to run the model on.
+    """
+    return __TorchvisionModel(
+        torchvision.models.vgg16(pretrained=True),
+        "avgpool",
         max_batch_size=max_batch_size,
         device=device,
     )
