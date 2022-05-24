@@ -7,7 +7,7 @@ Call for Submissions
   
   We extended the submission deadlines:
   
-  The new deadline for registering abstracts is **May 27**.
+  The new deadline for registering abstracts is **June 3** (same as submission deadline).
   All submissions (either an extended abstract, or a full submission in form of a technical report proof-of-concept implementation)
   are due on **June 3**.
   For authors of the `Neurips Datasets & Benchmarks Track submissions <https://neurips.cc/Conferences/2022/CallForDatasetsBenchmarks#:~:text=Abstract%20submission%20deadline%3A%20Monday%2C%20June,2022%2001%3A00%20PM%20PDT.>`__, we offer another deadline extension until **June 9**.
@@ -27,7 +27,7 @@ Full submissions and extended abstracts (`example <https://drive.google.com/file
 
 Both components will be submitted via OpenReview, and reviewing is double-blind.
 
-Please not that at submission time, a proof-of-concept implementation is sufficient.
+Please note that at submission time, a proof-of-concept implementation is sufficient.
 Until the camera-ready deadline, the implementation should be comprised of a plugin to the ``shifthappens`` benchmark package, and the final version of the dataset needs to be provided.
 
 **Extended abstracts** consist of:
@@ -61,10 +61,7 @@ Deadlines
 
 You can find all deadlines as well as the submission page also directly `on OpenReview <https://openreview.net/group?id=ICML.cc/2022/Workshop/Shift_Happens>`__.
 
-- `Abstract Deadline <https://openreview.net/group?id=ICML.cc/2022/Workshop/Shift_Happens>`__: May 27, 2022 (previously: May 17)
-  
-  - Register all short abstracts/intention to submit on OpenReview. We need this information to plan the review.  
-
+- `Abstract Deadline <https://openreview.net/group?id=ICML.cc/2022/Workshop/Shift_Happens>`__: June 3, 2022 (previously: May 27)
 - `Submission Deadline for all extended abstracts and full submissions <https://openreview.net/group?id=ICML.cc/2022/Workshop/Shift_Happens>`__: June 3, 2022 (previously: May 27)
 - `Special submission Deadline <https://openreview.net/group?id=ICML.cc/2022/Workshop/Shift_Happens>`__  for all authors of the `Neurips Datasets & Benchmarks Track submissions <https://neurips.cc/Conferences/2022/CallForDatasetsBenchmarks#:~:text=Abstract%20submission%20deadline%3A%20Monday%2C%20June,2022%2001%3A00%20PM%20PDT.>`__: June 9, 2022
 - Reviews Posted: June 13, 2022
@@ -76,14 +73,6 @@ Please note that it is **not required** to post the final dataset by the submiss
 It is sufficient to start working on the final dataset collection as well as the finalizing the code associated with the submission after the acceptance notification until the camera ready deadline.
 
 Please also note that it is **not required** to post a full implementation for adding your benchmark to the ``shifthappens`` package by the submission deadline. You can submit any implementation along with your submission, as long at is demonstrates the applicability of your model/task to the problem setup of the workshop. We will work with all authors towards adding all accepted submissions into the final benchmark package until the camera ready deadline.
-
-
-Abstract Preparation
-^^^^^^^^^^^^^^^^^^^^
-
-We invite all authors to **register** their ideas in form of an abstract submission **until May 27 (previously: May 17)**. The title, abstract and even the author list do not need to be final, and can be changed even after the abstract deadline. Still, please refrain from submitting "placeholder abstracts". The scope of the dataset or task you intend to submit should become clear from the submitted abstract.
-
-Register your abstract now `on OpenReview <https://openreview.net/group?id=ICML.cc/2022/Workshop/Shift_Happens>`__!
 
 
 Detailed Information on Submission Types and Topics 
