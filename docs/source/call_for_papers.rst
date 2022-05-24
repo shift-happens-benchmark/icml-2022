@@ -1,5 +1,5 @@
 Call for Submissions
- ====================
+====================
 
 .. note::
 
@@ -57,7 +57,7 @@ discussions about the ``shifthappens`` API, please feel free to write us as `shi
 or `join our slack channel <https://join.slack.com/t/shifthappensicml2022/shared_invite/zt-16ewcukds-6jW6xC5DbtRvLCCkhZ~NLg>`__.
 
 Deadlines
-^^^^^^^^^^^^^^^^
+^^^^^^^^^
 
 You can find all deadlines as well as the submission page also directly `on OpenReview <https://openreview.net/group?id=ICML.cc/2022/Workshop/Shift_Happens>`__.
 
