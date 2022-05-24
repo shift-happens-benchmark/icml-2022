@@ -27,7 +27,7 @@ Full submissions and extended abstracts (`example <https://drive.google.com/file
 
 Both components will be submitted via OpenReview, and reviewing is double-blind.
 
-Please not that at submission time, a proof-of-concept implementation is sufficient.
+Please note that at submission time, a proof-of-concept implementation is sufficient.
 Until the camera-ready deadline, the implementation should be comprised of a plugin to the ``shifthappens`` benchmark package, and the final version of the dataset needs to be provided.
 
 **Extended abstracts** consist of:
