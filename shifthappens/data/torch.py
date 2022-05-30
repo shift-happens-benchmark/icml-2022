@@ -76,7 +76,7 @@ class ImagesOnlyTorchDataset(ch_data.Dataset):
         assert hasattr(dataset, "__getitem__") and hasattr(
             dataset, "__len__"
         ), "Dataset must be map-style, i.e. implement a __len__ and __getitem__ method"
-        self.dataset: Sequence = typing.cast(collections.Sequence, dataset)
+        self.dataset: Sequence = typing.cast(collections.abc.Sequence, dataset)
 
     def __getitem__(self, index):
         return self.dataset[index][0]

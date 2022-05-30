@@ -15,6 +15,7 @@ from typing import Iterator
 import numpy as np
 
 from shifthappens.data.base import DataLoader
+from shifthappens.data import imagenet as sh_imagenet
 from shifthappens.models import mixins
 
 
@@ -106,6 +107,18 @@ class Model(abc.ABC):
 
     """
 
+    @property
+    def imagenet_validation_result(self) -> ModelResult:
+        """
+        Getter-like property to access model's evaluation result on ImageNet validation set.
+        Returns: Model evaluation result in ImageNet validation set wrapped with ModelResult.
+
+        """
+        try:
+            return getattr(self, "_imagenet_validation_result")
+        except AttributeError:
+            pass
+
     def prepare(self, dataloader: DataLoader):
         """If the model uses unsupervised adaptation mechanisms, it will run those.
 
@@ -142,8 +155,65 @@ class Model(abc.ABC):
             assert issubclass(type(self), mixins.OODScoreModelMixin)
         if targets.features:
             assert issubclass(type(self), mixins.FeaturesModelMixin)
+        if self.imagenet_validation_result is None:
+            self._get_imagenet_predictions()
 
         return self._predict(input_dataloader, targets)
+
+    def _get_imagenet_predictions(self, rewrite=False):
+        """
+        Loads cached predictions on ImageNet validation set for the model or predicts
+        on ImageNet validation set and caches the result whenever there is no cached
+        predictions for the model or ``rewrite`` argument set to True.
+        Args:
+            rewrite: True if models predictions need to be rewritten.
+        """
+        if sh_imagenet.is_cached(self) and not rewrite:
+            self._imagenet_validation_result = ModelResult(
+                **sh_imagenet.get_cached_predictions(self)
+            )
+        else:
+            self._predict_imagenet_val()
+            sh_imagenet.cache_predictions(self, self.imagenet_validation_result)
+
+    def _predict_imagenet_val(self):
+        """
+        Evaluate model on ImageNet validation set and store all possible targets scores
+        for the particular model.
+        """
+        try:
+            max_batch_size = getattr(self, "max_batch_size")
+            imagenet_val_dataloader = sh_imagenet.get_imagenet_val_dataloader(
+                max_batch_size=max_batch_size
+            )
+        except AttributeError:
+            imagenet_val_dataloader = sh_imagenet.get_imagenet_val_dataloader()
+
+        score_types = {
+            "class_labels": issubclass(type(self), mixins.LabelModelMixin),
+            "confidences": issubclass(type(self), mixins.ConfidenceModelMixin),
+            "ood_scores": issubclass(type(self), mixins.OODScoreModelMixin),
+            "uncertainties": issubclass(type(self), mixins.UncertaintyModelMixin),
+            "features": issubclass(type(self), mixins.FeaturesModelMixin),
+        }
+        targets = PredictionTargets(**score_types)
+        predictions_dict = {
+            prediction_type: []
+            for prediction_type in [
+                score_type for score_type in score_types if score_types[score_type]
+            ]
+        }
+        for prediction in self._predict(imagenet_val_dataloader, targets):
+            for prediction_type in predictions_dict:
+                prediction_score = prediction.__getattribute__(prediction_type)
+                predictions_dict[prediction_type] = sum(
+                    [predictions_dict[prediction_type], [prediction_score]], []
+                )
+        for prediction_type in predictions_dict:
+            predictions_dict[prediction_type] = np.concatenate(
+                predictions_dict[prediction_type], 0
+            )
+        self._imagenet_validation_result = ModelResult(**predictions_dict)
 
     @abc.abstractmethod
     def _predict(
