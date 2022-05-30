@@ -1,11 +1,11 @@
 """Base classes and helper functions for adding models to the benchmark.
 
 To add a new model, implement a new wrapper class inheriting from
-``shifthappens.base.Model``, and from any of the Mixins defined
-in this module.
+:py:class:`shifthappens.models.base.Model`, and from any of the Mixins defined
+in :py:mod:`shifthappens.models.mixins`.
 
-Model results should be converted to numpy arrays, and packed into an
-``shifthappens.base.ModelResult`` instance.
+Model results should be converted to :py:class:`numpy.ndarray` objects, and
+packed into an :py:class:`shifthappens.models.base.ModelResult` instance.
 """
 
 import abc
@@ -15,6 +15,8 @@ from typing import Iterator
 import numpy as np
 
 from shifthappens.data.base import DataLoader
+from shifthappens.data import imagenet as sh_imagenet
+from shifthappens.models import mixins
 
 
 class ModelResult:
@@ -25,21 +27,21 @@ class ModelResult:
     regarding the ordering of labels.
 
     Args:
-        class_labels: ``(N, k)`` array containing top-k predictions for
+        class_labels: ``(N, k)``, top-k predictions for
             each sample in the batch. Choice of ``k`` can be selected by
             the user, and potentially influences the type of accuracy
             based benchmarks that the model can be run on. For standard
             ImageNet, ImageNet-C evaluation, choose at least ``k=5``.
-        confidences: optional, ``(N, 1000)`` confidences for each class.
+        confidences: ``(N, 1000)``, confidences for each class.
             Standard PyTorch ImageNet class label order is expected for
             this array. Scores can be in the range ``-inf`` to ``inf``.
-        uncertainties: optional, ``(N, 1000)``, uncertainties for the
+        uncertainties: ``(N, 1000)``, uncertainties for the
             different class predictions. Different from the ``confidences``,
             this is a measure of certainty of the given ``confidences`` and
             common e.g. in Bayesian Deep neural networks.
-        ood_scores: optional, ``(N,)``, score for interpreting the sample
+        ood_scores: ``(N,)``, score for interpreting the sample
             as an out-of-distribution class, in the range ``-inf`` to ``inf``.
-        features: optional, ``(N, d)``, where ``d`` can be arbitrary, feature
+        features: ``(N, d)``, where ``d`` can be arbitrary, feature
             representation used to arrive at the given predictions.
     """
 
@@ -68,6 +70,18 @@ class ModelResult:
 
 @dataclasses.dataclass
 class PredictionTargets:
+    """Contains boolean flags of which type of targets model is predicting. Note
+    that at least one flag should be set as ``True`` and model should be inherited
+    from corresponding ModelMixin.
+
+    Args:
+        class_labels: Set to ``True`` if model returns predicted labels.
+        confidences: Set to ``True`` if model returns confidences.
+        uncertainties: Set to ``True`` if model returns uncertainties.
+        ood_scores: Set to ``True`` if model returns ood scores.
+        features: Set to ``True`` if model returns features.
+    """
+
     class_labels: bool = False
     confidences: bool = False
     uncertainties: bool = False
@@ -81,37 +95,125 @@ class PredictionTargets:
 
 
 class Model(abc.ABC):
-    """Model base class."""
+    """Model base class.
+
+    Override the :py:meth:`_predict` method to define predictions type of your specific model.
+    If your model uses unsupervised adaptation mechanisms override :py:meth:`prepare`
+    as well.
+
+    Also make sure that your model inherits from the mixins from :py:mod:`shifthappens.models.mixins`
+    corresponding to your model predictions type (e.g., :py:class:`LabelModelMixin <shifthappens.models.mixins.LabelModelMixin>` for labels
+    or :py:class:`ConfidenceModelMixin <shifthappens.models.mixins.ConfidenceModelMixin>` for confidences).
+
+    """
+
+    @property
+    def imagenet_validation_result(self) -> ModelResult:
+        """
+        Getter-like property to access model's evaluation result on ImageNet validation set.
+        Returns: Model evaluation result in ImageNet validation set wrapped with ModelResult.
+
+        """
+        try:
+            return getattr(self, "_imagenet_validation_result")
+        except AttributeError:
+            pass
 
     def prepare(self, dataloader: DataLoader):
+        """If the model uses unsupervised adaptation mechanisms, it will run those.
+
+        Args:
+            dataloader: Dataloader producing batches of data.
+        """
         pass
 
     def predict(
         self, input_dataloader: DataLoader, targets: PredictionTargets
     ) -> Iterator[ModelResult]:
-        """
+        """Yield all the predictions of the model for all data samples contained
+        in the dataloader
+
         Args:
-            input_dataloader (DataLoader): Dataloader producing batches of data.
-            targets (PredictionTargets): Indicates which kinds of targets should be predicted.
+            input_dataloader: Dataloader producing batches of data.
+            targets: Indicates which kinds of targets should
+                be predicted.
 
         Returns:
-            Prediction results for the given batch. Depending in the target arguments this
-            includes the predicted labels, class confidences, class uncertainties, ood scores,
-            and image features, all as ``np.array``s.
+            Prediction results for the given batch. Depending on the target
+            arguments this includes the predicted labels, class confidences,
+            class uncertainties, ood scores, and image features, all as
+            :py:class:`numpy.ndarray` objects.
         """
 
         if targets.class_labels:
-            assert issubclass(type(self), LabelModelMixin)
+            assert issubclass(type(self), mixins.LabelModelMixin)
         if targets.confidences:
-            assert issubclass(type(self), ConfidenceModelMixin)
+            assert issubclass(type(self), mixins.ConfidenceModelMixin)
         if targets.uncertainties:
-            assert issubclass(type(self), UncertaintyModelMixin)
+            assert issubclass(type(self), mixins.UncertaintyModelMixin)
         if targets.ood_scores:
-            assert issubclass(type(self), OODScoreModelMixin)
+            assert issubclass(type(self), mixins.OODScoreModelMixin)
         if targets.features:
-            assert issubclass(type(self), FeaturesModelMixin)
+            assert issubclass(type(self), mixins.FeaturesModelMixin)
+        if self.imagenet_validation_result is None:
+            self._get_imagenet_predictions()
 
         return self._predict(input_dataloader, targets)
+
+    def _get_imagenet_predictions(self, rewrite=False):
+        """
+        Loads cached predictions on ImageNet validation set for the model or predicts
+        on ImageNet validation set and caches the result whenever there is no cached
+        predictions for the model or ``rewrite`` argument set to True.
+        Args:
+            rewrite: True if models predictions need to be rewritten.
+        """
+        if sh_imagenet.is_cached(self) and not rewrite:
+            self._imagenet_validation_result = ModelResult(
+                **sh_imagenet.get_cached_predictions(self)
+            )
+        else:
+            self._predict_imagenet_val()
+            sh_imagenet.cache_predictions(self, self.imagenet_validation_result)
+
+    def _predict_imagenet_val(self):
+        """
+        Evaluate model on ImageNet validation set and store all possible targets scores
+        for the particular model.
+        """
+        try:
+            max_batch_size = getattr(self, "max_batch_size")
+            imagenet_val_dataloader = sh_imagenet.get_imagenet_val_dataloader(
+                max_batch_size=max_batch_size
+            )
+        except AttributeError:
+            imagenet_val_dataloader = sh_imagenet.get_imagenet_val_dataloader()
+
+        score_types = {
+            "class_labels": issubclass(type(self), mixins.LabelModelMixin),
+            "confidences": issubclass(type(self), mixins.ConfidenceModelMixin),
+            "ood_scores": issubclass(type(self), mixins.OODScoreModelMixin),
+            "uncertainties": issubclass(type(self), mixins.UncertaintyModelMixin),
+            "features": issubclass(type(self), mixins.FeaturesModelMixin),
+        }
+        targets = PredictionTargets(**score_types)
+        predictions_dict = {
+            prediction_type: []
+            for prediction_type in [
+                score_type for score_type in score_types if score_types[score_type]
+            ]
+        }
+        for prediction in self._predict(imagenet_val_dataloader, targets):
+            for prediction_type in predictions_dict:
+                prediction_score = prediction.__getattribute__(prediction_type)
+                predictions_dict[prediction_type] = sum(
+                    [predictions_dict[prediction_type], [prediction_score]], []
+                )
+        for prediction_type in predictions_dict:
+            predictions_dict[prediction_type] = np.concatenate(
+                predictions_dict[prediction_type], 0
+            )
+        self._imagenet_validation_result = ModelResult(**predictions_dict)
 
     @abc.abstractmethod
     def _predict(
@@ -121,43 +223,13 @@ class Model(abc.ABC):
         Override this function for the specific model.
 
         Args:
-            inputs (np.ndarray): Batch of images.
-            targets (PredictionTargets): Indicates which kinds of targets should be predicted.
+            input_dataloader: Dataloader producing batches of data.
+            targets: Indicates which kinds of targets should be predicted.
 
         Returns:
             Yields prediction results for all batches yielded by the dataloader.
-            Depending in the target arguments the model results may include the
+            Depending on the target arguments the model results may include the
             predicted labels, class confidences, class uncertainties, ood scores,
-            and image features, all as ``np.array``s.
+            and image features, all as :py:class:`numpy.ndarray` objects.
         """
         raise NotImplementedError()
-
-
-class LabelModelMixin:
-    """Inherit from this class if your model returns predicted labels."""
-
-    pass
-
-
-class ConfidenceModelMixin:
-    """Inherit from this class if you model returns confidences."""
-
-    pass
-
-
-class UncertaintyModelMixin:
-    """Inherit from this class if your model returns uncertainties."""
-
-    pass
-
-
-class OODScoreModelMixin:
-    """Inherit from this class if your model returns ood scores."""
-
-    pass
-
-
-class FeaturesModelMixin:
-    """Inherit from this class if your model returns features."""
-
-    pass

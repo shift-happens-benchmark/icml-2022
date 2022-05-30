@@ -10,16 +10,31 @@ class TaskResult:
     At least one of these metrics must be references as a summary metric.
 
     Args:
-        summary_metrics (dict): Associates ``shifthappens.tasks.metrics.Metric``s
+        summary_metrics: Associates :py:class:`shifthappens.tasks.metrics.Metric` values
             to the name of metrics calculated by the task.
-        **metrics (float, int): Metrics' names and their values.
+        metrics: Metrics' names and their values.
+    Examples:
+        >>> @dataclasses.dataclass
+        >>> class CustomTask(Task):
+        >>>     ...
+        >>>     def _evaluate(self, model: shifthappens.models.base.Model) -> DataLoader:
+        >>>         ...
+        >>>         return TaskResult(
+        >>>                 your_robustness_metric=your_robustness_metric,
+        >>>                 your_calibration_metric=your_calibration_metric,
+        >>>                 your_custom_metric=1.0 - your_custom_metric,
+        >>>                 summary_metrics={
+        >>>                    Metric.Robustness: "your_robustness_metric",
+        >>>                    Metric.Calibration: "your_calibration_metric"},
+        >>>                 )
+        >>>     ...
     """
 
     def __init__(
         self,
         *,
         summary_metrics: Dict[Metric, Union[str, Tuple[str, ...]]],
-        **metrics: float,
+        **metrics: Union[float, int],
     ):
         # validate that metrics referenced in summary metrics exist
         for sm in summary_metrics:

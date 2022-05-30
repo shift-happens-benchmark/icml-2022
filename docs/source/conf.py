@@ -43,11 +43,23 @@ release = shifthappens.__version__
 # -- General configuration ---------------------------------------------------
 
 extensions = [
+    "sphinx.ext.viewcode",
     "sphinx.ext.autodoc",
     "sphinx.ext.napoleon",
     "sphinx_autodoc_typehints",
     "sphinx_copybutton",
+    "sphinx.ext.intersphinx",
 ]
+
+intersphinx_mapping = {
+    "numpy": (" https://numpy.org/doc/stable/", None),
+    "torch": ("https://pytorch.org/docs/stable/", None),
+    "torchvsion": ("https://pytorch.org/vision/stable/", None),
+    "python": ("https://docs.python.org/3", None),
+}
+
+# ignore link checks for generic types/TypeVars
+nitpick_ignore = [("py:class", "T")]
 
 coverage_show_missing_items = True
 
@@ -56,6 +68,11 @@ copybutton_prompt_text = r">>> |\$ "
 copybutton_prompt_is_regexp = True
 copybutton_only_copy_prompt_lines = True
 autodoc_member_order = "bysource"
+
+typehints_defaults = "comma"
+always_document_param_types = True
+simplify_optional_unions = True
+
 
 templates_path = ["_templates"]
 
@@ -111,3 +128,5 @@ html_scaled_image_link = False
 # so a file named "default.css" will overwrite the builtin "default.css".
 html_static_path = ["_static"]
 html_css_files = ["css/custom.css"]
+
+add_function_parentheses = False
