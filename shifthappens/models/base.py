@@ -107,6 +107,8 @@ class Model(abc.ABC):
 
     """
 
+    _imagenet_validation_result = ModelResult(np.array([]), None, None, None)
+
     @property
     def imagenet_validation_result(self) -> ModelResult:
         """
@@ -116,10 +118,7 @@ class Model(abc.ABC):
             Model evaluation result on ImageNet validation set wrapped with ModelResult.
 
         """
-        try:
-            return getattr(self, "_imagenet_validation_result")
-        except AttributeError:
-            pass
+        return self._imagenet_validation_result
 
     def prepare(self, dataloader: DataLoader):
         """If the model uses unsupervised adaptation mechanisms, it will run those.
@@ -157,7 +156,7 @@ class Model(abc.ABC):
             assert issubclass(type(self), mixins.OODScoreModelMixin)
         if targets.features:
             assert issubclass(type(self), mixins.FeaturesModelMixin)
-        if self.imagenet_validation_result is None:
+        if len(self.imagenet_validation_result.class_labels) == 0:
             self._get_imagenet_predictions()
 
         return self._predict(input_dataloader, targets)
@@ -166,10 +165,10 @@ class Model(abc.ABC):
         """
         Loads cached predictions on ImageNet validation set for the model or predicts
         on ImageNet validation set and caches the result whenever there is no cached
-        predictions for the model or ``rewrite`` argument set to True.
+        predictions for the model or ``rewrite`` argument set to ``True``.
 
         Args:
-            rewrite: True if models predictions need to be rewritten.
+            rewrite: ``True`` if models predictions need to be rewritten.
         """
         if sh_imagenet.is_cached(self) and not rewrite:
             self._imagenet_validation_result = ModelResult(

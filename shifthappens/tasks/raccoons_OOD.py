@@ -16,7 +16,8 @@ from shifthappens.tasks.base import Task
 from shifthappens.tasks.metrics import Metric
 from shifthappens.tasks.mixins import OODScoreTaskMixin
 from shifthappens.tasks.task_result import TaskResult
-from shifthappens.tasks.utils import fpr_at_tpr, auroc_ood
+from shifthappens.tasks.utils import auroc_ood
+from shifthappens.tasks.utils import fpr_at_tpr
 
 
 @sh_benchmark.register_task(
@@ -66,15 +67,20 @@ class RaccOOD(Task, OODScoreTaskMixin):
         for predictions_out in model.predict(
             dataloader_out, PredictionTargets(ood_scores=True)
         ):
+            assert (
+                predictions_out.ood_scores is not None
+            ), "OOD scores for RaccOOD task is None"
             ood_scores_out_list.append(predictions_out.ood_scores)
-        ood_scores_out = np.concatenate(ood_scores_out_list, 0)
+        ood_scores_out = np.hstack(ood_scores_out_list)
         accuracy = np.equal(
             model.imagenet_validation_result.class_labels,
             np.array(sh_imagenet.ImagenetTargets),
         ).mean()  # remove for pure OOD detection
-        auroc = auroc_ood(model.imagenet_validation_result.ood_scores, ood_scores_out)
+        auroc = auroc_ood(
+            np.array(model.imagenet_validation_result.ood_scores), ood_scores_out
+        )
         fpr_at_95 = fpr_at_tpr(
-            model.imagenet_validation_result.ood_scores, ood_scores_out, 0.95
+            np.array(model.imagenet_validation_result.ood_scores), ood_scores_out, 0.95
         )
         return TaskResult(
             accuracy=accuracy,

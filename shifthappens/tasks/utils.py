@@ -1,7 +1,7 @@
 """Utils for metrics implementations for calculating models performance."""
 
 import numpy as np
-from sklearn.metrics import roc_auc_score
+from sklearn.metrics import roc_auc_score  # type: ignore
 
 
 def auroc_ood(values_in: np.ndarray, values_out: np.ndarray) -> float:
