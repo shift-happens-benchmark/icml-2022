@@ -1,3 +1,5 @@
+"""Utils for metrics implementations for calculating models performance."""
+
 import numpy as np
 from sklearn.metrics import roc_auc_score
 
@@ -6,11 +8,12 @@ def auroc_ood(values_in: np.ndarray, values_out: np.ndarray) -> float:
     """
     Implementation of Area-under-Curve metric for out-of-distribution detection.
     The higher the value the better.
+
     Args:
         values_in: Maximal confidences (i.e. maximum probability per each sample)
-        for in-domain data.
+            for in-domain data.
         values_out: Maximal confidences (i.e. maximum probability per each sample)
-        for out-of-domain data.
+            for out-of-domain data.
 
     Returns:
         Area-under-curve score.
@@ -26,13 +29,14 @@ def fpr_at_tpr(values_in: np.ndarray, values_out: np.ndarray, tpr: float) -> flo
     """
     Implementation of FPR metric at the particular TPR for out-of-distribution detection.
     The lower the value the better.
+
     Args:
         values_in: Maximal confidences (i.e. maximum probability per each sample)
-        for in-domain data.
+            for in-domain data.
         values_out: Maximal confidences (i.e. maximum probability per each sample)
-        for out-of-domain data.
+            for out-of-domain data.
         tpr: (1 - true positive rate), for which probability threshold is calculated for
-        in-domain data.
+            in-domain data.
 
     Returns:
         False positive rate on out-of-domain data at (1-tpr) threshold.

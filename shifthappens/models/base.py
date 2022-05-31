@@ -111,7 +111,9 @@ class Model(abc.ABC):
     def imagenet_validation_result(self) -> ModelResult:
         """
         Getter-like property to access model's evaluation result on ImageNet validation set.
-        Returns: Model evaluation result in ImageNet validation set wrapped with ModelResult.
+
+        Returns:
+            Model evaluation result on ImageNet validation set wrapped with ModelResult.
 
         """
         try:
@@ -165,6 +167,7 @@ class Model(abc.ABC):
         Loads cached predictions on ImageNet validation set for the model or predicts
         on ImageNet validation set and caches the result whenever there is no cached
         predictions for the model or ``rewrite`` argument set to True.
+
         Args:
             rewrite: True if models predictions need to be rewritten.
         """

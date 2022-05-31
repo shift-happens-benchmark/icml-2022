@@ -93,34 +93,24 @@ class __TorchvisionModel(
 
 
 class ResNet18(__TorchvisionModel):
-    def __init__(
-        self,
-        max_batch_size: int,
-        model: nn.Module = torchvision.models.resnet18(pretrained=True),
-        feature_layer: str = "avgpool",
-        device: str = "cpu",
-    ):
-        super().__init__(model, feature_layer, max_batch_size, device)
-
-
-def resnet18(max_batch_size: int = 16, device: str = "cpu"):
-    """
-    Load a ResNet18 network trained on the ImageNet 2012 train set from torchvision.
+    """ResNet18 network trained on the ImageNet 2012 train set from torchvision.
     See :py:func:`torchvision.models.resnet18` for details.
-
     Args:
         max_batch_size: How many samples allowed per batch to load.
         device: Selected device to run the model on.
     """
-    return __TorchvisionModel(
-        torchvision.models.resnet18(pretrained=True),
-        "avgpool",
-        max_batch_size=max_batch_size,
-        device=device,
-    )
+
+    def __init__(
+        self,
+        max_batch_size: int,
+        device: str = "cpu",
+    ):
+        model = torchvision.models.resnet18(pretrained=True)
+        feature_layer = "avgpool"
+        super().__init__(model, feature_layer, max_batch_size, device)
 
 
-def resnet50(max_batch_size: int = 16, device: str = "cpu"):
+class ResNet50(__TorchvisionModel):
     """Load a ResNet50 network trained on the ImageNet 2012 train set from torchvision.
     See :py:func:`torchvision.models.resnet50` for details.
 
@@ -128,15 +118,18 @@ def resnet50(max_batch_size: int = 16, device: str = "cpu"):
         max_batch_size: How many samples allowed per batch to load.
         device: Selected device to run the model on.
     """
-    return __TorchvisionModel(
-        torchvision.models.resnet50(pretrained=True),
-        "avgpool",
-        max_batch_size=max_batch_size,
-        device=device,
-    )
+
+    def __init__(
+        self,
+        max_batch_size: int,
+        device: str = "cpu",
+    ):
+        model = torchvision.models.resnet18(pretrained=True)
+        feature_layer = "avgpool"
+        super().__init__(model, feature_layer, max_batch_size, device)
 
 
-def vgg16(max_batch_size: int = 16, device: str = "cpu"):
+class VGG16(__TorchvisionModel):
     """Load a VGG16 network trained on the ImageNet 2012 train set from torchvision.
     See :py:func:`torchvision.models.vgg16` for details.
 
@@ -144,9 +137,12 @@ def vgg16(max_batch_size: int = 16, device: str = "cpu"):
         max_batch_size: How many samples allowed per batch to load.
         device: Selected device to run the model on.
     """
-    return __TorchvisionModel(
-        torchvision.models.vgg16(pretrained=True),
-        "avgpool",
-        max_batch_size=max_batch_size,
-        device=device,
-    )
+
+    def __init__(
+        self,
+        max_batch_size: int,
+        device: str = "cpu",
+    ):
+        model = torchvision.models.vgg16(pretrained=True)
+        feature_layer = "avgpool"
+        super().__init__(model, feature_layer, max_batch_size, device)

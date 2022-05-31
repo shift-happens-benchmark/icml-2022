@@ -58,6 +58,14 @@ Task implementations
    :show-inheritance:
    :private-members:
 
+ImageNet evaluation
+____________________
+
+.. automodule:: shifthappens.data.imagenet
+   :members:
+   :show-inheritance:
+
+
 Model implementations
 ---------------------
 

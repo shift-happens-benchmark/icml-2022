@@ -1,3 +1,11 @@
+"""
+This module provides functionality to access ImageNet validation set ground truth targets,
+load and cache results of model's prediction on ImageNet validation set. Note,
+that every model inherited from :py:class:`Model <shifthappens.models.base.Model>`
+implicitly evaluates on ImageNet validation set and caches the results, thus
+:py:data:`shifthappens.data.base.ImagenetValidationData` must be set to the ImageNet validation set
+path.
+"""
 import os
 import shutil
 
@@ -8,19 +16,24 @@ import torchvision.transforms as tv_transforms
 import shifthappens.data.torch as sh_data_torch
 from shifthappens.data.base import DataLoader
 
+#: Must be set to ImageNet validation set PATH.
 ImagenetValidationData = "../imagenet"
+
+#: Must be set to models' results caching directory.
 ImagenetValidationPredictionsCache = "../cache"
 
 
 def get_imagenet_val_dataloader(max_batch_size=128) -> DataLoader:
     """
     A getter function which returns ImageNet validation set DataLoader. Note
-    that path to ImageNet validation set ``ImagenetValidationData`` need to be specified.
+    that path to ImageNet validation set :py:data:`shifthappens.data.base.ImagenetValidationData`
+    must be specified.
+
     Args:
         max_batch_size: How many samples allowed per batch to load.
 
     Returns:
-    ImageNet validation set DataLoader.
+        ImageNet validation set DataLoader.
     """
     assert (
         ImagenetValidationData is not None
@@ -49,12 +62,13 @@ def get_cached_predictions(cls) -> dict:
     """
     This function look up in cache directory for a cls-named folder and load
     model predictions from it. Note that path to ImageNet validation set
-    ``ImagenetValidationData`` need to be specified.
+    :py:data:`shifthappens.data.base.ImagenetValidationData` must be specified.
+
     Args:
         cls: Model's class. Used for specifying folder name.
 
     Returns:
-    Dictionary of loaded model predictions on ImageNet validation set.
+        Dictionary of loaded model predictions on ImageNet validation set.
     """
     assert (
         ImagenetValidationPredictionsCache is not None
@@ -74,7 +88,9 @@ def cache_predictions(cls, imagenet_validation_result):
     """
     This function caches model predictions in cls-named folder and load
     model predictions from it. Note that path to ImageNet validation set
-    ``ImagenetValidationData`` need to be specified.
+    :py:data:`shifthappens.data.base.ImagenetValidationData` must be specified as
+    well as :py:data:`shifthappens.data.base.ImagenetValidationPredictionsCache`.
+
     Args:
         cls: Model's class. Used for specifying folder name.
         imagenet_validation_result (ModelResult): Model's prediction on ImageNet
@@ -99,12 +115,15 @@ def cache_predictions(cls, imagenet_validation_result):
 def is_cached(cls) -> bool:
     """
     This function checks if model's results are cached in cls-named folder. Note
-    that path to ImageNet validation set ``ImagenetValidationData`` need to be specified.
+    that path to ImageNet validation set
+    :py:data:`shifthappens.data.base.ImagenetValidationData` must be specified as
+    well as :py:data:`shifthappens.data.base.ImagenetValidationPredictionsCache`.
+
     Args:
         cls: Model's class. Used for specifying folder name.
 
     Returns:
-    True if model's results are cached, False otherwise.
+        True if model's results are cached, False otherwise.
     """
     assert (
         ImagenetValidationPredictionsCache is not None
@@ -120,7 +139,9 @@ def is_cached(cls) -> bool:
 
 
 def load_imagenet_targets() -> np.ndarray:
-    """This function returns grounf truth targets of ImageNet validations set."""
+    """
+    This function returns grounf truth targets of ImageNet validations set.
+    """
     assert (
         ImagenetValidationData is not None
     ), "ImagenetValidationData path is not specified"

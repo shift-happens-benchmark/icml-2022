@@ -398,6 +398,8 @@ class ImageNetCSeparateCorruptions(Task):
 
 
 if __name__ == "__main__":
-    from shifthappens.models.torchvision import resnet18
+    from shifthappens.models.torchvision import ResNet18
 
-    sh_benchmark.evaluate_model(resnet18(), "test_data")
+    sh_benchmark.evaluate_model(
+        ResNet18(device="cuda", max_batch_size=128), "test_data"
+    )
