@@ -14,8 +14,8 @@ from typing import Iterator
 
 import numpy as np
 
-from shifthappens.data.base import DataLoader
 from shifthappens.data import imagenet as sh_imagenet
+from shifthappens.data.base import DataLoader
 from shifthappens.models import mixins
 
 
