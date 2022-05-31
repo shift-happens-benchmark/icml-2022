@@ -74,7 +74,7 @@ class RaccOOD(Task, OODScoreTaskMixin):
         ood_scores_out = np.hstack(ood_scores_out_list)
         accuracy = np.equal(
             model.imagenet_validation_result.class_labels,
-            np.array(sh_imagenet.ImagenetTargets),
+            np.array(sh_imagenet.load_imagenet_targets()),
         ).mean()  # remove for pure OOD detection
         auroc = auroc_ood(
             np.array(model.imagenet_validation_result.ood_scores), ood_scores_out

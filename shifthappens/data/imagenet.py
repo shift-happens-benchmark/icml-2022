@@ -77,9 +77,6 @@ def get_cached_predictions(cls) -> dict:
     result_dict = dict()
     for file in os.listdir(load_path):
         result = np.load(load_path + file)
-        assert (
-            len(result) == 50000
-        ), f"{cls.__class__.__name__} result on ImageNet is corrupted: {load_path + file} has length {len(result)}"
         result_dict[file.rstrip(".npy")] = result
     return result_dict
 
@@ -147,6 +144,3 @@ def load_imagenet_targets() -> np.ndarray:
     ), "ImagenetValidationData path is not specified"
 
     return tv_datasets.ImageFolder(root=ImagenetValidationData).targets
-
-
-ImagenetTargets = load_imagenet_targets()

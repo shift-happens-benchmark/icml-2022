@@ -102,7 +102,7 @@ class ResNet18(__TorchvisionModel):
 
     def __init__(
         self,
-        max_batch_size: int,
+        max_batch_size: int = 16,
         device: str = "cpu",
     ):
         model = torchvision.models.resnet18(pretrained=True)
@@ -121,7 +121,7 @@ class ResNet50(__TorchvisionModel):
 
     def __init__(
         self,
-        max_batch_size: int,
+        max_batch_size: int = 16,
         device: str = "cpu",
     ):
         model = torchvision.models.resnet18(pretrained=True)
@@ -140,7 +140,7 @@ class VGG16(__TorchvisionModel):
 
     def __init__(
         self,
-        max_batch_size: int,
+        max_batch_size: int = 16,
         device: str = "cpu",
     ):
         model = torchvision.models.vgg16(pretrained=True)

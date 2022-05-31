@@ -1,10 +1,31 @@
+import numpy as np
 import torch
 from torch.utils.data import TensorDataset
 
 import shifthappens.data.base as base_data
 import shifthappens.data.torch as torch_data
+from shifthappens.data.imagenet import cache_predictions
 from shifthappens.models import torchvision as torchvison_models
+from shifthappens.models.base import ModelResult
 from shifthappens.models.base import PredictionTargets
+
+
+def _create_imagenet_predictions(model):
+    predictions = ModelResult(
+        np.random.rand(
+            50000,
+        ),
+        np.random.rand(
+            50000,
+        ),
+        np.random.rand(
+            50000,
+        ),
+        np.random.rand(
+            50000,
+        ),
+    )
+    cache_predictions(model, predictions)
 
 
 def _create_mock_dataloader():
@@ -17,7 +38,8 @@ def _create_mock_dataloader():
 
 
 def test_torchvision_rn18():
-    model = torchvison_models.resnet18(2)
+    model = torchvison_models.ResNet18(2)
+    _create_imagenet_predictions(model)
     dl = _create_mock_dataloader()
 
     for result in model.predict(
@@ -36,7 +58,8 @@ def test_torchvision_rn18():
 
 
 def test_torchvision_vgg16():
-    model = torchvison_models.vgg16(2)
+    model = torchvison_models.VGG16(2)
+    _create_imagenet_predictions(model)
     dl = _create_mock_dataloader()
 
     for result in model.predict(

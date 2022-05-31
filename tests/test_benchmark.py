@@ -1,14 +1,35 @@
 import dataclasses
 from typing import Optional
 
+import numpy as np
+
 import shifthappens.benchmark as sh_benchmark
 from shifthappens.data.base import DataLoader
+from shifthappens.data.imagenet import cache_predictions
 from shifthappens.models import base as sh_models
-from shifthappens.models.torchvision import resnet18
+from shifthappens.models.torchvision import ResNet18
 from shifthappens.tasks.base import parameter
 from shifthappens.tasks.base import Task
 from shifthappens.tasks.metrics import Metric
 from shifthappens.tasks.task_result import TaskResult
+
+
+def _create_imagenet_predictions(model):
+    predictions = sh_models.ModelResult(
+        np.random.rand(
+            50000,
+        ),
+        np.random.rand(
+            50000,
+        ),
+        np.random.rand(
+            50000,
+        ),
+        np.random.rand(
+            50000,
+        ),
+    )
+    cache_predictions(model, predictions)
 
 
 def test_model():
@@ -29,7 +50,7 @@ def test_model():
         def _prepare_dataloader(self) -> Optional[DataLoader]:
             return None
 
-    results = sh_benchmark.evaluate_model(resnet18(), "test")
+    results = sh_benchmark.evaluate_model(ResNet18(), "test")
     assert len(results) == 1
 
 
@@ -53,5 +74,7 @@ def test_model_task_flavors():
         def _prepare_dataloader(self) -> Optional[DataLoader]:
             return None
 
-    results = sh_benchmark.evaluate_model(resnet18(), "test")
+    model = ResNet18()
+    _create_imagenet_predictions(model)
+    results = sh_benchmark.evaluate_model(ResNet18(), "test")
     assert len(results) == 2
