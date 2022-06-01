@@ -5,8 +5,8 @@ import shifthappens.benchmark as sh_benchmark
 from shifthappens.data.base import DataLoader
 from shifthappens.models import base as sh_models
 from shifthappens.models.torchvision import ResNet18
-from shifthappens.tasks.base import Task
 from shifthappens.tasks.base import parameter
+from shifthappens.tasks.base import Task
 from shifthappens.tasks.metrics import Metric
 from shifthappens.tasks.task_result import TaskResult
 
