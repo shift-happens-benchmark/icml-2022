@@ -118,6 +118,9 @@ class Model(abc.ABC):
             Model evaluation result on ImageNet validation set wrapped with ModelResult.
 
         """
+        if len(self._imagenet_validation_result.class_labels) == 0:
+            self._get_imagenet_predictions()
+
         return self._imagenet_validation_result
 
     def prepare(self, dataloader: DataLoader):
@@ -156,8 +159,6 @@ class Model(abc.ABC):
             assert issubclass(type(self), mixins.OODScoreModelMixin)
         if targets.features:
             assert issubclass(type(self), mixins.FeaturesModelMixin)
-        if len(self.imagenet_validation_result.class_labels) == 0:
-            self._get_imagenet_predictions()
 
         return self._predict(input_dataloader, targets)
 
@@ -180,7 +181,7 @@ class Model(abc.ABC):
 
     def _predict_imagenet_val(self):
         """
-        Evaluate model on ImageNet validation set and store all possible targets scores
+        Evaluates model on ImageNet validation set and store all possible targets scores
         for the particular model.
         """
         try:

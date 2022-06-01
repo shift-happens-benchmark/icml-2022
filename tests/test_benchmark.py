@@ -14,24 +14,6 @@ from shifthappens.tasks.metrics import Metric
 from shifthappens.tasks.task_result import TaskResult
 
 
-def _create_imagenet_predictions(model):
-    predictions = sh_models.ModelResult(
-        np.random.rand(
-            50000,
-        ),
-        np.random.rand(
-            50000,
-        ),
-        np.random.rand(
-            50000,
-        ),
-        np.random.rand(
-            50000,
-        ),
-    )
-    cache_predictions(model, predictions)
-
-
 def test_model():
     for task in sh_benchmark.get_registered_tasks():
         sh_benchmark.unregister_task(task)
@@ -75,6 +57,5 @@ def test_model_task_flavors():
             return None
 
     model = ResNet18()
-    _create_imagenet_predictions(model)
     results = sh_benchmark.evaluate_model(ResNet18(), "test")
     assert len(results) == 2
