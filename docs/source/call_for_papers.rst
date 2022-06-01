@@ -85,7 +85,7 @@ Extended abstracts are one to two page descriptions of an idea for a task, datas
 You can find an example `here <https://drive.google.com/file/d/1bRp0Pp2ek_KbuQILyNPuOgJcUD3EuCR3/view?usp=sharing>`__.
 If you are submitting an extended abstract, no additional supplementary material is allowed.
 
-Full submissions are comprised of a two page technical report, along with a code contribution submitted as supplementary material. The code should be a proof-of-concept implementation, which we will later integrate into the ``shifthappens`` package. If you submit a dataset, provide at least sample data along with your code as supplementary material. For large submissions, we encourage to host data externally and include instructions for downloading.
+Full submissions are comprised of a 2-4 page technical report, along with a code contribution submitted as supplementary material. The code should be a proof-of-concept implementation, which we will later integrate into the ``shifthappens`` package. If you submit a dataset, provide at least sample data along with your code as supplementary material. For large submissions, we encourage to host data externally and include instructions for downloading.
 
 Topics
 ******
