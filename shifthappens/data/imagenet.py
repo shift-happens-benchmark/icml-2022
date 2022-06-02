@@ -25,8 +25,8 @@ ImageNetValidationPredictionsCache = "shifthappens/cache"
 
 def _check_imagenet_folder():
     """
-    Checks if ImageNet folder corresponds to py:class:`torchvision.datasets.ImageFolder`
-    format.
+    Checks if path to ImageNet folder is defined, the folder exists and contains
+    a thousand folders.
     """
     assert (
         ImageNetValidationData is not None
