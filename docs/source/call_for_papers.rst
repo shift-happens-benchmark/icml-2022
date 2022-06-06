@@ -12,7 +12,7 @@ Call for Submissions
   are due on **June 3**.
   For authors of the `Neurips Datasets & Benchmarks Track submissions <https://neurips.cc/Conferences/2022/CallForDatasetsBenchmarks#:~:text=Abstract%20submission%20deadline%3A%20Monday%2C%20June,2022%2001%3A00%20PM%20PDT.>`__, we offer another deadline extension until **June 9**.
   
-  Submit your contribution `on OpenReview <https://openreview.net/group?id=ICML.cc/2022/Workshop/Shift_Happens>`_.
+  Submit your contribution `on OpenReview <https://openreview.net/group?id=ICML.cc/2022/Workshop/Shift_Happens>`_. In case of technical issues, please contact us at `shifthappens@bethgelab.org <mailto:shifthappens@bethgelab.org>`__.
 
 TL;DR
 ^^^^^
@@ -53,7 +53,7 @@ Tasks that have been part of a recent submission or publication are allowed and 
 Submissions creating links to communities interested in problems besides standard, “accuracy-focused” settings are very welcome and encouraged.
 
 For general questions about preparations of submissions, clarifications around the submission score and 
-discussions about the ``shifthappens`` API, please feel free to write us as `shifthappens@bethgelab.org <mailto:shifthappens@bethgelab.org>`__
+discussions about the ``shifthappens`` API, please feel free to write us at `shifthappens@bethgelab.org <mailto:shifthappens@bethgelab.org>`__
 or `join our slack channel <https://join.slack.com/t/shifthappensicml2022/shared_invite/zt-16ewcukds-6jW6xC5DbtRvLCCkhZ~NLg>`__.
 
 Deadlines
