@@ -17,8 +17,7 @@ from shifthappens.data.base import DataLoader
 #: Must be set to ImageNet validation set path (either absolute or relative to working directory).
 ImageNetValidationData = "shifthappens/imagenet"
 
-#: Must be set to models' results caching directory (either absolute or relative to working directory).
-# If the folder does not exist, it will be created.
+#: Must be set to models' results caching directory (either absolute or relative to working directory). If the folder does not exist, it will be created.
 ImageNetValidationPredictionsCache = "shifthappens/cache"
 
 
@@ -42,8 +41,8 @@ def _check_imagenet_folder():
 
 def get_imagenet_validation_loader(max_batch_size=128) -> DataLoader:
     """
-    Creates a :py:class:`DataLoader` for the validation set of ImageNet. Note
-    that the path to ImageNet validation set
+    Creates a :py:class:`shifthappens.data.base.DataLoader` for the validation set of ImageNet.
+    Note that the path to ImageNet validation set
     :py:data:`shifthappens.data.imagenet.ImageNetValidationData` must be specified.
 
     Args:
