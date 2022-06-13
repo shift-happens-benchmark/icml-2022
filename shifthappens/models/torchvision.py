@@ -50,7 +50,7 @@ class __TorchvisionModel(
     Args:
         model: Pretrained torchvision model.
         max_batch_size: How many samples allowed per batch to load.
-        feature_layer: Name layer which outputs logits.
+        feature_layer: Name of the layer that shall be used to extract features/representations..
         device: Selected device to run the model on.
     """
 
@@ -61,14 +61,15 @@ class __TorchvisionModel(
         max_batch_size: int,
         device: str = "cpu",
     ):
+        super().__init__()
         assert not issubclass(
             type(model), torch.nn.DataParallel
         ), "Parallel models are not yet supported"
         self.model = model
         self.max_batch_size = max_batch_size
         self.device = device
-        self.hooked_model = Inspect(self.model, layer=feature_layer)
         self.model.to(self.device)
+        self.hooked_model = Inspect(self.model, layer=feature_layer)
         self.model.eval()
 
     @torch.no_grad()
@@ -124,7 +125,7 @@ class ResNet50(__TorchvisionModel):
         max_batch_size: int = 16,
         device: str = "cpu",
     ):
-        model = torchvision.models.resnet18(pretrained=True)
+        model = torchvision.models.resnet50(pretrained=True)
         feature_layer = "avgpool"
         super().__init__(model, feature_layer, max_batch_size, device)
 

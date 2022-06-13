@@ -53,6 +53,5 @@ def test_model_task_flavors():
         def _prepare_dataloader(self) -> Optional[DataLoader]:
             return None
 
-    model = ResNet18()
     results = sh_benchmark.evaluate_model(ResNet18(), "test")
     assert len(results) == 2

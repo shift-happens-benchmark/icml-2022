@@ -1,10 +1,8 @@
 """
-This module provides functionality to access ImageNet validation set ground truth targets,
-load and cache results of model's prediction on ImageNet validation set. Note,
-that every model inherited from :py:class:`Model <shifthappens.models.base.Model>`
-implicitly evaluates on ImageNet validation set and caches the results, thus
-:py:data:`shifthappens.data.imagenet.ImageNetValidationData` must be set to the ImageNet validation set
-path.
+This module provides functionality to access the predictions of a model for the ImageNet validation set.
+Further, the predictions can be cached and loaded from the cache to reduce computational costs.
+Note, that for this to work :py:data:shifthappens.data.imagenet.ImageNetValidationData
+must be set to the ImageNet validation set path. path.
 """
 import os
 import shutil
@@ -16,35 +14,37 @@ import torchvision.transforms as tv_transforms
 import shifthappens.data.torch as sh_data_torch
 from shifthappens.data.base import DataLoader
 
-#: Must be set to ImageNet validation set PATH.
+#: Must be set to ImageNet validation set path (either absolute or relative to working directory).
 ImageNetValidationData = "shifthappens/imagenet"
 
-#: Must be set to models' results caching directory.
+#: Must be set to models' results caching directory (either absolute or relative to working directory).
+# If the folder does not exist, it will be created.
 ImageNetValidationPredictionsCache = "shifthappens/cache"
 
 
 def _check_imagenet_folder():
     """
-    Checks if path to ImageNet folder is defined, the folder exists and contains
-    a thousand folders.
+    Checks if path to the ImageNet validation set folder is defined, the folder
+    exists and contains a thousand folders (one per class).
     """
     assert (
         ImageNetValidationData is not None
     ), "ImagenetValidationData path is not specified."
-    assert os.path.exists(
-        ImageNetValidationData
-    ), "You have specified incorrect path to ImageNet. Files not found at the ImageNetValidationData path."
+    assert os.path.exists(ImageNetValidationData), (
+        "You have specified an incorrect path to the ImageNet validation set. "
+        "Files not found at location specified in shithappens.data.imagenet.ImageNetValidationData."
+    )
 
     assert (
         len(os.listdir(ImageNetValidationData)) == 1000
-    ), "ImageNetValidationData folder contains less or more folders then ImageNet classes."
+    ), "ImageNetValidationData folder contains less or more folders than ImageNet classes."
 
 
-def get_imagenet_val_dataloader(max_batch_size=128) -> DataLoader:
+def get_imagenet_validation_loader(max_batch_size=128) -> DataLoader:
     """
-    Returns ImageNet validation set DataLoader. Note
-    that path to ImageNet validation set :py:data:`shifthappens.data.imagenet.ImageNetValidationData`
-    must be specified.
+    Creates a :py:class:`DataLoader` for the validation set of ImageNet. Note
+    that the path to ImageNet validation set
+    :py:data:`shifthappens.data.imagenet.ImageNetValidationData` must be specified.
 
     Args:
         max_batch_size: How many samples allowed per batch to load.
@@ -74,8 +74,8 @@ def get_imagenet_val_dataloader(max_batch_size=128) -> DataLoader:
 
 def get_cached_predictions(cls) -> dict:
     """
-    Looks up in cache directory for a cls-named folder and load
-    model predictions from it. Note that path to ImageNet validation set
+    Checks whether there exist cached results for the model's class and if so, returns them.
+    Note that the path to ImageNet validation set
     :py:data:`shifthappens.data.imagenet.ImageNetValidationData` must be specified.
 
     Args:
@@ -87,7 +87,18 @@ def get_cached_predictions(cls) -> dict:
     assert (
         ImageNetValidationPredictionsCache is not None
     ), "Cannot get cached model results. ImageNetValidationPredictionsCache path is not specified."
-    load_path = ImageNetValidationPredictionsCache + "/" + cls.__class__.__name__ + "/"
+
+    load_path = os.path.join(
+        ImageNetValidationPredictionsCache, cls.__class__.__name__, ""
+    )
+
+    assert os.path.exists(
+        load_path
+    ), f"Cannot get cached model results. {load_path} folder not found."
+    assert (
+        len(os.listdir(load_path)) != 0
+    ), f"Cannot get cached model results. {load_path} folder is empty."
+
     result_dict = dict()
     for file in os.listdir(load_path):
         result = np.load(load_path + file)
@@ -98,7 +109,7 @@ def get_cached_predictions(cls) -> dict:
 def cache_predictions(cls, imagenet_validation_result):
     """
     Caches model predictions in cls-named folder and load
-    model predictions from it. Note that path to ImageNet validation set
+    model predictions from it. Note that the path to ImageNet validation set
     :py:data:`shifthappens.data.imagenet.ImageNetValidationData` must be specified as
     well as :py:data:`shifthappens.data.imagenet.ImageNetValidationPredictionsCache`.
 
@@ -111,7 +122,9 @@ def cache_predictions(cls, imagenet_validation_result):
     assert (
         ImageNetValidationPredictionsCache is not None
     ), "Cannot cache model results. ImageNetValidationPredictionsCache path is not specified."
-    save_path = ImageNetValidationPredictionsCache + "/" + cls.__class__.__name__ + "/"
+    save_path = os.path.join(
+        ImageNetValidationPredictionsCache, cls.__class__.__name__, ""
+    )
 
     if os.path.exists(save_path):
         shutil.rmtree(save_path)
@@ -125,8 +138,7 @@ def cache_predictions(cls, imagenet_validation_result):
 
 def is_cached(cls) -> bool:
     """
-    Checks if model's results are cached in cls-named folder. Note
-    that path to ImageNet validation set
+    Checks if model's results are cached in cls-named folder. Note that the path to the ImageNet validation set
     :py:data:`shifthappens.data.imagenet.ImageNetValidationData` must be specified as
     well as :py:data:`shifthappens.data.imagenet.ImageNetValidationPredictionsCache`.
 
@@ -139,7 +151,9 @@ def is_cached(cls) -> bool:
     assert (
         ImageNetValidationPredictionsCache is not None
     ), "Cannot find cached model results. ImageNetValidationPredictionsCache path is not specified."
-    load_path = ImageNetValidationPredictionsCache + "/" + cls.__class__.__name__ + "/"
+    load_path = os.path.join(
+        ImageNetValidationPredictionsCache, cls.__class__.__name__, ""
+    )
 
     try:
         cached_files = os.listdir(load_path)
@@ -151,7 +165,7 @@ def is_cached(cls) -> bool:
 
 def load_imagenet_targets() -> np.ndarray:
     """
-    Returns ground truth targets of ImageNet validations set.
+    Returns the ground-truth labels of the ImageNet valdation set.
     """
     _check_imagenet_folder()
     return tv_datasets.ImageFolder(root=ImageNetValidationData).targets

@@ -107,18 +107,18 @@ class Model(abc.ABC):
 
     """
 
-    _imagenet_validation_result = ModelResult(np.array([]), None, None, None)
+    def __init__(self):
+        self._imagenet_validation_result = None
 
     @property
-    def imagenet_validation_result(self) -> ModelResult:
+    def imagenet_validation_result(self):
         """
-        Getter-like property to access model's evaluation result on ImageNet validation set.
+        Access the model's predictions/evaluation results on the ImageNet validation set.
 
         Returns:
             Model evaluation result on ImageNet validation set wrapped with ModelResult.
-
         """
-        if len(self._imagenet_validation_result.class_labels) == 0:
+        if self._imagenet_validation_result is None:
             self._get_imagenet_predictions()
 
         return self._imagenet_validation_result
@@ -186,11 +186,11 @@ class Model(abc.ABC):
         """
         try:
             max_batch_size = getattr(self, "max_batch_size")
-            imagenet_val_dataloader = sh_imagenet.get_imagenet_val_dataloader(
+            imagenet_val_dataloader = sh_imagenet.get_imagenet_validation_loader(
                 max_batch_size=max_batch_size
             )
         except AttributeError:
-            imagenet_val_dataloader = sh_imagenet.get_imagenet_val_dataloader()
+            imagenet_val_dataloader = sh_imagenet.get_imagenet_validation_loader()
 
         score_types = {
             "class_labels": issubclass(type(self), mixins.LabelModelMixin),

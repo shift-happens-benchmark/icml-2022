@@ -27,7 +27,7 @@ def auroc_ood(values_in: np.ndarray, values_out: np.ndarray) -> float:
 
 def fpr_at_tpr(values_in: np.ndarray, values_out: np.ndarray, tpr: float) -> float:
     """
-    Implementation of FPR metric at the particular TPR for out-of-distribution detection.
+    Calculates the FPR at a particular TRP for out-of-distribution detection.
     The lower the value the better.
 
     Args:
@@ -39,7 +39,7 @@ def fpr_at_tpr(values_in: np.ndarray, values_out: np.ndarray, tpr: float) -> flo
             in-domain data.
 
     Returns:
-        False positive rate on out-of-domain data at (1-tpr) threshold.
+        False positive rate on out-of-domain data at (1 - tpr) threshold.
     """
     if len(values_in) * len(values_out) == 0:
         return np.NAN

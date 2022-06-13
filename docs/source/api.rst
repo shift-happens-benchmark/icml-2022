@@ -58,8 +58,8 @@ Task implementations
    :show-inheritance:
    :private-members:
 
-ImageNet evaluation
-____________________
+Accessing Scores for the ImageNet Validation Set
+________________________________________________
 
 .. automodule:: shifthappens.data.imagenet
    :members:

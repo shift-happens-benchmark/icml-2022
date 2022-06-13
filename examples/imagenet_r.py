@@ -78,4 +78,4 @@ class ImageNetR(Task):
 if __name__ == "__main__":
     from shifthappens.models.torchvision import ResNet18
 
-    sh_benchmark.evaluate_model(ResNet18(device="cuda", max_batch_size=128), "data")
+    sh_benchmark.evaluate_model(ResNet18(device="cpu", max_batch_size=128), "data")
