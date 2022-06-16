@@ -125,6 +125,7 @@ Organizers
     Call for Submissions <call_for_papers>
     Call for Reviewers <call_for_reviewers>
     Benchmark API Docs <api>
+    Accepted Papers <papers>
 
 .. meta::
       :title: Shift happens 2022: Crowdsourcing metrics and test datasets beyond ImageNet
