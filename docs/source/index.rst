@@ -117,10 +117,10 @@ Organizers
 
 .. |overview.svg| image:: overview.svg
 
-Reviewers
+Program Committee
 ---------
 
-Thanks a lot to the reviewers for contributing to shaping the program of the workshop:
+Thanks a lot to the Program Committee for reviewing and contributing to shaping the program of the workshop:
 
 - Akshay Ravindra Kulkarni
 - Alexander Meinke
