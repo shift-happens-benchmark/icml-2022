@@ -118,7 +118,7 @@ Organizers
 .. |overview.svg| image:: overview.svg
 
 Program Committee
----------
+-----------------
 
 Thanks a lot to the Program Committee for reviewing and contributing to shaping the program of the workshop:
 
