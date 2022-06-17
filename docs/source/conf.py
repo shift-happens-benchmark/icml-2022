@@ -11,17 +11,23 @@
 # documentation root, use os.path.abspath to make it absolute, like shown here.
 #
 
+import datetime
 import os
 import sys
-from typing import List
 
+sys.path.insert(0, os.path.dirname(__file__))
 sys.path.insert(0, os.path.abspath("../.."))
 
-import datetime
+from typing import List
 
-import shifthappens
+try:
+    import render_papers
 
-autodoc_mock_imports = ["numpy", "torch", "torchvision"]
+    render_papers.main()
+except:
+    print("Did not update papers.rst")
+
+autodoc_mock_imports = ["numpy", "torch", "torchvision", "surgeon_pytorch"]
 
 
 def get_years(start_year=2021):
@@ -38,7 +44,7 @@ project = "Shift Happens (ICML 2022)"
 author = "Julian Bitterwolf, Evgenia Rusak, Steffen Schneider, Roland S. Zimmermann"
 
 copyright = f"{get_years(2021)}, {author} and contributors. Released under an Apache 2.0 License"
-release = shifthappens.__version__
+# release = shifthappens.__version__
 
 # -- General configuration ---------------------------------------------------
 
