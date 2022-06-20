@@ -68,21 +68,14 @@ class DataLoader:
         if self.max_batch_size is not None:
             batch_size = min(batch_size, self.max_batch_size)
 
-        dataset_exhausted = False
+        batch = []
         ds_iter = iter(self._dataset)
-        while not dataset_exhausted:
-            batch = []
-            try:
-                for _ in range(batch_size):
-                    batch.append(next(ds_iter))
-            except StopIteration:
-                dataset_exhausted = True
-
-                # at the end of the dataset we need to check whether there is
-                # any data left to return; otherwise, leave this iterator
-                if len(batch) == 0:
-                    return
-
+        while (item := next(ds_iter, None)) is not None:
+            batch.append(item)
+            if len(batch) == batch_size:
+                yield batch
+                batch = []
+        if len(batch) != 0:
             yield batch
 
 

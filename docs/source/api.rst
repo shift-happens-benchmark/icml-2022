@@ -58,6 +58,14 @@ Task implementations
    :show-inheritance:
    :private-members:
 
+Accessing Scores for the ImageNet Validation Set
+________________________________________________
+
+.. automodule:: shifthappens.data.imagenet
+   :members:
+   :show-inheritance:
+
+
 Model implementations
 ---------------------
 
