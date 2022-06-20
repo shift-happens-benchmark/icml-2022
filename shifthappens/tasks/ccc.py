@@ -97,7 +97,6 @@ class CCC(Task):
             ]
         )
 
-
     def _prepare_dataloader(self) -> DataLoader:
         all_data = None
 
