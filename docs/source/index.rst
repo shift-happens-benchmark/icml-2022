@@ -117,6 +117,25 @@ Organizers
 
 .. |overview.svg| image:: overview.svg
 
+Program Committee
+-----------------
+
+Thanks a lot to the Program Committee for reviewing and contributing to shaping the program of the workshop:
+
+- Akshay Ravindra Kulkarni
+- Alexander Meinke
+- Ilia Sucholutsky
+- Leander Kurscheidt
+- Maura Pintor
+- Mert Yuksekgonul
+- Ori Press
+- Prasanna Mayilvahanan
+- Rebecca Roelofs
+- Tejas Gokhale
+- Valentyn Boreiko
+- Victor Bouvier
+- Zhiheng Li
+
 
 .. toctree::
     :maxdepth: 2
