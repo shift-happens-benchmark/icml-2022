@@ -17,7 +17,7 @@ def _create_mock_dataloader():
 
 
 def test_torchvision_rn18():
-    model = torchvison_models.resnet18(2)
+    model = torchvison_models.ResNet18(2)
     dl = _create_mock_dataloader()
 
     for result in model.predict(
@@ -36,7 +36,7 @@ def test_torchvision_rn18():
 
 
 def test_torchvision_vgg16():
-    model = torchvison_models.vgg16(2)
+    model = torchvison_models.VGG16(2)
     dl = _create_mock_dataloader()
 
     for result in model.predict(
