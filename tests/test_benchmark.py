@@ -4,7 +4,7 @@ from typing import Optional
 import shifthappens.benchmark as sh_benchmark
 from shifthappens.data.base import DataLoader
 from shifthappens.models import base as sh_models
-from shifthappens.models.torchvision import resnet18
+from shifthappens.models.torchvision import ResNet18
 from shifthappens.tasks.base import parameter
 from shifthappens.tasks.base import Task
 from shifthappens.tasks.metrics import Metric
@@ -29,7 +29,7 @@ def test_model():
         def _prepare_dataloader(self) -> Optional[DataLoader]:
             return None
 
-    results = sh_benchmark.evaluate_model(resnet18(), "test")
+    results = sh_benchmark.evaluate_model(ResNet18(), "test")
     assert len(results) == 1
 
 
@@ -53,5 +53,5 @@ def test_model_task_flavors():
         def _prepare_dataloader(self) -> Optional[DataLoader]:
             return None
 
-    results = sh_benchmark.evaluate_model(resnet18(), "test")
+    results = sh_benchmark.evaluate_model(ResNet18(), "test")
     assert len(results) == 2
