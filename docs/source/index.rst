@@ -132,7 +132,6 @@ Thanks a lot to the Program Committee for reviewing and contributing to shaping 
 - Prasanna Mayilvahanan
 - Rebecca Roelofs
 - Tejas Gokhale
-- Thaddäus Wiedemer
 - Valentyn Boreiko
 - Victor Bouvier
 - Zhiheng Li
