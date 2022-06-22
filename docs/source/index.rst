@@ -94,7 +94,6 @@ Please note that it is **not required** to post the final dataset by the submiss
 It is sufficient to start working on final dataset collections after the acceptance notification until the camera ready deadline.
 
 Additional information about submission dates and the submission format can be found in :doc:`call_for_papers`.
-Also, please consider our :doc:`call_for_reviewers`.
 
 
 Prizes and Travel Grants
@@ -117,13 +116,31 @@ Organizers
 
 .. |overview.svg| image:: overview.svg
 
+Program Committee
+-----------------
+
+Thanks a lot to the Program Committee for reviewing and contributing to shaping the program of the workshop:
+
+- Akshay Ravindra Kulkarni
+- Alexander Meinke
+- Ilia Sucholutsky
+- Leander Kurscheidt
+- Maura Pintor
+- Mert Yuksekgonul
+- Ori Press
+- Prasanna Mayilvahanan
+- Rebecca Roelofs
+- Tejas Gokhale
+- Valentyn Boreiko
+- Victor Bouvier
+- Zhiheng Li
+
 
 .. toctree::
     :maxdepth: 2
     :hidden:
 
     Call for Submissions <call_for_papers>
-    Call for Reviewers <call_for_reviewers>
     Benchmark API Docs <api>
     Accepted Papers <papers>
 
