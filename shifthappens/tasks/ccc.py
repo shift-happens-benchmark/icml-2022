@@ -1,4 +1,8 @@
-"""Example for a Shift Happens task: CCC"""
+"""
+Implementation of CCC: Continuously Changing Corruptions
+Note: This Task only implements the data reading portion of the dataset.
+In addition to this file, we submitted a file used to generate the data itself.
+"""
 
 import dataclasses
 import os
@@ -19,6 +23,7 @@ from shifthappens.models.base import PredictionTargets
 from shifthappens.tasks.base import Task
 from shifthappens.tasks.metrics import Metric
 from shifthappens.tasks.task_result import TaskResult
+from shifthappens.tasks.base import parameter
 
 
 @sh_benchmark.register_task(
@@ -26,11 +31,24 @@ from shifthappens.tasks.task_result import TaskResult
 )
 @dataclasses.dataclass
 class CCC(Task):
+    seed: int = parameter(
+        description="random seed used in the dataset building process",
+    )
+    frequency: int = parameter(
+        description="represents how many images are sampled from each subset",
+    )
+    base_amount: int = parameter(
+        description="represents how large the base dataset is",
+    )
+    accuracy: int = parameter(
+        description="represents the baseline accuracy of walk",
+    )
+
     def setup(self, freq, seed, accuracy, base_amount):
         self.dataset_folder = os.path.join(self.data_root, "ccc")
-        self.accuracy_dict = pickle.load(os.path.join(self.data_root, "ccc", "accuracies"))
+        self.accuracies_folder = pickle.load(os.path.join(self.data_root, "ccc", "accuracies"))
 
-        self.freq = freq
+
         self.seed = seed
         self.accuracy = accuracy
         self.base_amount = base_amount
@@ -64,8 +82,8 @@ class CCC(Task):
             noise1 = noise1.lower().replace(" ", "_")
             noise2 = noise2.lower().replace(" ", "_")
 
-            accuracy_matrix = np.load(self.accuracy_dict)["n1_" + noise1 + "_n2_"]
-            walk = find_path(accuracy_matrix, self.base_accuracy)
+            accuracy_matrix = np.load(self.accuracies_folder)["n1_" + noise1 + "_n2_"]
+            walk = find_path(accuracy_matrix, self.accuracy)
 
             accuracy_dict[(noise1, noise2)] = accuracy_matrix
             walk_dict[(noise1, noise2)] = walk
@@ -207,6 +225,5 @@ def traverse_graph(cost_dict, path_dict, arr, i, j, target_val):
 
 
 if __name__ == "__main__":
-    from shifthappens.models.torchvision import resnet18
-
-    sh_benchmark.evaluate_model(resnet18(), "data")
+    from shifthappens.models.torchvision import ResNet50
+    sh_benchmark.evaluate_model(ResNet50(), "data")
