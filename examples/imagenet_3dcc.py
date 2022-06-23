@@ -18,8 +18,6 @@ from typing import Optional
 from typing import Tuple
 from typing import Type
 
-import pickle
-
 import numpy as np
 import torchvision.datasets as tv_datasets
 import torchvision.transforms as tv_transforms
@@ -40,7 +38,6 @@ from shifthappens.tasks.metrics import Metric
 from shifthappens.tasks.task_result import TaskResult
 
 
-
 @dataclasses.dataclass
 class ImageNetSingleCorruptionTypeBase(Task):
     resource: Tuple[str, ...] = abstract_variable()
@@ -54,21 +51,22 @@ class ImageNetSingleCorruptionTypeBase(Task):
     max_batch_size: Optional[int] = None
 
     def setup(self):
-        folder_name, archive_name, url, md5 = self.resource
-        
+        folder_name, archive_name, url = self.resource
+
         dataset_folder = os.path.join(self.data_root, folder_name, str(self.severity))
         if not os.path.exists(dataset_folder):
             # download data
             sh_utils.download_and_extract_archive(
-                url, self.data_root, md5, archive_name
+                url, self.data_root, None, archive_name
             )
 
         test_transform = tv_transforms.Compose(
             [
                 tv_transforms.ToTensor(),
                 tv_transforms.Pad(16),
-                tv_transforms.Normalize(mean=[0.485, 0.456, 0.406],
-                                     std=[0.229, 0.224, 0.225]),
+                tv_transforms.Normalize(
+                    mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225]
+                ),
                 tv_transforms.Lambda(lambda x: x.permute(1, 2, 0)),
             ]
         )
@@ -87,8 +85,6 @@ class ImageNetSingleCorruptionTypeBase(Task):
 
     def _evaluate(self, model: sh_models.Model) -> TaskResult:
         dataloader = self._prepare_dataloader()
-        
-        model.model.eval()
 
         all_predicted_labels_list = []
         for predictions in model.predict(
@@ -96,12 +92,11 @@ class ImageNetSingleCorruptionTypeBase(Task):
         ):
             all_predicted_labels_list.append(predictions.class_labels)
         all_predicted_labels = np.concatenate(all_predicted_labels_list, 0)
-        
+
         accuracy = (
             all_predicted_labels
             == np.array(self.ch_dataset.targets)[: len(all_predicted_labels)]
         )
-        print(self.severity, 1-accuracy.mean())
         return TaskResult(
             accuracy=accuracy,
             mce=1.0 - accuracy,
@@ -112,7 +107,7 @@ class ImageNetSingleCorruptionTypeBase(Task):
 @sh_benchmark.register_task(
     name="ImageNet-3DCC (Near Focus)",
     relative_data_folder="imagenet_3dcc",
-    standalone=True,
+    standalone=False,
 )
 @dataclasses.dataclass
 class ImageNet3DCCNearFocus(ImageNetSingleCorruptionTypeBase):
@@ -121,9 +116,9 @@ class ImageNet3DCCNearFocus(ImageNetSingleCorruptionTypeBase):
             "near_focus",
             "near_focus.tar.gz",
             "https://datasets.epfl.ch/3dcc/imagenet_3dcc/near_focus.tar.gz",
-            "tmp",
         )
     )
+
 
 @sh_benchmark.register_task(
     name="ImageNet-3DCC (Far Focus)",
@@ -137,9 +132,9 @@ class ImageNet3DCCFarFocus(ImageNetSingleCorruptionTypeBase):
             "far_focus",
             "far_focus.tar.gz",
             "https://datasets.epfl.ch/3dcc/imagenet_3dcc/far_focus.tar.gz",
-            "tmp",
         )
     )
+
 
 @sh_benchmark.register_task(
     name="ImageNet-3DCC (Fog 3D)",
@@ -153,9 +148,9 @@ class ImageNet3DCCFog3D(ImageNetSingleCorruptionTypeBase):
             "fog_3d",
             "fog_3d.tar.gz",
             "https://datasets.epfl.ch/3dcc/imagenet_3dcc/fog_3d.tar.gz",
-            "tmp",
         )
     )
+
 
 @sh_benchmark.register_task(
     name="ImageNet-3DCC (Flash)",
@@ -169,9 +164,9 @@ class ImageNet3DCCFlash(ImageNetSingleCorruptionTypeBase):
             "flash",
             "flash.tar.gz",
             "https://datasets.epfl.ch/3dcc/imagenet_3dcc/flash.tar.gz",
-            "tmp",
         )
     )
+
 
 @sh_benchmark.register_task(
     name="ImageNet-3DCC (Color Quant)",
@@ -184,8 +179,7 @@ class ImageNet3DCCColorQuant(ImageNetSingleCorruptionTypeBase):
         (
             "color_quant",
             "color_quant.tar.gz",
-            "https://datasets.epfl.ch/3dcc/imagenet_3dcc/flash.tar.gz",
-            "tmp",
+            "https://datasets.epfl.ch/3dcc/imagenet_3dcc/color_quant.tar.gz",
         )
     )
 
@@ -202,9 +196,9 @@ class ImageNet3DCCLowLight(ImageNetSingleCorruptionTypeBase):
             "low_light",
             "low_light.tar.gz",
             "https://datasets.epfl.ch/3dcc/imagenet_3dcc/low_light.tar.gz",
-            "tmp",
         )
     )
+
 
 @sh_benchmark.register_task(
     name="ImageNet-3DCC (XY Motion Blur)",
@@ -218,9 +212,9 @@ class ImageNet3DCCXYMotionBlur(ImageNetSingleCorruptionTypeBase):
             "xy_motion_blur",
             "xy_motion_blur.tar.gz",
             "https://datasets.epfl.ch/3dcc/imagenet_3dcc/xy_motion_blur.tar.gz",
-            "tmp",
         )
     )
+
 
 @sh_benchmark.register_task(
     name="ImageNet-3DCC (Z Motion Blur)",
@@ -234,9 +228,9 @@ class ImageNet3DCCZMotionBlur(ImageNetSingleCorruptionTypeBase):
             "z_motion_blur",
             "z_motion_blur.tar.gz",
             "https://datasets.epfl.ch/3dcc/imagenet_3dcc/z_motion_blur.tar.gz",
-            "tmp",
         )
     )
+
 
 @sh_benchmark.register_task(
     name="ImageNet-3DCC (ISO Noise)",
@@ -250,9 +244,9 @@ class ImageNet3DCCISONoise(ImageNetSingleCorruptionTypeBase):
             "iso_noise",
             "iso_noise.tar.gz",
             "https://datasets.epfl.ch/3dcc/imagenet_3dcc/iso_noise.tar.gz",
-            "tmp",
         )
     )
+
 
 @sh_benchmark.register_task(
     name="ImageNet-3DCC (Bit Error)",
@@ -266,9 +260,9 @@ class ImageNet3DCCBitError(ImageNetSingleCorruptionTypeBase):
             "bit_error",
             "bit_error.tar.gz",
             "https://datasets.epfl.ch/3dcc/imagenet_3dcc/bit_error.tar.gz",
-            "tmp",
         )
     )
+
 
 @sh_benchmark.register_task(
     name="ImageNet-3DCC (H265 ABR)",
@@ -282,9 +276,9 @@ class ImageNet3DCCH256ABR(ImageNetSingleCorruptionTypeBase):
             "h265_abr",
             "h265_abr.tar.gz",
             "https://datasets.epfl.ch/3dcc/imagenet_3dcc/h265_abr.tar.gz",
-            "tmp",
         )
     )
+
 
 @sh_benchmark.register_task(
     name="ImageNet-3DCC (H265 CRF)",
@@ -298,17 +292,16 @@ class ImageNet3DCCH256CRF(ImageNetSingleCorruptionTypeBase):
             "h265_crf",
             "h265_crf.tar.gz",
             "https://datasets.epfl.ch/3dcc/imagenet_3dcc/h265_crf.tar.gz",
-            "tmp",
         )
     )
 
 
 @sh_benchmark.register_task(
-    name="ImageNet-3DCC", relative_data_folder="imagenet_3dcc", standalone=False
+    name="ImageNet-3DCC", relative_data_folder="imagenet_3dcc", standalone=True
 )
 @dataclasses.dataclass
-class ImageNetCSeparateCorruptions(Task):
-    """Classification task on the ImageNet-C dataset where models might use all images
+class ImageNet3DCCSeparateCorruptions(Task):
+    """Classification task on the ImageNet-3DCC dataset where models might use all images
     from one corruption type to adapt in advance.
     """
 
@@ -319,14 +312,26 @@ class ImageNetCSeparateCorruptions(Task):
     )
 
     # Add corruption types to be evaluated here
-    corruption_task_cls: Tuple[Type[ImageNetSingleCorruptionTypeBase], ] = variable(
-        (ImageNet3DCCFarFocus,)
+    corruption_task_cls: Tuple[Type[ImageNetSingleCorruptionTypeBase], ...] = variable(
+        (
+            ImageNet3DCCNearFocus,
+            ImageNet3DCCFarFocus,
+            ImageNet3DCCFog3D,
+            ImageNet3DCCFlash,
+            ImageNet3DCCColorQuant,
+            ImageNet3DCCLowLight,
+            ImageNet3DCCXYMotionBlur,
+            ImageNet3DCCZMotionBlur,
+            ImageNet3DCCISONoise,
+            ImageNet3DCCBitError,
+            ImageNet3DCCH256ABR,
+            ImageNet3DCCH256CRF,
+        )
     )
 
     flavored_corruption_tasks: List[ImageNetSingleCorruptionTypeBase] = variable([])
 
     def setup(self):
-        
         for corruption_task_cls in self.corruption_task_cls:
             self.flavored_corruption_tasks += list(
                 corruption_task_cls.iterate_flavours(data_root=self.data_root)
@@ -340,7 +345,6 @@ class ImageNetCSeparateCorruptions(Task):
     def _evaluate(self, model: sh_models.Model) -> TaskResult:
         results = {}
         accuracies, mces = [], []
-        
         for flavored_corruption_task in self.flavored_corruption_tasks:
             dl = flavored_corruption_task._prepare_dataloader()
             if dl is not None:
@@ -350,7 +354,7 @@ class ImageNetCSeparateCorruptions(Task):
                 # model is not compatible with a subtask and the result should be ignored
                 continue
 
-            corruption_name = getattr(  
+            corruption_name = getattr(
                 flavored_corruption_task,
                 shifthappens.task_data.task_metadata._TASK_METADATA_FIELD,
             )  # type: ignore
@@ -369,8 +373,6 @@ class ImageNetCSeparateCorruptions(Task):
 
 
 if __name__ == "__main__":
-    from shifthappens.models.torchvision import resnet18, resnet50
+    from shifthappens.models.torchvision import ResNet18
 
-    # sh_benchmark.evaluate_model(resnet18(device="cuda",max_batch_size=2048), "test_data")
-    results = sh_benchmark.evaluate_model(resnet50(device="cuda",max_batch_size=2048), "test_data")
-    # for k,v in results.items(): print(k,1.-v._metrics["accuracy"].mean())
+    results = sh_benchmark.evaluate_model(ResNet18(max_batch_size=128), "test_data")
