@@ -21,7 +21,7 @@ and datasets that are suitable for understanding the properties of ImageNet scal
 computer vision models beyond the metrics that are typically reported.
 
 How to use this benchmark
-----------
+-------------------------
 For now, you can use the benchmark by installing it from this repository:
 
 .. code::
