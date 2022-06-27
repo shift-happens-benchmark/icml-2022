@@ -114,7 +114,7 @@ def unregister_task(cls: Type[Task]):
 
 
 def evaluate_model(
-    model: Model, data_root: str, verbose=False
+    model: Model, data_root: str
 ) -> Dict[TaskRegistration, Optional[TaskResult]]:
     """
     Runs all registered tasks of the benchmark
@@ -149,5 +149,5 @@ def evaluate_model(
         ):
             task.setup()
             flavored_task_metadata = getattr(task, task_metadata._TASK_METADATA_FIELD)
-            results[flavored_task_metadata] = task.evaluate(model, verbose)
+            results[flavored_task_metadata] = task.evaluate(model)
     return results
