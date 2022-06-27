@@ -212,7 +212,7 @@ class Task(ABC):
         """
         pass
 
-    def evaluate(self, model: sh_models.Model) -> Optional[TaskResult]:
+    def evaluate(self, model: sh_models.Model, verbose=False) -> Optional[TaskResult]:
         """Validates that the model is compatible with the task and then evaluates the model's
         performance using the :py:meth:`_evaluate` function of this class.
 
@@ -238,7 +238,7 @@ class Task(ABC):
         dataloader = self._prepare_dataloader()
         if dataloader is not None:
             model.prepare(dataloader)
-        return self._evaluate(model)
+        return self._evaluate(model, verbose)
 
     def _prepare_dataloader(self) -> Optional[DataLoader]:
         """Prepare a :py:class:`shifthappens.data.base.DataLoader` based on just the *unlabeled* images which will be passed to the model
@@ -263,7 +263,7 @@ class Task(ABC):
         return None
 
     @abstractmethod
-    def _evaluate(self, model: sh_models.Model) -> TaskResult:
+    def _evaluate(self, model: sh_models.Model, verbose=False) -> TaskResult:
         """Evaluate the task and return a dictionary with the calculated metrics.
 
         Args:

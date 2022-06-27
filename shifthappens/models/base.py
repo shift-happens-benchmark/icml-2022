@@ -13,6 +13,7 @@ import dataclasses
 from typing import Iterator
 
 import numpy as np
+from tqdm import tqdm
 
 from shifthappens.data import imagenet as sh_imagenet
 from shifthappens.data.base import DataLoader
@@ -109,6 +110,7 @@ class Model(abc.ABC):
 
     def __init__(self):
         self._imagenet_validation_result = None
+        self.verbose = False
 
     @property
     def imagenet_validation_result(self):
@@ -206,7 +208,13 @@ class Model(abc.ABC):
                 score_type for score_type in score_types if score_types[score_type]
             ]
         }
-        for prediction in self._predict(imagenet_val_dataloader, targets):
+
+        if self.verbose:
+            pred_loader = tqdm(self._predict(imagenet_val_dataloader, targets), desc='Predictions', total=int(len(imagenet_val_dataloader._dataset)/imagenet_val_dataloader.max_batch_size))
+        else:
+            pred_loader = self._predict(imagenet_val_dataloader, targets)
+
+        for prediction in pred_loader:
             for prediction_type in predictions_dict:
                 prediction_score = prediction.__getattribute__(prediction_type)
                 predictions_dict[prediction_type] = sum(

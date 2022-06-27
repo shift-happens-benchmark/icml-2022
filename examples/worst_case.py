@@ -316,4 +316,5 @@ if __name__ == "__main__":
     sh_benchmark.evaluate_model(
         ResNet18(device="cuda:2", max_batch_size=500),
         "data",
+        verbose=args.verbose
     )
