@@ -2,3 +2,5 @@ numpy
 torch
 torchvision
 surgeon_pytorch
+sklearn
+tqdm
