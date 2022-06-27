@@ -315,6 +315,5 @@ if __name__ == "__main__":
     tuple(sh_benchmark.__registered_tasks)[0].cls.labels_type = args.labels_type
     sh_benchmark.evaluate_model(
         ResNet18(device="cuda:2", max_batch_size=500),
-        "data",
-        verbose=args.verbose
+        "data"
     )
