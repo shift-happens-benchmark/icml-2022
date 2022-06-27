@@ -24,7 +24,7 @@ class __TorchvisionPreProcessingMixin:
         for item in batch:
             assert isinstance(item, np.ndarray)
             item_t = torch.tensor(item.transpose((2, 0, 1)))
-            item_t = tv_functional.resize(item_t, 256)
+            item_t = tv_functional.resize(item_t, 256, antialias=True)
             item_t = tv_functional.center_crop(item_t, 224)
             item_t = tv_functional.normalize(
                 item_t, mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225]
