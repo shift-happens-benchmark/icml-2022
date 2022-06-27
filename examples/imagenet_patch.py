@@ -1,5 +1,6 @@
 import dataclasses
 import os
+import typing
 from typing import Optional
 from typing import Tuple
 
@@ -7,6 +8,7 @@ import numpy as np
 import torchvision.datasets as tv_datasets
 import torchvision.transforms as tv_transforms
 
+import shifthappens
 import shifthappens.data.base as sh_data
 import shifthappens.data.torch as sh_data_torch
 
@@ -15,7 +17,7 @@ from shifthappens import benchmark as sh_benchmark
 from shifthappens.data.base import DataLoader
 from shifthappens.models import base as sh_models
 from shifthappens.models.base import PredictionTargets
-from shifthappens.tasks.base import abstract_variable
+from shifthappens.tasks.base import abstract_variable, parameter, variable
 from shifthappens.tasks.base import Task
 from shifthappens.tasks.metrics import Metric
 from shifthappens.tasks.task_result import TaskResult
@@ -81,15 +83,167 @@ class ImageNetPatchTarget(Task):
 
 
 # patch corruptions
+
+@sh_benchmark.register_task(
+    name="ImageNet-Patch (cellular telephone)",
+    relative_data_folder="imagenet_patch",
+    standalone=False,
+)
+@dataclasses.dataclass
+class ImageNetPatchCellularTelephone(ImageNetPatchTarget):
+    target: int = 487
+
+
+@sh_benchmark.register_task(
+    name="ImageNet-Patch (cornet)",
+    relative_data_folder="imagenet_patch",
+    standalone=False,
+)
+@dataclasses.dataclass
+class ImageNetPatchCornet(ImageNetPatchTarget):
+    target: int = 513
+
+
+@sh_benchmark.register_task(
+    name="ImageNet-Patch (electric guitar)",
+    relative_data_folder="imagenet_patch",
+    standalone=False,
+)
+@dataclasses.dataclass
+class ImageNetPatchElectricGuitar(ImageNetPatchTarget):
+    target: int = 546
+
+
+@sh_benchmark.register_task(
+    name="ImageNet-Patch (hair spray)",
+    relative_data_folder="imagenet_patch",
+    standalone=False,
+)
+@dataclasses.dataclass
+class ImageNetPatchHairSpray(ImageNetPatchTarget):
+    target: int = 585
+
+
+@sh_benchmark.register_task(
+    name="ImageNet-Patch (soap dispenser)",
+    relative_data_folder="imagenet_patch",
+    standalone=False,
+)
+@dataclasses.dataclass
+class ImageNetPatchSoapDispenser(ImageNetPatchTarget):
+    target: int = 804
+
+
+@sh_benchmark.register_task(
+    name="ImageNet-Patch (sock)",
+    relative_data_folder="imagenet_patch",
+    standalone=False,
+)
+@dataclasses.dataclass
+class ImageNetPatchSock(ImageNetPatchTarget):
+    target: int = 806
+
+
+@sh_benchmark.register_task(
+    name="ImageNet-Patch (typewriter keyboard)",
+    relative_data_folder="imagenet_patch",
+    standalone=False,
+)
+@dataclasses.dataclass
+class ImageNetPatchTypewriterKeyboard(ImageNetPatchTarget):
+    target: int = 878
+
+
+@sh_benchmark.register_task(
+    name="ImageNet-Patch (plate)",
+    relative_data_folder="imagenet_patch",
+    standalone=False,
+)
+@dataclasses.dataclass
+class ImageNetPatchPlate(ImageNetPatchTarget):
+    target: int = 923
+
+
 @sh_benchmark.register_task(
     name="ImageNet-Patch (banana)",
     relative_data_folder="imagenet_patch",
-    standalone=True,
+    standalone=False,
 )
 @dataclasses.dataclass
 class ImageNetPatchBanana(ImageNetPatchTarget):
     target: int = 954
 
+
+@sh_benchmark.register_task(
+    name="ImageNet-Patch (cup)",
+    relative_data_folder="imagenet_patch",
+    standalone=False,
+)
+@dataclasses.dataclass
+class ImageNetPatchCup(ImageNetPatchTarget):
+    target: int = 968
+
+@sh_benchmark.register_task(
+    name="ImageNet-Patch", relative_data_folder="imagenet_patch", standalone=True
+)
+@dataclasses.dataclass
+class ImageNetPatchCorruptions(Task):
+    """Classification task on the ImageNet-Patch dataset where models might use all images
+    containing all the target patches.
+    """
+
+    max_batch_size: Optional[int] = parameter(
+        default=typing.cast(Optional[int], None),
+        options=(1, 16, None),
+        description="maximum size of batches fed to the model during evaluation",
+    )
+
+    # TODO: Add all corruption types here
+    corruption_task_cls: Tuple[typing.Type[ImageNetPatchTarget], ...] = variable(
+        (ImageNetPatchBanana,)
+    )
+
+    flavored_corruption_tasks: typing.List[ImageNetPatchTarget] = variable([])
+
+    def setup(self):
+        for corruption_task_cls in self.corruption_task_cls:
+            self.flavored_corruption_tasks += list(
+                corruption_task_cls.iterate_flavours(data_root=self.data_root)
+            )
+        for flavored_corruption_task in self.flavored_corruption_tasks:
+            flavored_corruption_task.setup()
+
+    def _prepare_dataloader(self) -> Optional[DataLoader]:
+        return None
+
+    def _evaluate(self, model: sh_models.Model) -> TaskResult:
+        results = {}
+        accuracies, mces = [], []
+        for flavored_corruption_task in self.flavored_corruption_tasks:
+            dl = flavored_corruption_task._prepare_dataloader()
+            if dl is not None:
+                model.prepare(dl)
+            corruption_result = flavored_corruption_task.evaluate(model)
+            if corruption_result is None:
+                # model is not compatible with a subtask and the result should be ignored
+                continue
+
+            corruption_name = getattr(
+                flavored_corruption_task,
+                shifthappens.task_data.task_metadata._TASK_METADATA_FIELD,
+            )  # type: ignore
+            results[f"accuracy_{corruption_name}"] = corruption_result["accuracy"]
+            results[f"mCE_{corruption_name}"] = corruption_result["mce"]
+
+            accuracies.append(corruption_result.accuracy)
+            mces.append(corruption_result.mce)
+
+        return TaskResult(
+            **results,
+            accuracy=np.mean(accuracies).item(),
+            mce=np.mean(mces).item(),
+            summary_metrics={Metric.Robustness: "accuracy"},
+        )
 
 if __name__ == "__main__":
     from shifthappens.models.torchvision import ResNet18
