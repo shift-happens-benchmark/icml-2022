@@ -9,7 +9,7 @@ TL;DR
 ^^^^^
 
 We accept the following submission types: Full submissions and extended abstracts.
-A latex template (modified from the official ICML template) for **camera ready papers and extended abstracts** can be found `here <https://www.overleaf.com/read/fscgdbvctmqs>`_).
+A latex template (modified from the official ICML template) for **camera-ready papers and extended abstracts** can be found `here <https://www.overleaf.com/read/fscgdbvctmqs>`_).
 
 **Full submissions** consist of:
 
