@@ -498,7 +498,7 @@ def elastic_transform(image, severity=1):
 # /////////////// End Distortions ///////////////
 
 
-def func_dict():
+def noise_transforms():
     d = {}
     d['gaussian'] = gaussian_noise
     d['shot'] = shot_noise
@@ -516,7 +516,6 @@ def func_dict():
     d['pixelate'] = pixelate
     d['jpeg'] = jpeg_compression
     return d
-
 
 
 if __name__ == '__main__':
