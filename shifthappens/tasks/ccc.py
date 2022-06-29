@@ -50,7 +50,7 @@ class CCC(Task):
 
     def setup(self):
         self.loader = WalkLoader(os.path.join(self.data_root, "ccc"), os.path.join(self.data_root, "ccc", "accuracies"),
-                                 self.seed, self.freq, self.base_amount, self.accuracy, 10000000, 20000)
+                                 self.seed, self.frequency, self.base_amount, self.accuracy, 20000)
 
     def _prepare_dataloader(self) -> DataLoader:
         self.setup()
@@ -127,11 +127,11 @@ def traverse_graph(cost_dict, path_dict, arr, i, j, target_val):
 
 
 class WalkLoader(tv_transforms.Dataset):
-    def __init__(self, data_root, accuracies_folder, seed, freq, base_amount, accuracy, subset_size):
+    def __init__(self, data_root, accuracies_folder, seed, frequency, base_amount, accuracy, subset_size):
         self.data_root = data_root
         self.accuracies_folder = accuracies_folder
         self.seed = seed
-        self.freq = freq
+        self.frequency = frequency
         self.accuracy = accuracy
         self.base_amount = base_amount
         self.subset_size = subset_size
@@ -168,7 +168,9 @@ class WalkLoader(tv_transforms.Dataset):
             noise2 = noise2.lower().replace(" ", "_")
 
             results_path = os.path.join(self.accuracies_folder, "n1_" + noise1 + "_n2_" + noise2, "accuracies.pkl")
-            accuracy_matrix = pickle.load(results_path)
+
+            with open(results_path, 'rb') as f:
+                accuracy_matrix = pickle.load(f)
 
             walk = find_path(accuracy_matrix, self.accuracy)
 
@@ -219,7 +221,7 @@ class WalkLoader(tv_transforms.Dataset):
                 cur_data = ApplyTransforms(self.data_root, n1, n2, s1, s2, self.subset_size)
                 dset2lmdb(cur_data, path)
 
-            remainder = self.freq
+            remainder = self.frequency
             while remainder > 0:
                 cur_data = ImageFolderLMDB(db_path=path, transform=self.transform)
                 inds = np.random.permutation(len(cur_data))[:remainder]
@@ -231,8 +233,8 @@ class WalkLoader(tv_transforms.Dataset):
             else:
                 all_data = cur_data
 
-            total += self.freq
-            self.lifetime_total += self.freq
+            total += self.frequency
+            self.lifetime_total += self.frequency
             if self.walk_ind == len(self.walk) - 1:
                 self.noise1 = self.noise2
 
@@ -258,7 +260,7 @@ class WalkLoader(tv_transforms.Dataset):
 
 
 class ApplyTransforms(tv_transforms.Dataset):
-    def __init__(self, data_root, n1, n2, s1, s2, freq):
+    def __init__(self, data_root, n1, n2, s1, s2, frequency):
         d = noise_transforms()
         self.data_root = data_root
         self.n1 = d[n1]
@@ -275,7 +277,7 @@ class ApplyTransforms(tv_transforms.Dataset):
 
         np.random.shuffle(all_paths)
         self.paths = all_paths
-        self.paths = self.paths[:freq]
+        self.paths = self.paths[:frequency]
         all_classes = os.listdir(os.path.join(self.data_root))
 
         target_list = []
