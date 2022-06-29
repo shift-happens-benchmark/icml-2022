@@ -4,6 +4,7 @@ from typing import Optional
 from typing import Tuple
 
 import numpy as np
+import torch
 import torchvision.datasets as tv_datasets
 import torchvision.transforms as tv_transforms
 
@@ -30,7 +31,7 @@ class ImageNetSingleCorruptionTypeBase(Task):
     def setup(self):
         folder_name, archive_name, url, md5 = self.resource
 
-        self.data_root="examples/test_data/imagenet_d" # TODO Remove
+        #self.data_root="examples/test_data/imagenet_d" # TODO Remove
 
         dataset_folder = os.path.join(self.data_root, folder_name)
         if not os.path.exists(dataset_folder):
@@ -77,7 +78,10 @@ class ImageNetSingleCorruptionTypeBase(Task):
 
         all_predicted_labels = self.map_imagenet2visda[all_predicted_labels]
         
-        accuracy = (all_predicted_labels == np.array(self.ch_dataset.targets))
+        accuracy = (torch.count_nonzero(all_predicted_labels.cpu() == torch.Tensor(self.ch_dataset.targets))
+            / len(self.ch_dataset.targets))
+
+        print(f"Subset:{self.resource[0]}; Accuracy:{accuracy}")
 
         return TaskResult(
             accuracy=accuracy,
@@ -85,7 +89,6 @@ class ImageNetSingleCorruptionTypeBase(Task):
         )
 
 
-# noise corruptions
 @sh_benchmark.register_task(
     name="ImageNet-D (Clipart)",
     relative_data_folder="imagenet_d",
@@ -103,7 +106,95 @@ class ImageNetDClipart(ImageNetSingleCorruptionTypeBase):
     )
 
 
-if __name__ == "__main__":
-    from shifthappens.models.torchvision import ResNet18
+@sh_benchmark.register_task(
+    name="ImageNet-D (Infograph)",
+    relative_data_folder="imagenet_d",
+    standalone=True,
+)
+@dataclasses.dataclass
+class ImageNetDInfograph(ImageNetSingleCorruptionTypeBase):
+    resource: Tuple[str, ...] = variable(
+        (
+            "infograph",
+            "infograph.zip",
+            "http://csr.bu.edu/ftp/visda/2019/multi-source/infograph.zip",
+            "720380b86f9e6ab4805bb38b6bd135f8",
+        )
+    )
 
-    sh_benchmark.evaluate_model(ResNet18(device="cpu", max_batch_size=128), "test_data")
+
+@sh_benchmark.register_task(
+    name="ImageNet-D (Painting)",
+    relative_data_folder="imagenet_d",
+    standalone=True,
+)
+@dataclasses.dataclass
+class ImageNetDPainting(ImageNetSingleCorruptionTypeBase):
+    resource: Tuple[str, ...] = variable(
+        (
+            "painting",
+            "painting.zip",
+            "http://csr.bu.edu/ftp/visda/2019/multi-source/groundtruth/painting.zip",
+            "1ae32cdb4f98fe7ab5eb0a351768abfd",
+        )
+    )
+
+
+@sh_benchmark.register_task(
+    name="ImageNet-D (Quickdraw)",
+    relative_data_folder="imagenet_d",
+    standalone=True,
+)
+@dataclasses.dataclass
+class ImageNetDQuickdraw(ImageNetSingleCorruptionTypeBase):
+    resource: Tuple[str, ...] = variable(
+        (
+            "quickdraw",
+            "quickdraw.zip",
+            "http://csr.bu.edu/ftp/visda/2019/multi-source/quickdraw.zip",
+            "bdc1b6f09f277da1a263389efe0c7a66",
+        )
+    )
+
+
+@sh_benchmark.register_task(
+    name="ImageNet-D (Real)",
+    relative_data_folder="imagenet_d",
+    standalone=True,
+)
+@dataclasses.dataclass
+class ImageNetDReal(ImageNetSingleCorruptionTypeBase):
+    resource: Tuple[str, ...] = variable(
+        (
+            "real",
+            "real.zip",
+            "http://csr.bu.edu/ftp/visda/2019/multi-source/real.zip",
+            "dcc47055e8935767784b7162e7c7cca6",
+        )
+    )
+
+
+@sh_benchmark.register_task(
+    name="ImageNet-D (Sketch)",
+    relative_data_folder="imagenet_d",
+    standalone=True,
+)
+@dataclasses.dataclass
+class ImageNetDSketch(ImageNetSingleCorruptionTypeBase):
+    resource: Tuple[str, ...] = variable(
+        (
+            "sketch",
+            "sketch.zip",
+            "http://csr.bu.edu/ftp/visda/2019/multi-source/sketch.zip",
+            "658d8009644040ff7ce30bb2e820850f",
+        )
+    )
+
+
+if __name__ == "__main__":
+    from shifthappens.models.torchvision import ResNet50
+
+    result = sh_benchmark.evaluate_model(
+        ResNet50(device="cuda", max_batch_size=512), 
+        "/mnt/qb/work2/bethge0/gpachitariu37/datasets/test_data")
+
