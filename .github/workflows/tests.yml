@@ -120,7 +120,7 @@ jobs:
         pip install setuptools wheel build
     - name: Build wheel
       run: |
-         python setup.py sdist bdist_wheel
+         python -m build wheel
     - name: Install wheel
       run: |
         wheelname=$(ls dist/shifthappens-*.whl| head -1)
