@@ -11,6 +11,7 @@ import torchvision.transforms as tv_transforms
 import shifthappens.data.base as sh_data
 import shifthappens.data.torch as sh_data_torch
 import shifthappens.utils as sh_utils
+from examples.imagenet_d_helper import map_classes
 from shifthappens import benchmark as sh_benchmark
 from shifthappens.data.base import DataLoader
 from shifthappens.models import base as sh_models
@@ -20,18 +21,18 @@ from shifthappens.tasks.base import Task
 from shifthappens.tasks.base import variable
 from shifthappens.tasks.metrics import Metric
 from shifthappens.tasks.task_result import TaskResult
-from examples.imagenet_d_helper import map_classes
+
 
 @dataclasses.dataclass
 class ImageNetSingleCorruptionTypeBase(Task):
     resource: Tuple[str, ...] = abstract_variable()
-    
+
     max_batch_size: Optional[int] = None
 
     def setup(self):
         folder_name, archive_name, url, md5 = self.resource
 
-        #self.data_root="examples/test_data/imagenet_d" # TODO Remove
+        # self.data_root="examples/test_data/imagenet_d" # TODO Remove
 
         dataset_folder = os.path.join(self.data_root, folder_name)
         if not os.path.exists(dataset_folder):
@@ -42,9 +43,9 @@ class ImageNetSingleCorruptionTypeBase(Task):
 
         symlinks_folder = os.path.join(self.data_root, "visda_symlinks", folder_name)
         _map = map_classes.build_map_dict()
-        self.map_imagenet2visda = \
-            map_classes.create_symlinks_and_get_imagenet_visda_mapping(
-                dataset_folder, symlinks_folder, _map)
+        self.map_imagenet2visda = map_classes.create_symlinks_and_get_imagenet_visda_mapping(
+            dataset_folder, symlinks_folder, _map
+        )
 
         test_transform = tv_transforms.Compose(
             [
@@ -59,7 +60,6 @@ class ImageNetSingleCorruptionTypeBase(Task):
         self.images_only_dataset = sh_data_torch.IndexedTorchDataset(
             sh_data_torch.ImagesOnlyTorchDataset(self.ch_dataset)
         )
-
 
     def _prepare_dataloader(self) -> DataLoader:
         return sh_data.DataLoader(
@@ -77,22 +77,20 @@ class ImageNetSingleCorruptionTypeBase(Task):
         all_predicted_labels = np.concatenate(all_predicted_labels_list, 0)
 
         all_predicted_labels = self.map_imagenet2visda[all_predicted_labels]
-        
-        accuracy = (torch.count_nonzero(all_predicted_labels.cpu() == torch.Tensor(self.ch_dataset.targets))
-            / len(self.ch_dataset.targets))
+
+        accuracy = torch.count_nonzero(
+            all_predicted_labels.cpu() == torch.Tensor(self.ch_dataset.targets)
+        ) / len(self.ch_dataset.targets)
 
         print(f"Subset:{self.resource[0]}; Accuracy:{accuracy}")
 
         return TaskResult(
-            accuracy=accuracy,
-            summary_metrics={Metric.Robustness: "accuracy"},
+            accuracy=accuracy, summary_metrics={Metric.Robustness: "accuracy"}
         )
 
 
 @sh_benchmark.register_task(
-    name="ImageNet-D (Clipart)",
-    relative_data_folder="imagenet_d",
-    standalone=True,
+    name="ImageNet-D (Clipart)", relative_data_folder="imagenet_d", standalone=True
 )
 @dataclasses.dataclass
 class ImageNetDClipart(ImageNetSingleCorruptionTypeBase):
@@ -107,9 +105,7 @@ class ImageNetDClipart(ImageNetSingleCorruptionTypeBase):
 
 
 @sh_benchmark.register_task(
-    name="ImageNet-D (Infograph)",
-    relative_data_folder="imagenet_d",
-    standalone=True,
+    name="ImageNet-D (Infograph)", relative_data_folder="imagenet_d", standalone=True
 )
 @dataclasses.dataclass
 class ImageNetDInfograph(ImageNetSingleCorruptionTypeBase):
@@ -124,9 +120,7 @@ class ImageNetDInfograph(ImageNetSingleCorruptionTypeBase):
 
 
 @sh_benchmark.register_task(
-    name="ImageNet-D (Painting)",
-    relative_data_folder="imagenet_d",
-    standalone=True,
+    name="ImageNet-D (Painting)", relative_data_folder="imagenet_d", standalone=True
 )
 @dataclasses.dataclass
 class ImageNetDPainting(ImageNetSingleCorruptionTypeBase):
@@ -141,9 +135,7 @@ class ImageNetDPainting(ImageNetSingleCorruptionTypeBase):
 
 
 @sh_benchmark.register_task(
-    name="ImageNet-D (Quickdraw)",
-    relative_data_folder="imagenet_d",
-    standalone=True,
+    name="ImageNet-D (Quickdraw)", relative_data_folder="imagenet_d", standalone=True
 )
 @dataclasses.dataclass
 class ImageNetDQuickdraw(ImageNetSingleCorruptionTypeBase):
@@ -158,9 +150,7 @@ class ImageNetDQuickdraw(ImageNetSingleCorruptionTypeBase):
 
 
 @sh_benchmark.register_task(
-    name="ImageNet-D (Real)",
-    relative_data_folder="imagenet_d",
-    standalone=True,
+    name="ImageNet-D (Real)", relative_data_folder="imagenet_d", standalone=True
 )
 @dataclasses.dataclass
 class ImageNetDReal(ImageNetSingleCorruptionTypeBase):
@@ -175,9 +165,7 @@ class ImageNetDReal(ImageNetSingleCorruptionTypeBase):
 
 
 @sh_benchmark.register_task(
-    name="ImageNet-D (Sketch)",
-    relative_data_folder="imagenet_d",
-    standalone=True,
+    name="ImageNet-D (Sketch)", relative_data_folder="imagenet_d", standalone=True
 )
 @dataclasses.dataclass
 class ImageNetDSketch(ImageNetSingleCorruptionTypeBase):
@@ -195,6 +183,6 @@ if __name__ == "__main__":
     from shifthappens.models.torchvision import ResNet50
 
     result = sh_benchmark.evaluate_model(
-        ResNet50(device="cuda", max_batch_size=512), 
-        "/mnt/qb/work2/bethge0/gpachitariu37/datasets/test_data")
-
+        ResNet50(device="cuda", max_batch_size=512),
+        "/mnt/qb/work2/bethge0/gpachitariu37/datasets/test_data",
+    )
