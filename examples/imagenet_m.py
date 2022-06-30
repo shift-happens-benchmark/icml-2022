@@ -6,6 +6,7 @@ import os
 
 import numpy as np
 import torchvision.datasets.utils as tv_utils
+from torchvision import datasets as tv_datasets
 
 from shifthappens import benchmark as sh_benchmark
 from shifthappens.models import base as sh_models
@@ -115,6 +116,13 @@ class ImageNetM(Task):
             self._greedy_soups = load_npy_as_dict(
                 os.path.join(dataset_folder, "greedysoups.npz")
             )
+        else:
+            # Create mapping from torch DataLoader order to filename
+            self._filename_to_pred_index = {}
+            iif = tv_datasets.ImageFolder(root=imagenet.ImageNetValidationData)
+            for i, (filename, _) in enumerate(iif.samples):
+                im_filename = filename.split("/")[-1]
+                self._filename_to_pred_index[im_filename] = i
 
     def _evaluate(self, model: sh_models.Model) -> TaskResult:
         # Get imagenet validation results for the model.
@@ -129,7 +137,8 @@ class ImageNetM(Task):
                 logits = self._greedy_soups[image_name.encode()]
                 predicted_class = np.argmax(logits)
             else:
-                predicted_class = imagenet_val_data.class_labels[image_id - 1]
+                pred_index = self._filename_to_pred_index[image_name]
+                predicted_class = imagenet_val_data.class_labels[pred_index]
 
             if (
                 predicted_class in data["correct_multi_labels"]
