@@ -9,6 +9,7 @@ import torchvision.datasets.utils as tv_utils
 from torchvision import datasets as tv_datasets
 
 from shifthappens import benchmark as sh_benchmark
+from shifthappens.data import imagenet
 from shifthappens.models import base as sh_models
 from shifthappens.tasks.base import Task
 from shifthappens.tasks.metrics import Metric
