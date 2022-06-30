@@ -13,6 +13,8 @@ import torch
 
 import numpy as np
 import torchvision.transforms as tv_transforms
+import torch.utils.data as data
+
 from PIL import Image
 import io
 
@@ -126,7 +128,7 @@ def traverse_graph(cost_dict, path_dict, arr, i, j, target_val):
     return cost_dict, path_dict
 
 
-class WalkLoader(tv_transforms.Dataset):
+class WalkLoader(data.Dataset):
     def __init__(self, data_root, accuracies_folder, seed, frequency, base_amount, accuracy, subset_size):
         self.data_root = data_root
         self.accuracies_folder = accuracies_folder
@@ -259,7 +261,7 @@ class WalkLoader(tv_transforms.Dataset):
                 self.walk_ind += 1
 
 
-class ApplyTransforms(tv_transforms.Dataset):
+class ApplyTransforms(data.Dataset):
     def __init__(self, data_root, n1, n2, s1, s2, frequency):
         d = noise_transforms()
         self.data_root = data_root
