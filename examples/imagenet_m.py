@@ -15,7 +15,6 @@ from shifthappens.tasks.base import Task
 from shifthappens.tasks.metrics import Metric
 from shifthappens.tasks.task_result import TaskResult
 
-
 HUMAN_ACCURACY_JSON = "https://storage.googleapis.com/brain-car-datasets/imagenet-mistakes/human_accuracy_v3.0.0.json"
 CLASS_INFO_JSON = "https://raw.githubusercontent.com/modestyachts/ImageNetV2/master/data/metadata/class_info.json"
 IMAGENET_VALIDATION_LABELS = "https://raw.githubusercontent.com/tensorflow/datasets/master/tensorflow_datasets/image_classification/imagenet2012_validation_labels.txt"
