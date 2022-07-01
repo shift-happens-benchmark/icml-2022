@@ -1,3 +1,7 @@
+.. image:: docs/source/_static/logos/ShiftHappens_Logo.png
+  :width: 380
+
+
 Shift Happens: Crowdsourcing metrics and test datasets beyond ImageNet
 ======================================================================
 
