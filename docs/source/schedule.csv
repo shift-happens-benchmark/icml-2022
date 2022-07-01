@@ -1,0 +1,21 @@
+Start time,End time,
+09:00,09:10,Introduction and opening remarks
+09:10,09:25,Contributed Talk 1: When does dough become a bagel? Analyzing the remaining mistakes on ImageNet
+09:25,10:05,Invited Talk 1: Aleksander Mądry
+10:05,10:35,Coffee Break
+10:35,10:50,Contributed Talk 2: MetaShift: A Dataset of Datasets for Evaluating Contextual Distribution Shifts
+10:50,11:30,Invited Talk 2: Lucas Beyer
+11:30,12:10,Invited Talk 3: Chelsea Finn
+12:10,13:10,Lunch Break
+13:10,13:50,Invited Talk 4: Alexei Efros
+13:50,14:50,Lightning Talks
+14:50,15:50,Poster session
+15:50,16:20,Tea break
+16:20,17:00,Invited Talk 5: Ludwig Schmidt
+17:00,18:00,Panel discussion
+18:00,18:15,Community presentation 1: Robust Vision Challenge
+18:15,18:30,Community presentation 2: Challenge on Out-of-Distribution Generalization in Computer Vision
+18:30,18:45,Community presentation 3: Shifts Challenge 2.0
+18:45,19:00,Contributed Talk 3: ImageNet-Patch: A Dataset for Benchmarking Machine Learning Robustness against Adversarial Patches
+19:00,19:15,Closing remarks
+19:15,,End
