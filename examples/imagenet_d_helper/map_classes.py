@@ -74,7 +74,7 @@ def create_symlinks_and_get_imagenet_visda_mapping(
             allFiles_png = glob.glob(allFiles_path_png)
             allFiles = allFiles_jpg + allFiles_png
             for file in allFiles:
-                newFile = target_folder_class + "/" + file.split("/")[-1]
+                newFile = os.path.join(target_folder_class, os.path.normpath(os.path.basename(file)))
                 file = os.path.abspath(file)
                 os.symlink(file, newFile)
         except FileExistsError:
