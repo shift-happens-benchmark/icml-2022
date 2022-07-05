@@ -25,9 +25,12 @@ from shifthappens.tasks.task_result import TaskResult
 
 @dataclasses.dataclass
 class ImageNetPatchTarget(Task):
-    resource: Tuple[str, ...] = ('imagenet_patch', 'ImageNet-Patch.tar.gz',
-                                 'https://zenodo.org/record/6568778/files/ImageNet-Patch.gz?download=1',
-                                 'a9d9cc4d77d2a192b3386118b70422c2')
+    resource: Tuple[str, ...] = (
+        "imagenet_patch",
+        "ImageNet-Patch.tar.gz",
+        "https://zenodo.org/record/6568778/files/ImageNet-Patch.gz?download=1",
+        "a9d9cc4d77d2a192b3386118b70422c2",
+    )
 
     target: int = abstract_variable()
     max_batch_size: Optional[int] = None
@@ -66,14 +69,14 @@ class ImageNetPatchTarget(Task):
         dataloader = self._prepare_dataloader()
         all_predicted_labels_list = []
         for predictions in model.predict(
-                dataloader, PredictionTargets(class_labels=True)
+            dataloader, PredictionTargets(class_labels=True)
         ):
             all_predicted_labels_list.append(predictions.class_labels)
         all_predicted_labels = np.concatenate(all_predicted_labels_list, 0)
 
         accuracy = (
-                all_predicted_labels
-                == np.array(self.ch_dataset.targets)[: len(all_predicted_labels)]
+            all_predicted_labels
+            == np.array(self.ch_dataset.targets)[: len(all_predicted_labels)]
         )
         return TaskResult(
             accuracy=accuracy,
@@ -83,6 +86,7 @@ class ImageNetPatchTarget(Task):
 
 
 # patch corruptions
+
 
 @sh_benchmark.register_task(
     name="ImageNet-Patch (cellular telephone)",
@@ -183,6 +187,7 @@ class ImageNetPatchBanana(ImageNetPatchTarget):
 class ImageNetPatchCup(ImageNetPatchTarget):
     target: int = 968
 
+
 @sh_benchmark.register_task(
     name="ImageNet-Patch", relative_data_folder="imagenet_patch", standalone=True
 )
@@ -244,6 +249,7 @@ class ImageNetPatchCorruptions(Task):
             mce=np.mean(mces).item(),
             summary_metrics={Metric.Robustness: "accuracy"},
         )
+
 
 if __name__ == "__main__":
     from shifthappens.models.torchvision import ResNet18
