@@ -8,13 +8,10 @@ rotation angle.
 
 import dataclasses
 import os
-import typing
 from typing import Any
 from typing import Callable
-from typing import List
 from typing import Optional
 from typing import Tuple
-from typing import Type
 
 import numpy as np
 import torchvision.datasets as tv_datasets
@@ -62,7 +59,7 @@ class SISCOREImageFolder(tv_datasets.ImageFolder):
         for class_name, label_idx in self.class_to_idx.items():
             imagenet_class = siscore_labels.IMAGENET_LABELS[class_name]
             self.idx_to_imagenet_idx[label_idx] = imagenet_class
-    
+
     def __getitem__(self, index: int) -> Tuple[Any, Any]:
         """
         Args:
@@ -185,4 +182,3 @@ class SISCORELocation(SISCOREVariantBase):
             "location"
         )
     )
-
