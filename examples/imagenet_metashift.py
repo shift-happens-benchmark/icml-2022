@@ -278,3 +278,4 @@ if __name__ == "__main__":
 
     result = sh_benchmark.evaluate_model(ResNet18(device="cuda", max_batch_size=128), "data")
     print("ImageNet-MetaShift accuracy: ", list(result.values())[0]._metrics["accuracy"])
+    
