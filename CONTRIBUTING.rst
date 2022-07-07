@@ -47,12 +47,23 @@ Use the following structure:
         CITATION.cff            # provide a citation file in bibtex format with a link
                                   to the paper people should cite.
 
-You can add as many utility or helper scripts as possible.
+You can add as many utility or helper scripts as necessary.
 
-Registration of the task should happen in the ``__init__.py`` method (you can of course)
-place evaluation/helper code in other modules as you see fit. Please make sure to add
+Registration of the task should happen in the ``__init__.py`` method of your package.
+Place the evaluation/helper code in other modules as you see fit. Please make sure to add
 a doc string to the top of your ``__init__.py`` file, which is used to auto-generate
 the documentation.
+
+Make sure to then import your package in the ``shifthappens/tasks/__init__.py`` file of
+the benchmark. This ensures that your registration code is loaded whenever the 
+``shifthappens.task`` package is imported.
+
+.. code:: python 
+
+    #file: shifthappens/tasks/__init__.py
+    ...
+    from shifthappens.task import your_task
+    ...
 
 If you generated a new dataset, code for reproducing the generation
 should go into your directory as well. In this case, you should provide a command
