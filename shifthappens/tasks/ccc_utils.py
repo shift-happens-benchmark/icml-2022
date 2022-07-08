@@ -72,9 +72,9 @@ def traverse_graph(cost_dict, path_dict, arr, i, j, target_val):
 
 
 class WalkLoader(data.Dataset):
-    def __init__(self, data_root, accuracies_folder, seed, frequency, base_amount, accuracy, subset_size):
+    def __init__(self, data_root, accuracies_matrix, seed, frequency, base_amount, accuracy, subset_size):
         self.data_root = data_root
-        self.accuracies_folder = accuracies_folder
+        self.accuracies_matrix = accuracies_matrix
         self.seed = seed
         self.frequency = frequency
         self.accuracy = accuracy

@@ -39,10 +39,13 @@ class CCC(Task):
     accuracy: int = parameter(
         description="represents the baseline accuracy of walk",
     )
+    subset_size: int = parameter(
+        description="represents the sample size of images sampled from ImageNet validation",
+    )
 
     def setup(self):
-        self.loader = WalkLoader(os.path.join(self.data_root, "ccc"), os.path.join(self.data_root, "ccc", "accuracies"),
-                                 self.seed, self.frequency, self.base_amount, self.accuracy, 20000)
+        self.loader = WalkLoader(os.path.join(self.data_root, "ccc"), './ccc_accuracy_matrix.pickle',
+                                 self.seed, self.frequency, self.base_amount, self.accuracy, self.subset_size)
 
     def _prepare_dataloader(self) -> DataLoader:
         self.setup()
