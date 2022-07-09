@@ -19,6 +19,8 @@ jobs:
 
     steps:
     - uses: actions/checkout@v2
+      ref: main
+    - uses: actions/checkout@v2
     - uses: actions/cache@v1
       with:
         path: ~/.cache/pip
