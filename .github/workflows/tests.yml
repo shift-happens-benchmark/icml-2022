@@ -61,6 +61,9 @@ jobs:
     - name: isort
       run: |
         isort --check .
+    - name: documentation
+      run: |
+        git diff --name-only main | grep .py$ | xargs interrogate -v 
     - name: Install package
       run: |
         pip install -e .
