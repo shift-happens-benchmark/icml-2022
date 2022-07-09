@@ -65,8 +65,17 @@ jobs:
       run: |
         isort --check .
     - name: documentation
+      id: documentation
       run: |
         git diff --name-only origin/main | grep .py$ | xargs interrogate -v 
+    - name: comment result on PR
+        uses: thollander/actions-comment-pull-request@v1
+        with:
+          comment_includes: 'Test and Coverage Report'
+          message: |
+            Test and Coverage Report:
+            ${{ steps.documentation.outputs }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
     - name: Install package
       run: |
         pip install -e .
