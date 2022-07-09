@@ -62,7 +62,7 @@ the benchmark. This ensures that your registration code is loaded whenever the
 
     #file: shifthappens/tasks/__init__.py
     ...
-    from shifthappens.task import your_task
+    from shifthappens.tasks import your_task
     ...
 
 If you generated a new dataset, code for reproducing the generation
