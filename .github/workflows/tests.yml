@@ -67,7 +67,7 @@ jobs:
     - name: documentation
       id: documentation
       run: |
-        git diff --name-only origin/main | grep .py$ | xargs interrogate -v 
+        git diff --name-only origin/main | grep .py$ | xargs interrogate -f 0 -v 
     - name: comment result on PR
       uses: thollander/actions-comment-pull-request@v1
       with:
