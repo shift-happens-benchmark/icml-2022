@@ -76,6 +76,8 @@ provide a citation file in `citation file format (cff) <https://citation-file-fo
 If you want to specify additional information on how to use your benchmark, please add a
 README file of any file format.
 
+We are currently looking into options for how to setup unit and integration tests and will setup this note accordingly. If you have suggestions, feel free to create a PR for adapting this contribution guide.
+
 Finally, update the ``LICENSE`` file in the repository root, and also the ``README.rst`` file 
 in the repository root with the name of contributors you would like to add. Please note that
 we can only add contributions that are compatible with the Apache 2.0 license right now.
