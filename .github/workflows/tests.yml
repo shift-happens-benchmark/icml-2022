@@ -20,7 +20,7 @@ jobs:
     steps:
     - uses: actions/checkout@v3
       with:
-        ref: origin/main
+        ref: main
     - uses: actions/checkout@v3
     - uses: actions/cache@v1
       with:
@@ -66,7 +66,7 @@ jobs:
         isort --check .
     - name: documentation
       run: |
-        git diff --name-only main | grep .py$ | xargs interrogate -v 
+        git diff --name-only origin/main | grep .py$ | xargs interrogate -v 
     - name: Install package
       run: |
         pip install -e .
