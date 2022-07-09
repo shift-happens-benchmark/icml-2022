@@ -18,9 +18,10 @@ jobs:
         python-version: ['3.9']
 
     steps:
-    - uses: actions/checkout@v2
-      ref: main
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v3
+      with:
+        ref: main
+    - uses: actions/checkout@v3
     - uses: actions/cache@v1
       with:
         path: ~/.cache/pip
