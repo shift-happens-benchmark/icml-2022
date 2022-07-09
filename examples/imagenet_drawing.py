@@ -20,7 +20,7 @@ from shifthappens.tasks.task_result import TaskResult
 
 
 @sh_benchmark.register_task(
-    name="ImageNet-Cartoon", relative_data_folder="imagenet_drawing", standalone=True
+    name="ImageNet-Drawing", relative_data_folder="imagenet_drawing", standalone=True
 )
 @dataclasses.dataclass
 class ImageNetDrawing(Task):
