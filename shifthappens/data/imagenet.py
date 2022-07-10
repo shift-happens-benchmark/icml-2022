@@ -143,10 +143,10 @@ def is_cached(cls) -> bool:
     Returns:
         ``True`` if model's results are cached, ``False`` otherwise.
     """
-    assert (
-        shifthappens.config.cache_directory_path is not None
-    ), "Cannot find cached model results. " \
-       "shifthappens.config.Config.cache_directory_path path is not specified. "
+    assert shifthappens.config.cache_directory_path is not None, (
+        "Cannot find cached model results. "
+        "shifthappens.config.Config.cache_directory_path path is not specified. "
+    )
     load_path = os.path.join(
         shifthappens.config.cache_directory_path, cls.__class__.__name__, ""
     )
