@@ -1,0 +1,7 @@
+Hi!
+
+This is an automated report for the documentation coverage of your PR. To provide good user experience for the benchmark, we aim to cover most functions with doc strings, using the [Google docstring format](https://sphinxcontrib-napoleon.readthedocs.io/en/latest/example_google.html).
+
+We would greatly appreciate your help in assuring that docstring coverage is sufficiently high for your contribution.
+
+The current coverage is:

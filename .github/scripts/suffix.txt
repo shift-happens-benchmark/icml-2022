@@ -1,0 +1,7 @@
+You can reproduce this result by running
+
+```
+interrogate -v --ignore-nested-functions --ignore-private --ignore-semiprivate --ignore-init-method
+```
+
+on the files you added to your PR.
