@@ -14,9 +14,9 @@ def build_map_dict(data_root: str) -> dict:
     Returns:
         dict: index-to-class name mapping.
     """
-    csv_path = os.path.join(data_root, "ImageNet_classes.csv")
+    csv_path = os.path.join(data_root, "imagenet_classes.csv")
     if not os.path.exists(csv_path):
-        url = "https://domainadaptation.org/selflearning/ImageNet_classes.csv"
+        url = "https://domainadaptation.org/selflearning/imagenet_classes.csv"
         df = pd.read_csv(
             url, sep="\001", header=None, names=["class_index", "class_name"]
         )
