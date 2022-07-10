@@ -25,6 +25,9 @@ from shifthappens.tasks.task_result import TaskResult
 
 @dataclasses.dataclass
 class ImageNetDBase(Task):
+    """ Base class for all Imagenet-D tasks. 
+    There is a subclass for each subset of the dataset.
+    """
     resource: Tuple[str, ...] = abstract_variable()
 
     max_batch_size: Optional[int] = None

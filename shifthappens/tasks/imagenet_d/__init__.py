@@ -1,1 +1,3 @@
-# TODO Add docstring
+"""
+Python package for Imagenet-D dataset.
+"""
