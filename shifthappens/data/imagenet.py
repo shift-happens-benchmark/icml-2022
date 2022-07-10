@@ -1,8 +1,7 @@
 """
 This module provides functionality to access the predictions of a model for the ImageNet validation set.
 Further, the predictions can be cached and loaded from the cache to reduce computational costs.
-Note, that for this to work :py:data:shifthappens.data.imagenet.ImageNetValidationData
-must be set to the ImageNet validation set path. path.
+For path configuration please have a look at :py:module:shifthappens.config.
 """
 import os
 import shutil
@@ -23,22 +22,21 @@ def _check_imagenet_folder():
     """
     assert (
         shifthappens.config.imagenet_validation_path is not None
-    ), "ImagenetValidationData path is not specified."
+    ), "shifthappens.config.ImagenetValidationData path is not specified."
     assert os.path.exists(shifthappens.config.imagenet_validation_path), (
         "You have specified an incorrect path to the ImageNet validation set. "
-        "Files not found at location specified in shithappens.data.imagenet.ImageNetValidationData."
+        "Files not found at location specified in shifthappens.config.imagenet_validation_path."
     )
-
     assert (
-        len(os.listdir(shifthappens.config.imagenet_validation_path)) == 1000
-    ), "ImageNetValidationData folder contains less or more folders than ImageNet classes."
+        len(os.listdir(shifthappens.config.imagenet_validation_path)) >= 1000
+    ), f"{shifthappens.config.imagenet_validation_path} folder contains less folders than ImageNet classes. "
 
 
 def get_imagenet_validation_loader(max_batch_size=128) -> DataLoader:
     """
     Creates a :py:class:`shifthappens.data.base.DataLoader` for the validation set of ImageNet.
     Note that the path to ImageNet validation set
-    :py:data:`shifthappens.data.imagenet.ImageNetValidationData` must be specified.
+    :py:attr:`shifthappens.config.Config.imagenet_validation_path` must be specified.
 
     Args:
         max_batch_size: How many samples allowed per batch to load.
@@ -72,7 +70,7 @@ def get_cached_predictions(cls) -> dict:
     """
     Checks whether there exist cached results for the model's class and if so, returns them.
     Note that the path to ImageNet validation set
-    :py:data:`shifthappens.data.imagenet.ImageNetValidationData` must be specified.
+    :py:attr:`shifthappens.config.Config.imagenet_validation_path` must be specified.
 
     Args:
         cls: Model's class. Used for specifying folder name.
@@ -80,9 +78,10 @@ def get_cached_predictions(cls) -> dict:
     Returns:
         Dictionary of loaded model predictions on ImageNet validation set.
     """
-    assert (
-        shifthappens.config.cache_directory_path is not None
-    ), "Cannot get cached model results. ImageNetValidationPredictionsCache path is not specified."
+    assert shifthappens.config.cache_directory_path is not None, (
+        "Cannot get cached model results. "
+        "shifthappens.config.Config.cache_directory_path is not specified."
+    )
 
     load_path = os.path.join(
         shifthappens.config.cache_directory_path, cls.__class__.__name__, ""
@@ -106,8 +105,8 @@ def cache_predictions(cls, imagenet_validation_result):
     """
     Caches model predictions in cls-named folder and load
     model predictions from it. Note that the path to ImageNet validation set
-    :py:data:`shifthappens.data.imagenet.ImageNetValidationData` must be specified as
-    well as :py:data:`shifthappens.data.imagenet.ImageNetValidationPredictionsCache`.
+    :py:attr:`shifthappens.config.Config.imagenet_validation_path` must be specified as
+    well as :py:attr:`shifthappens.config.Config.cache_directory_path`.
 
     Args:
         cls: Model's class. Used for specifying folder name.
@@ -117,7 +116,7 @@ def cache_predictions(cls, imagenet_validation_result):
 
     assert (
         shifthappens.config.cache_directory_path is not None
-    ), "Cannot cache model results. ImageNetValidationPredictionsCache path is not specified."
+    ), "Cannot cache model results. shifthappens.config.Config.cache_directory_path is not specified."
     save_path = os.path.join(
         shifthappens.config.cache_directory_path, cls.__class__.__name__, ""
     )
@@ -135,8 +134,8 @@ def cache_predictions(cls, imagenet_validation_result):
 def is_cached(cls) -> bool:
     """
     Checks if model's results are cached in cls-named folder. Note that the path to the ImageNet validation set
-    :py:data:`shifthappens.data.imagenet.ImageNetValidationData` must be specified as
-    well as :py:data:`shifthappens.data.imagenet.ImageNetValidationPredictionsCache`.
+    :py:attr:`shifthappens.config.Config.imagenet_validation_path` must be specified as
+    well as :py:attr:`shifthappens.config.Config.cache_directory_path`.
 
     Args:
         cls: Model's class. Used for specifying folder name.
@@ -146,7 +145,8 @@ def is_cached(cls) -> bool:
     """
     assert (
         shifthappens.config.cache_directory_path is not None
-    ), "Cannot find cached model results. ImageNetValidationPredictionsCache path is not specified."
+    ), "Cannot find cached model results. " \
+       "shifthappens.config.Config.cache_directory_path path is not specified. "
     load_path = os.path.join(
         shifthappens.config.cache_directory_path, cls.__class__.__name__, ""
     )
