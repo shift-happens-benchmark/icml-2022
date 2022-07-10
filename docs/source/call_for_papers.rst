@@ -3,13 +3,13 @@ Call for Submissions
 
 .. note::
 
-  Submissions are now **closed**.
+  Submissions are now **closed**. Please see the updated information below for the camera-ready submission templates.
 
 TL;DR
 ^^^^^
 
-We accept the following submission types:
-Full submissions and extended abstracts (`example <https://drive.google.com/file/d/1bRp0Pp2ek_KbuQILyNPuOgJcUD3EuCR3/view?usp=sharing>`__).
+We accept the following submission types: Full submissions and extended abstracts.
+A latex template (modified from the official ICML template) for **camera-ready papers and extended abstracts** can be found `here <https://www.overleaf.com/read/fscgdbvctmqs>`_).
 
 **Full submissions** consist of:
 
