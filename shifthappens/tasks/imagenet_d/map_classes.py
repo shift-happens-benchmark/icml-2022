@@ -3,25 +3,39 @@ import os
 import re
 
 import numpy as np
+import pandas as pd
 import torch
 
 
 def build_map_dict():
+    """builds a dictionary for Imagenet classes: index to class name.
+
+    Returns:
+        dict: the dictionary
+    """
+    url = "https://domainadaptation.org/selflearning/imagenet_classes.csv"
+    df = pd.read_csv(url, sep = '\001', header=None, names=["class_index", "class_name"])
     map_dict = {}
-    with open("examples/imagenet_d_helper/imagenet_classes.csv", "r") as r:
-        for line in r:
-            splits = line.split("\001")
-            map_dict[int(splits[0])] = splits[1]
+    for _, row in df.iterrows():
+        map_dict[row["class_index"]] = row["class_name"]
     return map_dict
 
 
 def get_imagenet_visda_mapping(visda_dir, map_dict):
-    # visda2imagenet
+    """builds a dictionary that maps from VISDA classes to Imagenet classes.
+
+    Args:
+        visda_dir (str): VISDA dataset path. It's used to get the classes names.
+        map_dict (dict): The Imagenet dictionary: index to class names.
+
+    Returns:
+        matching_names (dict): mapping of class names
+        matching_labels (dict): mapping of labels
+    """
     matching_names = dict()
     matching_labels = dict()
     map_dict_visda = dict()
 
-    label = 0
     visda = os.listdir(visda_dir)
     for label, item in enumerate(sorted(visda)):
         map_dict_visda[item] = label
@@ -46,6 +60,16 @@ def get_imagenet_visda_mapping(visda_dir, map_dict):
 def create_symlinks_and_get_imagenet_visda_mapping(
     visda_location, symlinks_location, map_dict
 ):
+    """Creates symlinks between Imagenet class names to visda folders with images.
+    
+    Args:
+        visda_location (str): VISDA dataset path.
+        symlinks_location (str): The second parameter.
+        map_dict (dict): The Imagenet dictionary: index to class names.
+
+    Returns:
+        dict: the dictionary that maps visda classes to imagenet classes.
+    """
 
     # initial mapping and cleaning
     matching_names, matching_labels = get_imagenet_visda_mapping(
@@ -68,8 +92,8 @@ def create_symlinks_and_get_imagenet_visda_mapping(
         if not os.path.exists(target_folder_class):
             os.makedirs(target_folder_class)
         try:
-            allFiles_path_jpg = visda_location + "/" + folder + "/*.jpg"
-            allFiles_path_png = visda_location + "/" + folder + "/*.png"
+            allFiles_path_jpg = os.path.join(visda_location, folder, "*.jpg")
+            allFiles_path_png = os.path.join(visda_location, folder, "*.png")
             allFiles_jpg = glob.glob(allFiles_path_jpg)
             allFiles_png = glob.glob(allFiles_path_png)
             allFiles = allFiles_jpg + allFiles_png
@@ -86,8 +110,6 @@ def create_symlinks_and_get_imagenet_visda_mapping(
     )
 
     mapping_vector = torch.zeros((1000))
-    if torch.cuda.is_available():
-        mapping_vector = torch.zeros((1000)).cuda()
     mapping_vector -= 1
     mapping_vector_counts = dict()
     for i in range(1000):
@@ -109,6 +131,20 @@ def create_symlinks_and_get_imagenet_visda_mapping(
 
 
 def clean_dataset(matching_names, matching_labels, map_dict_visda, map_dict):
+    """It removes the classes that don't have a mapping between the 2 datasets.
+    And it groups together imagenet classes that have a single mapping in VISDA.
+    Example: ("wild boar", "warthog", "piggy bank") will map to ("pig").
+
+    Args:
+        matching_names (dict): mapping of class names: VISDA -> Imagenet.
+        matching_labels (dict): mapping of class labels: VISDA -> Imagenet.
+        map_dict_visda (dict): mapping of VISDA labels to class names.
+        map_dict (dict): mapping of Imagenet labels to class names.
+
+    Returns:
+        matching_names (dict): the cleaned matching_names.
+        matching_labels (dict): the cleaned matching_labels.
+    """
 
     # delete labels completely
     del_list = [
@@ -371,38 +407,42 @@ def clean_dataset(matching_names, matching_labels, map_dict_visda, map_dict):
 
 
 def map_imagenet_class_to_visda_class(pred_label, mapping_vector):
+    """Get the equivalent VISDA class label for an input imagenet class label
+    
+    Args:
+        pred_label (long): Imagenet class label.
+        mapping_vector (dict): mapping of classes: VISDA -> Imagenet.
 
+    Returns:
+        pred_label_visda_tensor (long): VISDA class label.
+    """
     pred_label_visda_tensor = mapping_vector[pred_label].long()
-
     return pred_label_visda_tensor
 
 
 def map_visda_class_to_imagenet_class(pred_label, mapping_vector):
+    """Get the equivalent iamgenet class label for an input VISDA class label
+    
+    Args:
+        pred_label (long): VISDA class label.
+        mapping_vector (dict): mapping of classes: VISDA -> Imagenet.
 
+    Returns:
+        pred_label_visda_tensor (long): Imagenet class label.
+    """
     pred_label_visda_tensor = mapping_vector[pred_label].long()
-
     return pred_label_visda_tensor
 
 
 def get_ambiguous_classes(matching_names):
+    """Renames ambiguous classes to their VISDA class names;
+    
+    Args:
+        matching_names (dict): Imagenet to VISDA class names.
 
-    # these are the ambiguous classes
-    ambiguous_classes = [
-        ["alarm_clock", "clock"],
-        ["baseball", "baseball_bat"],
-        ["bed", "couch"],
-        ["car", "police_car"],
-        ["coffee_cup", "cup", "mug"],
-        ["computer", "keyboard", "laptop"],
-        ["ice_cream", "lollipop", "popsicle"],
-        ["bus", "school_bus"],
-        ["truck", "pickup_truck", "firetruck", "van"],
-        ["bird", "swan"],
-        ["hot_tub", "bathtub"],
-        ["telephone", "cell_phone"],
-        ["ceiling_fan", "fan"],
-    ]
-
+    Returns:
+        matching_names (dict): Imagenet to VISDA class names.
+    """    
     ambiguous_matching = {}
 
     ambiguous_matching["telephone"] = "telephone"

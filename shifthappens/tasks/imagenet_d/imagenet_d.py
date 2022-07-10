@@ -24,15 +24,15 @@ from shifthappens.tasks.task_result import TaskResult
 
 
 @dataclasses.dataclass
-class ImageNetSingleCorruptionTypeBase(Task):
+class ImageNetDBase(Task):
     resource: Tuple[str, ...] = abstract_variable()
 
     max_batch_size: Optional[int] = None
 
     def setup(self):
+        """It build the mapping between Imangenet classes and VISDA dataset.
+        """
         folder_name, archive_name, url, md5 = self.resource
-
-        # self.data_root="examples/test_data/imagenet_d" # TODO Remove
 
         dataset_folder = os.path.join(self.data_root, folder_name)
         if not os.path.exists(dataset_folder):
@@ -62,11 +62,15 @@ class ImageNetSingleCorruptionTypeBase(Task):
         )
 
     def _prepare_dataloader(self) -> DataLoader:
+        """Builds the DatasetLoader object.
+        """
         return sh_data.DataLoader(
             self.images_only_dataset, max_batch_size=self.max_batch_size
         )
 
     def _evaluate(self, model: sh_models.Model) -> TaskResult:
+        """Evaluates the model on the Imagenet-D dataset.
+        """
         dataloader = self._prepare_dataloader()
 
         all_predicted_labels_list = []
@@ -75,6 +79,9 @@ class ImageNetSingleCorruptionTypeBase(Task):
         ):
             all_predicted_labels_list.append(predictions.class_labels)
         all_predicted_labels = np.concatenate(all_predicted_labels_list, 0)
+
+        if model.device == "cuda":
+            self.map_imagenet2visda = self.map_imagenet2visda.cuda()
 
         all_predicted_labels = self.map_imagenet2visda[all_predicted_labels]
 
@@ -93,7 +100,9 @@ class ImageNetSingleCorruptionTypeBase(Task):
     name="ImageNet-D (Clipart)", relative_data_folder="imagenet_d", standalone=True
 )
 @dataclasses.dataclass
-class ImageNetDClipart(ImageNetSingleCorruptionTypeBase):
+class ImageNetDClipart(ImageNetDBase):
+    """ Imagenet-D subset
+    """
     resource: Tuple[str, ...] = variable(
         (
             "clipart",
@@ -108,7 +117,9 @@ class ImageNetDClipart(ImageNetSingleCorruptionTypeBase):
     name="ImageNet-D (Infograph)", relative_data_folder="imagenet_d", standalone=True
 )
 @dataclasses.dataclass
-class ImageNetDInfograph(ImageNetSingleCorruptionTypeBase):
+class ImageNetDInfograph(ImageNetDBase):
+    """ Imagenet-D subset
+    """
     resource: Tuple[str, ...] = variable(
         (
             "infograph",
@@ -123,7 +134,9 @@ class ImageNetDInfograph(ImageNetSingleCorruptionTypeBase):
     name="ImageNet-D (Painting)", relative_data_folder="imagenet_d", standalone=True
 )
 @dataclasses.dataclass
-class ImageNetDPainting(ImageNetSingleCorruptionTypeBase):
+class ImageNetDPainting(ImageNetDBase):
+    """ Imagenet-D subset
+    """
     resource: Tuple[str, ...] = variable(
         (
             "painting",
@@ -138,7 +151,9 @@ class ImageNetDPainting(ImageNetSingleCorruptionTypeBase):
     name="ImageNet-D (Quickdraw)", relative_data_folder="imagenet_d", standalone=True
 )
 @dataclasses.dataclass
-class ImageNetDQuickdraw(ImageNetSingleCorruptionTypeBase):
+class ImageNetDQuickdraw(ImageNetDBase):
+    """ Imagenet-D subset
+    """
     resource: Tuple[str, ...] = variable(
         (
             "quickdraw",
@@ -153,7 +168,9 @@ class ImageNetDQuickdraw(ImageNetSingleCorruptionTypeBase):
     name="ImageNet-D (Real)", relative_data_folder="imagenet_d", standalone=True
 )
 @dataclasses.dataclass
-class ImageNetDReal(ImageNetSingleCorruptionTypeBase):
+class ImageNetDReal(ImageNetDBase):
+    """ Imagenet-D subset
+    """
     resource: Tuple[str, ...] = variable(
         (
             "real",
@@ -168,7 +185,9 @@ class ImageNetDReal(ImageNetSingleCorruptionTypeBase):
     name="ImageNet-D (Sketch)", relative_data_folder="imagenet_d", standalone=True
 )
 @dataclasses.dataclass
-class ImageNetDSketch(ImageNetSingleCorruptionTypeBase):
+class ImageNetDSketch(ImageNetDBase):
+    """ Imagenet-D subset
+    """
     resource: Tuple[str, ...] = variable(
         (
             "sketch",
