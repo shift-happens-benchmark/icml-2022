@@ -1,7 +1,10 @@
-"""
-Implementation of CCC: Continuously Changing Corruptions
-Note: This Task only implements the data reading portion of the dataset.
-In addition to this file, we submitted a file used to generate the data itself.
+"""CCC: Continuously Changing Corruptions
+
+.. note::
+
+    This task only implements the data reading portion of the dataset.
+    In addition to this file, we submitted a file used to generate the
+    data itself.
 """
 
 import dataclasses
