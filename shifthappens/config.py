@@ -11,12 +11,21 @@ class Config:
     """Global configuration for the benchmark.
 
     Config options can be edited by the following order:
-    1. By setting variables explicitly when getting the instance via get_config()
-    2. By setting an environment variable, prefixed as "SH_VARIABLE_NAME"
-    3. By relying on the default values defined in this class.
+        1. By setting variables explicitly when getting the instance via :py:func:`shifthappens.config.get_config`
+        2. By setting an environment variable, prefixed as "SH_VARIABLE_NAME"
+        3. By relying on the default values defined in this class.
     """
 
     __instance = None
+
+    #:The imagenet validation path.
+    imagenet_validation_path: str = "shifthappens/imagenet"
+
+    #: The caching directory for model results (either absolute or relative to working directory). If the folder does not exist, it will be created.
+    cache_directory_path: str = "shifthappens/cache"
+
+    #: Show additional log messages on stderr (like progress bars).
+    verbose: bool = False
 
     @classmethod
     def _reset_instance(cls):
@@ -36,13 +45,11 @@ class Config:
     @classmethod
     def get_instance(cls, **init_kwargs):
         """
-        Initializes config with provided arguments. If no arguments were provided,
-        config would be initialized with corresponding environment variables if
-        they exist. Otherwise, it will be initialized with default field values
-        defined in :py:class:`Config <shifthappens.config.Config>`.
+        Initializes config with provided arguments. If no arguments are provided,
+        a new config will be initialized.
+
         Args:
-            **init_kwargs: Values for initializing :py:class:`Config <shifthappens.config.Config>`
-         fields.
+            **init_kwargs: Values for initializing :py:class:`Config <shifthappens.config.Config>` fields.
 
         Returns:
             Initialized :py:class:`Config <shifthappens.config.Config>`.
@@ -59,15 +66,6 @@ class Config:
                 )
         return cls.__instance
 
-    #: The imagenet validation path.
-    imagenet_validation_path: str = "shifthappens/imagenet"
-
-    #: The caching directory for model results (either absolute or relative to working directory). If the folder does not exist, it will be created.
-    cache_directory_path: str = "shifthappens/cache"
-
-    #: Show additional log messages on stderr (like progress bars).
-    verbose: bool = False
-
     def __contains__(self, key):
         return key in self.__dict__
 
@@ -78,9 +76,9 @@ def get_config(**init_kwargs) -> Config:
     change defaults paths to ImageNet validation set, cached models result, etc.
     Note that reinitializing config will raise an error.
     For more details see :py:meth:`get_instance <shifthappens.config.Config.get_instance>`.
+
     Args:
-        **init_kwargs: Values for initializing :py:class:`Config <shifthappens.config.Config>`
-        fields.
+        **init_kwargs: Values for initializing :py:class:`Config <shifthappens.config.Config>` fields.
 
     Returns:
         Initialized :py:class:`Config <shifthappens.config.Config>`.
