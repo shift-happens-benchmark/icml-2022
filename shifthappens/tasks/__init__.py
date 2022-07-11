@@ -1,5 +1,5 @@
-from shifthappens.tasks import imagenet_c
-from shifthappens.tasks import imagenet_r
-from shifthappens.tasks import raccoons_ood
+from shifthappens.tasks import imagenet_c  # noqa: F401
+from shifthappens.tasks import imagenet_r  # noqa: F401
+from shifthappens.tasks import raccoons_ood  # noqa: F401
 
 from .base import Task  # noqa: F401
