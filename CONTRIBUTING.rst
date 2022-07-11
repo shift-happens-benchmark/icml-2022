@@ -17,6 +17,7 @@ obvious mistakes is by installing the `pre-commit <https://pre-commit.com/>`_ to
 running
 
 .. code:: 
+
     $ pre-commit
 
 before you commit and push your code.
