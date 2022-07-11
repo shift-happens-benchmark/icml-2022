@@ -3,6 +3,7 @@
 import os
 import six
 import lmdb
+import io
 
 import numpy as np
 from PIL import Image
@@ -146,9 +147,9 @@ class WalkLoader(data.Dataset):
         all_data = None
 
         while True:
-            path_split = self.walk_datasets[self.walk_ind].split('/')
-            noise_names = path_split[-2]
-            severities = path_split[-1]
+            temp_path = self.walk_datasets[self.walk_ind]
+            noise_names = os.path.normpath(os.path.basename(os.path.abspath(os.path.join(temp_path, os.pardir)))) # takes name of parent dir
+            severities = os.path.normpath(os.path.basename(temp_path)) # takes name of upper dir
 
             noises_split = noise_names.split('_')
             n1 = noises_split[1]
@@ -158,8 +159,7 @@ class WalkLoader(data.Dataset):
             s1 = float(severities_split[1][:-2])
             s2 = float(severities_split[2])
 
-            path = os.path.join(self.output_path, 'n1_' + str(n1) + '_n2_' + str(n2)) + '_s1_' + str(s1) + '_s2_' + str(
-                s2)
+            path = os.path.join(self.data_root, 'n1_' + str(n1) + '_n2_' + str(n2)) + '_s1_' + str(s1) + '_s2_' + str(s2)
             if not os.path.exists(path):
                 os.mkdir(path)
                 cur_data = ApplyTransforms(self.data_root, n1, n2, s1, s2, self.subset_size)
@@ -167,10 +167,10 @@ class WalkLoader(data.Dataset):
 
             remainder = self.frequency
             while remainder > 0:
-                cur_data = ImageFolderLMDB(db_path=path, transform=self.transform)
+                cur_data = ImageFolderLMDB(db_path=path, transform=None)
                 inds = np.random.permutation(len(cur_data))[:remainder]
                 cur_data = torch.utils.data.Subset(cur_data, inds)
-                remainder -= self.freq
+                remainder -= len(cur_data)
 
             if all_data is not None:
                 all_data = torch.utils.data.ConcatDataset([all_data, cur_data])
@@ -226,7 +226,7 @@ class ApplyTransforms(data.Dataset):
 
         target_list = []
         for cur_path in self.paths:
-            cur_class = cur_path.split('/')[-2]
+            cur_class = os.path.normpath(os.path.basename(os.path.abspath(os.path.join(cur_path, os.pardir)))) # takes name of parent dir
             cur_class = all_classes.index(cur_class)
             target_list.append(cur_class)
 
