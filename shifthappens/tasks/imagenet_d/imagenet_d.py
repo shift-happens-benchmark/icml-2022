@@ -3,6 +3,7 @@ import os
 from typing import Optional
 from typing import Tuple
 
+import map_classes
 import numpy as np
 import torch
 import torchvision.datasets as tv_datasets
@@ -11,7 +12,6 @@ import torchvision.transforms as tv_transforms
 import shifthappens.data.base as sh_data
 import shifthappens.data.torch as sh_data_torch
 import shifthappens.utils as sh_utils
-from examples.imagenet_d_helper import map_classes
 from shifthappens import benchmark as sh_benchmark
 from shifthappens.data.base import DataLoader
 from shifthappens.models import base as sh_models
@@ -25,16 +25,16 @@ from shifthappens.tasks.task_result import TaskResult
 
 @dataclasses.dataclass
 class ImageNetDBase(Task):
-    """ Base class for all Imagenet-D tasks. 
+    """Base class for all ImageNet-D tasks.
     There is a subclass for each subset of the dataset.
     """
+
     resource: Tuple[str, ...] = abstract_variable()
 
     max_batch_size: Optional[int] = None
 
     def setup(self):
-        """It build the mapping between Imangenet classes and VISDA dataset.
-        """
+        """It build the mapping between Imangenet classes and VISDA dataset."""
         folder_name, archive_name, url, md5 = self.resource
 
         dataset_folder = os.path.join(self.data_root, folder_name)
@@ -45,9 +45,11 @@ class ImageNetDBase(Task):
             )
 
         symlinks_folder = os.path.join(self.data_root, "visda_symlinks", folder_name)
-        _map = map_classes.build_map_dict()
-        self.map_imagenet2visda = map_classes.create_symlinks_and_get_imagenet_visda_mapping(
-            dataset_folder, symlinks_folder, _map
+        _map = map_classes.build_map_dict(self.data_root)
+        self.map_imagenet2visda = (
+            map_classes.create_symlinks_and_get_imagenet_visda_mapping(
+                dataset_folder, symlinks_folder, _map
+            )
         )
 
         test_transform = tv_transforms.Compose(
@@ -65,15 +67,13 @@ class ImageNetDBase(Task):
         )
 
     def _prepare_dataloader(self) -> DataLoader:
-        """Builds the DatasetLoader object.
-        """
+        """Builds the DatasetLoader object."""
         return sh_data.DataLoader(
             self.images_only_dataset, max_batch_size=self.max_batch_size
         )
 
     def _evaluate(self, model: sh_models.Model) -> TaskResult:
-        """Evaluates the model on the Imagenet-D dataset.
-        """
+        """Evaluates the model on the ImageNet-D dataset."""
         dataloader = self._prepare_dataloader()
 
         all_predicted_labels_list = []
@@ -82,20 +82,14 @@ class ImageNetDBase(Task):
         ):
             all_predicted_labels_list.append(predictions.class_labels)
         all_predicted_labels = np.concatenate(all_predicted_labels_list, 0)
-
-        if model.device == "cuda":
-            self.map_imagenet2visda = self.map_imagenet2visda.cuda()
-
         all_predicted_labels = self.map_imagenet2visda[all_predicted_labels]
 
         accuracy = torch.count_nonzero(
             all_predicted_labels.cpu() == torch.Tensor(self.ch_dataset.targets)
         ) / len(self.ch_dataset.targets)
 
-        print(f"Subset:{self.resource[0]}; Accuracy:{accuracy}")
-
         return TaskResult(
-            accuracy=accuracy, summary_metrics={Metric.Robustness: "accuracy"}
+            accuracy=accuracy.item(), summary_metrics={Metric.Robustness: "accuracy"}
         )
 
 
@@ -104,8 +98,8 @@ class ImageNetDBase(Task):
 )
 @dataclasses.dataclass
 class ImageNetDClipart(ImageNetDBase):
-    """ Imagenet-D subset
-    """
+    """ImageNet-D subset"""
+
     resource: Tuple[str, ...] = variable(
         (
             "clipart",
@@ -121,8 +115,8 @@ class ImageNetDClipart(ImageNetDBase):
 )
 @dataclasses.dataclass
 class ImageNetDInfograph(ImageNetDBase):
-    """ Imagenet-D subset
-    """
+    """ImageNet-D subset"""
+
     resource: Tuple[str, ...] = variable(
         (
             "infograph",
@@ -138,8 +132,8 @@ class ImageNetDInfograph(ImageNetDBase):
 )
 @dataclasses.dataclass
 class ImageNetDPainting(ImageNetDBase):
-    """ Imagenet-D subset
-    """
+    """ImageNet-D subset"""
+
     resource: Tuple[str, ...] = variable(
         (
             "painting",
@@ -155,8 +149,8 @@ class ImageNetDPainting(ImageNetDBase):
 )
 @dataclasses.dataclass
 class ImageNetDQuickdraw(ImageNetDBase):
-    """ Imagenet-D subset
-    """
+    """ImageNet-D subset"""
+
     resource: Tuple[str, ...] = variable(
         (
             "quickdraw",
@@ -172,8 +166,8 @@ class ImageNetDQuickdraw(ImageNetDBase):
 )
 @dataclasses.dataclass
 class ImageNetDReal(ImageNetDBase):
-    """ Imagenet-D subset
-    """
+    """ImageNet-D subset"""
+
     resource: Tuple[str, ...] = variable(
         (
             "real",
@@ -189,8 +183,8 @@ class ImageNetDReal(ImageNetDBase):
 )
 @dataclasses.dataclass
 class ImageNetDSketch(ImageNetDBase):
-    """ Imagenet-D subset
-    """
+    """ImageNet-D subset"""
+
     resource: Tuple[str, ...] = variable(
         (
             "sketch",
@@ -198,13 +192,4 @@ class ImageNetDSketch(ImageNetDBase):
             "http://csr.bu.edu/ftp/visda/2019/multi-source/sketch.zip",
             "658d8009644040ff7ce30bb2e820850f",
         )
-    )
-
-
-if __name__ == "__main__":
-    from shifthappens.models.torchvision import ResNet50
-
-    result = sh_benchmark.evaluate_model(
-        ResNet50(device="cuda", max_batch_size=512),
-        "/mnt/qb/work2/bethge0/gpachitariu37/datasets/test_data",
     )
