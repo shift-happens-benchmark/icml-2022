@@ -36,7 +36,7 @@ class ImageNetR(Task):
         (
             "imagenet-r.tar",
             "https://people.eecs.berkeley.edu/~hendrycks/imagenet-r.tar",
-            "A61312130A589D0CA1A8FCA1F2BD3337",
+            "a61312130a589d0ca1a8fca1f2bd3337",
         )
     ]
 
@@ -48,7 +48,7 @@ class ImageNetR(Task):
             # download data
             for file_name, url, md5 in self.resources:
                 sh_utils.download_and_extract_archive(
-                    url, self.data_root, None, file_name
+                    url, self.data_root, md5, file_name
                 )
 
         test_transform = tv_transforms.Compose(
