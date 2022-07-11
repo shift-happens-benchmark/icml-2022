@@ -1,4 +1,3 @@
-
 Example for a Shift Happens task on Raccoons dataset
 ====================================================
 This task aims to evaluate models' out-of-distribution (OOD) detection on 200 raccoon images.
