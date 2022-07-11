@@ -395,9 +395,3 @@ class ImageNetCSeparateCorruptions(Task):
             mce=np.mean(mces).item(),
             summary_metrics={Metric.Robustness: "accuracy"},
         )
-
-
-if __name__ == "__main__":
-    from shifthappens.models.torchvision import ResNet18
-
-    sh_benchmark.evaluate_model(ResNet18(device="cpu", max_batch_size=128), "test_data")

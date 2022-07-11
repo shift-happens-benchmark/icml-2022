@@ -38,7 +38,7 @@ class ImageNetR(Task):
             # download data
             for file_name, url, md5 in self.resources:
                 sh_utils.download_and_extract_archive(
-                    url, self.data_root, md5, file_name
+                    url, self.data_root, None, file_name
                 )
 
         test_transform = tv_transforms.Compose(
@@ -73,9 +73,3 @@ class ImageNetR(Task):
         return TaskResult(
             accuracy=accuracy, summary_metrics={Metric.Robustness: "accuracy"}
         )
-
-
-if __name__ == "__main__":
-    from shifthappens.models.torchvision import ResNet18
-
-    sh_benchmark.evaluate_model(ResNet18(device="cpu", max_batch_size=128), "data")
