@@ -44,7 +44,32 @@ def load_npy_as_dict(path):
 )
 @dataclasses.dataclass
 class ImageNetM(Task):
+    """Task definition for ImageNet-M, major mistakes eval subset.
+
+    This task evaluates a model on a small slice of the ImageNet
+    validation set.  The set has been additionally labeled with
+    multiple labels from the ImageNet label set by expert labelers.
+    The examples themselves are those where multiple high-performing
+    models in 2022 have yielded incorrect predictions where the
+    prediction was considered a "major" mistake.  
+    
+    The goal of this evaluation task is to measure a model's ability
+    to avoid making obvious mistakes; in theory, models should be
+    capable of scoring near 100% on this evaluation, in addition to
+    high performance on other image classification benchmarks.
+    See the citation file for more information about how the dataset 
+    was constructed.
+
+    This task uses a multi-label evaluation approach: if the top
+    prediction from the model is found in the set of correct
+    or unclear labels for each example, the prediction is considered
+    correct.
+
+    The metric computes the total correct / percentage of correctly
+    classified multi-label examples.
+    """
     def setup(self):
+        """Downloads and initializes metadata for evaluation."""
         dataset_folder = os.path.join(self.data_root, "imagenet-m")
         print("Downloading to ", dataset_folder)
         tv_utils.download_url(
@@ -125,6 +150,7 @@ class ImageNetM(Task):
                 self._filename_to_pred_index[im_filename] = i
 
     def _evaluate(self, model: sh_models.Model) -> TaskResult:
+        """Computes multi-label accuracy on ImageNet-M slice."""
         # Get imagenet validation results for the model.
         imagenet_val_data = model.imagenet_validation_result
 
@@ -152,12 +178,3 @@ class ImageNetM(Task):
             accuracy=correct / len(self._imagenet_m_2022),
             summary_metrics={Metric.Robustness: "accuracy"},
         )
-
-
-if __name__ == "__main__":
-    from shifthappens.models.torchvision import ResNet18
-
-    result = sh_benchmark.evaluate_model(
-        ResNet18(device="cpu", max_batch_size=128), "data"
-    )
-    print("ImageNet-M accuracy: ", list(result.values())[0]._metrics["accuracy"])
