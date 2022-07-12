@@ -69,7 +69,7 @@ jobs:
       run: |
         #RESULT=$(git diff --name-only origin/main | grep .py$ | xargs interrogate -f 0 -v)
         git diff --name-only origin/main | grep .py$ | xargs interrogate -f 0 -v > output.tmp
-        RESULT=$(echo output.tmp)
+        RESULT=$(cat output.tmp)
         #RESULT=$(echo $RESULT | sed -e 's/^-\+ \(RESULT[^\-]*\) -*/\1/g' | grep -v Summary | grep -v "Coverage for" )
         #RESULT=$(tail -n +2 <<< $RESULT)
         RESULT="${RESULT//'%'/'%25'}"
