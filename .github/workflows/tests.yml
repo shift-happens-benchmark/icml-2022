@@ -68,7 +68,7 @@ jobs:
       id: documentation
       run: |
         RESULT=$(git diff --name-only origin/main | grep .py$ | xargs interrogate -f 0 -v)
-        RESULT=$(tail -n +2 <<< $RESULT)
+        RESULT=$(tail -n +3 <<< $RESULT)
         STATUS=$(tail -n1 <<< $RESULT)
         STATUS=$(sed 's/-//g' <<< $STATUS)
         # trim
