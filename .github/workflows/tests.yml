@@ -79,7 +79,7 @@ jobs:
         RESULTB=$(tail -n1 <<< $RESULT)
         NL=$'\n'
         RESULT="$RESULTA${NL}$RESULTB"
-        RESULT="$RESULT${NL}${NL}$STATUS"
+        RESULT="$RESULT${NL}||||||${NL}$STATUS"
         RESULT="${RESULT//'%'/'%25'}"
         RESULT="${RESULT//$'\n'/'%0A'}"
         RESULT="${RESULT//$'\r'/'%0D'}"
