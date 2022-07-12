@@ -24,7 +24,7 @@ from shifthappens.tasks.task_result import TaskResult
 
 
 @dataclasses.dataclass
-class ImageNetDBase(Task):
+class _ImageNetDBase(Task):
     """Base class for all ImageNet-D tasks.
     There is a subclass for each subset of the dataset.
     """
@@ -97,7 +97,7 @@ class ImageNetDBase(Task):
     name="ImageNet-D (Clipart)", relative_data_folder="imagenet_d", standalone=True
 )
 @dataclasses.dataclass
-class ImageNetDClipart(ImageNetDBase):
+class ImageNetDClipart(_ImageNetDBase):
     """ImageNet-D subset"""
 
     resource: Tuple[str, ...] = variable(
@@ -114,7 +114,7 @@ class ImageNetDClipart(ImageNetDBase):
     name="ImageNet-D (Infograph)", relative_data_folder="imagenet_d", standalone=True
 )
 @dataclasses.dataclass
-class ImageNetDInfograph(ImageNetDBase):
+class ImageNetDInfograph(_ImageNetDBase):
     """ImageNet-D subset"""
 
     resource: Tuple[str, ...] = variable(
@@ -131,7 +131,7 @@ class ImageNetDInfograph(ImageNetDBase):
     name="ImageNet-D (Painting)", relative_data_folder="imagenet_d", standalone=True
 )
 @dataclasses.dataclass
-class ImageNetDPainting(ImageNetDBase):
+class ImageNetDPainting(_ImageNetDBase):
     """ImageNet-D subset"""
 
     resource: Tuple[str, ...] = variable(
@@ -148,7 +148,7 @@ class ImageNetDPainting(ImageNetDBase):
     name="ImageNet-D (Quickdraw)", relative_data_folder="imagenet_d", standalone=True
 )
 @dataclasses.dataclass
-class ImageNetDQuickdraw(ImageNetDBase):
+class ImageNetDQuickdraw(_ImageNetDBase):
     """ImageNet-D subset"""
 
     resource: Tuple[str, ...] = variable(
@@ -165,7 +165,7 @@ class ImageNetDQuickdraw(ImageNetDBase):
     name="ImageNet-D (Real)", relative_data_folder="imagenet_d", standalone=True
 )
 @dataclasses.dataclass
-class ImageNetDReal(ImageNetDBase):
+class ImageNetDReal(_ImageNetDBase):
     """ImageNet-D subset"""
 
     resource: Tuple[str, ...] = variable(
@@ -182,7 +182,7 @@ class ImageNetDReal(ImageNetDBase):
     name="ImageNet-D (Sketch)", relative_data_folder="imagenet_d", standalone=True
 )
 @dataclasses.dataclass
-class ImageNetDSketch(ImageNetDBase):
+class ImageNetDSketch(_ImageNetDBase):
     """ImageNet-D subset"""
 
     resource: Tuple[str, ...] = variable(
