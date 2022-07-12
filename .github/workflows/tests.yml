@@ -68,13 +68,17 @@ jobs:
       id: documentation
       run: |
         RESULT=$(git diff --name-only origin/main | grep .py$ | xargs interrogate -f 0 -v)
-        #RESULT=$(echo $RESULT | sed -e 's/^-\+ \(RESULT[^\-]*\) -*/\1/g' | grep -v Summary | grep -v "Coverage for" )
         RESULT=$(tail -n +2 <<< $RESULT)
         STATUS=$(tail -n1 <<< $RESULT)
         STATUS=$(sed 's/-//g' <<< $STATUS)
-        RESULT=$(head -n -2 <<< $RESULT)
-        RESULT=$(tail -n 1 <<< $RESULT)
-        RESULT="$RESULT \n $STATUS"
+        RESULT=$(head -n -1 <<< $RESULT)
+        # remove second to last line
+        RESULTA=$(head -n -2 <<< $RESULT)
+        RESULTB=$(tail -n1 <<< $RESULT)
+        NL=$'\n'
+        RESULT="$RESULTA ${NL} $RESULTB"
+
+        RESULT="printf $RESULT \n $STATUS"
         RESULT="${RESULT//'%'/'%25'}"
         RESULT="${RESULT//$'\n'/'%0A'}"
         RESULT="${RESULT//$'\r'/'%0D'}"
