@@ -1,3 +1,24 @@
+[tool.interrogate]
+ignore-init-method = true
+ignore-init-module = false
+ignore-magic = true
+ignore-semiprivate = true
+ignore-private = true
+ignore-property-decorators = false
+ignore-module = false
+ignore-nested-functions = true
+ignore-nested-classes = false
+ignore-setters = false
+fail-under = 95
+exclude = ["docs", "tests"]
+ignore-regex = ["^get$", "^mock_.*", ".*BaseClass.*"]
+# possible values: 0 (minimal output), 1 (-v), 2 (-vv)
+verbose = 1
+quiet = false
+whitelist-regex = []
+color = true
+omit-covered-files = false
+
 [build-system]
 requires = [
     "setuptools>=42",
