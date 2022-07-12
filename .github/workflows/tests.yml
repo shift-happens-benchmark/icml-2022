@@ -71,7 +71,7 @@ jobs:
         #RESULT=$(echo $RESULT | sed -e 's/^-\+ \(RESULT[^\-]*\) -*/\1/g' | grep -v Summary | grep -v "Coverage for" )
         RESULT=$(tail -n +2 <<< $RESULT)
         STATUS=$(tail -n1 <<< $RESULT)
-        STATUS=$(sed 's/-//g' <<< $RESULT)
+        STATUS=$(sed 's/-//g' <<< $STATUS)
         RESULT=$(head -n -2 <<< $RESULT)
         RESULT=$(tail -n 1 <<< $RESULT)
         RESULT="$RESULT \n $STATUS"
