@@ -76,9 +76,8 @@ jobs:
         RESULTA=$(head -n -2 <<< $RESULT)
         RESULTB=$(tail -n1 <<< $RESULT)
         NL=$'\n'
-        RESULT="$RESULTA ${NL} $RESULTB"
-
-        RESULT="printf $RESULT \n $STATUS"
+        RESULT="$RESULTA${NL}$RESULTB"
+        RESULT="$RESULT${NL}$STATUS"
         RESULT="${RESULT//'%'/'%25'}"
         RESULT="${RESULT//$'\n'/'%0A'}"
         RESULT="${RESULT//$'\r'/'%0D'}"
