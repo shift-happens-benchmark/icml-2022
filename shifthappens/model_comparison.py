@@ -13,6 +13,7 @@ class ScoreCard:
         relative_performance: A dict where the keys are `shifthappens.tasks.metrics.Metric`
             items and the values are the average quantile of the model's performance.
     """
+
     def __init__(self, relative_performance: Dict[Metric, float]):
         self.relative_performance = relative_performance
 
