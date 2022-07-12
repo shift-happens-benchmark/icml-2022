@@ -67,13 +67,13 @@ jobs:
     - name: documentation
       id: documentation
       run: |
-        git diff --name-only origin/main | grep .py$ | xargs interrogate -f 0 -v 
+        echo "::set-output name=log::'$(git diff --name-only origin/main | grep .py$ | xargs interrogate -f 0 -v)'"
     - name: comment result on PR
       uses: thollander/actions-comment-pull-request@v1
       with:
         message: |
           Test and Coverage Report:
-          ${{ steps.documentation.outputs }}
+          ${{ steps.documentation.outputs.log }}
         comment_includes: 'Test and Coverage Report'
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
     - name: Install package
