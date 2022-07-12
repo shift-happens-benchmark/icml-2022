@@ -67,13 +67,18 @@ jobs:
     - name: documentation
       id: documentation
       run: |
-        echo "::set-output name=log::'$(git diff --name-only origin/main | grep .py$ | xargs interrogate -f 0 -v)'"
+        RESULT=$(git diff --name-only origin/main | grep .py$ | xargs interrogate -f 0 -v)
+        RESULT=$(tail -n +2 <<< $RESULT)
+        RESULT="${RESULT//'%'/'%25'}"
+        RESULT="${RESULT//$'\n'/'%0A'}"
+        RESULT="${RESULT//$'\r'/'%0D'}"
+        echo "::set-output name=result::$RESULT"
     - name: comment result on PR
       uses: thollander/actions-comment-pull-request@v1
       with:
         message: |
           Test and Coverage Report:
-          ${{ steps.documentation.outputs.log }}
+          ${{ steps.documentation.outputs.result }}
         comment_includes: 'Test and Coverage Report'
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
     - name: Install package
