@@ -86,9 +86,9 @@ jobs:
       uses: thollander/actions-comment-pull-request@v1
       with:
         message: |
-          Test and Coverage Report:
+          ## Docstring Coverage Report
           ${{ steps.documentation.outputs.result }}
-        comment_includes: 'Test and Coverage Report'
+        comment_includes: '## Docstring Coverage Report'
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
     - name: Install package
       run: |
