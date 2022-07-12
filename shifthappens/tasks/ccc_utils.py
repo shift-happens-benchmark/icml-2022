@@ -113,9 +113,6 @@ class WalkLoader(data.Dataset):
             noise1, noise2 = noise_list[i]
             if noise1 == noise2:
                 continue
-            noise1 = noise1.lower().replace(" ", "_")
-            noise2 = noise2.lower().replace(" ", "_")
-
             current_accuracy_matrix = accuracy_matrix["n1_" + noise1 + "_n2_" + noise2]
             walk = find_path(current_accuracy_matrix, self.accuracy)
 
@@ -124,8 +121,6 @@ class WalkLoader(data.Dataset):
 
         keys = list(accuracy_dict.keys())
         cur_noises = random.choice(keys)
-        noise1 = cur_noises[0].lower().replace(" ", "_")
-        noise2 = cur_noises[1].lower().replace(" ", "_")
 
         walk = walk_dict[cur_noises]
         data_path = os.path.join(self.data_root, "n1_" + noise1 + "_n2_" + noise2)
@@ -148,12 +143,9 @@ class WalkLoader(data.Dataset):
 
         while True:
             temp_path = self.walk_datasets[self.walk_ind]
-            noise_names = os.path.normpath(os.path.basename(os.path.abspath(os.path.join(temp_path, os.pardir)))) # takes name of parent dir
             severities = os.path.normpath(os.path.basename(temp_path)) # takes name of upper dir
-
-            noises_split = noise_names.split('_')
-            n1 = noises_split[1]
-            n2 = noises_split[3]
+            n1 = self.noise1
+            n2 = self.noise2
 
             severities_split = severities.split('_')
             s1 = float(severities_split[1][:-2])
@@ -162,6 +154,8 @@ class WalkLoader(data.Dataset):
             path = os.path.join(self.data_root, 'n1_' + str(n1) + '_n2_' + str(n2)) + '_s1_' + str(s1) + '_s2_' + str(s2)
             if not os.path.exists(path):
                 os.mkdir(path)
+
+            if not (os.path.exists(os.path.join(path, 'lock.mdb')) and os.path.exists(os.path.join(path, 'data.mdb'))):
                 cur_data = ApplyTransforms(self.data_root, n1, n2, s1, s2, self.subset_size)
                 dset2lmdb(cur_data, path)
 
@@ -193,7 +187,6 @@ class WalkLoader(data.Dataset):
                 else:
                     while self.noise1 == self.noise2:
                         self.noise2 = random.choice(self.single_noises)
-                        self.noise2 = self.noise2.lower().replace(" ", "_")
 
                 self.walk = self.walk_dict[(self.noise1, self.noise2)]
                 data_path = os.path.join(self.data_root, "n1_" + self.noise1 + "_n2_" + self.noise2)

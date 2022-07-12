@@ -47,7 +47,7 @@ class CCC(Task):
     )
 
     def setup(self):
-        self.loader = WalkLoader(os.path.join(self.data_root, "ccc"), './ccc_accuracy_matrix.pickle',
+        self.loader = WalkLoader(self.data_root, './ccc_accuracy_matrix.pickle',
                                  self.seed, self.frequency, self.base_amount, self.accuracy, self.subset_size)
 
     def _prepare_dataloader(self) -> DataLoader:
