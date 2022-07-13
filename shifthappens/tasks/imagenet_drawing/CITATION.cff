@@ -1,0 +1,27 @@
+cff-version: 1.2.0
+message: "If you use this dataset, please cite it as below."
+authors:
+- family-names: "Salvador"
+  given-names: "Tiago"
+  orcid: "https://orcid.org/0000-0001-9673-0347"
+- family-names: "M. Oberman"
+  given-names: "Adam"
+  orcid: "https://orcid.org/0000-0002-4214-7364"
+title: "ImageNet-Cartoon and ImageNet-Drawing: Two domain shift datasets for ImageNet"
+version: 1.0.0
+doi: 10.5281/zenodo.6801109
+date-released: 2022-7-8
+url: "https://github.com/oberman-lab/imagenet-shift"
+preferred-citation:
+  type: conference-paper
+  authors:
+  - family-names: "Salvador"
+    given-names: "Tiago"
+    orcid: "https://orcid.org/0000-0001-9673-0347"
+  - family-names: "M. Oberman"
+    given-names: "Adam"
+    orcid: "https://orcid.org/0000-0002-4214-7364"
+  title: "ImageNet-Cartoon and ImageNet-Drawing: two domain shift datasets for ImageNet"
+  booktile: "ICML Workshop on Shift happens: Crowdsourcing metrics and test datasets beyond ImageNet."
+  year: 2022
+  
