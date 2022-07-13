@@ -24,6 +24,16 @@ from shifthappens.tasks.task_result import TaskResult
 )
 @dataclasses.dataclass
 class ImageNetCartoon(Task):
+    """ImageNet-Cartoon Dataset.
+    This task evaluates a model on ImageNet-Cartoon. This 
+    dataset was formed by converting the images in the
+    ImageNet validation set into cartoons using a GAN
+    framework. See the readme file for more information
+    about how the dataset was constructed.
+    
+    The goal of this evaluation task is to measure the
+    model's robustness to distribution shifts.
+    """
     resources = [
         (
             "imagenet-cartoon.tar.gz",
@@ -33,6 +43,7 @@ class ImageNetCartoon(Task):
     ]
 
     def setup(self):
+        """Setup ImageNet-Cartoon"""
         dataset_folder = os.path.join(self.data_root, "imagenet-cartoon")
         if not os.path.exists(dataset_folder):
             # download data
@@ -56,9 +67,11 @@ class ImageNetCartoon(Task):
         )
 
     def _prepare_dataloader(self) -> DataLoader:
+        """Builds the DatasetLoader object."""
         return sh_data.DataLoader(self.images_only_dataset, max_batch_size=None)
 
     def _evaluate(self, model: sh_models.Model) -> TaskResult:
+        """Evaluates the model on the ImageNet-Cartoon dataset."""
         dataloader = self._prepare_dataloader()
 
         all_predicted_labels_list = []
