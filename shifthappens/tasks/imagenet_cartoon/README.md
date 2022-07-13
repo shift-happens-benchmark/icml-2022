@@ -1,11 +1,11 @@
 ## Task Description
-ImageNet-Cartoon: a dataset to benchmark the robustness of ImageNet models against domain shifts.
+ImageNet-Drawing: a dataset to benchmark the robustness of ImageNet models against domain shifts.
 
 ## Dataset Creation
-Images are taken from the ImageNet dataset and then transformed into cartoons using the GAN framework proposed by [1].
+Images are taken from the ImageNet dataset and then transformed into drawings using the simple image processing described in [1].
 
-[1] Wang, X. and Yu, J. Learning to cartoonize using white-box cartoon representations. In _Proceedings of the IEEE/CVF
-Conference on Computer Vision and Pattern Recognition (CVPR)_, June 2020.
+[1] Lu, C., Xu, L., and Jia, J. Combining Sketch and Tone for Pencil Drawing Production. In Asente, P. and Grimm, C.
+(eds.), _International Symposium on Non-Photorealistic Animation and Rendering_. The Eurographics Association, 2012. ISBN 978-3-905673-90-6. doi: 10.2312/PE/NPAR/NPAR12/065-073.
 
 ## Evaluation Metrics
 Robust accuracy: correct classification of the transformed images.
