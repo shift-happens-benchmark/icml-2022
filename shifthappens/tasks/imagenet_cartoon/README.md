@@ -1,8 +1,5 @@
-# Task Description
+## Task Description
 ImageNet-Cartoon: a dataset to benchmark the robustness of ImageNet models against domain shifts.
-
-<img width="1029" alt="examples" src="https://user-images.githubusercontent.com/38894497/178097450-8b888907-d2b9-46f0-bfb7-c99700a92b1e.png">
-Several examples of ImageNet images (top) and their respective ImageNet-Cartoon (middle) and ImageNetDrawing (bottom) versions.
 
 ## Dataset Creation
 Images are taken from the ImageNet dataset and then transformed into cartoons using the GAN framework proposed by [1].
