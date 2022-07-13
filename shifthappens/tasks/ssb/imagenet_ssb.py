@@ -5,22 +5,58 @@ import os
 import pickle
 from copy import deepcopy
 
+from torch.utils.data import Dataset
+from torchvision.datasets.folder import default_loader
 
-class ImageNetBase(torchvision.datasets.ImageFolder):
+# class ImageNetBase(torchvision.datasets.ImageFolder):
+#
+#     def __init__(self, root, transform):
+#
+#         super(ImageNetBase, self).__init__(root, transform)
+#
+#         self.uq_idxs = np.array(range(len(self)))
+#
+#     def __getitem__(self, item):
+#
+#         img, label = super().__getitem__(item)
+#         uq_idx = self.uq_idxs[item]
+#
+#         return img, label, uq_idx
 
-    def __init__(self, root, transform):
+class ImageNetSubsetDataset(Dataset):
 
-        super(ImageNetBase, self).__init__(root, transform)
+    def __init__(self, root, classes_to_keep, transform):
 
-        self.uq_idxs = np.array(range(len(self)))
+        self.root = root
+        self.classes = classes_to_keep
+        self.transform = transform
+
+        # List all samples
+        root_dirs = [os.path.join(root, c) for c in self.classes]
+
+        samples = []
+        labels = []
+
+        for r, c in zip(root_dirs, self.classes):
+            files = os.listdir(r)
+            samples.extend([os.path.join(r, f) for f in files])
+            labels.extend([c] * len(files))
+
+        self.labels = labels
+        self.samples = samples
+
+    def __len__(self):
+        return len(self.samples)
 
     def __getitem__(self, item):
 
-        img, label = super().__getitem__(item)
-        uq_idx = self.uq_idxs[item]
+        path = self.samples[item]
+        image = default_loader(path)
+        image = self.transform(image)
 
-        return img, label, uq_idx
+        cls = self.labels[item]
 
+        return image, cls
 
 def pad_to_longest(list1, list2):
 
@@ -125,19 +161,20 @@ def get_equal_len_datasets(dataset1, dataset2):
     return dataset1, dataset2
 
 
-def get_imagenet_ssb_dataset(test_transform, imagenet21k_root, osr_split_path,
-                           osr_split='Easy'):
+def get_imagenet_ssb_datasets(test_transform, imagenet21k_root, osr_split_path):
 
-    print('No validation split option for ImageNet dataset...')
-    print('ImageNet datasets use hardcoded OSR splits...')
+    print('Loading ImageNet21K SSB Val Sets...')
 
-    print('Loading ImageNet21K Val...')
-    # Get testset for unknown classes
-    test_dataset_unknown = ImageNetBase(root=os.path.join(imagenet21k_root, 'val'), transform=test_transform)
-    # Select which classes are open set
-    open_set_classes = get_imagenet_osr_class_splits(test_dataset_unknown.class_to_idx,
-                                                     osr_split=osr_split, precomputed_split_dir=osr_split_path)
+    # Load splits
+    with open(osr_split_path, 'rb') as handle:
+        precomputed_info = pickle.load(handle)
 
-    test_dataset_unknown = subsample_classes(test_dataset_unknown, include_classes=open_set_classes)
+    easy_wnids = precomputed_info['easy_i21k_classes']
+    hard_wnids = precomputed_info['hard_i21k_classes']
 
-    return test_dataset_unknown
+    easy_ssb_set = ImageNetSubsetDataset(root=os.path.join(imagenet21k_root, 'val'), classes_to_keep=easy_wnids,
+                                         transform=test_transform)
+    hard_ssb_set = ImageNetSubsetDataset(root=os.path.join(imagenet21k_root, 'val'), classes_to_keep=hard_wnids,
+                                         transform=test_transform)
+
+    return easy_ssb_set, hard_ssb_set

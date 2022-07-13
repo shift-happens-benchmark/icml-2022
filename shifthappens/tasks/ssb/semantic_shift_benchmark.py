@@ -10,9 +10,9 @@ and can be found at https://github.com/datitran/raccoon_dataset.
 """
 import dataclasses
 import os
+import pickle
 
 import numpy as np
-import torchvision.datasets as tv_datasets
 import torchvision.transforms as tv_transforms
 import torch
 
@@ -20,7 +20,6 @@ import shifthappens.data.base as sh_data
 import shifthappens.data.torch as sh_data_torch
 import shifthappens.utils as sh_utils
 from shifthappens import benchmark as sh_benchmark
-from shifthappens.data import imagenet as sh_imagenet
 from shifthappens.models import base as sh_models
 from shifthappens.models.base import PredictionTargets
 from shifthappens.tasks.base import Task
@@ -29,27 +28,38 @@ from shifthappens.tasks.mixins import OODScoreTaskMixin
 from shifthappens.tasks.task_result import TaskResult
 from shifthappens.tasks.utils import auroc_ood
 from shifthappens.tasks.utils import fpr_at_tpr
-from shifthappens.tasks.ssb.imagenet_ssb import get_imagenet_ssb_dataset
+from shifthappens.tasks.ssb.imagenet_ssb import get_imagenet_ssb_datasets
+from shifthappens.tasks.ssb import osr_split_path
+
+from typing import Tuple
 
 @sh_benchmark.register_task(
     name="SSB", relative_data_folder="ssb", standalone=True
 )
 @dataclasses.dataclass
 class SSB(Task, OODScoreTaskMixin):
+
     resource = (
-        "imagenet_21k_p",
-        "raccoons.tar.gz",
-        "https://nc.mlcloud.uni-tuebingen.de/index.php/s/JrSQeRgXfw28crC/download/raccoons.tar.gz",
+        "imagenet21k_resized_new",
+        osr_split_path,
+        None,
         None,
     )
+    dataset_out_easy: sh_data_torch.IndexedTorchDataset
+    dataset_out_hard: sh_data_torch.IndexedTorchDataset
 
     max_batch_size: int = 256
 
     def setup(self):
-        imagenet_21k_root, ssb_split_path, url, md5 = self.resource
-        dataset_folder = os.path.join(self.data_root, folder_name)
-        if not os.path.exists(dataset_folder):
-            sh_utils.download_and_extract_archive(url, dataset_folder, md5, file_name)
+
+        imagenet_21k_dir_name, ssb_split_path, url, md5 = self.resource
+        imagenet_21k_root = os.path.join(self.data_root, imagenet_21k_dir_name)
+
+        # Ensure data is downloaded
+        assert (
+            self.assert_data_downloaded(imagenet_21k_root)
+        ), 'ImageNet-21K data not downloaded, please download and process according to:' \
+           ' https://github.com/Alibaba-MIIL/ImageNet21K/blob/main/dataset_preprocessing/processing_script.sh'
 
         mean = (0.485, 0.456, 0.406)
         std = (0.229, 0.224, 0.225)
@@ -63,35 +73,42 @@ class SSB(Task, OODScoreTaskMixin):
                 std=torch.tensor(std))
         ])
 
-        dataset_out = get_imagenet_ssb_dataset(imagenet21k_root=imagenet_21k_root, osr_split_path=ssb_split_path,
-                                               test_transform=test_transform)
+        dataset_out_easy, dataset_out_hard = get_imagenet_ssb_datasets(imagenet21k_root=imagenet_21k_root,
+                                                                        osr_split_path=ssb_split_path,
+                                                                        test_transform=test_transform)
 
-        self.images_only_dataset_out = sh_data_torch.IndexedTorchDataset(
-            sh_data_torch.ImagesOnlyTorchDataset(dataset_out)
+        self.dataset_out_easy = sh_data_torch.IndexedTorchDataset(
+            sh_data_torch.ImagesOnlyTorchDataset(dataset_out_easy)
+        )
+
+        self.dataset_out_hard = sh_data_torch.IndexedTorchDataset(
+            sh_data_torch.ImagesOnlyTorchDataset(dataset_out_hard)
         )
 
     def _prepare_dataloader(self):
-        dataloader_out = sh_data.DataLoader(
-            self.images_only_dataset_out, max_batch_size=self.max_batch_size
+        dataloader_out_easy = sh_data.DataLoader(
+            self.dataset_out_easy, max_batch_size=self.max_batch_size
         )
-        return dataloader_out
 
-    def _evaluate(self, model: sh_models.Model) -> TaskResult:
-        dataloader_out = self._prepare_dataloader()
+        dataloader_out_hard = sh_data.DataLoader(
+            self.dataset_out_hard, max_batch_size=self.max_batch_size
+        )
+
+        return dataloader_out_easy, dataloader_out_hard
+
+    @staticmethod
+    def _evaluate_single_split(model: sh_models.Model, dataloader: sh_data.DataLoader) -> TaskResult:
 
         ood_scores_out_list = []
         for predictions_out in model.predict(
-            dataloader_out, PredictionTargets(ood_scores=True)
+                dataloader, PredictionTargets(ood_scores=True)
         ):
             assert (
-                predictions_out.ood_scores is not None
+                    predictions_out.ood_scores is not None
             ), "OOD scores for SSB task is None"
             ood_scores_out_list.append(predictions_out.ood_scores)
         ood_scores_out = np.hstack(ood_scores_out_list)
-        accuracy = np.equal(
-            model.imagenet_validation_result.class_labels,
-            np.array(sh_imagenet.load_imagenet_targets()),
-        ).mean()  # remove for pure OOD detection
+
         auroc = auroc_ood(
             np.array(model.imagenet_validation_result.ood_scores), ood_scores_out
         )
@@ -99,14 +116,42 @@ class SSB(Task, OODScoreTaskMixin):
             np.array(model.imagenet_validation_result.ood_scores), ood_scores_out, 0.95
         )
         return TaskResult(
-            accuracy=accuracy,
             auroc=auroc,
             fpr_at_95=fpr_at_95,
             summary_metrics={
                 Metric.OODDetection: ("auroc", "fpr_at_95"),
-                Metric.Robustness: "accuracy",  # remove for pure OOD detection
             },
         )
+
+    def _evaluate(self, model: sh_models.Model) -> Tuple[TaskResult, TaskResult]:
+
+        dataloader_out_easy, dataloader_out_hard = self._prepare_dataloader()
+        result_easy = self._evaluate_single_split(model, dataloader_out_easy)
+        result_hard = self._evaluate_single_split(model, dataloader_out_hard)
+
+        return result_easy, result_hard
+
+    @staticmethod
+    def assert_data_downloaded(imagenet21k_root):
+
+        try:
+
+            # Load splits
+            with open(osr_split_path, 'rb') as handle:
+                precomputed_info = pickle.load(handle)
+
+            easy_wnids = precomputed_info['easy_i21k_classes']
+            hard_wnids = precomputed_info['hard_i21k_classes']
+            all_wnids = easy_wnids.tolist() + hard_wnids
+
+            dataset_folder = os.path.join(imagenet21k_root, 'val')
+            paths = os.listdir(dataset_folder)
+
+            return all([x in paths for x in all_wnids])
+
+        except:
+
+            return False
 
 
 if __name__ == "__main__":
