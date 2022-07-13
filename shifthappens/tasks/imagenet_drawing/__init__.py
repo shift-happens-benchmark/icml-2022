@@ -1,6 +1,4 @@
-"""
-Python package for Imagenet-Drawing dataset.
-"""
+"""Shift Happens task: ImageNet-Drawing"""
 
 import dataclasses
 import os
@@ -26,7 +24,16 @@ from shifthappens.tasks.task_result import TaskResult
 )
 @dataclasses.dataclass
 class ImageNetDrawing(Task):
-    """ImageNet-Drawing task."""
+    """ImageNet-Drawing Dataset.
+    This task evaluates a model on ImageNet-Drawing. This 
+    dataset was formed by converting the images in the
+    ImageNet validation set into colored pencil drawings
+    using simple image processing. See the readme file for
+    more information about how the dataset was constructed.
+    
+    The goal of this evaluation task is to measure the
+    model's robustness to distribution shifts.
+    """
     resources = [
         (
             "imagenet-drawing.tar.gz",
