@@ -43,6 +43,7 @@ _VARIANT_EXPANDED_DIR_NAMES = {
 
 class SISCOREImageFolder(tv_datasets.ImageFolder):
     """Version of ImageFolder that converts SI-Score text labels to ImageNet int labels."""
+
     def __init__(
         self,
         root: str,
@@ -78,8 +79,13 @@ class SISCOREImageFolder(tv_datasets.ImageFolder):
             target = self.target_transform(target)
         return sample, target
 
+
 @dataclasses.dataclass
 class SISCOREVariantBase(Task):
+    """Classification task on synthetic data to measure a model's robustness to changes in
+    object location, size or rotation angle.
+    """
+
     resource: Tuple[str, ...] = abstract_variable()
 
     max_batch_size: Optional[int] = None
@@ -88,7 +94,9 @@ class SISCOREVariantBase(Task):
         variant = self.resource
         url = f"{_BASE_URL}/{variant}.zip"
 
-        dataset_folder = os.path.join(self.data_root, _VARIANT_EXPANDED_DIR_NAMES[variant])
+        dataset_folder = os.path.join(
+            self.data_root, _VARIANT_EXPANDED_DIR_NAMES[variant]
+        )
         if not os.path.exists(dataset_folder):
             # Download data.
             sh_utils.download_and_extract_archive(
@@ -103,7 +111,8 @@ class SISCOREVariantBase(Task):
         )
 
         self.ch_dataset = SISCOREImageFolder(
-            root=dataset_folder, transform=test_transform,
+            root=dataset_folder,
+            transform=test_transform,
         )
         self.images_only_dataset = sh_data_torch.IndexedTorchDataset(
             sh_data_torch.ImagesOnlyTorchDataset(self.ch_dataset)
@@ -139,7 +148,7 @@ class SISCOREVariantBase(Task):
         )
 
 
-# Varying object size
+# Varying object size.
 @sh_benchmark.register_task(
     name="SISCORE (Size)",
     relative_data_folder="siscore",
@@ -147,14 +156,10 @@ class SISCOREVariantBase(Task):
 )
 @dataclasses.dataclass
 class SISCORESize(SISCOREVariantBase):
-    resource: Tuple[str, ...] = variable(
-        (
-            "size"
-        )
-    )
+    resource: Tuple[str, ...] = variable(("size"))
 
 
-# Varying object size
+# Varying object rotation angle.
 @sh_benchmark.register_task(
     name="SISCORE (Rotation)",
     relative_data_folder="siscore",
@@ -162,14 +167,10 @@ class SISCORESize(SISCOREVariantBase):
 )
 @dataclasses.dataclass
 class SISCORERotation(SISCOREVariantBase):
-    resource: Tuple[str, ...] = variable(
-        (
-            "rotation"
-        )
-    )
+    resource: Tuple[str, ...] = variable(("rotation"))
 
 
-# Varying object location
+# Varying object location.
 @sh_benchmark.register_task(
     name="SISCORE (Location)",
     relative_data_folder="siscore",
@@ -177,8 +178,4 @@ class SISCORERotation(SISCOREVariantBase):
 )
 @dataclasses.dataclass
 class SISCORELocation(SISCOREVariantBase):
-    resource: Tuple[str, ...] = variable(
-        (
-            "location"
-        )
-    )
+    resource: Tuple[str, ...] = variable(("location"))

@@ -1,4 +1,3 @@
-
 """Mapping strings to ImageNet label ints for the SI-Score synthetic dataset."""
 
 IMAGENET_LABELS = {
@@ -113,5 +112,5 @@ IMAGENET_LABELS = {
     "washing machine": 897,
     "wok": 909,
     "zebra": 340,
-    "zucchini": 939
+    "zucchini": 939,
 }
