@@ -1,4 +1,6 @@
-"""Shift Happens task: ImageNet-Drawing"""
+"""
+Python package for Imagenet-Drawing dataset.
+"""
 
 import dataclasses
 import os
@@ -24,6 +26,7 @@ from shifthappens.tasks.task_result import TaskResult
 )
 @dataclasses.dataclass
 class ImageNetDrawing(Task):
+    """ImageNet-Drawing task."""
     resources = [
         (
             "imagenet-drawing.tar.gz",
@@ -33,6 +36,7 @@ class ImageNetDrawing(Task):
     ]
 
     def setup(self):
+        """Setup ImageNet-Drawing"""
         dataset_folder = os.path.join(self.data_root, "imagenet-drawing")
         if not os.path.exists(dataset_folder):
             # download data
@@ -56,9 +60,11 @@ class ImageNetDrawing(Task):
         )
 
     def _prepare_dataloader(self) -> DataLoader:
+        """Builds the DatasetLoader object."""
         return sh_data.DataLoader(self.images_only_dataset, max_batch_size=None)
 
     def _evaluate(self, model: sh_models.Model) -> TaskResult:
+        """Evaluates the model on the ImageNet-Drawing dataset."""
         dataloader = self._prepare_dataloader()
 
         all_predicted_labels_list = []
