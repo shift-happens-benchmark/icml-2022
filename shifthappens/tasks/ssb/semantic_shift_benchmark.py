@@ -45,8 +45,8 @@ class SSB(Task, OODScoreTaskMixin):
         None,
         None,
     )
-    dataset_out_easy: sh_data_torch.IndexedTorchDataset
-    dataset_out_hard: sh_data_torch.IndexedTorchDataset
+    dataset_out_easy: sh_data_torch.IndexedTorchDataset = None
+    dataset_out_hard: sh_data_torch.IndexedTorchDataset = None
 
     max_batch_size: int = 256
 
@@ -58,7 +58,7 @@ class SSB(Task, OODScoreTaskMixin):
         # Ensure data is downloaded
         assert (
             self.assert_data_downloaded(imagenet_21k_root)
-        ), 'ImageNet-21K data not downloaded, please download and process according to:' \
+        ), f'ImageNet-21K data not downloaded not found in {imagenet_21k_root} \n Please download and process according to:' \
            ' https://github.com/Alibaba-MIIL/ImageNet21K/blob/main/dataset_preprocessing/processing_script.sh'
 
         mean = (0.485, 0.456, 0.406)
