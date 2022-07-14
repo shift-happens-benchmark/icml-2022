@@ -7,6 +7,7 @@ from copy import deepcopy
 
 from torch.utils.data import Dataset
 from torchvision.datasets.folder import default_loader
+from shifthappens import benchmark as sh_benchmark
 
 # class ImageNetBase(torchvision.datasets.ImageFolder):
 #
@@ -178,3 +179,9 @@ def get_imagenet_ssb_datasets(test_transform, imagenet21k_root, osr_split_path):
                                          transform=test_transform)
 
     return easy_ssb_set, hard_ssb_set
+
+sh_benchmark.register_task(
+    name="SSB", relative_data_folder="imagenet21k_p", standalone=True
+)
+
+print('Hello')
