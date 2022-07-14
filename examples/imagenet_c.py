@@ -1,4 +1,4 @@
-"""Example for a Shift Happens task on ImageNet-C
+"""A task for evaluating the classification accuracy on ImageNet-C.
 
 While the dataset is ImageNet-C the task's definition is a bit different than the usual evaluation
 paradigm: we allow the model to access (1) the unlabeled test set separately for every corruption
@@ -36,6 +36,15 @@ from shifthappens.tasks.task_result import TaskResult
 
 @dataclasses.dataclass
 class ImageNetSingleCorruptionTypeBase(Task):
+    """Evaluate the classification accuracy on a single corruption type
+    of the ImageNet-C dataset [1]. Each corruption type has 5 different
+    severity levels. The raw images (before corruptions) in this dataset
+    come from the validation set of ImageNet.
+
+    [1] Benchmarking Neural Network Robustness to Common Corruptions and Perturbations.
+        Dan Hendrycks and Thomas Dietterich. 2019.
+    """
+
     resource: Tuple[str, ...] = abstract_variable()
 
     severity: int = parameter(
@@ -47,6 +56,8 @@ class ImageNetSingleCorruptionTypeBase(Task):
     max_batch_size: Optional[int] = None
 
     def setup(self):
+        """Load and prepare data."""
+
         folder_name, archive_name, url, md5 = self.resource
 
         dataset_folder = os.path.join(self.data_root, folder_name, str(self.severity))
@@ -105,6 +116,9 @@ class ImageNetSingleCorruptionTypeBase(Task):
 )
 @dataclasses.dataclass
 class ImageNetCGaussianNoise(ImageNetSingleCorruptionTypeBase):
+    """Evaluate classification accuracy on validation images of ImageNet
+    perturbed with Gaussian noise."""
+
     resource: Tuple[str, ...] = variable(
         (
             "gaussian_noise",
@@ -120,6 +134,9 @@ class ImageNetCGaussianNoise(ImageNetSingleCorruptionTypeBase):
 )
 @dataclasses.dataclass
 class ImageNetCShotNoise(ImageNetSingleCorruptionTypeBase):
+    """Evaluate classification accuracy on validation images of ImageNet
+    perturbed with shot noise."""
+
     resource: Tuple[str, ...] = variable(
         (
             "shot_noise",
@@ -137,6 +154,9 @@ class ImageNetCShotNoise(ImageNetSingleCorruptionTypeBase):
 )
 @dataclasses.dataclass
 class ImageNetCImpulseNoise(ImageNetSingleCorruptionTypeBase):
+    """Evaluate classification accuracy on validation images of ImageNet
+    perturbed with impulse noise."""
+
     resource: Tuple[str, ...] = variable(
         (
             "impulse_noise",
@@ -155,6 +175,9 @@ class ImageNetCImpulseNoise(ImageNetSingleCorruptionTypeBase):
 )
 @dataclasses.dataclass
 class ImageNetCDefocusBlur(ImageNetSingleCorruptionTypeBase):
+    """Evaluate classification accuracy on validation images of ImageNet
+    perturbed by defocus blur."""
+
     resource: Tuple[str, ...] = variable(
         (
             "defocus_blur",
@@ -170,6 +193,9 @@ class ImageNetCDefocusBlur(ImageNetSingleCorruptionTypeBase):
 )
 @dataclasses.dataclass
 class ImageNetCGlassBlur(ImageNetSingleCorruptionTypeBase):
+    """Evaluate classification accuracy on validation images of ImageNet
+    perturbed by glass blur."""
+
     resource: Tuple[str, ...] = variable(
         (
             "glass_blur",
@@ -185,6 +211,9 @@ class ImageNetCGlassBlur(ImageNetSingleCorruptionTypeBase):
 )
 @dataclasses.dataclass
 class ImageNetCMotionBlur(ImageNetSingleCorruptionTypeBase):
+    """Evaluate classification accuracy on validation images of ImageNet
+    perturbed by motion blur."""
+
     resource: Tuple[str, ...] = variable(
         (
             "motion_blur",
@@ -200,6 +229,9 @@ class ImageNetCMotionBlur(ImageNetSingleCorruptionTypeBase):
 )
 @dataclasses.dataclass
 class ImageNetCZoomBlur(ImageNetSingleCorruptionTypeBase):
+    """Evaluate classification accuracy on validation images of ImageNet
+    perturbed by zoom blur."""
+
     resource: Tuple[str, ...] = variable(
         (
             "zoom_blur",
@@ -216,6 +248,9 @@ class ImageNetCZoomBlur(ImageNetSingleCorruptionTypeBase):
 )
 @dataclasses.dataclass
 class ImageNetCBrightness(ImageNetSingleCorruptionTypeBase):
+    """Evaluate classification accuracy on validation images of ImageNet
+    perturbed by brightness changes."""
+
     resource: Tuple[str, ...] = variable(
         (
             "brightness",
@@ -231,6 +266,9 @@ class ImageNetCBrightness(ImageNetSingleCorruptionTypeBase):
 )
 @dataclasses.dataclass
 class ImageNetCFrost(ImageNetSingleCorruptionTypeBase):
+    """Evaluate classification accuracy on validation images of ImageNet
+    perturbed with frost."""
+
     resource: Tuple[str, ...] = variable(
         (
             "frost",
@@ -246,6 +284,9 @@ class ImageNetCFrost(ImageNetSingleCorruptionTypeBase):
 )
 @dataclasses.dataclass
 class ImageNetCSnow(ImageNetSingleCorruptionTypeBase):
+    """Evaluate classification accuracy on validation images of ImageNet
+    perturbed with snow."""
+
     resource: Tuple[str, ...] = variable(
         (
             "snow",
@@ -261,6 +302,9 @@ class ImageNetCSnow(ImageNetSingleCorruptionTypeBase):
 )
 @dataclasses.dataclass
 class ImageNetCFog(ImageNetSingleCorruptionTypeBase):
+    """Evaluate classification accuracy on validation images of ImageNet
+    perturbed with fog."""
+
     resource: Tuple[str, ...] = variable(
         (
             "fog",
@@ -277,6 +321,9 @@ class ImageNetCFog(ImageNetSingleCorruptionTypeBase):
 )
 @dataclasses.dataclass
 class ImageNetCContrast(ImageNetSingleCorruptionTypeBase):
+    """Evaluate classification accuracy on validation images of ImageNet
+    perturbed by contrast changes."""
+
     resource: Tuple[str, ...] = variable(
         (
             "contrast",
@@ -294,6 +341,9 @@ class ImageNetCContrast(ImageNetSingleCorruptionTypeBase):
 )
 @dataclasses.dataclass
 class ImageNetCElasticTransform(ImageNetSingleCorruptionTypeBase):
+    """Evaluate classification accuracy on validation images of ImageNet
+    perturbed by an elastic transformation."""
+
     resource: Tuple[str, ...] = variable(
         (
             "elastic_transform",
@@ -309,6 +359,9 @@ class ImageNetCElasticTransform(ImageNetSingleCorruptionTypeBase):
 )
 @dataclasses.dataclass
 class ImageNetCPixelate(ImageNetSingleCorruptionTypeBase):
+    """Evaluate classification accuracy on validation images of ImageNet
+    perturbed by pixelation."""
+
     resource: Tuple[str, ...] = variable(
         (
             "pixelate",
@@ -324,6 +377,9 @@ class ImageNetCPixelate(ImageNetSingleCorruptionTypeBase):
 )
 @dataclasses.dataclass
 class ImageNetCJPEG(ImageNetSingleCorruptionTypeBase):
+    """Evaluate classification accuracy on validation images of ImageNet
+    perturbed by JPEG compression."""
+
     resource: Tuple[str, ...] = variable(
         (
             "jpeg_compression",
@@ -357,6 +413,8 @@ class ImageNetCSeparateCorruptions(Task):
     flavored_corruption_tasks: List[ImageNetSingleCorruptionTypeBase] = variable([])
 
     def setup(self):
+        """Load and prepare data for all child tasks."""
+
         for corruption_task_cls in self.corruption_task_cls:
             self.flavored_corruption_tasks += list(
                 corruption_task_cls.iterate_flavours(data_root=self.data_root)

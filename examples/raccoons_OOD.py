@@ -35,6 +35,17 @@ from shifthappens.tasks.utils import fpr_at_tpr
 )
 @dataclasses.dataclass
 class RaccOOD(Task, OODScoreTaskMixin):
+    """
+    This task aims to evaluate models' out-of-distribution (OOD) detection on 200 raccoon images.
+    Raccoons are not presented in ImageNet classes, so the task uses models'
+    confidences (maximal predicted class probability) for the ImageNet validation set and
+    raccoons images (ImageNet samples treated as class 1 and raccoons as class 0) to measure
+    AUROC and FPR at TPR equal 0.95.
+
+    The original dataset was collected by Dat Tran for the object detection task
+    and can be found at https://github.com/datitran/raccoon_dataset.#
+    """
+
     resource = (
         "racoons",
         "raccoons.tar.gz",
@@ -45,6 +56,8 @@ class RaccOOD(Task, OODScoreTaskMixin):
     max_batch_size: int = 256
 
     def setup(self):
+        """Load and prepare the data."""
+
         folder_name, file_name, url, md5 = self.resource
         dataset_folder = os.path.join(self.data_root, folder_name)
         if not os.path.exists(dataset_folder):
