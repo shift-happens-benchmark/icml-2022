@@ -1,4 +1,4 @@
-"""Example for a Shift Happens task: ImageNet-R"""
+"""A Task for evaluating the classification accuracy on ImageNet-R."""
 
 import dataclasses
 import os
@@ -24,6 +24,14 @@ from shifthappens.tasks.task_result import TaskResult
 )
 @dataclasses.dataclass
 class ImageNetR(Task):
+    """Measures the classification accuracy on ImageNet-R [1], a dataset
+    containing different renditions of 200 classes of ImageNet (30000 samples in total).
+
+    [1] The Many Faces of Robustness: A Critical Analysis of Out-of-Distribution Generalization.
+        Dan Hendrycks, Steven Basart, Norman Mu, Saurav Kadavath, Frank Wang, Evan Dorundo, Rahul Desai,
+        Tyler Zhu, Samyak Parajuli, Mike Guo, Dawn Song, Jacob Steinhardt and Justin Gilmer. 2021.
+    """
+
     resources = [
         (
             "imagenet-r.tar",
@@ -33,6 +41,8 @@ class ImageNetR(Task):
     ]
 
     def setup(self):
+        """Load and prepare the data."""
+
         dataset_folder = os.path.join(self.data_root, "imagenet-r")
         if not os.path.exists(dataset_folder):
             # download data
