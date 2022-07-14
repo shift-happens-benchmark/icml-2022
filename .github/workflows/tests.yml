@@ -18,7 +18,10 @@ jobs:
         python-version: ['3.9']
 
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v3
+      with:
+        ref: main
+    - uses: actions/checkout@v3
     - uses: actions/cache@v1
       with:
         path: ~/.cache/pip
@@ -61,9 +64,6 @@ jobs:
     - name: isort
       run: |
         isort --check .
-    - name: interrogate
-      run: |
-        interrogate -c pyproject.toml .
     - name: Install package
       run: |
         pip install -e .
@@ -89,6 +89,74 @@ jobs:
     - name: Test with pytest
       run: |
         pytest --durations=0 --verbose
+
+  docs:
+    runs-on: ubuntu-latest
+    strategy:
+      max-parallel: 20
+      matrix:
+        python-version: ['3.9']
+
+    steps:
+    - uses: actions/checkout@v3
+      with:
+        ref: main
+    - uses: actions/checkout@v3
+    - uses: actions/cache@v1
+      with:
+        path: ~/.cache/pip
+        key: ${{ runner.os }}-pip-${{ hashFiles('**/requirements.txt') }}
+        restore-keys: |
+          ${{ runner.os }}-pip-
+    - name: Set up Python ${{ matrix.python-version }}
+      uses: actions/setup-python@v1
+      with:
+        python-version: ${{ matrix.python-version }}
+    - name: Install requirements.txt
+      run: |
+        function retry-with-backoff() {
+          for BACKOFF in 0 1 2 4 8 16 32 64; do
+            sleep $BACKOFF
+            if "$@"; then
+              return 0
+            fi
+          done
+          return 1
+        }
+        python -m pip install --upgrade pip setuptools wheel
+        retry-with-backoff pip install -r requirements_dev.txt
+    - name: documentation
+      id: documentation
+      run: |
+        RESULT=$(git diff --name-only origin/main | grep .py$ | xargs interrogate -f 0 -v)
+        RESULT=$(tail -n +3 <<< $RESULT)
+        STATUS=$(tail -n1 <<< $RESULT)
+        STATUS=$(sed 's/-//g' <<< $STATUS)
+        # trim
+        STATUS=$(echo $STATUS | xargs echo -n)
+        RESULT=$(head -n -1 <<< $RESULT)
+        # remove second to last line
+        RESULTA=$(head -n -2 <<< $RESULT)
+        RESULTB=$(tail -n1 <<< $RESULT)
+        NL=$'\n'
+        RESULT="$RESULTA${NL}||||||${NL}$RESULTB"
+        RESULT="$RESULT${NL}${NL}$STATUS"
+        RESULT="${RESULT//'%'/'%25'}"
+        RESULT="${RESULT//$'\n'/'%0A'}"
+        RESULT="${RESULT//$'\r'/'%0D'}"
+        echo "::set-output name=result::$RESULT"
+    - name: comment documentation result on PR
+      uses: thollander/actions-comment-pull-request@v1
+      with:
+        message: |
+          ## Docstring Coverage Report
+
+          ${{ steps.documentation.outputs.result }}
+        comment_includes: '## Docstring Coverage Report'
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    - name: interrogate
+      run: |
+        interrogate -c pyproject.toml .
 
   wheel-tests:
     runs-on: ubuntu-latest
