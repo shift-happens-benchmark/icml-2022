@@ -64,9 +64,6 @@ jobs:
     - name: isort
       run: |
         isort --check .
-    - name: interrogate
-      run: |
-        interrogate -c pyproject.toml .
     - name: Install package
       run: |
         pip install -e .
@@ -157,6 +154,9 @@ jobs:
           ${{ steps.documentation.outputs.result }}
         comment_includes: '## Docstring Coverage Report'
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    - name: interrogate
+      run: |
+        interrogate -c pyproject.toml .
 
   wheel-tests:
     runs-on: ubuntu-latest
