@@ -44,6 +44,7 @@ class ImageNetSingleCorruptionTypeBase(Task):
     [1] Benchmarking Neural Network Robustness to Common Corruptions and Perturbations.
         Dan Hendrycks and Thomas Dietterich. 2019.
     """
+
     resource: Tuple[str, ...] = abstract_variable()
 
     severity: int = parameter(
