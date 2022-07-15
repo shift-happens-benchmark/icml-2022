@@ -9,6 +9,7 @@ on:
 jobs:
   documentation-status:
     runs-on: ubuntu-latest
+    permissions: write-all
     strategy:
       max-parallel: 20
       matrix:
