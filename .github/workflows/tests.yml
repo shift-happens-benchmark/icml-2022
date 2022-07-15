@@ -90,7 +90,7 @@ jobs:
       run: |
         pytest --durations=0 --verbose
 
-  docs:
+  docstrings:
     runs-on: ubuntu-latest
     strategy:
       max-parallel: 20
