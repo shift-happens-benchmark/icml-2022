@@ -4,6 +4,7 @@ import os
 import six
 import lmdb
 import io
+import pandas as pd
 
 import numpy as np
 from PIL import Image
@@ -76,17 +77,11 @@ class WalkLoader(data.Dataset):
     def __init__(self, data_dir, target_dir, accuracies_matrix, seed, frequency, base_amount, accuracy, subset_size):
         self.data_dir = data_dir
         self.target_dir = target_dir
-        self.accuracies_matrix = accuracies_matrix
         self.seed = seed
         self.frequency = frequency
         self.base_amount = base_amount
         self.accuracy = accuracy
         self.subset_size = subset_size
-
-        print('seed ', self.seed)
-        print('frequency ', self.frequency)
-        print('base_amount ', self.base_amount)
-        print('accuracy ', self.accuracy)
 
         random.seed(self.seed)
         np.random.seed(self.seed)
@@ -110,8 +105,16 @@ class WalkLoader(data.Dataset):
             # 'jpeg' # these noises aren't used for baseline accuracy=20
         ]
 
-        with open(self.accuracies_matrix, 'rb') as f:
+        pickle_path = os.path.join("ccc_accuracy_matrix.pickle")
+        if not os.path.exists(pickle_path):
+            url = "https://nc.mlcloud.uni-tuebingen.de/index.php/s/izTMnXkaHoNBZT4/download/ccc_accuracy_matrix.pickle"
+            df = pd.read_pickle(url)
+            df.to_pickle(pickle_path)
+
+
+        with open(pickle_path, 'rb') as f:
             accuracy_matrix = pickle.load(f)
+
 
         noise_list = list(itertools.product(self.single_noises, self.single_noises))
 
