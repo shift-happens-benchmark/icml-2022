@@ -6,10 +6,7 @@
     In addition to this file, we submitted a file used to generate the
     data itself.
 """
-
 import dataclasses
-import os
-
 import numpy as np
 
 import shifthappens.data.base as sh_data
@@ -31,28 +28,39 @@ from shifthappens.tasks.ccc_utils import WalkLoader
 @dataclasses.dataclass
 class CCC(Task):
     seed: int = parameter(
+        default=42,
+        options=[42],
         description="random seed used in the dataset building process",
     )
     frequency: int = parameter(
+        default=5,
+        options=[5],
         description="represents how many images are sampled from each subset",
     )
     base_amount: int = parameter(
+        default=1500,
+        options=[1500],
         description="represents how large the base dataset is",
     )
     accuracy: int = parameter(
+        default=50,
+        options=[50],
         description="represents the baseline accuracy of walk",
     )
     subset_size: int = parameter(
+        default=20,
+        options=[20],
         description="represents the sample size of images sampled from ImageNet validation",
     )
 
     def setup(self):
-        self.loader = WalkLoader(self.data_root, './ccc_accuracy_matrix.pickle',
+        self.loader = WalkLoader('./', './', './',
                                  self.seed, self.frequency, self.base_amount, self.accuracy, self.subset_size)
 
     def _prepare_dataloader(self) -> DataLoader:
         self.setup()
-        data = self.loader.get()
+        data = self.loader.generate_dataset()
+        print('data size is ', len(data))
         return sh_data.DataLoader(data, max_batch_size=None)
 
     def _evaluate(self, model: sh_models.Model) -> TaskResult:
@@ -73,5 +81,7 @@ class CCC(Task):
 
 
 if __name__ == "__main__":
-    from shifthappens.models.torchvision import ResNet50
-    sh_benchmark.evaluate_model(ResNet50(), "data")
+    # from shifthappens.models.torchvision import ResNet50
+    # sh_benchmark.evaluate_model(ResNet50(), "data")
+    a = CCC('./')
+    a._prepare_dataloader()

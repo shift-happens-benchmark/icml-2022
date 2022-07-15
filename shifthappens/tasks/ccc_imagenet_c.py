@@ -513,13 +513,13 @@ def elastic_transform(image, severity=1):
 
 def noise_transforms():
     d = {}
-    d['gaussian'] = gaussian_noise
-    d['shot'] = shot_noise
-    d['impulse'] = impulse_noise
-    d['defocus'] = defocus_blur
-    d['glass'] = glass_blur
-    d['motion'] = motion_blur
-    d['zoom'] = zoom_blur
+    d['gaussian_noise'] = gaussian_noise
+    d['shot_noise'] = shot_noise
+    d['impulse_noise'] = impulse_noise
+    d['defocus_blur'] = defocus_blur
+    d['glass_blur'] = glass_blur
+    d['motion_blur'] = motion_blur
+    d['zoom_blur'] = zoom_blur
     d['snow'] = snow
     d['frost'] = frost
     d['fog'] = fog

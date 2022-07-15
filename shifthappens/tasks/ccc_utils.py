@@ -73,14 +73,20 @@ def traverse_graph(cost_dict, path_dict, arr, i, j, target_val):
 
 
 class WalkLoader(data.Dataset):
-    def __init__(self, data_root, accuracies_matrix, seed, frequency, base_amount, accuracy, subset_size):
-        self.data_root = data_root
+    def __init__(self, data_dir, target_dir, accuracies_matrix, seed, frequency, base_amount, accuracy, subset_size):
+        self.data_dir = data_dir
+        self.target_dir = target_dir
         self.accuracies_matrix = accuracies_matrix
         self.seed = seed
         self.frequency = frequency
-        self.accuracy = accuracy
         self.base_amount = base_amount
+        self.accuracy = accuracy
         self.subset_size = subset_size
+
+        print('seed ', self.seed)
+        print('frequency ', self.frequency)
+        print('base_amount ', self.base_amount)
+        print('accuracy ', self.accuracy)
 
         random.seed(self.seed)
         np.random.seed(self.seed)
@@ -123,22 +129,26 @@ class WalkLoader(data.Dataset):
         cur_noises = random.choice(keys)
 
         walk = walk_dict[cur_noises]
-        data_path = os.path.join(self.data_root, "n1_" + noise1 + "_n2_" + noise2)
+        data_path = os.path.join(self.target_dir, "n1_" + noise1 + "_n2_" + noise2)
         walk_datasets = path_to_dataset(walk, data_path)
 
         self.walk_dict = walk_dict
         self.walk_ind = 0
         self.walk = walk
         self.walk_datasets = walk_datasets
-        self.noise1 = noise1
-        self.first_noise1 = self.noise1
-        self.noise2 = noise2
 
-        self.lifetime_total = 0
+        self.noise1 = random.choice(self.single_noises)
+        self.first_noise1 = self.noise1
+        self.noise2 = random.choice(self.single_noises)
+        while self.noise1 == self.noise2:
+            self.noise2 = random.choice(self.single_noises)
+
+
         self.lastrun = 0
 
-    def get(self):
-        total = 0
+
+    def generate_dataset(self):
+        total_generated = 0
         all_data = None
 
         while True:
@@ -151,13 +161,13 @@ class WalkLoader(data.Dataset):
             s1 = float(severities_split[1][:-2])
             s2 = float(severities_split[2])
 
-            path = os.path.join(self.data_root, 'n1_' + str(n1) + '_n2_' + str(n2)) + '_s1_' + str(s1) + '_s2_' + str(s2)
+            path = os.path.join(self.target_dir, 'n1_' + str(n1) + '_n2_' + str(n2)) + '_s1_' + str(s1) + '_s2_' + str(s2)
             if not os.path.exists(path):
                 os.mkdir(path)
 
             if not (os.path.exists(os.path.join(path, 'lock.mdb')) and os.path.exists(os.path.join(path, 'data.mdb'))):
-                cur_data = ApplyTransforms(self.data_root, n1, n2, s1, s2, self.subset_size)
-                dset2lmdb(cur_data, path)
+                generated_subset = ApplyTransforms(self.data_dir, n1, n2, s1, s2, self.subset_size)
+                dset2lmdb(generated_subset, path)
 
             remainder = self.frequency
             while remainder > 0:
@@ -171,12 +181,12 @@ class WalkLoader(data.Dataset):
             else:
                 all_data = cur_data
 
-            total += self.frequency
-            self.lifetime_total += self.frequency
+            total_generated += self.frequency
+            # print('total ', total_generated)
             if self.walk_ind == len(self.walk) - 1:
                 self.noise1 = self.noise2
 
-                if self.lifetime_total > self.base_amount and self.lastrun == 0:
+                if total_generated > self.base_amount and self.lastrun == 0:
                     if self.noise1 != self.first_noise1:
                         self.noise2 = self.first_noise1
                         self.lastrun = 1
@@ -189,7 +199,7 @@ class WalkLoader(data.Dataset):
                         self.noise2 = random.choice(self.single_noises)
 
                 self.walk = self.walk_dict[(self.noise1, self.noise2)]
-                data_path = os.path.join(self.data_root, "n1_" + self.noise1 + "_n2_" + self.noise2)
+                data_path = os.path.join(self.target_dir, "n1_" + self.noise1 + "_n2_" + self.noise2)
                 self.walk_datasets = path_to_dataset(self.walk, data_path)
                 self.walk_ind = 0
             else:
@@ -231,8 +241,7 @@ class ApplyTransforms(data.Dataset):
 
         with open(path, 'rb') as f:
             img = Image.open(f)
-
-        img = img.convert('RGB')
+            img = img.convert('RGB')
         img = self.trn(img)
 
         if self.s1 > 0:
@@ -250,7 +259,6 @@ class ApplyTransforms(data.Dataset):
 
     def __len__(self):
         return len(self.paths)
-
 
 
 class ImageFolderLMDB(data.Dataset):
