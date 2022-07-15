@@ -1,4 +1,4 @@
-name: Tests
+name: PR Status
 
 # Controls when the workflow will run
 on:
