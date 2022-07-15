@@ -125,38 +125,9 @@ jobs:
         }
         python -m pip install --upgrade pip setuptools wheel
         retry-with-backoff pip install -r requirements_dev.txt
-    - name: documentation
-      id: documentation
-      run: |
-        RESULT=$(git diff --name-only origin/main | grep .py$ | xargs interrogate -f 0 -v)
-        RESULT=$(tail -n +3 <<< $RESULT)
-        STATUS=$(tail -n1 <<< $RESULT)
-        STATUS=$(sed 's/-//g' <<< $STATUS)
-        # trim
-        STATUS=$(echo $STATUS | xargs echo -n)
-        RESULT=$(head -n -1 <<< $RESULT)
-        # remove second to last line
-        RESULTA=$(head -n -2 <<< $RESULT)
-        RESULTB=$(tail -n1 <<< $RESULT)
-        NL=$'\n'
-        RESULT="$RESULTA${NL}||||||${NL}$RESULTB"
-        RESULT="$RESULT${NL}${NL}$STATUS"
-        RESULT="${RESULT//'%'/'%25'}"
-        RESULT="${RESULT//$'\n'/'%0A'}"
-        RESULT="${RESULT//$'\r'/'%0D'}"
-        echo "::set-output name=result::$RESULT"
-    - name: comment documentation result on PR
-      uses: thollander/actions-comment-pull-request@v1
-      with:
-        message: |
-          ## Docstring Coverage Report
-
-          ${{ steps.documentation.outputs.result }}
-        comment_includes: '## Docstring Coverage Report'
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
     - name: interrogate
       run: |
-        interrogate -c pyproject.toml .
+        interrogate -v -c pyproject.toml .
 
   wheel-tests:
     runs-on: ubuntu-latest
