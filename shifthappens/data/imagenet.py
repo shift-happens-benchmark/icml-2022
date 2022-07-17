@@ -70,7 +70,7 @@ def get_cached_predictions(cls) -> dict:
     """
     Checks whether there exist cached results for the model's class and if so, returns them.
     Note that the path to ImageNet validation set
-    :py:attr:`shifthappens.config.imagenet_validation_path` must be specified.
+    :py:attr:`shifthappens.config.Config.imagenet_validation_path` must be specified.
 
     Args:
         cls: Model's class. Used for specifying folder name.
@@ -105,8 +105,8 @@ def cache_predictions(cls, imagenet_validation_result):
     """
     Caches model predictions in cls-named folder and load
     model predictions from it. Note that the path to ImageNet validation set
-    :py:attr:`shifthappens.config.imagenet_validation_path` must be specified as
-    well as :py:attr:`shifthappens.config.cache_directory_path`.
+    :py:attr:`shifthappens.config.Config.imagenet_validation_path` must be specified as
+    well as :py:attr:`shifthappens.config.Config.cache_directory_path`.
 
     Args:
         cls: Model's class. Used for specifying folder name.
