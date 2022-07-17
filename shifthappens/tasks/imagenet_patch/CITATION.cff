@@ -1,0 +1,73 @@
+cff-version: 1.2.0
+title: >-
+  ImageNet-Patch: A Dataset for Benchmarking Machine
+  Learning Robustness against Adversarial Patches
+message: >-
+  Please cite this dataset using the metadata from
+  'preferred-citation'.
+type: software
+authors:
+  - given-names: Maura
+    family-names: Pintor
+    email: maura.pintor@unica.it
+    affiliation: 'University of Cagliari, Pluribus One'
+  - given-names: Daniele
+    family-names: Angioni
+    email: daniele.angioni@unica.it
+    affiliation: University of Cagliari
+  - given-names: Angelo
+    family-names: Sotgiu
+    email: angelo.sotgiu@unica.it
+    affiliation: 'University of Cagliari, Pluribus One'
+  - given-names: Luca
+    family-names: Demetrio
+    email: luca.demetrio93@unica.it
+    affiliation: 'University of Cagliari, Pluribus One'
+  - given-names: Ambra
+    family-names: Demontis
+    email: ambra.demontis@unica.it
+    affiliation: University of Cagliari
+  - given-names: Battista
+    family-names: Biggio
+    email: battista.biggio@unica.it
+    affiliation: 'University of Cagliari, Pluribus One'
+  - given-names: Fabio
+    family-names: Roli
+    email: fabio.roli@unige.it
+    affiliation: 'University of Genoa, Pluribus One'
+preferred-citation:
+  type: article
+  authors:
+  - given-names: Maura
+    family-names: Pintor
+    email: maura.pintor@unica.it
+    affiliation: 'University of Cagliari, Pluribus One'
+  - given-names: Daniele
+    family-names: Angioni
+    email: daniele.angioni@unica.it
+    affiliation: University of Cagliari
+  - given-names: Angelo
+    family-names: Sotgiu
+    email: angelo.sotgiu@unica.it
+    affiliation: 'University of Cagliari, Pluribus One'
+  - given-names: Luca
+    family-names: Demetrio
+    email: luca.demetrio93@unica.it
+    affiliation: 'University of Cagliari, Pluribus One'
+  - given-names: Ambra
+    family-names: Demontis
+    email: ambra.demontis@unica.it
+    affiliation: University of Cagliari
+  - given-names: Battista
+    family-names: Biggio
+    email: battista.biggio@unica.it
+    affiliation: 'University of Cagliari, Pluribus One'
+  - given-names: Fabio
+    family-names: Roli
+    email: fabio.roli@unige.it
+    affiliation: 'University of Genoa, Pluribus One'
+  doi: "10.48550/arXiv.2203.04412"
+  journal: "ArXiv"
+  title: "ImageNet-Patch: A Dataset for Benchmarking Machine
+  Learning Robustness against Adversarial Patches"
+  year: 2022
