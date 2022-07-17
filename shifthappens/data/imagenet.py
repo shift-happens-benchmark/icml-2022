@@ -106,7 +106,7 @@ def cache_predictions(cls, imagenet_validation_result):
     Caches model predictions in cls-named folder and load
     model predictions from it. Note that the path to ImageNet validation set
     :py:attr:`shifthappens.config.imagenet_validation_path` must be specified as
-    well as :py:attr:`shifthappens.config.Config.cache_directory_path`.
+    well as :py:attr:`shifthappens.config.cache_directory_path`.
 
     Args:
         cls: Model's class. Used for specifying folder name.
