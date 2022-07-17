@@ -18,7 +18,7 @@ import shifthappens
 from shifthappens.models.torchvision import ResNet18
 from shifthappens import benchmark as sh_benchmark
 
-from shifthappens.tasks.ssb import semantic_shift_benchmark
+from shifthappens.tasks import ssb
 
 sh_benchmark.evaluate_model(
     ResNet18(device="cpu", max_batch_size=128),
