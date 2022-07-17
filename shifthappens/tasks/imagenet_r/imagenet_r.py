@@ -36,7 +36,7 @@ class ImageNetR(Task):
         (
             "imagenet-r.tar",
             "https://people.eecs.berkeley.edu/~hendrycks/imagenet-r.tar",
-            "A61312130A589D0CA1A8FCA1F2BD3337",
+            "a61312130a589d0ca1a8fca1f2bd3337",
         )
     ]
 
@@ -83,9 +83,3 @@ class ImageNetR(Task):
         return TaskResult(
             accuracy=accuracy, summary_metrics={Metric.Robustness: "accuracy"}
         )
-
-
-if __name__ == "__main__":
-    from shifthappens.models.torchvision import ResNet18
-
-    sh_benchmark.evaluate_model(ResNet18(device="cpu", max_batch_size=128), "data")
