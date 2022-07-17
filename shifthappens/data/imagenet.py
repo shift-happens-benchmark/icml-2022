@@ -35,7 +35,8 @@ def _check_imagenet_folder():
     )
 
     assert (
-        len(os.listdir(ImageNetValidationData)) == 1000
+        len([d_ for d_ in os.listdir(ImageNetValidationData)
+             if os.path.isdir(os.path.join(ImageNetValidationData, d_))]) == 1000
     ), "ImageNetValidationData folder contains less or more folders than ImageNet classes."
 
 
