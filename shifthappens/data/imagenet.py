@@ -28,8 +28,9 @@ def _check_imagenet_folder():
         "Files not found at location specified in shifthappens.config.imagenet_validation_path."
     )
     assert (
-        len(os.listdir(shifthappens.config.imagenet_validation_path)) >= 1000
-    ), f"{shifthappens.config.imagenet_validation_path} folder contains less folders than ImageNet classes. "
+        len([d_ for d_ in os.listdir(shifthappens.config.imagenet_validation_path)
+             if os.path.isdir(os.path.join(shifthappens.config.imagenet_validation_path, d_))]) == 1000
+    ), "ImageNetValidationData folder contains less or more folders than ImageNet classes."
 
 
 def get_imagenet_validation_loader(max_batch_size=128) -> DataLoader:
@@ -69,10 +70,9 @@ def get_imagenet_validation_loader(max_batch_size=128) -> DataLoader:
 
 def get_cached_predictions(cls) -> dict:
     """
-    Checks whether there exist cached results for the model's class and if
-    so, returns them. Note that the path to ImageNet validation set
-    :py:attr:`shifthappens.config.imagenet_validation_path
-    <shifthappens.config.Config.imagenet_validation_path>` must be specified.
+    Checks whether there exist cached results for the model's class and if so, returns them.
+    Note that the path to ImageNet validation set
+    :py:data:`shifthappens.data.imagenet.ImageNetValidationData` must be specified.
 
     Args:
         cls: Model's class. Used for specifying folder name.

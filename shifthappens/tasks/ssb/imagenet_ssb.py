@@ -53,7 +53,7 @@ class ImageNetSubsetDataset(Dataset):
 
         path = self.samples[item]
         image = default_loader(path)
-        image = self.transform(image)
+        image = self.transform(image).float()
 
         cls = self.labels[item]
 
