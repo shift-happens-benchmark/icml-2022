@@ -80,7 +80,7 @@ def get_cached_predictions(cls) -> dict:
     """
     assert shifthappens.config.cache_directory_path is not None, (
         "Cannot get cached model results. "
-        "shifthappens.config.Config.cache_directory_path is not specified."
+        "shifthappens.config.cache_directory_path is not specified."
     )
 
     load_path = os.path.join(
