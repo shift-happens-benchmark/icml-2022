@@ -33,9 +33,6 @@ from shifthappens.tasks.ssb import osr_split_path
 
 from typing import Tuple
 
-@sh_benchmark.register_task(
-    name="SSB", relative_data_folder="ssb", standalone=True
-)
 @dataclasses.dataclass
 class SSB(Task, OODScoreTaskMixin):
 
