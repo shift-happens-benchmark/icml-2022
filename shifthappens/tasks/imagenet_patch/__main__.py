@@ -35,6 +35,7 @@ from shifthappens.tasks.task_result import TaskResult
 class ImageNetPatchTarget(Task):
     """Class that wraps patches optimized to cause targeted misclassifications
     towards a specific class (e.g., banana)."""
+
     resource: Tuple[str, ...] = (
         "imagenet_patch",
         "ImageNet-Patch.tar.gz",
@@ -79,12 +80,12 @@ class ImageNetPatchTarget(Task):
         dataloader = self._prepare_dataloader()
         all_predicted_labels_list = []
         for predictions in model.predict(
-                dataloader, PredictionTargets(class_labels=True)
+            dataloader, PredictionTargets(class_labels=True)
         ):
             all_predicted_labels_list.append(predictions.class_labels)
         all_preds = np.concatenate(all_predicted_labels_list, 0)
 
-        accuracy = (all_preds == np.array(self.ch_dataset.targets)[: len(all_preds)])
+        accuracy = all_preds == np.array(self.ch_dataset.targets)[: len(all_preds)]
         return TaskResult(
             accuracy=accuracy,
             mce=1.0 - accuracy,
@@ -100,7 +101,8 @@ class ImageNetPatchTarget(Task):
 @dataclasses.dataclass
 class ImageNetPatchCellularTelephone(ImageNetPatchTarget):
     """Class loading the images with applied patch targeting the
-    `cellular telephone` class. """
+    `cellular telephone` class."""
+
     target: int = 487
 
 
@@ -112,7 +114,8 @@ class ImageNetPatchCellularTelephone(ImageNetPatchTarget):
 @dataclasses.dataclass
 class ImageNetPatchCornet(ImageNetPatchTarget):
     """Class loading the images with applied patch targeting the
-    `cornet` class. """
+    `cornet` class."""
+
     target: int = 513
 
 
@@ -124,7 +127,8 @@ class ImageNetPatchCornet(ImageNetPatchTarget):
 @dataclasses.dataclass
 class ImageNetPatchElectricGuitar(ImageNetPatchTarget):
     """Class loading the images with applied patch targeting the
-    `electric guitar` class. """
+    `electric guitar` class."""
+
     target: int = 546
 
 
@@ -136,7 +140,8 @@ class ImageNetPatchElectricGuitar(ImageNetPatchTarget):
 @dataclasses.dataclass
 class ImageNetPatchHairSpray(ImageNetPatchTarget):
     """Class loading the images with applied patch targeting the
-    `hair spray` class. """
+    `hair spray` class."""
+
     target: int = 585
 
 
@@ -148,7 +153,8 @@ class ImageNetPatchHairSpray(ImageNetPatchTarget):
 @dataclasses.dataclass
 class ImageNetPatchSoapDispenser(ImageNetPatchTarget):
     """Class loading the images with applied patch targeting the
-    `soap dispenser` class. """
+    `soap dispenser` class."""
+
     target: int = 804
 
 
@@ -160,7 +166,8 @@ class ImageNetPatchSoapDispenser(ImageNetPatchTarget):
 @dataclasses.dataclass
 class ImageNetPatchSock(ImageNetPatchTarget):
     """Class loading the images with applied patch targeting the
-    `sock` class. """
+    `sock` class."""
+
     target: int = 806
 
 
@@ -172,7 +179,8 @@ class ImageNetPatchSock(ImageNetPatchTarget):
 @dataclasses.dataclass
 class ImageNetPatchTypewriterKeyboard(ImageNetPatchTarget):
     """Class loading the images with applied patch targeting the
-    `typewriter keyboard` class. """
+    `typewriter keyboard` class."""
+
     target: int = 878
 
 
@@ -184,7 +192,8 @@ class ImageNetPatchTypewriterKeyboard(ImageNetPatchTarget):
 @dataclasses.dataclass
 class ImageNetPatchPlate(ImageNetPatchTarget):
     """Class loading the images with applied patch targeting the
-    `plate` class. """
+    `plate` class."""
+
     target: int = 923
 
 
@@ -196,7 +205,8 @@ class ImageNetPatchPlate(ImageNetPatchTarget):
 @dataclasses.dataclass
 class ImageNetPatchBanana(ImageNetPatchTarget):
     """Class loading the images with applied patch targeting the
-    `banana` class. """
+    `banana` class."""
+
     target: int = 954
 
 
@@ -208,7 +218,8 @@ class ImageNetPatchBanana(ImageNetPatchTarget):
 @dataclasses.dataclass
 class ImageNetPatchCup(ImageNetPatchTarget):
     """Class loading the images with applied patch targeting the
-    `cup` class. """
+    `cup` class."""
+
     target: int = 968
 
 
