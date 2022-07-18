@@ -13,7 +13,6 @@ from typing import Optional
 from typing import Tuple
 
 import numpy as np
-import torchvision.datasets as tv_datasets
 import torchvision.transforms as tv_transforms
 
 import shifthappens
@@ -25,9 +24,10 @@ from shifthappens.data.base import DataLoader
 from shifthappens.models import base as sh_models
 from shifthappens.models.base import PredictionTargets
 from shifthappens.tasks.base import abstract_variable
-from shifthappens.tasks.base import parameter
 from shifthappens.tasks.base import Task
 from shifthappens.tasks.base import variable
+from shifthappens.tasks.imagenet_patch.imagenet_patch_utils import \
+    ImageFolderWithEmptyDirs
 from shifthappens.tasks.metrics import Metric
 from shifthappens.tasks.task_result import TaskResult
 
@@ -65,7 +65,7 @@ class ImageNetPatchTarget(Task):
         )
 
         dataset_folder = os.path.join(dataset_folder, str(self.target))
-        self.ch_dataset = tv_datasets.ImageFolder(
+        self.ch_dataset = ImageFolderWithEmptyDirs(
             root=dataset_folder, transform=test_transform
         )
         self.images_only_dataset = sh_data_torch.IndexedTorchDataset(
@@ -233,15 +233,21 @@ class ImageNetPatchCorruptions(Task):
     containing all the target patches.
     """
 
-    max_batch_size: Optional[int] = parameter(
-        default=typing.cast(Optional[int], None),
-        options=(1, 16, None),
-        description="maximum size of batches fed to the model during evaluation",
-    )
+    max_batch_size: Optional[int] = None
 
-    # TODO: Add all corruption types here
     corruption_task_cls: Tuple[typing.Type[ImageNetPatchTarget], ...] = variable(
-        (ImageNetPatchBanana,)
+        (
+            ImageNetPatchCellularTelephone,
+            ImageNetPatchCornet,
+            ImageNetPatchElectricGuitar,
+            ImageNetPatchHairSpray,
+            ImageNetPatchSoapDispenser,
+            ImageNetPatchSock,
+            ImageNetPatchTypewriterKeyboard,
+            ImageNetPatchPlate,
+            ImageNetPatchBanana,
+            ImageNetPatchCup,
+        )
     )
 
     flavored_corruption_tasks: typing.List[ImageNetPatchTarget] = variable([])
@@ -285,9 +291,3 @@ class ImageNetPatchCorruptions(Task):
             mce=np.mean(mces).item(),
             summary_metrics={Metric.Robustness: "accuracy"},
         )
-
-
-if __name__ == "__main__":
-    from shifthappens.models.torchvision import ResNet18
-
-    sh_benchmark.evaluate_model(ResNet18(device="cpu", max_batch_size=128), "test_data")
