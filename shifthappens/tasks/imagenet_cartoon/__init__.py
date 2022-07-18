@@ -49,7 +49,7 @@ class ImageNetCartoon(Task):
             # download data
             for file_name, url, md5 in self.resources:
                 sh_utils.download_and_extract_archive(
-                    url, self.data_root, md5, file_name
+                    url, dataset_folder, md5, file_name
                 )
 
         test_transform = tv_transforms.Compose(
