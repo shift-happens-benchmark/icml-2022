@@ -25,7 +25,7 @@ from shifthappens.tasks.task_result import TaskResult
 @dataclasses.dataclass
 class ImageNetDrawing(Task):
     """ImageNet-Drawing Dataset.
-    This task evaluates a model on ImageNet-Drawing. This 
+    This task evaluates a model on ImageNet-Drawing. This
     dataset was formed by converting the images in the
     ImageNet validation set into colored pencil drawings
     using simple image processing. See the readme file for
