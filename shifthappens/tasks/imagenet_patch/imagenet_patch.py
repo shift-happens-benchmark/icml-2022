@@ -49,6 +49,7 @@ class ImageNetPatchTarget(Task):
     max_batch_size: Optional[int] = None
 
     def setup(self):
+        """Loads one target class."""
         folder_name, archive_name, url, md5 = self.resource
 
         dataset_folder = os.path.join(self.data_root, "Imagenet-Patch")
@@ -254,6 +255,7 @@ class ImageNetPatchCorruptions(Task):
     flavored_corruption_tasks: typing.List[ImageNetPatchTarget] = variable([])
 
     def setup(self):
+        """Loads all target classes."""
         for corruption_task_cls in self.corruption_task_cls:
             self.flavored_corruption_tasks += list(
                 corruption_task_cls.iterate_flavours(data_root=self.data_root)

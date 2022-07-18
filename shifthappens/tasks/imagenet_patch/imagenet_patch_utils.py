@@ -1,3 +1,6 @@
+"""
+Utilities for ImageNet Patch.
+"""
 import os.path
 
 from torchvision import datasets
@@ -9,6 +12,7 @@ class ImageFolderWithEmptyDirs(datasets.ImageFolder):
     """
 
     def find_classes(self, directory):
+        """Remaps the empty folders to actual classes in imagenet."""
         classes = sorted(
             entry.name for entry in os.scandir(directory) if entry.is_dir()
         )
