@@ -30,7 +30,6 @@ class ImageNetCartoon(Task):
     ImageNet validation set into cartoons using a GAN
     framework. See the readme file for more information
     about how the dataset was constructed.
-    
     The goal of this evaluation task is to measure the
     model's robustness to distribution shifts.
     """
