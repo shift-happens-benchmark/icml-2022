@@ -9,7 +9,6 @@
 import dataclasses
 import numpy as np
 
-import shifthappens.data.base as sh_data
 from shifthappens import benchmark as sh_benchmark
 from shifthappens.data.base import DataLoader
 from shifthappens.models import base as sh_models
@@ -18,6 +17,7 @@ from shifthappens.tasks.base import Task
 from shifthappens.tasks.metrics import Metric
 from shifthappens.tasks.task_result import TaskResult
 from shifthappens.tasks.base import parameter
+from shifthappens.data.imagenet import ImageNetValidationData
 
 from shifthappens.tasks.ccc_utils import WalkLoader
 
@@ -54,14 +54,13 @@ class CCC(Task):
     )
 
     def setup(self):
-        self.loader = WalkLoader('./', './', './',
+        self.loader = WalkLoader(ImageNetValidationData, './',
                                  self.seed, self.frequency, self.base_amount, self.accuracy, self.subset_size)
 
     def _prepare_dataloader(self) -> DataLoader:
         self.setup()
         data = self.loader.generate_dataset()
-        print('data size is ', len(data))
-        return sh_data.DataLoader(data, max_batch_size=None)
+        return DataLoader(data, max_batch_size=None)
 
     def _evaluate(self, model: sh_models.Model) -> TaskResult:
         dataloader = self._prepare_dataloader()

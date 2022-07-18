@@ -74,7 +74,7 @@ def traverse_graph(cost_dict, path_dict, arr, i, j, target_val):
 
 
 class WalkLoader(data.Dataset):
-    def __init__(self, data_dir, target_dir, accuracies_matrix, seed, frequency, base_amount, accuracy, subset_size):
+    def __init__(self, data_dir, target_dir, seed, frequency, base_amount, accuracy, subset_size):
         self.data_dir = data_dir
         self.target_dir = target_dir
         self.seed = seed
@@ -105,15 +105,16 @@ class WalkLoader(data.Dataset):
             # 'jpeg' # these noises aren't used for baseline accuracy=20
         ]
 
-        pickle_path = os.path.join("ccc_accuracy_matrix.pickle")
+        pickle_path = os.path.join(self.target_dir, "ccc_accuracy_matrix.pickle")
         if not os.path.exists(pickle_path):
             url = "https://nc.mlcloud.uni-tuebingen.de/index.php/s/izTMnXkaHoNBZT4/download/ccc_accuracy_matrix.pickle"
-            df = pd.read_pickle(url)
-            df.to_pickle(pickle_path)
-
-
-        with open(pickle_path, 'rb') as f:
-            accuracy_matrix = pickle.load(f)
+            accuracy_matrix = pd.read_pickle(url)
+            os.makedirs(self.target_dir, exist_ok=True)
+            with open(pickle_path, 'wb') as f:
+                pickle.dump(accuracy_matrix, f)
+        else:
+            with open(pickle_path, 'rb') as f:
+                accuracy_matrix = pickle.load(f)
 
 
         noise_list = list(itertools.product(self.single_noises, self.single_noises))
