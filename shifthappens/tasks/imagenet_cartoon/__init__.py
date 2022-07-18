@@ -33,6 +33,7 @@ class ImageNetCartoon(Task):
     The goal of this evaluation task is to measure the
     model's robustness to distribution shifts.
     """
+    
     resources = [
         (
             "imagenet-cartoon.tar.gz",
