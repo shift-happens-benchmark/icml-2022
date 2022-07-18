@@ -6,7 +6,7 @@ import os.path
 from torchvision import datasets
 
 
-class ImageFolderWithEmptyDirs(datasets.ImageFolder):
+class ImageFolderEmptyDirs(datasets.ImageFolder):
     """
     This is required for handling empty folders from the ImageFolder Class.
     """

@@ -26,9 +26,7 @@ from shifthappens.models.base import PredictionTargets
 from shifthappens.tasks.base import abstract_variable
 from shifthappens.tasks.base import Task
 from shifthappens.tasks.base import variable
-from shifthappens.tasks.imagenet_patch.imagenet_patch_utils import (
-    ImageFolderWithEmptyDirs,
-)
+from shifthappens.tasks.imagenet_patch.utils import ImageFolderEmptyDirs
 from shifthappens.tasks.metrics import Metric
 from shifthappens.tasks.task_result import TaskResult
 
@@ -67,7 +65,7 @@ class ImageNetPatchTarget(Task):
         )
 
         dataset_folder = os.path.join(dataset_folder, str(self.target))
-        self.ch_dataset = ImageFolderWithEmptyDirs(
+        self.ch_dataset = ImageFolderEmptyDirs(
             root=dataset_folder, transform=test_transform
         )
         self.images_only_dataset = sh_data_torch.IndexedTorchDataset(
