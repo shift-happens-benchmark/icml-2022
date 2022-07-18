@@ -25,7 +25,7 @@ from shifthappens.tasks.task_result import TaskResult
 @dataclasses.dataclass
 class ImageNetCartoon(Task):
     """ImageNet-Cartoon Dataset.
-    This task evaluates a model on ImageNet-Cartoon. This 
+    This task evaluates a model on ImageNet-Cartoon. This
     dataset was formed by converting the images in the
     ImageNet validation set into cartoons using a GAN
     framework. See the readme file for more information
