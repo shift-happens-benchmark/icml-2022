@@ -26,8 +26,9 @@ from shifthappens.models.base import PredictionTargets
 from shifthappens.tasks.base import abstract_variable
 from shifthappens.tasks.base import Task
 from shifthappens.tasks.base import variable
-from shifthappens.tasks.imagenet_patch.imagenet_patch_utils import \
-    ImageFolderWithEmptyDirs
+from shifthappens.tasks.imagenet_patch.imagenet_patch_utils import (
+    ImageFolderWithEmptyDirs,
+)
 from shifthappens.tasks.metrics import Metric
 from shifthappens.tasks.task_result import TaskResult
 
