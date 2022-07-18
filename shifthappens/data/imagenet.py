@@ -116,7 +116,7 @@ def cache_predictions(cls, imagenet_validation_result):
 
     assert (
         shifthappens.config.cache_directory_path is not None
-    ), "Cannot cache model results. shifthappens.config.Config.cache_directory_path is not specified."
+    ), "Cannot cache model results. shifthappens.config.cache_directory_path is not specified."
     save_path = os.path.join(
         shifthappens.config.cache_directory_path, cls.__class__.__name__, ""
     )
@@ -145,7 +145,7 @@ def is_cached(cls) -> bool:
     """
     assert shifthappens.config.cache_directory_path is not None, (
         "Cannot find cached model results. "
-        "shifthappens.config.Config.cache_directory_path path is not specified. "
+        "shifthappens.config.cache_directory_path path is not specified. "
     )
     load_path = os.path.join(
         shifthappens.config.cache_directory_path, cls.__class__.__name__, ""
