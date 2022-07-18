@@ -30,7 +30,6 @@ class ImageNetDrawing(Task):
     ImageNet validation set into colored pencil drawings
     using simple image processing. See the readme file for
     more information about how the dataset was constructed.
-    
     The goal of this evaluation task is to measure the
     model's robustness to distribution shifts.
     """
