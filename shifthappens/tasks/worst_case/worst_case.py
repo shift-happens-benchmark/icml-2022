@@ -318,8 +318,13 @@ class WorstCase(Task):
 
 
 if __name__ == "__main__":
-    from shifthappens.models.torchvision import ResNet18
+    from shifthappens.models.torchvision import *
     import shifthappens
+
+
+    available_models_dict = {'resnet18': ResNet18,
+                             'resnet50': ResNet50,
+                             'vgg16': VGG16}
 
     parser = argparse.ArgumentParser()
 
@@ -332,6 +337,10 @@ if __name__ == "__main__":
     parser.add_argument(
         "--imagenet_val_folder", type=str, help="The folder for the imagenet val set", required=True
     )
+    parser.add_argument(
+        "--model_name", type=str, default='resnet18',
+        help=f'The name of the model to test. Should be in {available_models_dict.keys()}'
+    )
     parser.add_argument('--gpu', '--list', nargs='+', default=[0],
                         help='GPU indices, if more than 1 parallel modules will be called')
     parser.add_argument('--bs', type=int, default=500)
@@ -340,7 +349,6 @@ if __name__ == "__main__":
         help="Turn verbose mode on when set",
         action="store_true",
     )
-
 
     args = parser.parse_args()
 
@@ -365,7 +373,9 @@ if __name__ == "__main__":
 
     tuple(sh_benchmark.__registered_tasks)[0].cls.labels_type = args.labels_type
 
-    model = ResNet18(device=device, max_batch_size=args.bs)
+    assert args.model_name.lower() in available_models_dict, f"Selected model_name should be in {available_models_dict.keys()}"
+
+    model = available_models_dict[args.model_name.lower()](device=device, max_batch_size=args.bs)
 
     if device_ids is not None and len(device_ids) > 1:
             model = nn.DataParallel(model, device_ids=device_ids)
