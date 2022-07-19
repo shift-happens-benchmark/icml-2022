@@ -1,16 +1,15 @@
-"""
-This task evaluates a set of metrics, mostly related to worst-class performance, as described in
-(J. Bitterwolf et al., "Classifiers Should Do Well Even on Their Worst Classes", https://openreview.net/forum?id=QxIXCVYJ2WP).
-It is motivated by
-(R. Balestriero et al., "The Effects of Regularization and Data Augmentation are Class Dependent", https://arxiv.org/abs/2204.03632)
- where the authors note that using only accuracy as a metric is not enough to evaluate
- the performance of the classifier, as it must not be the same on all classes/groups.
+"""Classifiers Should Do Well Even on Their Worst Classes
+This task evaluates a set of metrics, mostly related to worst-class performance, as described in [1].
+It is motivated by [2], where the authors note that using only accuracy as a metric is not enough to evaluate
+the performance of the classifier, as it must not be the same on all classes/groups.
 """
 import argparse
 import collections
 import itertools
 import time
 import urllib
+from typing import List, Union
+
 import  requests
 import dataclasses
 import os
@@ -18,6 +17,8 @@ import pathlib
 import torch
 import numpy as np
 import torch.nn as nn
+from numpy.core._multiarray_umath import ndarray
+from numpy.core.multiarray import ndarray
 
 from shifthappens.data import imagenet as sh_imagenet
 from shifthappens import benchmark as sh_benchmark
@@ -45,16 +46,15 @@ class WorstCase(Task):
     )
 
     new_labels = None
-    new_labels_mask = None
-    superclasses = None
+    new_labels_mask: Union[ndarray, None, bool] = None
+    superclasses: List[tuple] = None
 
-    verbose = True
-    labels_type = 'val'
-    n_retries = 5
+    verbose: bool = True
+    labels_type: str = 'val'
+    n_retries: int = 5
     max_batch_size: int = 256
 
     def download(self, url, data_folder, filename, md5):
-
         for _ in range(self.n_retries):
             try:
                 r = requests.get(url)
@@ -64,8 +64,9 @@ class WorstCase(Task):
             except urllib.error.URLError:
                 print(f"Download of {url} failed; wait 5s and then try again.")
                 time.sleep(5)
+                
     def setup(self):
-
+        """Downloads the cleaned labels from [3], as well as superclasses used in [1]"""
         # Download resources
         for resource in self.resources:
             folder_name, file_name, url, md5 = resource
@@ -74,22 +75,23 @@ class WorstCase(Task):
                 self.download(url, dataset_folder, file_name, md5)
             print(f'File {file_name} is in {dataset_folder}.')
         # Set the cleaned labels to a property
-        new_labels = np.array([int(line) for line in open(os.path.join(dataset_folder, 'new_labels.csv'))])
+        new_labels: ndarray = np.array([int(line) for line in open(os.path.join(dataset_folder, 'new_labels.csv'))])
 
         if self.labels_type == 'val_clean':
-            gooduns = new_labels != -1
-            self.new_labels = new_labels[gooduns]
+            cleaned_labels = new_labels != -1
+            self.new_labels = new_labels[cleaned_labels]
         elif self.labels_type == 'val':
-            gooduns = np.full(new_labels.shape, True)
+            cleaned_labels = np.full(new_labels.shape, True)
             self.new_labels = np.array(sh_imagenet.load_imagenet_targets())
 
-        self.new_labels_mask = gooduns
+        self.new_labels_mask = cleaned_labels
 
         # Set the superclasses to a property
-        superclass_list = np.array([int(line) for line in open(os.path.join(dataset_folder, 'restricted_superclass.csv'))])
+        superclass_list: ndarray = np.array([int(line) for line in open(os.path.join(dataset_folder, 'restricted_superclass.csv'))])
         self.superclasses = [tuple(np.where(superclass_list == i)[0]) for i in range(0, 9)]
 
     def get_predictions(self) -> np.ndarray:
+        """Saves to a property as a dict the computed predictions and probabilities for the used model"""
         preds = {
                  'predicted_classes': self.probs.argmax(axis=1),
                  'class_probabilities': self.probs,
@@ -99,11 +101,13 @@ class WorstCase(Task):
         return preds
 
     def standard_accuracy(self):
+        """Computes standard accuracy"""
         preds = self.get_predictions()
         accuracy = (preds['predicted_classes'] == self.new_labels).mean()
         return accuracy
 
     def classwise_accuracies(self):
+        """Computes accuracies per each class"""
         preds = self.get_predictions()
         clw_acc = {}
         for i in set(self.new_labels):
@@ -111,62 +115,72 @@ class WorstCase(Task):
         return clw_acc
 
     def classwise_sample_numbers(self):
-        clw_sn = {}
+        """Computes number of samples per class"""
+        classwise_sample_number = {}
         for i in set(self.new_labels):
-            clw_sn[i] = np.sum(self.new_labels == i)
-        return clw_sn
+            classwise_sample_number[i] = np.sum(self.new_labels == i)
+        return classwise_sample_number
 
     def classwise_topk_accuracies(self, k):
+        """Computes topk accuracies per class"""
         preds = self.get_predictions()
-        clw_topk_acc = {}
+        classwise_topk_acc = {}
         for i in set(self.new_labels):
-            clw_topk_acc[i] = np.equal(i, np.argsort(preds['class_probabilities'][np.where(self.new_labels == i)], axis=1, kind='mergesort')[:,
+            classwise_topk_acc[i] = np.equal(i, np.argsort(preds['class_probabilities'][np.where(self.new_labels == i)], axis=1, kind='mergesort')[:,
                                           -k:]).sum(axis=-1).mean()
-        return clw_topk_acc
+        return classwise_topk_acc
 
     def standard_balanced_topk_accuracy(self, k):
-        clw_topk_acc = self.classwise_topk_accuracies(k)
-        return np.array(list(clw_topk_acc.values())).mean()
+        """Computes the balanced topk accuracy"""
+        classwise_topk_acc = self.classwise_topk_accuracies(k)
+        return np.array(list(classwise_topk_acc.values())).mean()
 
     def worst_class_accuracy(self):
-        cwa = self.classwise_accuracies()
-        worst_item = min(cwa.items(), key=lambda x: x[1])
+        """Computes the smallest accuracy among classes"""
+        classwise_accuracies = self.classwise_accuracies()
+        worst_item = min(classwise_accuracies.items(), key=lambda x: x[1])
         return worst_item[1]
 
     def worst_class_topk_accuracy(self, k):
-        clw_topk_acc = self.classwise_topk_accuracies(k)
-        worst_item = min(clw_topk_acc.items(), key=lambda x: x[1])
+        """Computes the smallest topk accuracy among classes"""
+        classwise_topk_acc = self.classwise_topk_accuracies(k)
+        worst_item = min(classwise_topk_acc.items(), key=lambda x: x[1])
         return worst_item[1]
 
     def worst_balanced_n_classes_accuracy(self, n):
-        cwa = self.classwise_accuracies()
-        sorted_cwa = sorted(cwa.items(), key=lambda item: item[1])
-        n_worst = sorted_cwa[:n]
+        """Computes the ballanced accuracy among the worst n classes, based on their per-class accuracies"""
+        classwise_accuracies = self.classwise_accuracies()
+        sorted_classwise_accuracies = sorted(classwise_accuracies.items(), key=lambda item: item[1])
+        n_worst = sorted_classwise_accuracies[:n]
         return np.array([x[1] for x in n_worst]).mean()
 
     def worst_heuristic_n_classes_recall(self, n):
-        cwa = self.classwise_accuracies()
-        clw_sn = self.classwise_sample_numbers()
-        sorted_cwa = sorted(cwa.items(), key=lambda item: item[1])
-        n_worst = sorted_cwa[:n]
-        nwc = np.array([v * clw_sn[c] for c, v in n_worst]).sum() / np.array([clw_sn[c] for c, v in n_worst]).sum()
-        return nwc
+        """Computes recall for n worst in terms of their per class accuracy"""
+        classwise_accuracies = self.classwise_accuracies()
+        classwise_accuracies_sample_numbers = self.classwise_sample_numbers()
+        sorted_classwise_accuracies = sorted(classwise_accuracies.items(), key=lambda item: item[1])
+        n_worst = sorted_classwise_accuracies[:n]
+        n_worstclass_recall = np.array([v * classwise_accuracies_sample_numbers[c] for c, v in n_worst]).sum() / np.array([classwise_accuracies_sample_numbers[c] for c, v in n_worst]).sum()
+        return n_worstclass_recall
 
     def worst_balanced_n_classes_topk_accuracy(self, n, k):
-        clw_topk_acc = self.classwise_topk_accuracies(k)
-        sorted_clw_topk_acc = sorted(clw_topk_acc.items(), key=lambda item: item[1])
+        """Computes the balanced accuracy for the worst n classes in therms of their per class topk accuracy"""
+        classwise_topk_accuracies = self.classwise_topk_accuracies(k)
+        sorted_clw_topk_acc = sorted(classwise_topk_accuracies.items(), key=lambda item: item[1])
         n_worst = sorted_clw_topk_acc[:n]
         return np.array([x[1] for x in n_worst]).mean()
 
     def worst_heuristic_n_classes_topk_recall(self, n, k):
-        clw_topk_acc = self.classwise_topk_accuracies(k)
+        """Computes the recall for the worst n classes in therms of their per class topk accuracy"""
+        classwise_topk_accuracies = self.classwise_topk_accuracies(k)
         clw_sn = self.classwise_sample_numbers()
-        sorted_clw_topk_acc = sorted(clw_topk_acc.items(), key=lambda item: item[1])
+        sorted_clw_topk_acc = sorted(classwise_topk_accuracies.items(), key=lambda item: item[1])
         n_worst = sorted_clw_topk_acc[:n]
-        nwc = np.array([v * clw_sn[c] for c, v in n_worst]).sum() / np.array([clw_sn[c] for c, v in n_worst]).sum()
-        return nwc
+        n_worstclass_recall = np.array([v * clw_sn[c] for c, v in n_worst]).sum() / np.array([clw_sn[c] for c, v in n_worst]).sum()
+        return n_worstclass_recall
 
     def worst_balanced_two_class_binary_accuracy(self):
+        """Computes the smallest two-class accuracy, when restricting the classifier to any two classes"""
         classes = list(set(self.new_labels))
         binary_accuracies = {}
         for i, j in itertools.combinations(classes, 2):
@@ -180,20 +194,23 @@ class WorstCase(Task):
         return worst_item[1]
 
     def worst_balanced_superclass_recall(self):
-        cwa = self.classwise_accuracies()
-        scwa = {i: np.array([cwa[c] for c in s]).mean() for i, s in enumerate(self.superclasses)}
-        worst_item = min(scwa.items(), key=lambda x: x[1])
+        """Computes the worst balanced recall among the superclasses"""
+        classwise_accuracies = self.classwise_accuracies()
+        superclass_classwise_accuracies = {i: np.array([classwise_accuracies[c] for c in s]).mean() for i, s in enumerate(self.superclasses)}
+        worst_item = min(superclass_classwise_accuracies.items(), key=lambda x: x[1])
         return worst_item[1]
 
     def worst_superclass_recall(self):
-        cwa = self.classwise_accuracies()
-        clw_sn = self.classwise_sample_numbers()
-        scwa = {i: np.array([cwa[c] * clw_sn[c] for c in s]).sum() / np.array([clw_sn[c] for c in s]).sum() for i, s in
+        """Computes the worst not balanced recall among the superclasses"""
+        classwise_accuracies = self.classwise_accuracies()
+        classwise_sample_number = self.classwise_sample_numbers()
+        superclass_classwise_accuracies = {i: np.array([classwise_accuracies[c] * classwise_sample_number[c] for c in s]).sum() / np.array([classwise_sample_number[c] for c in s]).sum() for i, s in
                 enumerate(self.superclasses)}
-        worst_item = min(scwa.items(), key=lambda x: x[1])
+        worst_item = min(superclass_classwise_accuracies.items(), key=lambda x: x[1])
         return worst_item[1]
 
     def intra_superclass_accuracies(self):
+        """Computes the accuracy for the images among one superclass, for each superclass"""
         isa = {}
         original_probs = self.probs.copy()
         original_targets = self.new_labels.copy()
@@ -216,11 +233,13 @@ class WorstCase(Task):
         return isa
 
     def worst_intra_superclass_accuracy(self):
+        """Computes the worst superclass accuracy using intra_superclass_accuracies"""
         isa = self.intra_superclass_accuracies()
         worst_item = min(isa.items(), key=lambda x: x[1])
         return worst_item[1]
 
     def worst_class_precision(self):
+        """Computes the precision for the worst class"""
         preds = self.get_predictions()
         classes = list(set(self.new_labels))
         sc = {}
@@ -237,6 +256,7 @@ class WorstCase(Task):
         return worst_item[1]
 
     def class_confusion(self):
+        """Computes the confision matrix"""
         preds = self.get_predictions()
         classes = list(set(self.new_labels))
         confusion = np.zeros((len(classes), len(classes)))
@@ -246,7 +266,7 @@ class WorstCase(Task):
 
 
     def _evaluate(self, model: sh_models.Model, verbose=False) -> TaskResult:
-
+        """The final method that uses all of the above to compute the metrics introduced in [1]"""
         verbose = self.verbose
         model.verbose = verbose
 
@@ -293,7 +313,7 @@ if __name__ == "__main__":
 
     # Set the label type either to val (50000 labels) or
     # val_clean (46044 labels) for the cleaned labels from
-    # (C. Northcutt et al., "Pervasive Label Errors in Test Sets Destabilize Machine Learning Benchmarks", https://arxiv.org/abs/2103.14749, https://github.com/cleanlab/label-errors)
+    # [3]
     parser.add_argument(
         "--labels_type", type=str, help="The label type", default='val'
     )
