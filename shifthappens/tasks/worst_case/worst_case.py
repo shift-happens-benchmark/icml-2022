@@ -15,8 +15,9 @@ import  requests
 import dataclasses
 import os
 import pathlib
-
+import torch
 import numpy as np
+import torch.nn as nn
 
 from shifthappens.data import imagenet as sh_imagenet
 from shifthappens import benchmark as sh_benchmark
@@ -299,13 +300,31 @@ if __name__ == "__main__":
     parser.add_argument(
         "--imagenet_val_folder", type=str, help="The folder for the imagenet val set", required=True
     )
+    parser.add_argument('--gpu', '--list', nargs='+', default=[0],
+                        help='GPU indices, if more than 1 parallel modules will be called')
+    parser.add_argument('--bs', type=int, default=500)
     parser.add_argument(
         "--verbose",
         help="Turn verbose mode on when set",
         action="store_true",
     )
 
+
     args = parser.parse_args()
+
+    if len(args.gpu) == 0:
+        device_ids = None
+        device = torch.device('cpu')
+        print('Warning! Computing on CPU')
+        num_devices = 1
+    elif len(args.gpu) == 1:
+        device_ids = [int(args.gpu[0])]
+        device = torch.device('cuda:' + str(args.gpu[0]))
+        num_devices = 1
+    else:
+        device_ids = [int(i) for i in args.gpu]
+        device = torch.device('cuda:' + str(min(device_ids)))
+        num_devices = len(device_ids)
 
     shifthappens.config.imagenet_validation_path = args.imagenet_val_folder
 
@@ -313,7 +332,12 @@ if __name__ == "__main__":
     shifthappens.config.verbose = args.verbose
 
     tuple(sh_benchmark.__registered_tasks)[0].cls.labels_type = args.labels_type
+
+    model = ResNet18(device=device, max_batch_size=args.bs)
+
+    if device_ids is not None and len(device_ids) > 1:
+            model = nn.DataParallel(model, device_ids=device_ids)
     sh_benchmark.evaluate_model(
-        ResNet18(device="cuda:2", max_batch_size=500),
+        model,
         "data"
     )

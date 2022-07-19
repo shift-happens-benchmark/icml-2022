@@ -6,16 +6,16 @@ It is motivated by [2], where the authors note that using only accuracy as a met
  the performance of the classifier, as it must not be the same on all classes/groups.
 
 ## How to start
-run
+in the icml-2022 folder, run
 
 ```
-python tasks/worst_case/worst_case.py --imagenet_val_folder '/scratch/datasets/imagenet/val' --verbose --labels_type 'val'
+python shifthappens/tasks/worst_case/worst_case.py --imagenet_val_folder '/scratch/datasets/imagenet/val' --verbose --labels_type 'val'
 ```
 
 for evaluating with original labels, and
 
 ```
-python tasks/worst_case/worst_case.py --imagenet_val_folder '/scratch/datasets/imagenet/val' --verbose --labels_type 'val_clean'
+python shifthappens/tasks/worst_case/worst_case.py --imagenet_val_folder '/scratch/datasets/imagenet/val' --verbose --labels_type 'val_clean'
 ```
 
 for evaluating with cleaned ones from [3].
