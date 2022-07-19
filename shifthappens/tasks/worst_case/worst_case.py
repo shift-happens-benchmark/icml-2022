@@ -55,6 +55,7 @@ class WorstCase(Task):
     max_batch_size: int = 256
 
     def download(self, url, data_folder, filename, md5):
+        """Method to download the data given its' url, and the desired folder to stor int"""
         for _ in range(self.n_retries):
             try:
                 r = requests.get(url)
@@ -66,7 +67,7 @@ class WorstCase(Task):
                 time.sleep(5)
                 
     def setup(self):
-        """Downloads the cleaned labels from [3], as well as superclasses used in [1]"""
+        """Calls the download method to download the cleaned labels from [3], as well as superclasses used in [1]"""
         # Download resources
         for resource in self.resources:
             folder_name, file_name, url, md5 = resource
