@@ -114,8 +114,7 @@ class Model(abc.ABC):
 
     @property
     def imagenet_validation_result(self):
-        """
-        Access the model's predictions/evaluation results on the ImageNet validation set.
+        """Access the model's predictions/evaluation results on the ImageNet validation set.
 
         Returns:
             Model evaluation result on ImageNet validation set wrapped with ModelResult.
@@ -230,8 +229,7 @@ class Model(abc.ABC):
     def _predict(
         self, input_dataloader: DataLoader, targets: PredictionTargets
     ) -> Iterator[ModelResult]:
-        """
-        Override this function for the specific model.
+        """Override this function for the specific model.
 
         Args:
             input_dataloader: Dataloader producing batches of data.

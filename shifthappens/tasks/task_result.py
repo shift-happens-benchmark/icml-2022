@@ -1,3 +1,5 @@
+"""Class for representing the results of a single task."""
+
 from typing import Dict
 from typing import Tuple
 from typing import Union

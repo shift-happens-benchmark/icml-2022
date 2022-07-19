@@ -140,6 +140,7 @@ Thanks a lot to the Program Committee for reviewing and contributing to shaping 
     :maxdepth: 2
     :hidden:
 
+    Schedule <schedule>
     Call for Submissions <call_for_papers>
     Benchmark API Docs <api>
     Accepted Papers <papers>
