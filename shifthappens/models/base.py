@@ -209,7 +209,7 @@ class Model(abc.ABC):
             ]
         }
 
-        if self.verbose:
+        if shifthappens.config.verbose:
             pred_loader = tqdm(self._predict(imagenet_val_dataloader, targets), desc='Predictions', total=int(len(imagenet_val_dataloader._dataset)/imagenet_val_dataloader.max_batch_size))
         else:
             pred_loader = self._predict(imagenet_val_dataloader, targets)
