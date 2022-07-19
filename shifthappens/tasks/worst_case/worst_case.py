@@ -106,7 +106,7 @@ class WorstCase(Task):
         accuracy = (preds['predicted_classes'] == self.new_labels).mean()
         return accuracy
 
-    def classwise_accuracies(self):
+    def classwise_accuracies(self) -> dict:
         """Computes accuracies per each class"""
         preds = self.get_predictions()
         clw_acc = {}
@@ -114,14 +114,14 @@ class WorstCase(Task):
             clw_acc[i] = np.equal(preds['predicted_classes'][np.where(self.new_labels == i)], i).mean()
         return clw_acc
 
-    def classwise_sample_numbers(self):
+    def classwise_sample_numbers(self) -> dict:
         """Computes number of samples per class"""
         classwise_sample_number = {}
         for i in set(self.new_labels):
             classwise_sample_number[i] = np.sum(self.new_labels == i)
         return classwise_sample_number
 
-    def classwise_topk_accuracies(self, k):
+    def classwise_topk_accuracies(self, k) -> dict:
         """Computes topk accuracies per class"""
         preds = self.get_predictions()
         classwise_topk_acc = {}
@@ -130,24 +130,24 @@ class WorstCase(Task):
                                           -k:]).sum(axis=-1).mean()
         return classwise_topk_acc
 
-    def standard_balanced_topk_accuracy(self, k):
+    def standard_balanced_topk_accuracy(self, k) -> np.array:
         """Computes the balanced topk accuracy"""
         classwise_topk_acc = self.classwise_topk_accuracies(k)
         return np.array(list(classwise_topk_acc.values())).mean()
 
-    def worst_class_accuracy(self):
+    def worst_class_accuracy(self) -> float:
         """Computes the smallest accuracy among classes"""
         classwise_accuracies = self.classwise_accuracies()
         worst_item = min(classwise_accuracies.items(), key=lambda x: x[1])
         return worst_item[1]
 
-    def worst_class_topk_accuracy(self, k):
+    def worst_class_topk_accuracy(self, k) -> float:
         """Computes the smallest topk accuracy among classes"""
         classwise_topk_acc = self.classwise_topk_accuracies(k)
         worst_item = min(classwise_topk_acc.items(), key=lambda x: x[1])
         return worst_item[1]
 
-    def worst_balanced_n_classes_accuracy(self, n):
+    def worst_balanced_n_classes_accuracy(self, n) -> np.array:
         """Computes the ballanced accuracy among the worst n classes, based on their per-class accuracies"""
         classwise_accuracies = self.classwise_accuracies()
         sorted_classwise_accuracies = sorted(classwise_accuracies.items(), key=lambda item: item[1])
