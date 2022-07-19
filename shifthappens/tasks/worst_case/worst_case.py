@@ -100,7 +100,7 @@ class WorstCase(Task):
         preds['number_of_class_predictions'] = collections.Counter(preds['predicted_classes'])
         return preds
 
-    def standard_accuracy(self):
+    def standard_accuracy(self) -> np.float:
         """Computes standard accuracy"""
         preds = self.get_predictions()
         accuracy = (preds['predicted_classes'] == self.new_labels).mean()
@@ -154,7 +154,7 @@ class WorstCase(Task):
         n_worst = sorted_classwise_accuracies[:n]
         return np.array([x[1] for x in n_worst]).mean()
 
-    def worst_heuristic_n_classes_recall(self, n):
+    def worst_heuristic_n_classes_recall(self, n) -> np.float:
         """Computes recall for n worst in terms of their per class accuracy"""
         classwise_accuracies = self.classwise_accuracies()
         classwise_accuracies_sample_numbers = self.classwise_sample_numbers()
@@ -163,14 +163,14 @@ class WorstCase(Task):
         n_worstclass_recall = np.array([v * classwise_accuracies_sample_numbers[c] for c, v in n_worst]).sum() / np.array([classwise_accuracies_sample_numbers[c] for c, v in n_worst]).sum()
         return n_worstclass_recall
 
-    def worst_balanced_n_classes_topk_accuracy(self, n, k):
+    def worst_balanced_n_classes_topk_accuracy(self, n, k) -> np.float:
         """Computes the balanced accuracy for the worst n classes in therms of their per class topk accuracy"""
         classwise_topk_accuracies = self.classwise_topk_accuracies(k)
         sorted_clw_topk_acc = sorted(classwise_topk_accuracies.items(), key=lambda item: item[1])
         n_worst = sorted_clw_topk_acc[:n]
         return np.array([x[1] for x in n_worst]).mean()
 
-    def worst_heuristic_n_classes_topk_recall(self, n, k):
+    def worst_heuristic_n_classes_topk_recall(self, n, k) -> np.float:
         """Computes the recall for the worst n classes in therms of their per class topk accuracy"""
         classwise_topk_accuracies = self.classwise_topk_accuracies(k)
         clw_sn = self.classwise_sample_numbers()
@@ -179,7 +179,7 @@ class WorstCase(Task):
         n_worstclass_recall = np.array([v * clw_sn[c] for c, v in n_worst]).sum() / np.array([clw_sn[c] for c, v in n_worst]).sum()
         return n_worstclass_recall
 
-    def worst_balanced_two_class_binary_accuracy(self):
+    def worst_balanced_two_class_binary_accuracy(self) -> np.float:
         """Computes the smallest two-class accuracy, when restricting the classifier to any two classes"""
         classes = list(set(self.new_labels))
         binary_accuracies = {}
@@ -193,14 +193,14 @@ class WorstCase(Task):
         worst_item = sorted_binary_accuracies[0]
         return worst_item[1]
 
-    def worst_balanced_superclass_recall(self):
+    def worst_balanced_superclass_recall(self) -> np.float:
         """Computes the worst balanced recall among the superclasses"""
         classwise_accuracies = self.classwise_accuracies()
         superclass_classwise_accuracies = {i: np.array([classwise_accuracies[c] for c in s]).mean() for i, s in enumerate(self.superclasses)}
         worst_item = min(superclass_classwise_accuracies.items(), key=lambda x: x[1])
         return worst_item[1]
 
-    def worst_superclass_recall(self):
+    def worst_superclass_recall(self) -> np.float:
         """Computes the worst not balanced recall among the superclasses"""
         classwise_accuracies = self.classwise_accuracies()
         classwise_sample_number = self.classwise_sample_numbers()
@@ -209,9 +209,9 @@ class WorstCase(Task):
         worst_item = min(superclass_classwise_accuracies.items(), key=lambda x: x[1])
         return worst_item[1]
 
-    def intra_superclass_accuracies(self):
+    def intra_superclass_accuracies(self) -> dict:
         """Computes the accuracy for the images among one superclass, for each superclass"""
-        isa = {}
+        intra_superclass_accuracies = {}
         original_probs = self.probs.copy()
         original_targets = self.new_labels.copy()
         for i, s in enumerate(self.superclasses):
@@ -225,14 +225,14 @@ class WorstCase(Task):
             self.probs = internal_probs
             self.new_labels = internal_targets
             internal_preds = s_targets(self.get_predictions()['predicted_classes'])
-            isa[i] = (internal_preds == internal_targets).mean()
+            intra_superclass_accuracies[i] = (internal_preds == internal_targets).mean()
 
         self.probs = original_probs
         self.new_labels = original_targets
 
-        return isa
+        return intra_superclass_accuracies
 
-    def worst_intra_superclass_accuracy(self):
+    def worst_intra_superclass_accuracy(self) -> np.float:
         """Computes the worst superclass accuracy using intra_superclass_accuracies
 
         Output: the accuracy for the worst super class
@@ -241,7 +241,7 @@ class WorstCase(Task):
         worst_item = min(isa.items(), key=lambda x: x[1])
         return worst_item[1]
 
-    def worst_class_precision(self):
+    def worst_class_precision(self) -> np.float:
         """Computes the precision for the worst class
 
         Returns:
