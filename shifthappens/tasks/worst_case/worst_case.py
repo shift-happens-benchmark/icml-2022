@@ -233,30 +233,41 @@ class WorstCase(Task):
         return isa
 
     def worst_intra_superclass_accuracy(self):
-        """Computes the worst superclass accuracy using intra_superclass_accuracies"""
+        """Computes the worst superclass accuracy using intra_superclass_accuracies
+
+        Output: the accuracy for the worst super class
+        """
         isa = self.intra_superclass_accuracies()
         worst_item = min(isa.items(), key=lambda x: x[1])
         return worst_item[1]
 
     def worst_class_precision(self):
-        """Computes the precision for the worst class"""
+        """Computes the precision for the worst class
+
+        Returns:
+           Dict entry with the worst performing class
+        """
         preds = self.get_predictions()
         classes = list(set(self.new_labels))
-        sc = {}
+        per_class_precision = {}
         for c in classes:
             erroneous_c = (preds['predicted_classes'] == c) * (self.new_labels != c)
             correct_c = (preds['predicted_classes'] == c) * (self.new_labels == c)
             predicted_c = (preds['predicted_classes'] == c)
             if predicted_c.sum():
-                sc[c] = correct_c.sum() / predicted_c.sum()  # 1-erroneous_c.sum()/predicted_c.sum()
+                per_class_precision[c] = correct_c.sum() / predicted_c.sum()  # 1-erroneous_c.sum()/predicted_c.sum()
             else:
-                sc[c] = 1
-        sorted_sc = sorted(sc.items(), key=lambda item: item[1])
+                per_class_precision[c] = 1
+        sorted_sc = sorted(per_class_precision.items(), key=lambda item: item[1])
         worst_item = sorted_sc[0]
         return worst_item[1]
 
-    def class_confusion(self):
-        """Computes the confision matrix"""
+    def class_confusion(self) -> np.array:
+        """Computes the confision matrix
+        Returns:
+           confusion: confusion matrx
+
+        """
         preds = self.get_predictions()
         classes = list(set(self.new_labels))
         confusion = np.zeros((len(classes), len(classes)))
