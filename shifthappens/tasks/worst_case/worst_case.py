@@ -307,10 +307,10 @@ if __name__ == "__main__":
 
     args = parser.parse_args()
 
-    shifthappens.data.imagenet.ImageNetValidationData=args.imagenet_val_folder
+    shifthappens.config.imagenet_validation_path = args.imagenet_val_folder
 
 
-    tuple(sh_benchmark.__registered_tasks)[0].cls.verbose = args.verbose
+    shifthappens.config.verbose = args.verbose
 
     tuple(sh_benchmark.__registered_tasks)[0].cls.labels_type = args.labels_type
     sh_benchmark.evaluate_model(
