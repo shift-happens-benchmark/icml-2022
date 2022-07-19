@@ -14,6 +14,7 @@ import torch
 import numpy as np
 import torch.nn as nn
 from numpy.core._multiarray_umath import ndarray
+import shifthappens.config
 from numpy.core.multiarray import ndarray
 
 from shifthappens.data import imagenet as sh_imagenet
