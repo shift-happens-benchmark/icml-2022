@@ -73,7 +73,33 @@ def traverse_graph(cost_dict, path_dict, arr, i, j, target_val):
     return cost_dict, path_dict
 
 
+
+
 class WalkLoader(data.Dataset):
+    """
+        Generate a continuous walk through noises, at a desired baseline accuracy.
+
+        Parameters
+        ----------
+        data_dir : str
+            path to image dir (these are the images that the noises will be applied to)
+        target_dir : str
+            path to put generated files in
+        seed: int
+            seed for the random number generator
+        frequency: int
+            denotes how many images will be sampled from each subset
+        base_amount: int
+            this is about the entire size of the dataset (but not actually, because we need to start and end on the same noise)
+        accuracy: int
+            desired baseline accuracy to be used
+        subset_size: int
+            of the images in data_dir, how many should we use?
+        Returns
+        -------
+        WalkLoader
+            the generate function generates files, but if they already exist (or it finished generating files), returns a Dataset Object
+    """
     def __init__(self, data_dir, target_dir, seed, frequency, base_amount, accuracy, subset_size):
         self.data_dir = data_dir
         self.target_dir = target_dir
@@ -359,6 +385,3 @@ def dset2lmdb(dataset, outpath, write_frequency=5000):
     db.close()
     print("Closing")
 
-
-if __name__ == "__main__":
-    pass
