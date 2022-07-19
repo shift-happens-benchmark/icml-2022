@@ -8,6 +8,7 @@ AUROC and FPR at TPR equal 0.95.
 The original dataset was collected by Dat Tran for the object detection task
 and can be found at https://github.com/datitran/raccoon_dataset.
 """
+
 import dataclasses
 import os
 
