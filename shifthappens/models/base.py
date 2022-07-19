@@ -11,6 +11,7 @@ packed into an :py:class:`shifthappens.models.base.ModelResult` instance.
 import abc
 import dataclasses
 from typing import Iterator
+import shifthappens.config
 
 import numpy as np
 from tqdm import tqdm
