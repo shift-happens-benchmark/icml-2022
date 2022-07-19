@@ -1,8 +1,4 @@
-"""Classifiers Should Do Well Even on Their Worst Classes
-This task evaluates a set of metrics, mostly related to worst-class performance, as described in [1].
-It is motivated by [2], where the authors note that using only accuracy as a metric is not enough to evaluate
-the performance of the classifier, as it must not be the same on all classes/groups.
-"""
+"""Classifiers Should Do Well Even on Their Worst Classes"""
 import argparse
 import collections
 import itertools
@@ -33,6 +29,9 @@ from shifthappens.tasks.task_result import TaskResult
 )
 @dataclasses.dataclass
 class WorstCase(Task):
+    """This task evaluates a set of metrics, mostly related to worst-class performance, as described in [1].
+    It is motivated by [2], where the authors note that using only accuracy as a metric is not enough to evaluate
+    the performance of the classifier, as it must not be the same on all classes/groups."""
     resources = (
         ["worstcase",
         "restricted_superclass.csv",
