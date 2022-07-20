@@ -17,6 +17,20 @@ from shifthappens.tasks.ccc_lmdb import ImageFolderLMDB, dset2lmdb
 
 
 def path_to_dataset(path, root):
+    """
+        Returns a list of directories that correspond to a given path between two noises
+
+        Parameters
+        ----------
+        data_dir : list
+            each entry is a tuple of two indices that represents a severity combination
+        root : str
+            path to image dir
+
+        Returns
+        -------
+        A list of directories that correpond to the path along the severities
+    """
     dir_list = []
     for i in range(len(path)):
         dir_list.append(os.path.join(root, "s1_" + str(float(path[i][0]) / 4) + "s2_" + str(float(path[i][1]) / 4)))
@@ -24,6 +38,20 @@ def path_to_dataset(path, root):
 
 
 def find_path(arr, target_val):
+    """
+        Finds a path going from one noise to another, such that the average accuracy of the subsets on the path is close to target_val
+
+        Parameters
+        ----------
+        arr : numpy array
+            each entry is an accuracy of a pretrained ResNet-50 classifier on a severity combination
+        target_val : float
+            the desired accuracy of the subsets along the path
+
+        Returns
+        -------
+        A list of indices, that correspond to a path through the severity combinations
+    """
     cur_max = 99999999999
     cost_dict = {}
     path_dict = {}
@@ -40,6 +68,27 @@ def find_path(arr, target_val):
 
 
 def traverse_graph(cost_dict, path_dict, arr, i, j, target_val):
+    """
+        Path finding helper function.
+
+        Parameters
+        ----------
+        cost_dict : dictionary containing floats
+            each entry corresponds to the optimal cost for a path that starts at index (i,j) (cost is a float that contains the total weight of the path)
+        path_dict : dictionary containing floats
+            each entry corresponds to the optimal path that starts at index (i,j) (a path is a list of indices)
+        arr : numpy array
+            each entry is an accuracy of a pretrained ResNet-50 classifier on a severity combination
+        i : int
+            current row index
+        j : int
+            current column index
+        target_val : float
+            the desired accuracy of the subsets along the path
+        Returns
+        -------
+        Two dictionaries, that correspond to the optimal cost for a path that starts at index (i,j), and their respective paths (list of indices)
+    """
     if j >= arr.shape[1]:
         if (i, j) not in cost_dict.keys():
             cost_dict[(i, j)] = 9999999999999

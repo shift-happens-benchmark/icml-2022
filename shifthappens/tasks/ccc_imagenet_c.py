@@ -16,8 +16,21 @@
 import os
 import os.path
 import numpy as np
-
 from scipy import interpolate
+import skimage as sk
+from skimage.filters import gaussian
+from io import BytesIO
+from wand.image import Image as WandImage
+from wand.api import library as wandlibrary
+import ctypes
+from PIL import Image as PILImage
+import cv2
+from scipy.ndimage import zoom as scizoom
+from scipy.ndimage.interpolation import map_coordinates
+import warnings
+
+warnings.simplefilter("ignore", UserWarning)
+
 
 # /////////////// Data Loader ///////////////
 
@@ -63,21 +76,6 @@ def make_dataset(dir, class_to_idx):
 
 
 # /////////////// Distortion Helpers ///////////////
-
-import skimage as sk
-from skimage.filters import gaussian
-from io import BytesIO
-from wand.image import Image as WandImage
-from wand.api import library as wandlibrary
-import ctypes
-from PIL import Image as PILImage
-import cv2
-from scipy.ndimage import zoom as scizoom
-from scipy.ndimage.interpolation import map_coordinates
-import warnings
-
-warnings.simplefilter("ignore", UserWarning)
-
 
 def auc(errs):  # area under the alteration error curve
     area = 0
