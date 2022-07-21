@@ -1,11 +1,11 @@
 """A task for evaluating the classification accuracy on ImageNet-MetaShift.
 
 MetaShift is constructed from the natural heterogeneity of Visual Genome and its annotations.
-To support evaluating ImageNet trained models on MetaShift, 
+To support evaluating ImageNet trained models on MetaShift,
 we match MetaShift classes with ImageNet hierarchy using WordNet.
-The ImageNet-matched-MetaShift is a collection of 5,040 sets of images from 261 classes, 
+The ImageNet-matched-MetaShift is a collection of 5,040 sets of images from 261 classes,
 where all the labels are a subset of the ImageNet-1k.
-Each class in the ImageNet-matched Metashift contains 2301.6 images on average, 
+Each class in the ImageNet-matched Metashift contains 2301.6 images on average,
 and 19.3 subsets capturing images in different contexts.
 
 """
@@ -33,27 +33,27 @@ from shifthappens.models.base import PredictionTargets
 from shifthappens.tasks.base import Task
 from shifthappens.tasks.metrics import Metric
 from shifthappens.tasks.task_result import TaskResult
-import json
 
 """Use False to generate the MetaDataset for all ~200 classes [Warning: Very Large].
 """
-ONLY_SELECTED_CLASSES = True 
+ONLY_SELECTED_CLASSES = True
 
 """check class_info.txt to select classes
 """
 SELECTED_CLASSES = [
     'airplane', 'elephant', 'cat', 'dog', 'horse'
-    ] 
+]
 
 """
 change threshold to set the minimum number of images per subset
 """
-IMGAGE_SUBSET_SIZE_THRESHOLD = 25 
+IMGAGE_SUBSET_SIZE_THRESHOLD = 25
 
 CLASS_HIERARCHY_JSON = "https://zenodo.org/record/6804766/files/class_hierarchy.json?download=1"
 CLASS_INFO_TXT = "https://zenodo.org/record/6804766/files/class_info.txt?download=1"
 IMAGENET_HIERARCHY_JSON = "https://zenodo.org/record/6804766/files/imagenet1k_node_names.json?download=1"
 SELECTED_SUBSET_PKL = "https://zenodo.org/record/6804766/files/selected-candidate-subsets.pkl?download=1"
+
 
 @sh_benchmark.register_task(
     name="ImageNet-MetaShift", relative_data_folder="imagenet_metashift", standalone=True
@@ -62,10 +62,10 @@ SELECTED_SUBSET_PKL = "https://zenodo.org/record/6804766/files/selected-candidat
 class ImageNetMetaShift(Task):
     """Evaluate the classification accuracy on a small subset of the ImageNet-MetaShift dataset.
     Each class in the test case contains several subsets, representing distribution of images in different contexts.
-    
-    [1] We have matched the labels in ImageNet-1k to MetaShift. Since ImageNet-1k has heterogeneous hierarchy, 
-        a class can have many breeds. Take dog as an example, MetaShift only contains one class of dog, 
-        while ImageNet has many kinds of dogs. In our metrics, any results under dog hierarchy are viewed as correct 
+
+    [1] We have matched the labels in ImageNet-1k to MetaShift. Since ImageNet-1k has heterogeneous hierarchy,
+        a class can have many breeds. Take dog as an example, MetaShift only contains one class of dog,
+        while ImageNet has many kinds of dogs. In our metrics, any results under dog hierarchy are viewed as correct
         when evaluate the classification results of dog.
     """
 
@@ -80,48 +80,62 @@ class ImageNetMetaShift(Task):
         """parse the node into class and context string
         """
         tag = node_str.split('(')[-1][:-1]
-        subject_str = node_str.split('(')[0].strip() 
+        subject_str = node_str.split('(')[0].strip()
         return subject_str, tag
 
     def load_candidate_subsets(self):
         """
         load candidate subsets for generating
         """
-        pkl_save_path = os.path.join(self.data_root, "imagenet-metashift", "selected-candidate-subsets.pkl")
+        pkl_save_path = os.path.join(
+            self.data_root,
+            "imagenet-metashift",
+            "selected-candidate-subsets.pkl")
         with open(pkl_save_path, "rb") as pkl_f:
-            load_data = pickle.load( pkl_f )
+            load_data = pickle.load(pkl_f)
             print('pickle load', len(load_data), pkl_save_path)
             return load_data
 
-
-    def copy_image_for_subject(self, root_folder, subject_str, subject_data, node_name_to_img_id, trainsg_dupes):
+    def copy_image_for_subject(
+            self,
+            root_folder,
+            subject_str,
+            subject_data,
+            node_name_to_img_id,
+            trainsg_dupes):
         """Copy Image Sets: Work at subject_str level
-        """ 
+        """
 
         # Iterate all the subsets of the given subject
-        for node_name in subject_data: 
+        for node_name in subject_data:
             subject_str, tag = self.parse_node_str(node_name)
 
             # Create dataset a new folder
             subject_localgroup_folder = os.path.join(root_folder, subject_str, node_name)
-            if os.path.isdir(subject_localgroup_folder): 
-                shutil.rmtree(subject_localgroup_folder) 
-            os.makedirs(subject_localgroup_folder, exist_ok = False)
+            if os.path.isdir(subject_localgroup_folder):
+                shutil.rmtree(subject_localgroup_folder)
+            os.makedirs(subject_localgroup_folder, exist_ok=False)
 
-            for image_idx_in_set, imageID in enumerate(node_name_to_img_id[node_name] - trainsg_dupes): 
-                
-                src_image_path = os.path.join(self.data_root, 'imagenet-metashift', "allImages", "images", imageID + '.jpg')
-                dst_image_path = os.path.join(subject_localgroup_folder, imageID + '.jpg') 
+            for image_idx_in_set, imageID in enumerate(
+                    node_name_to_img_id[node_name] - trainsg_dupes):
+
+                src_image_path = os.path.join(
+                    self.data_root,
+                    'imagenet-metashift',
+                    "allImages",
+                    "images",
+                    imageID + '.jpg')
+                dst_image_path = os.path.join(subject_localgroup_folder, imageID + '.jpg')
                 shutil.copyfile(src_image_path, dst_image_path)
-                    
+
         return
 
-    def preprocess_groups(self, subject_classes = SELECTED_CLASSES):
+    def preprocess_groups(self, subject_classes=SELECTED_CLASSES):
         """preprocess for each group:
 
         load condidate subsets for each group
         discard an object class if it has too few local groups
-        copy the image files from the general dataset to to the desired groups 
+        copy the image files from the general dataset to to the desired groups
         """
 
         trainsg_dupes = set()
@@ -129,13 +143,13 @@ class ImageNetMetaShift(Task):
         # Consult back to this dict for concrete image IDs.
         node_name_to_img_id = self.load_candidate_subsets()
 
-        # Build a default counter first 
+        # Build a default counter first
         # Data Iteration
         group_name_counter = Counter()
         for node_name in node_name_to_img_id.keys():
             # Apply a threshold: e.g., 25
             imageID_set = node_name_to_img_id[node_name]
-            imageID_set = imageID_set-trainsg_dupes
+            imageID_set = imageID_set - trainsg_dupes
             node_name_to_img_id[node_name] = imageID_set
             if len(imageID_set) >= IMGAGE_SUBSET_SIZE_THRESHOLD:
                 group_name_counter[node_name] = len(imageID_set)
@@ -143,7 +157,7 @@ class ImageNetMetaShift(Task):
                 pass
 
         most_common_list = group_name_counter.most_common()
-        most_common_list = [ (x, count) for x, count in group_name_counter.items()]
+        most_common_list = [(x, count) for x, count in group_name_counter.items()]
 
         # Build a subject dict
         subject_group_summary_dict = defaultdict(Counter)
@@ -151,11 +165,13 @@ class ImageNetMetaShift(Task):
             subject_str, tag = self.parse_node_str(node_name)
 
             if ONLY_SELECTED_CLASSES and subject_str not in subject_classes:
-                continue 
+                continue
 
-            subject_group_summary_dict[ subject_str ][ node_name ] = imageID_set_len
+            subject_group_summary_dict[subject_str][node_name] = imageID_set_len
 
-        subject_group_summary_list = sorted(subject_group_summary_dict.items(), key=lambda x:  sum(x[1].values()), reverse=True) 
+        subject_group_summary_list = sorted(
+            subject_group_summary_dict.items(), key=lambda x: sum(
+                x[1].values()), reverse=True)
 
         new_subject_group_summary_list = list()
         subjects_to_all_set = defaultdict(set)
@@ -168,10 +184,15 @@ class ImageNetMetaShift(Task):
                 continue
             else:
                 new_subject_group_summary_list.append((subject_str, subject_data))
-            
-            self.copy_image_for_subject(self.META_DATASET_FOLDER, subject_str, subject_data, node_name_to_img_id, trainsg_dupes) # use False to share 
 
-            for node_name in subject_data: 
+            self.copy_image_for_subject(
+                self.META_DATASET_FOLDER,
+                subject_str,
+                subject_data,
+                node_name_to_img_id,
+                trainsg_dupes)  # use False to share
+
+            for node_name in subject_data:
                 subject_str, tag = self.parse_node_str(node_name)
                 subjects_to_all_set[subject_str].update(node_name_to_img_id[node_name])
 
@@ -181,9 +202,8 @@ class ImageNetMetaShift(Task):
 
         return node_name_to_img_id, most_common_list, subjects_to_all_set, subject_group_summary_dict
 
-
-    def iterate_find_index(self, dt, idx = []):
-        """find all the breeds of a class 
+    def iterate_find_index(self, dt, idx=[]):
+        """find all the breeds of a class
         """
 
         if isinstance(dt, list):
@@ -197,8 +217,8 @@ class ImageNetMetaShift(Task):
         idx.sort()
         return idx
 
-    def find_imagenet_node(self, name, dt, idx = []):
-        """match the class to imagenet label 
+    def find_imagenet_node(self, name, dt, idx=[]):
+        """match the class to imagenet label
         """
 
         if isinstance(dt, list):
@@ -207,10 +227,10 @@ class ImageNetMetaShift(Task):
         elif isinstance(dt, dict):
             dict_name = dt['name'].split(',')
             if name in dict_name:
-                idx =  self.iterate_find_index(dt, idx)
+                idx = self.iterate_find_index(dt, idx)
             elif 'children' in dt:
                 idx = self.find_imagenet_node(name, dt['children'], idx)
-        return idx    
+        return idx
 
     def setup(self):
         """load the information files and generate the seleteced classes
@@ -261,7 +281,7 @@ class ImageNetMetaShift(Task):
 
         test_transform = tv_transforms.Compose([
             tv_transforms.ToTensor(),
-            tv_transforms.Lambda(lambda x: x.permute(1, 2, 0)),                                     
+            tv_transforms.Lambda(lambda x: x.permute(1, 2, 0)),
         ])
 
         self.ch_dataset = tv_datasets.ImageFolder(
@@ -272,10 +292,15 @@ class ImageNetMetaShift(Task):
             sh_data_torch.ImagesOnlyTorchDataset(self.ch_dataset)
         )
 
-        self.imagenet_label_data = json.load(open(os.path.join(self.data_root, "imagenet-metashift", "imagenet1k_node_names.json")))
+        self.imagenet_label_data = json.load(
+            open(
+                os.path.join(
+                    self.data_root,
+                    "imagenet-metashift",
+                    "imagenet1k_node_names.json")))
         self.imagenet_label_data = self.imagenet_label_data['children']
-        
-        # generate the imagenet label to class mapping 
+
+        # generate the imagenet label to class mapping
         self.imagenet_labels = {}
         for i in SELECTED_CLASSES:
             self.imagenet_labels[i] = self.find_imagenet_node(i, self.imagenet_label_data)
