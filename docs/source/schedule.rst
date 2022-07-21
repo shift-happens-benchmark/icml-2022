@@ -8,11 +8,6 @@ It will also be streamed online (requires `registration
 
 All times are local time (UTC-4).
 
-.. note::
-    We are currently finalizing the schedule.
-    Please find the most up-to-date draft below, which might slightly change
-    as we wait for confirmation from all speakers.
-
 .. rst-class:: table-hover
 
 .. csv-table:: Schedule
