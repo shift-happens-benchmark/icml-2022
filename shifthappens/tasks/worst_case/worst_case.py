@@ -6,14 +6,13 @@ import time
 import urllib
 from typing import List, Union
 
-import  requests
+import requests
 import dataclasses
 import os
 import pathlib
 import torch
 import numpy as np
 import torch.nn as nn
-from numpy.core._multiarray_umath import ndarray
 import shifthappens.config
 from numpy.core.multiarray import ndarray
 
@@ -35,9 +34,9 @@ class WorstCase(Task):
     the performance of the classifier, as it must not be the same on all classes/groups."""
     resources = (
         ["worstcase",
-        "restricted_superclass.csv",
-        "https://anonymous.4open.science/r/worst_classes-B94C/restricted_superclass.csv",
-        None],
+         "restricted_superclass.csv",
+         "https://anonymous.4open.science/r/worst_classes-B94C/restricted_superclass.csv",
+         None],
 
         ["worstcase",
          "new_labels.csv",
@@ -51,7 +50,7 @@ class WorstCase(Task):
 
     verbose: bool = True
     probs = None
-    #labels_type: str = 'val'
+    # labels_type: str = 'val'
     n_retries: int = 5
     max_batch_size: int = 256
 
@@ -66,7 +65,7 @@ class WorstCase(Task):
             except urllib.error.URLError:
                 print(f"Download of {url} failed; wait 5s and then try again.")
                 time.sleep(5)
-                
+
     def setup(self):
         """Calls the download method to download the cleaned labels from [3], as well as superclasses used in [1]"""
         # Download resources
@@ -89,16 +88,17 @@ class WorstCase(Task):
         self.new_labels_mask = cleaned_labels
 
         # Set the superclasses to a property
-        superclass_list: ndarray = np.array([int(line) for line in open(os.path.join(dataset_folder, 'restricted_superclass.csv'))])
+        superclass_list: ndarray = np.array(
+            [int(line) for line in open(os.path.join(dataset_folder, 'restricted_superclass.csv'))])
         self.superclasses = [tuple(np.where(superclass_list == i)[0]) for i in range(0, 9)]
 
     def get_predictions(self) -> np.ndarray:
         """Saves to a property as a dict the computed predictions and probabilities for the used model"""
         preds = {
-                 'predicted_classes': self.probs.argmax(axis=1),
-                 'class_probabilities': self.probs,
-                 'confidences_classifier': self.probs.max(axis=1),
-                 }
+            'predicted_classes': self.probs.argmax(axis=1),
+            'class_probabilities': self.probs,
+            'confidences_classifier': self.probs.max(axis=1),
+        }
         preds['number_of_class_predictions'] = collections.Counter(preds['predicted_classes'])
         return preds
 
@@ -128,8 +128,8 @@ class WorstCase(Task):
         preds = self.get_predictions()
         classwise_topk_acc = {}
         for i in set(self.new_labels):
-            classwise_topk_acc[i] = np.equal(i, np.argsort(preds['class_probabilities'][np.where(self.new_labels == i)], axis=1, kind='mergesort')[:,
-                                          -k:]).sum(axis=-1).mean()
+            classwise_topk_acc[i] = np.equal(i, np.argsort(preds['class_probabilities'][np.where(self.new_labels == i)],
+                                                           axis=1, kind='mergesort')[:, -k:]).sum(axis=-1).mean()
         return classwise_topk_acc
 
     def standard_balanced_topk_accuracy(self, k) -> np.array:
@@ -162,7 +162,8 @@ class WorstCase(Task):
         classwise_accuracies_sample_numbers = self.classwise_sample_numbers()
         sorted_classwise_accuracies = sorted(classwise_accuracies.items(), key=lambda item: item[1])
         n_worst = sorted_classwise_accuracies[:n]
-        n_worstclass_recall = np.array([v * classwise_accuracies_sample_numbers[c] for c, v in n_worst]).sum() / np.array([classwise_accuracies_sample_numbers[c] for c, v in n_worst]).sum()
+        n_worstclass_recall = np.array([v * classwise_accuracies_sample_numbers[c] for c, v in n_worst]).sum() / \
+            np.array([classwise_accuracies_sample_numbers[c] for c, v in n_worst]).sum()
         return n_worstclass_recall
 
     def worst_balanced_n_classes_topk_accuracy(self, n, k) -> np.float:
@@ -178,7 +179,9 @@ class WorstCase(Task):
         classwise_accuracies_sample_numbers = self.classwise_sample_numbers()
         sorted_clw_topk_acc = sorted(classwise_topk_accuracies.items(), key=lambda item: item[1])
         n_worst = sorted_clw_topk_acc[:n]
-        n_worstclass_recall = np.array([v * classwise_accuracies_sample_numbers[c] for c, v in n_worst]).sum() / np.array([classwise_accuracies_sample_numbers[c] for c, v in n_worst]).sum()
+        n_worstclass_recall = np.array(
+            [v * classwise_accuracies_sample_numbers[c] for c, v in n_worst]).sum() / np.array(
+            [classwise_accuracies_sample_numbers[c] for c, v in n_worst]).sum()
         return n_worstclass_recall
 
     def worst_balanced_two_class_binary_accuracy(self) -> np.float:
@@ -198,7 +201,8 @@ class WorstCase(Task):
     def worst_balanced_superclass_recall(self) -> np.float:
         """Computes the worst balanced recall among the superclasses"""
         classwise_accuracies = self.classwise_accuracies()
-        superclass_classwise_accuracies = {i: np.array([classwise_accuracies[c] for c in s]).mean() for i, s in enumerate(self.superclasses)}
+        superclass_classwise_accuracies = {i: np.array([classwise_accuracies[c] for c in s]).mean() for i, s in
+                                           enumerate(self.superclasses)}
         worst_item = min(superclass_classwise_accuracies.items(), key=lambda x: x[1])
         return worst_item[1]
 
@@ -206,7 +210,9 @@ class WorstCase(Task):
         """Computes the worst not balanced recall among the superclasses"""
         classwise_accuracies = self.classwise_accuracies()
         classwise_sample_number = self.classwise_sample_numbers()
-        superclass_classwise_accuracies = {i: np.array([classwise_accuracies[c] * classwise_sample_number[c] for c in s]).sum() / np.array([classwise_sample_number[c] for c in s]).sum() for i, s in enumerate(self.superclasses)}
+        superclass_classwise_accuracies = {
+            i: np.array([classwise_accuracies[c] * classwise_sample_number[c] for c in s]).sum() / np.array(
+                [classwise_sample_number[c] for c in s]).sum() for i, s in enumerate(self.superclasses)}
         worst_item = min(superclass_classwise_accuracies.items(), key=lambda x: x[1])
         return worst_item[1]
 
@@ -276,7 +282,6 @@ class WorstCase(Task):
             confusion[c, preds['predicted_classes'][i]] += 1
         return confusion
 
-
     def _evaluate(self, model: sh_models.Model, verbose=False) -> TaskResult:
         """The final method that uses all of the above to compute the metrics introduced in [1]"""
         verbose = self.verbose
@@ -293,12 +298,12 @@ class WorstCase(Task):
             'WCP': self.worst_class_precision,
             'WSupCA': self.worst_intra_superclass_accuracy,
             'WSupCR': self.worst_superclass_recall,
-            'W10CR': lambda : self.worst_heuristic_n_classes_recall(10),
-            'W100CR': lambda : self.worst_heuristic_n_classes_recall(100),
+            'W10CR': lambda: self.worst_heuristic_n_classes_recall(10),
+            'W100CR': lambda: self.worst_heuristic_n_classes_recall(100),
             'W2CA': self.worst_balanced_two_class_binary_accuracy,
-            'WCAat5': lambda : self.worst_class_topk_accuracy(5),
-            'W10CRat5': lambda : self.worst_heuristic_n_classes_topk_recall(10, 5),
-            'W100CRat5': lambda : self.worst_heuristic_n_classes_topk_recall(100, 5),
+            'WCAat5': lambda: self.worst_class_topk_accuracy(5),
+            'W10CRat5': lambda: self.worst_heuristic_n_classes_topk_recall(10, 5),
+            'W100CRat5': lambda: self.worst_heuristic_n_classes_topk_recall(100, 5),
         }
 
         metrics_eval = {}
