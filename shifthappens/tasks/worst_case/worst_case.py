@@ -321,7 +321,6 @@ if __name__ == "__main__":
     from shifthappens.models.torchvision import ResNet18, ResNet50, VGG16
     import shifthappens
 
-
     available_models_dict = {'resnet18': ResNet18,
                              'resnet50': ResNet50,
                              'vgg16': VGG16}
@@ -367,7 +366,6 @@ if __name__ == "__main__":
         num_devices = len(device_ids)
 
     shifthappens.config.imagenet_validation_path = args.imagenet_val_folder
-
 
     shifthappens.config.verbose = args.verbose
 
