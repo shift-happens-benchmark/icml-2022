@@ -378,7 +378,7 @@ if __name__ == "__main__":
     model = available_models_dict[args.model_name.lower()](device=device, max_batch_size=args.bs)
 
     if device_ids is not None and len(device_ids) > 1:
-            model = nn.DataParallel(model, device_ids=device_ids)
+        model = nn.DataParallel(model, device_ids=device_ids)
     sh_benchmark.evaluate_model(
         model,
         "data"
