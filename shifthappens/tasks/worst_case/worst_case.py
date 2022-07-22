@@ -318,7 +318,7 @@ class WorstCase(Task):
 
 
 if __name__ == "__main__":
-    from shifthappens.models.torchvision import *
+    from shifthappens.models.torchvision import ResNet18, ResNet50, VGG16
     import shifthappens
 
 
