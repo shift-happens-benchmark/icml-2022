@@ -50,7 +50,7 @@ class WorstCase(Task):
     superclasses: List[tuple] = None
 
     verbose: bool = True
-    labels_type: str = 'val'
+    #labels_type: str = 'val'
     n_retries: int = 5
     max_batch_size: int = 256
 
@@ -78,10 +78,10 @@ class WorstCase(Task):
         # Set the cleaned labels to a property
         new_labels: ndarray = np.array([int(line) for line in open(os.path.join(dataset_folder, 'new_labels.csv'))])
 
-        if self.labels_type == 'val_clean':
+        if os.environ["SH_labels_type"] == 'val_clean':
             cleaned_labels = new_labels != -1
             self.new_labels = new_labels[cleaned_labels]
-        elif self.labels_type == 'val':
+        elif os.environ["SH_labels_type"] == 'val':
             cleaned_labels = np.full(new_labels.shape, True)
             self.new_labels = np.array(sh_imagenet.load_imagenet_targets())
 
@@ -283,7 +283,7 @@ class WorstCase(Task):
         model.verbose = verbose
 
         if verbose:
-            print(f'new labels of type {self.labels_type} are', self.new_labels, len(self.new_labels))
+            print(f'new labels of type {os.environ["SH_labels_type"]} are', self.new_labels, len(self.new_labels))
 
         self.probs = model.imagenet_validation_result.confidences[self.new_labels_mask, :]
 
@@ -341,7 +341,7 @@ if __name__ == "__main__":
         "--model_name", type=str, default='resnet18',
         help=f'The name of the model to test. Should be in {available_models_dict.keys()}'
     )
-    parser.add_argument('--gpu', '--list', nargs='+', default=[0],
+    parser.add_argument('--gpu', '--list', nargs='+', default=[],
                         help='GPU indices, if more than 1 parallel modules will be called')
     parser.add_argument('--bs', type=int, default=500)
     parser.add_argument(
@@ -371,7 +371,7 @@ if __name__ == "__main__":
 
     shifthappens.config.verbose = args.verbose
 
-    tuple(sh_benchmark.__registered_tasks)[0].cls.labels_type = args.labels_type
+    os.environ["SH_labels_type"] = args.labels_type
 
     assert args.model_name.lower() in available_models_dict, f"Selected model_name should be in {available_models_dict.keys()}"
 

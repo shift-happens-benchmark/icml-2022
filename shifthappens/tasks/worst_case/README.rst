@@ -20,6 +20,13 @@ python shifthappens/tasks/worst_case/worst_case.py --imagenet_val_folder '/scrat
 
 for evaluating with cleaned ones from [3].
 
+Moreover,
+
+you can specify the gpu that you want to run the evaluation by adding option --gpu YOUR_GPU_NUMBER (otherwise, computation will be done on the CPU),
+change the batch size during the inference by adding option --bs YOUR_BATCH_SIZE,
+and specify the model name by adding option --model_name SELECTED_MODEL_NAME.
+
+Currently in API, SELECTED_MODEL_NAME can be chosen out of resnet18, resnet50, and vgg16.
 
 ## Evaluation Metrics
 The evaluation metrics are "A", "WCA", "WCP", "WSupCA", "WSupCR",  "W10CR", "W100CR", "W2CA", "WCAat5", "W10CRat5", "W100CRat5", and their relevance is described in (J. Bitterwolf et al., "Classifiers Should Do Well Even on Their Worst Classes", https://openreview.net/forum?id=QxIXCVYJ2WP).
