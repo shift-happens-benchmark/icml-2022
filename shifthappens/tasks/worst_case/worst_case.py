@@ -1,23 +1,24 @@
 """Classifiers Should Do Well Even on Their Worst Classes"""
 import argparse
 import collections
-import itertools
-import time
-import urllib
-from typing import List, Union
-
-import requests
 import dataclasses
+import itertools
 import os
 import pathlib
-import torch
+import time
+import urllib
+from typing import List
+from typing import Union
+
 import numpy as np
+import requests
+import torch
 import torch.nn as nn
-import shifthappens.config
 from numpy.core.multiarray import ndarray
 
-from shifthappens.data import imagenet as sh_imagenet
+import shifthappens.config
 from shifthappens import benchmark as sh_benchmark
+from shifthappens.data import imagenet as sh_imagenet
 from shifthappens.models import base as sh_models
 from shifthappens.tasks.base import Task
 from shifthappens.tasks.metrics import Metric
@@ -397,8 +398,10 @@ class WorstCase(Task):
 
 
 if __name__ == "__main__":
-    from shifthappens.models.torchvision import ResNet18, ResNet50, VGG16
     import shifthappens
+    from shifthappens.models.torchvision import ResNet18
+    from shifthappens.models.torchvision import ResNet50
+    from shifthappens.models.torchvision import VGG16
 
     available_models_dict = {"resnet18": ResNet18, "resnet50": ResNet50, "vgg16": VGG16}
 
