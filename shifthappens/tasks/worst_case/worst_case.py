@@ -50,6 +50,7 @@ class WorstCase(Task):
     superclasses: List[tuple] = None
 
     verbose: bool = True
+    probs = None
     #labels_type: str = 'val'
     n_retries: int = 5
     max_batch_size: int = 256
@@ -174,10 +175,10 @@ class WorstCase(Task):
     def worst_heuristic_n_classes_topk_recall(self, n, k) -> np.float:
         """Computes the recall for the worst n classes in therms of their per class topk accuracy"""
         classwise_topk_accuracies = self.classwise_topk_accuracies(k)
-        clw_sn = self.classwise_sample_numbers()
+        classwise_accuracies_sample_numbers = self.classwise_sample_numbers()
         sorted_clw_topk_acc = sorted(classwise_topk_accuracies.items(), key=lambda item: item[1])
         n_worst = sorted_clw_topk_acc[:n]
-        n_worstclass_recall = np.array([v * clw_sn[c] for c, v in n_worst]).sum() / np.array([clw_sn[c] for c, v in n_worst]).sum()
+        n_worstclass_recall = np.array([v * classwise_accuracies_sample_numbers[c] for c, v in n_worst]).sum() / np.array([classwise_accuracies_sample_numbers[c] for c, v in n_worst]).sum()
         return n_worstclass_recall
 
     def worst_balanced_two_class_binary_accuracy(self) -> np.float:
@@ -205,8 +206,7 @@ class WorstCase(Task):
         """Computes the worst not balanced recall among the superclasses"""
         classwise_accuracies = self.classwise_accuracies()
         classwise_sample_number = self.classwise_sample_numbers()
-        superclass_classwise_accuracies = {i: np.array([classwise_accuracies[c] * classwise_sample_number[c] for c in s]).sum() / np.array([classwise_sample_number[c] for c in s]).sum() for i, s in
-                enumerate(self.superclasses)}
+        superclass_classwise_accuracies = {i: np.array([classwise_accuracies[c] * classwise_sample_number[c] for c in s]).sum() / np.array([classwise_sample_number[c] for c in s]).sum() for i, s in enumerate(self.superclasses)}
         worst_item = min(superclass_classwise_accuracies.items(), key=lambda x: x[1])
         return worst_item[1]
 
