@@ -305,7 +305,7 @@ class ApplyTransforms(data.Dataset):
         """
     def __init__(self, data_dir, n1, n2, s1, s2, subset_size):
         d = noise_transforms()
-        self.data_root = data_dir
+        self.data_dir = data_dir
         self.n1 = d[n1]
         self.n2 = d[n2]
         self.s1 = s1
