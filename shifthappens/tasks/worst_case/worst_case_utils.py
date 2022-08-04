@@ -101,7 +101,7 @@ def worst_balanced_two_class_binary_accuracy(probs, new_labels) -> np.float64:
     return worst_item[1]
 
 
-def standard_balanced_topk_accuracy(preds, new_labels, k) -> np.array:
+def standard_balanced_topk_accuracy(preds, new_labels, k) -> np.ndarray:
     """
     Computes the balanced topk accuracy.
 
@@ -145,7 +145,7 @@ def worst_class_topk_accuracy(preds, new_labels, k) -> float:
 
 def worst_balanced_n_classes_accuracy(
     classwise_accuracies_dict: dict, n: int
-) -> np.array:
+) -> np.ndarray:
     """
     Computes the balanced accuracy among the worst n classes, based on their
     per-class accuracies.
@@ -247,7 +247,7 @@ def worst_balanced_superclass_recall(
     return worst_item[1]
 
 
-def worst_superclass_recall(preds, new_labels, superclasses) -> np.float:
+def worst_superclass_recall(preds, new_labels, superclasses) -> np.float64:
     """
     Computes the worst not balanced recall among the superclasses.
 
@@ -270,7 +270,7 @@ def worst_superclass_recall(preds, new_labels, superclasses) -> np.float:
     return worst_item[1]
 
 
-def worst_class_precision(preds, new_labels) -> np.float:
+def worst_class_precision(preds, new_labels) -> np.float64:
     """
     Computes the precision for the worst class.
 
@@ -299,7 +299,7 @@ def worst_class_precision(preds, new_labels) -> np.float:
     return worst_item[1]
 
 
-def class_confusion(preds, new_labels) -> np.array:
+def class_confusion(preds, new_labels) -> np.ndarray:
     """Computes the confusion matrix.
 
     Args:

@@ -5,12 +5,10 @@ import os
 import pathlib
 import time
 import urllib
-from typing import List
 from typing import Union
 
 import numpy as np
 import requests
-import worst_case_utils
 from numpy.core.multiarray import ndarray
 
 import shifthappens.config
@@ -21,7 +19,7 @@ from shifthappens.tasks.base import parameter
 from shifthappens.tasks.base import Task
 from shifthappens.tasks.metrics import Metric
 from shifthappens.tasks.task_result import TaskResult
-
+from shifthappens.tasks.worst_case import worst_case_utils
 
 @sh_benchmark.register_task(
     name="Worst_case", relative_data_folder="worst_case", standalone=True
@@ -49,7 +47,7 @@ class WorstCase(Task):
 
     new_labels = None
     new_labels_mask: Union[ndarray, None, bool] = None
-    superclasses: List[tuple] = None
+    superclasses = None
 
     probs = None
     labels_type: str = parameter(
@@ -86,7 +84,7 @@ class WorstCase(Task):
         new_labels: ndarray = np.array(
             [int(line) for line in open(os.path.join(dataset_folder, "new_labels.csv"))]
         )
-
+        self.new_labels = []
         if self.labels_type == "val_clean":
             cleaned_labels = new_labels != -1
             self.new_labels = new_labels[cleaned_labels]
@@ -111,6 +109,7 @@ class WorstCase(Task):
 
     def get_predictions(self) -> np.ndarray:
         """Saves to a property as a dict the computed predictions and probabilities for the used model"""
+        assert self.probs is not None, "probabilities are not initialized"
         preds = {
             "predicted_classes": self.probs.argmax(axis=1),
             "class_probabilities": self.probs,
@@ -126,6 +125,7 @@ class WorstCase(Task):
         verbose = shifthappens.config.verbose
 
         if verbose:
+                assert isinstance(self.new_labels, list)
             print(
                 f"new labels of type {self.labels_type} are",
                 self.new_labels,
