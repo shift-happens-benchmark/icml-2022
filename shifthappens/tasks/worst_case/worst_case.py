@@ -125,7 +125,7 @@ class WorstCase(Task):
         verbose = shifthappens.config.verbose
 
         if verbose:
-                assert isinstance(self.new_labels, list)
+            assert isinstance(self.new_labels, list)
             print(
                 f"new labels of type {self.labels_type} are",
                 self.new_labels,
