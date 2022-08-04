@@ -121,7 +121,7 @@ class WorstCase(Task):
         )
         return preds
 
-    def _evaluate(self, model: sh_models.Model, verbose=False) -> TaskResult:
+    def _evaluate(self, model: sh_models.Model) -> TaskResult:
         """The final method that uses all of the above to compute the metrics introduced in [1]"""
         verbose = shifthappens.config.verbose
 
