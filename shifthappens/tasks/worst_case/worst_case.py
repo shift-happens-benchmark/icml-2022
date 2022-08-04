@@ -51,14 +51,7 @@ class WorstCase(Task):
     new_labels_mask: Union[ndarray, None, bool] = None
     superclasses: List[tuple] = None
 
-    verbose: bool = shifthappens.config.verbose
-    probs = None
-    labels_type: str = parameter(
-        default="val",
-        options=("val", "val_clean"),
-        description="set the label type either to 50000 or 46044 for the "
-        "cleaned labels from [3]",
-    )
+
     n_retries: int = 5
     max_batch_size: int = 256
 
@@ -124,8 +117,7 @@ class WorstCase(Task):
 
     def _evaluate(self, model: sh_models.Model, verbose=False) -> TaskResult:
         """The final method that uses all of the above to compute the metrics introduced in [1]"""
-        verbose = self.verbose
-        model.verbose = verbose
+        verbose = shifthappens.config.verbose
 
         if verbose:
             print(
