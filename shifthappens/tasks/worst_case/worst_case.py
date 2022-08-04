@@ -21,6 +21,7 @@ from shifthappens.tasks.metrics import Metric
 from shifthappens.tasks.task_result import TaskResult
 from shifthappens.tasks.worst_case import worst_case_utils
 
+
 @sh_benchmark.register_task(
     name="Worst_case", relative_data_folder="worst_case", standalone=True
 )
