@@ -132,7 +132,9 @@ class ImageNetMetaShift(Task):
                 dst_image_path = os.path.join(
                     subject_localgroup_folder, imageID + ".jpg"
                 )
-                shutil.copyfile(src_image_path, dst_image_path)
+                os.symlink(
+                    os.path.abspath(src_image_path), os.path.abspath(dst_image_path)
+                )
 
         return
 
@@ -141,7 +143,7 @@ class ImageNetMetaShift(Task):
 
         load condidate subsets for each group
         discard an object class if it has too few local groups
-        copy the image files from the general dataset to to the desired groups
+        copy the image files from the general dataset to the desired groups
         """
 
         trainsg_dupes = set()
@@ -162,7 +164,6 @@ class ImageNetMetaShift(Task):
             else:
                 pass
 
-        most_common_list = group_name_counter.most_common()
         most_common_list = [(x, count) for x, count in group_name_counter.items()]
 
         # Build a subject dict
@@ -325,9 +326,7 @@ class ImageNetMetaShift(Task):
         return sh_data.DataLoader(self.images_only_dataset, max_batch_size=None)
 
     def _evaluate(self, model: sh_models.Model) -> TaskResult:
-        """Evaluate the overall accuracy on the selected test case.
-        Remove the comments of print command to see the accuracy result on each class.
-        """
+        """Evaluate the overall accuracy on the selected test case."""
 
         dataloader = self._prepare_dataloader()
 
@@ -342,15 +341,12 @@ class ImageNetMetaShift(Task):
         correct = 0
         for i in range(len(self.ch_dataset.classes)):
             class_name = self.ch_dataset.classes[i]
-            # print("class:", class_name)
             index = np.where(np.array(self.ch_dataset.targets) == i)
             imagenet_label = np.array(self.imagenet_labels[class_name])
             imagenet_label = np.expand_dims(imagenet_label, 0)
             predict_label = all_predicted_labels[index]
             predict_label = np.expand_dims(predict_label, -1)
             predict_correct = sum(np.any((predict_label == imagenet_label), axis=-1))
-            # print(f"predict_correct:{predict_correct}, total:{len(predict_label)}")
-            # print(f"predict_accuracy:{predict_correct / len(predict_label)}")
             correct += predict_correct
 
         accuracy = correct / len(self.ch_dataset.targets)
