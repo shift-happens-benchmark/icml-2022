@@ -178,3 +178,4 @@ class ImageNetM(Task):
             accuracy=correct / len(self._imagenet_m_2022),
             summary_metrics={Metric.Robustness: "accuracy"},
         )
+        
