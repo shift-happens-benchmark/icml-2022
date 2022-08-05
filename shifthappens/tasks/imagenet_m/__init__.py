@@ -51,8 +51,7 @@ class ImageNetM(Task):
     multiple labels from the ImageNet label set by expert labelers.
     The examples themselves are those where multiple high-performing
     models in 2022 have yielded incorrect predictions where the
-    prediction was considered a "major" mistake.  
-    
+    prediction was considered a "major" mistake.
     The goal of this evaluation task is to measure a model's ability
     to avoid making obvious mistakes; in theory, models should be
     capable of scoring near 100% on this evaluation, in addition to
