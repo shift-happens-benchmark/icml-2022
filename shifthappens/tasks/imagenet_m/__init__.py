@@ -56,7 +56,7 @@ class ImageNetM(Task):
     to avoid making obvious mistakes; in theory, models should be
     capable of scoring near 100% on this evaluation, in addition to
     high performance on other image classification benchmarks.
-    See the citation file for more information about how the dataset 
+    See the citation file for more information about how the dataset
     was constructed.
 
     This task uses a multi-label evaluation approach: if the top
