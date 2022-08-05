@@ -146,7 +146,7 @@ class ImageNetM(Task):
             self._filename_to_pred_index = {}
             iif = tv_datasets.ImageFolder(root=imagenet.ImageNetValidationData)
             for i, (filename, _) in enumerate(iif.samples):
-                im_filename = filename.split("/")[-1]
+                im_filename = os.path.normpath(os.path.basename(filename))
                 self._filename_to_pred_index[im_filename] = i
 
     def _evaluate(self, model: sh_models.Model) -> TaskResult:
