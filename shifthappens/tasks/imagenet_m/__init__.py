@@ -158,7 +158,6 @@ class ImageNetM(Task):
         # is in correct set for ImageNet-M.
         correct = 0
         for image_name, data in self._imagenet_m_2022.items():
-            image_id = int(image_name.split("_")[-1][:-5])
             if LOAD_GREEDYSOUPS_LOGITS:
                 logits = self._greedy_soups[image_name.encode()]
                 predicted_class = np.argmax(logits)
