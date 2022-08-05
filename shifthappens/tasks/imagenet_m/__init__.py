@@ -67,6 +67,7 @@ class ImageNetM(Task):
     The metric computes the total correct / percentage of correctly
     classified multi-label examples.
     """
+    
     def setup(self):
         """Downloads and initializes metadata for evaluation."""
         dataset_folder = os.path.join(self.data_root, "imagenet-m")
