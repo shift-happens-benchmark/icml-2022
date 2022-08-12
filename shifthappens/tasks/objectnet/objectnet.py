@@ -10,7 +10,8 @@ Collected to intentionally show objects from new viewpoints on new backgrounds.
 Large performance drop, what you can expect from vision systems in the real world!
 Robust to fine-tuning and a very difficult transfer learning problem.
 
-This task aims to measure robustness of the model.
+This task aims to measure robustness of the model on the ObjectNet subset -
+intersection of ObjectNet and ImageNet classes.
 """
 
 import dataclasses
@@ -18,7 +19,6 @@ import os
 
 import numpy as np
 import pandas as pd
-import torchvision.datasets as tv_datasets
 import torchvision.transforms as tv_transforms
 
 import shifthappens.data.base as sh_data
@@ -32,7 +32,7 @@ from shifthappens.tasks.metrics import Metric
 from shifthappens.tasks.objectnet import objectnet_utils
 from shifthappens.tasks.task_result import TaskResult
 
-JSON_URL = "https://raw.githubusercontent.com/abarbu/objectnet-template-pytorch/master/mapping_files/imagenet_pytorch_id_to_objectnet_id.json"
+JSON_URL = "https://raw.githubusercontent.com/abarbu/objectnet-template-tensorflow/master/mapping_files/imagenet_id_to_objectnet_id.json"
 
 
 @sh_benchmark.register_task(
@@ -60,16 +60,15 @@ class ObjectNet(Task):
                 objectnet_utils.download_and_extract_zip_with_pwd(
                     url, self.data_root, md5, file_name, password
                 )
-        json_path = os.path.join(
-            self.data_root,
-            "objectnet-1.0",
-            "objectnet-1.0",
-            "mappings",
-            "imagenet_pytorch_id_to_objectnet_id.json",
+        mapping_path = os.path.join(
+            self.data_root, "objectnet-1.0", "objectnet-1.0", "mappings"
         )
+        json_path = os.path.join(mapping_path, "imagenet_id_to_objectnet_id.json")
+
         if not os.path.exists(json_path):
             mapping_json = pd.read_json(JSON_URL, typ="series")
             mapping_json.to_json(json_path)
+        # ImageNet -> ObjectNet mapping
         self.mapping_json = pd.read_json(json_path, typ="series").to_dict()
 
         test_transform = tv_transforms.Compose(
@@ -81,9 +80,11 @@ class ObjectNet(Task):
         )
 
         images_path = os.path.join(dataset_folder, "objectnet-1.0", "images")
-        self.ch_dataset = tv_datasets.ImageFolder(
-            root=images_path, transform=test_transform
+
+        self.ch_dataset = objectnet_utils.ImageFolderImageNetClassesIntersection(
+            mapping_path, root=images_path, transform=test_transform
         )
+
         self.images_only_dataset = sh_data_torch.IndexedTorchDataset(
             sh_data_torch.ImagesOnlyTorchDataset(self.ch_dataset)
         )
@@ -93,24 +94,19 @@ class ObjectNet(Task):
         return sh_data.DataLoader(self.images_only_dataset, max_batch_size=None)
 
     def _evaluate(self, model: sh_models.Model) -> TaskResult:
-        """Evaluates the model on the ObjectNet dataset."""
+        """Evaluates the model on the subset of ObjectNet dataset."""
         dataloader = self._prepare_dataloader()
-
         all_predicted_labels_list = []
         for predictions in model.predict(
             dataloader, PredictionTargets(class_labels=True)
         ):
             all_predicted_labels_list.append(predictions.class_labels)
+
         all_predicted_labels = np.concatenate(all_predicted_labels_list, 0)
 
-        mapped_predicted_labels = np.array(
-            [
-                self.mapping_json[i] if i in self.mapping_json else -1
-                for i in all_predicted_labels
-            ]
+        accuracy = objectnet_utils.class_intersection_accuracy(
+            np.array(self.ch_dataset.targets), all_predicted_labels, self.mapping_json
         )
-        accuracy = mapped_predicted_labels == np.array(self.ch_dataset.targets)
-
         return TaskResult(
-            accuracy=np.mean(accuracy), summary_metrics={Metric.Robustness: "accuracy"}
+            accuracy=accuracy, summary_metrics={Metric.Robustness: "accuracy"}
         )
