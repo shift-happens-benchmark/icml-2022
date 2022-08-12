@@ -1,7 +1,8 @@
 Task description copied from https://objectnet.dev/index.html.
 
-## Task Description
-Ready to help develop the next generation of object recognition algorithms that have 
+Task Description
+================
+Ready to help develop the next generation of object recognition algorithms that have
 robustness, bias, and safety in mind. Controls can remove bias from other datasets 
 machine learning, not just vision.
 
@@ -17,25 +18,31 @@ tested on ObjectNet, object detectors show a 40-45% drop in performance, with
 respect to their performance on other benchmarks, due to the controls for biases. 
 Controls make ObjectNet robust to fine-tuning showing only small performance increases.
 
-## Dataset Creation
+Dataset Creation
+=================
 We develop a highly automated platform that enables gathering datasets with 
 controls by crowdsourcing image capturing and annotation.
 
-## Evaluation Metrics
+Evaluation Metrics
+===================
 Robust accuracy: correct classification of the images from new viewpoints on new backgrounds.
 
-## Expected Insights/Relevance
+Expected Insights/Relevance
+============================
 The accuracy of pretrained ImageNet models decreases significantly on the proposed dataset.
 
-## Access
+Access
+======
 You can access zip file with data via website. The zip file has a password to ensure
 that everyone is aware of our unusual license. The password is: objectnetisatestset.
 
-## Data
+Data
+====
 The dataset is hosted on https://objectnet.dev/download.html with a backup 
 at https://www.dropbox.com/s/raw/cxeztdtm16nzvuw/objectnet-1.0.zip.
 
-## License
+License
+=======
 Plese read this section, ObjectNet has an unusual license!
 
 ObjectNet is free to use for both research and commercial applications.
