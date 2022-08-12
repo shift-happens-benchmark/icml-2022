@@ -114,12 +114,3 @@ class ObjectNet(Task):
         return TaskResult(
             accuracy=np.mean(accuracy), summary_metrics={Metric.Robustness: "accuracy"}
         )
-
-
-if __name__ == "__main__":
-    from shifthappens.models.torchvision import ResNet18
-
-    sh_benchmark.evaluate_model(
-        ResNet18(device="cuda", max_batch_size=128),
-        "../../../../test_data",
-    )
