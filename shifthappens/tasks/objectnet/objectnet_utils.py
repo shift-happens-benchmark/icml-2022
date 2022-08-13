@@ -59,11 +59,11 @@ def download_and_extract_zip_with_pwd(
 
 def folder_map(mapping_path: str) -> dict:
     """
-    Loads a mapping from class indices to class names.
+    Creates mapping folder name -> ObjectNet class -> ImageNet class.
     Args:
         mapping_path (str): Path to the mappings folder.
     Returns:
-        dict: Mapping from class indices to class names.
+        dict: Mapping from folder name to ImageNet class.
     """
 
     class_to_imagenet = pd.read_json(
