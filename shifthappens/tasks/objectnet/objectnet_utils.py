@@ -82,7 +82,7 @@ def folder_map(mapping_path: str) -> dict:
 
 class ImageFolderImageNetClassesIntersection(datasets.ImageFolder):
     """
-    This is required for handling empty folders that cannot be mapped to
+    This is required for handling folders that cannot be mapped to
     classes in ImageNet.
     """
 
