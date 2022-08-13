@@ -1,0 +1,67 @@
+cff-version: 1.2.0
+title: >-
+  ObjectNet: A large-scale bias-controlled dataset for
+  pushing the limits of object recognition models
+message: >-
+  Please cite this dataset using the metadata from
+  'preferred-citation'.
+type: software
+authors:
+  - given-names: Andrei
+    family-names: Barbu
+    email: abarbu@csail.mit.edu
+    affiliation: 'MIT, CSAIL & CBMM'
+  - given-names: David
+    family-names: Mayo
+    affiliation: 'MIT, CSAIL & CBMM'
+  - given-names: Julian
+    family-names: Alverio
+    affiliation: 'MIT, CSAIL'
+  - given-names: William
+    family-names: Luo
+    affiliation: 'MIT, CSAIL'
+  - given-names: Christopher
+    family-names: Wang
+    affiliation: 'MIT, CSAIL'
+  - given-names: Dan
+    family-names: Gutfreund
+    affiliation: 'MIT-IBM Watson AI'
+  - given-names: Joshua
+    family-names: Tenenbaum
+    affiliation: 'MIT, BCS & CBMM'
+  - given-names: Boris
+    family-names: Katz
+    affiliation: 'MIT, CSAIL & CBMM'
+preferred-citation:
+  type: article
+  authors:
+   - given-names: Andrei
+    family-names: Barbu
+    email: abarbu@csail.mit.edu
+    affiliation: 'MIT, CSAIL & CBMM'
+  - given-names: David
+    family-names: Mayo
+    affiliation: 'MIT, CSAIL & CBMM'
+  - given-names: Julian
+    family-names: Alverio
+    affiliation: 'MIT, CSAIL'
+  - given-names: William
+    family-names: Luo
+    affiliation: 'MIT, CSAIL'
+  - given-names: Christopher
+    family-names: Wang
+    affiliation: 'MIT, CSAIL'
+  - given-names: Dan
+    family-names: Gutfreund
+    affiliation: 'MIT-IBM Watson AI'
+  - given-names: Joshua
+    family-names: Tenenbaum
+    affiliation: 'MIT, BCS & CBMM'
+  - given-names: Boris
+    family-names: Katz
+    affiliation: 'MIT, CSAIL & CBMM'
+  url: "https://proceedings.neurips.cc/paper/2019/file/97af07a14cacba681feacf3012730892-Paper.pdf"
+  journal: "Advances in Neural Information Processing Systems"
+  title: "ObjectNet: A large-scale bias-controlled dataset for pushing the limits of object recognition models"
+  volume: 32
+  year: 2019

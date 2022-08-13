@@ -10,7 +10,7 @@ import pandas as pd
 from torchvision import datasets
 
 
-# udapted from https://github.com/pytorch/vision/blob/0cba9b7845795d6be7b164037461ea6e9265f6a2/torchvision/datasets/utils.py
+# updated from https://github.com/pytorch/vision/blob0cba9b7845795d6be7b164037461ea6e9265f6a2/torchvision/datasets/utils.py
 def download_and_extract_zip_with_pwd(
     url: str,
     data_folder: str,
@@ -82,7 +82,8 @@ def folder_map(mapping_path: str) -> dict:
 
 class ImageFolderImageNetClassesIntersection(datasets.ImageFolder):
     """
-    This is required for handling empty folders that cannot be mapped classes in ImageNet.
+    This is required for handling empty folders that cannot be mapped to
+    classes in ImageNet.
     """
 
     def __init__(self, mapping_path, *args, **kwargs):
@@ -90,7 +91,7 @@ class ImageFolderImageNetClassesIntersection(datasets.ImageFolder):
         super().__init__(*args, **kwargs)
 
     def find_classes(self, directory):
-        """Rejects the folders that cannot be mapped classes in ImageNet."""
+        """Rejects the folders that cannot be mapped to classes in ImageNet."""
         classes = sorted(
             entry.name for entry in os.scandir(directory) if entry.is_dir()
         )
