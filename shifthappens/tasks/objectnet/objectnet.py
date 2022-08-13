@@ -43,10 +43,12 @@ class ObjectNet(Task):
     subset intersecting with ImageNet classes.
     """
 
-    imagenet_to_objectnet_json_url = "https://raw.githubusercontent.com" \
-                                     "/abarbu/objectnet-template-tensorflow" \
-                                     "/master/mapping_files" \
-                                     "/imagenet_id_to_objectnet_id.json "
+    imagenet_to_objectnet_json_url = (
+        "https://raw.githubusercontent.com"
+        "/abarbu/objectnet-template-tensorflow"
+        "/master/mapping_files"
+        "/imagenet_id_to_objectnet_id.json "
+    )
 
     resources = [
         (
@@ -72,7 +74,9 @@ class ObjectNet(Task):
         json_path = os.path.join(mapping_path, "imagenet_id_to_objectnet_id.json")
 
         if not os.path.exists(json_path):
-            mapping_json = pd.read_json(self.imagenet_to_objectnet_json_url, typ="series")
+            mapping_json = pd.read_json(
+                self.imagenet_to_objectnet_json_url, typ="series"
+            )
             mapping_json.to_json(json_path)
         # ImageNet -> ObjectNet mapping
         self.mapping_json = pd.read_json(json_path, typ="series").to_dict()
