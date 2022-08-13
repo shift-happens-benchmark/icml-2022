@@ -47,7 +47,7 @@ class ObjectNet(Task):
         "https://raw.githubusercontent.com"
         "/abarbu/objectnet-template-tensorflow"
         "/master/mapping_files"
-        "/imagenet_id_to_objectnet_id.json "
+        "/imagenet_id_to_objectnet_id.json"
     )
 
     resources = [
