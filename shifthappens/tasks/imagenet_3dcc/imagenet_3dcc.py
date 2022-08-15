@@ -50,9 +50,10 @@ class ImageNetSingleCorruptionTypeBase(Task):
     severity levels. The raw images (before corruptions) in this dataset
     come from the validation set of ImageNet.
 
-    [1] 3D Common Corruptions for Object Recognition. 
+    [1] 3D Common Corruptions for Object Recognition.
         Kar, Oguzhan Fatih and Yeo, Teresa and Zamir, Amir.
     """
+    
     resource: Tuple[str, ...] = abstract_variable()
 
     severity: int = parameter(
