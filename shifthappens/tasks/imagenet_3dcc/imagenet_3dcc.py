@@ -165,6 +165,7 @@ class ImageNet3DCCFarFocus(ImageNetSingleCorruptionTypeBase):
 class ImageNet3DCCFog3D(ImageNetSingleCorruptionTypeBase):
     """Evaluate classification accuracy on validation images of ImageNet
     against fog corruption."""
+    
     resource: Tuple[str, ...] = variable(
         (
             "fog_3d",
