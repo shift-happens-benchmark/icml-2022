@@ -413,8 +413,8 @@ class ImageNet3DCCSeparateCorruptions(Task):
 
         return TaskResult(
             **results,
-            accuracy=np.mean(accuracies).item(),
-            mce=np.mean(mces).item(),
+            accuracy=np.mean(np.array(accuracies)),
+            mce=np.mean(np.array(mces)),
             summary_metrics={Metric.Robustness: "accuracy"},
         )
 
