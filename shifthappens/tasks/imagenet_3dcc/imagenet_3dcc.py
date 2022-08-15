@@ -146,6 +146,7 @@ class ImageNet3DCCNearFocus(ImageNetSingleCorruptionTypeBase):
 class ImageNet3DCCFarFocus(ImageNetSingleCorruptionTypeBase):
     """Evaluate classification accuracy on validation images of ImageNet
     against far focus corruption."""
+    
     resource: Tuple[str, ...] = variable(
         (
             "far_focus",
