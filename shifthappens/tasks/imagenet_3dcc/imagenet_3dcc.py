@@ -203,6 +203,7 @@ class ImageNet3DCCFlash(ImageNetSingleCorruptionTypeBase):
 class ImageNet3DCCColorQuant(ImageNetSingleCorruptionTypeBase):
     """Evaluate classification accuracy on validation images of ImageNet
     against color quantization corruption."""
+    
     resource: Tuple[str, ...] = variable(
         (
             "color_quant",
