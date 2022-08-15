@@ -241,6 +241,7 @@ class ImageNet3DCCLowLight(ImageNetSingleCorruptionTypeBase):
 class ImageNet3DCCXYMotionBlur(ImageNetSingleCorruptionTypeBase):
     """Evaluate classification accuracy on validation images of ImageNet
     against motion blur corruption (from camera motion in the XY direction)."""
+    
     resource: Tuple[str, ...] = variable(
         (
             "xy_motion_blur",
