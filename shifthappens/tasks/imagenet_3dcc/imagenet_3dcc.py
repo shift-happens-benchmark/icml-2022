@@ -295,6 +295,7 @@ class ImageNet3DCCISONoise(ImageNetSingleCorruptionTypeBase):
 class ImageNet3DCCBitError(ImageNetSingleCorruptionTypeBase):
     """Evaluate classification accuracy on validation images of ImageNet
     against bit error corruption."""
+    
     resource: Tuple[str, ...] = variable(
         (
             "bit_error",
