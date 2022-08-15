@@ -14,7 +14,6 @@ from typing import Optional
 from typing import Tuple
 
 import numpy as np
-import siscore_labels
 import torchvision.datasets as tv_datasets
 import torchvision.transforms as tv_transforms
 
@@ -29,6 +28,7 @@ from shifthappens.tasks.base import abstract_variable
 from shifthappens.tasks.base import Task
 from shifthappens.tasks.base import variable
 from shifthappens.tasks.metrics import Metric
+from shifthappens.tasks.siscore import siscore_labels
 from shifthappens.tasks.task_result import TaskResult
 
 _BASE_URL = "https://s3.us-east-1.amazonaws.com/si-score-dataset"
@@ -155,6 +155,8 @@ class SISCOREVariantBase(Task):
 )
 @dataclasses.dataclass
 class SISCORESize(SISCOREVariantBase):
+    """Various object size subset."""
+    
     resource: Tuple[str, ...] = variable(("size"))
 
 
@@ -166,6 +168,8 @@ class SISCORESize(SISCOREVariantBase):
 )
 @dataclasses.dataclass
 class SISCORERotation(SISCOREVariantBase):
+    """Various rotations subset."""
+    
     resource: Tuple[str, ...] = variable(("rotation"))
 
 
@@ -177,4 +181,6 @@ class SISCORERotation(SISCOREVariantBase):
 )
 @dataclasses.dataclass
 class SISCORELocation(SISCOREVariantBase):
+    """Various locations subset."""
+    
     resource: Tuple[str, ...] = variable(("location"))
