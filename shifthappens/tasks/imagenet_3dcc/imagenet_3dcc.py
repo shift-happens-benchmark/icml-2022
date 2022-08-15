@@ -279,6 +279,7 @@ class ImageNet3DCCZMotionBlur(ImageNetSingleCorruptionTypeBase):
 class ImageNet3DCCISONoise(ImageNetSingleCorruptionTypeBase):
     """Evaluate classification accuracy on validation images of ImageNet
     against ISO noise corruption."""
+    
     resource: Tuple[str, ...] = variable(
         (
             "iso_noise",
