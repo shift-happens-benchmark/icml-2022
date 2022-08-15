@@ -180,5 +180,4 @@ class SISCORERotation(SISCOREVariantBase):
 @dataclasses.dataclass
 class SISCORELocation(SISCOREVariantBase):
     """Various locations subset."""
-    
     resource: Tuple[str, ...] = variable(("location"))
