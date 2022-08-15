@@ -156,6 +156,7 @@ class SISCOREVariantBase(Task):
 @dataclasses.dataclass
 class SISCORESize(SISCOREVariantBase):
     """Various object size subset."""
+
     resource: Tuple[str, ...] = variable(("size"))
 
 
@@ -168,6 +169,7 @@ class SISCORESize(SISCOREVariantBase):
 @dataclasses.dataclass
 class SISCORERotation(SISCOREVariantBase):
     """Various rotations subset."""
+
     resource: Tuple[str, ...] = variable(("rotation"))
 
 
@@ -180,4 +182,5 @@ class SISCORERotation(SISCOREVariantBase):
 @dataclasses.dataclass
 class SISCORELocation(SISCOREVariantBase):
     """Various locations subset."""
+
     resource: Tuple[str, ...] = variable(("location"))
