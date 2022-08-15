@@ -333,6 +333,7 @@ class ImageNet3DCCH256ABR(ImageNetSingleCorruptionTypeBase):
 class ImageNet3DCCH256CRF(ImageNetSingleCorruptionTypeBase):
     """Evaluate classification accuracy on validation images of ImageNet
     against constant rate factor compression artifact corruption."""
+    
     resource: Tuple[str, ...] = variable(
         (
             "h265_crf",
