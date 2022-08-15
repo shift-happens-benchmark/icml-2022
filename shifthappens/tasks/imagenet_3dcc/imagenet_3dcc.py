@@ -270,7 +270,6 @@ class ImageNet3DCCZMotionBlur(ImageNetSingleCorruptionTypeBase):
 class ImageNet3DCCISONoise(ImageNetSingleCorruptionTypeBase):
     """Evaluate classification accuracy on validation images of ImageNet
     against ISO noise corruption."""
-    
     resource: Tuple[str, ...] = variable(
         (
             "iso_noise",
@@ -289,7 +288,6 @@ class ImageNet3DCCISONoise(ImageNetSingleCorruptionTypeBase):
 class ImageNet3DCCBitError(ImageNetSingleCorruptionTypeBase):
     """Evaluate classification accuracy on validation images of ImageNet
     against bit error corruption."""
-    
     resource: Tuple[str, ...] = variable(
         (
             "bit_error",
@@ -308,7 +306,6 @@ class ImageNet3DCCBitError(ImageNetSingleCorruptionTypeBase):
 class ImageNet3DCCH256ABR(ImageNetSingleCorruptionTypeBase):
     """Evaluate classification accuracy on validation images of ImageNet
     against average bit rate compression artifact corruption."""
-    
     resource: Tuple[str, ...] = variable(
         (
             "h265_abr",
@@ -327,7 +324,6 @@ class ImageNet3DCCH256ABR(ImageNetSingleCorruptionTypeBase):
 class ImageNet3DCCH256CRF(ImageNetSingleCorruptionTypeBase):
     """Evaluate classification accuracy on validation images of ImageNet
     against constant rate factor compression artifact corruption."""
-    
     resource: Tuple[str, ...] = variable(
         (
             "h265_crf",
