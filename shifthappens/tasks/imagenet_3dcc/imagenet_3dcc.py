@@ -314,6 +314,7 @@ class ImageNet3DCCBitError(ImageNetSingleCorruptionTypeBase):
 class ImageNet3DCCH256ABR(ImageNetSingleCorruptionTypeBase):
     """Evaluate classification accuracy on validation images of ImageNet
     against average bit rate compression artifact corruption."""
+    
     resource: Tuple[str, ...] = variable(
         (
             "h265_abr",
