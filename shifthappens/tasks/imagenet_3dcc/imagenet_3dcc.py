@@ -127,6 +127,7 @@ class ImageNetSingleCorruptionTypeBase(Task):
 class ImageNet3DCCNearFocus(ImageNetSingleCorruptionTypeBase):
     """Evaluate classification accuracy on validation images of ImageNet
     against near focus corruption."""
+    
     resource: Tuple[str, ...] = variable(
         (
             "near_focus",
