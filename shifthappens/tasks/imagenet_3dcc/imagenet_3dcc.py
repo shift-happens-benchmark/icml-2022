@@ -252,7 +252,6 @@ class ImageNet3DCCXYMotionBlur(ImageNetSingleCorruptionTypeBase):
 class ImageNet3DCCZMotionBlur(ImageNetSingleCorruptionTypeBase):
     """Evaluate classification accuracy on validation images of ImageNet
     against motion blur corruption (from camera motion in the Z direction)."""
-    
     resource: Tuple[str, ...] = variable(
         (
             "z_motion_blur",
