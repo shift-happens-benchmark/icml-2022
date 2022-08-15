@@ -184,6 +184,7 @@ class ImageNet3DCCFog3D(ImageNetSingleCorruptionTypeBase):
 class ImageNet3DCCFlash(ImageNetSingleCorruptionTypeBase):
     """Evaluate classification accuracy on validation images of ImageNet
     against flash corruption."""
+    
     resource: Tuple[str, ...] = variable(
         (
             "flash",
