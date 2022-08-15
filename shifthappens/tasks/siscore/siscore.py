@@ -156,7 +156,6 @@ class SISCOREVariantBase(Task):
 @dataclasses.dataclass
 class SISCORESize(SISCOREVariantBase):
     """Various object size subset."""
-    
     resource: Tuple[str, ...] = variable(("size"))
 
 
