@@ -222,6 +222,7 @@ class ImageNet3DCCColorQuant(ImageNetSingleCorruptionTypeBase):
 class ImageNet3DCCLowLight(ImageNetSingleCorruptionTypeBase):
     """Evaluate classification accuracy on validation images of ImageNet
     against low light corruption."""
+    
     resource: Tuple[str, ...] = variable(
         (
             "low_light",
