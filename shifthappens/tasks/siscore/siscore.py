@@ -14,6 +14,7 @@ from typing import Optional
 from typing import Tuple
 
 import numpy as np
+import siscore_labels
 import torchvision.datasets as tv_datasets
 import torchvision.transforms as tv_transforms
 
@@ -29,8 +30,6 @@ from shifthappens.tasks.base import Task
 from shifthappens.tasks.base import variable
 from shifthappens.tasks.metrics import Metric
 from shifthappens.tasks.task_result import TaskResult
-
-import siscore_labels
 
 _BASE_URL = "https://s3.us-east-1.amazonaws.com/si-score-dataset"
 
@@ -152,7 +151,7 @@ class SISCOREVariantBase(Task):
 @sh_benchmark.register_task(
     name="SISCORE (Size)",
     relative_data_folder="siscore",
-    standalone=False,
+    standalone=True,
 )
 @dataclasses.dataclass
 class SISCORESize(SISCOREVariantBase):
@@ -163,7 +162,7 @@ class SISCORESize(SISCOREVariantBase):
 @sh_benchmark.register_task(
     name="SISCORE (Rotation)",
     relative_data_folder="siscore",
-    standalone=False,
+    standalone=True,
 )
 @dataclasses.dataclass
 class SISCORERotation(SISCOREVariantBase):
@@ -174,7 +173,7 @@ class SISCORERotation(SISCOREVariantBase):
 @sh_benchmark.register_task(
     name="SISCORE (Location)",
     relative_data_folder="siscore",
-    standalone=False,
+    standalone=True,
 )
 @dataclasses.dataclass
 class SISCORELocation(SISCOREVariantBase):
