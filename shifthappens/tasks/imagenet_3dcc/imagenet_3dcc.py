@@ -53,6 +53,7 @@ class ImageNetSingleCorruptionTypeBase(Task):
     [1] 3D Common Corruptions for Object Recognition.
         Kar, Oguzhan Fatih and Yeo, Teresa and Zamir, Amir.
     """
+
     resource: Tuple[str, ...] = abstract_variable()
 
     severity: int = parameter(
@@ -126,6 +127,7 @@ class ImageNetSingleCorruptionTypeBase(Task):
 class ImageNet3DCCNearFocus(ImageNetSingleCorruptionTypeBase):
     """Evaluate classification accuracy on validation images of ImageNet
     against near focus corruption."""
+
     resource: Tuple[str, ...] = variable(
         (
             "near_focus",
@@ -144,6 +146,7 @@ class ImageNet3DCCNearFocus(ImageNetSingleCorruptionTypeBase):
 class ImageNet3DCCFarFocus(ImageNetSingleCorruptionTypeBase):
     """Evaluate classification accuracy on validation images of ImageNet
     against far focus corruption."""
+
     resource: Tuple[str, ...] = variable(
         (
             "far_focus",
@@ -162,6 +165,7 @@ class ImageNet3DCCFarFocus(ImageNetSingleCorruptionTypeBase):
 class ImageNet3DCCFog3D(ImageNetSingleCorruptionTypeBase):
     """Evaluate classification accuracy on validation images of ImageNet
     against fog corruption."""
+
     resource: Tuple[str, ...] = variable(
         (
             "fog_3d",
@@ -180,6 +184,7 @@ class ImageNet3DCCFog3D(ImageNetSingleCorruptionTypeBase):
 class ImageNet3DCCFlash(ImageNetSingleCorruptionTypeBase):
     """Evaluate classification accuracy on validation images of ImageNet
     against flash corruption."""
+
     resource: Tuple[str, ...] = variable(
         (
             "flash",
@@ -198,6 +203,7 @@ class ImageNet3DCCFlash(ImageNetSingleCorruptionTypeBase):
 class ImageNet3DCCColorQuant(ImageNetSingleCorruptionTypeBase):
     """Evaluate classification accuracy on validation images of ImageNet
     against color quantization corruption."""
+
     resource: Tuple[str, ...] = variable(
         (
             "color_quant",
@@ -216,6 +222,7 @@ class ImageNet3DCCColorQuant(ImageNetSingleCorruptionTypeBase):
 class ImageNet3DCCLowLight(ImageNetSingleCorruptionTypeBase):
     """Evaluate classification accuracy on validation images of ImageNet
     against low light corruption."""
+
     resource: Tuple[str, ...] = variable(
         (
             "low_light",
@@ -234,6 +241,7 @@ class ImageNet3DCCLowLight(ImageNetSingleCorruptionTypeBase):
 class ImageNet3DCCXYMotionBlur(ImageNetSingleCorruptionTypeBase):
     """Evaluate classification accuracy on validation images of ImageNet
     against motion blur corruption (from camera motion in the XY direction)."""
+
     resource: Tuple[str, ...] = variable(
         (
             "xy_motion_blur",
@@ -252,6 +260,7 @@ class ImageNet3DCCXYMotionBlur(ImageNetSingleCorruptionTypeBase):
 class ImageNet3DCCZMotionBlur(ImageNetSingleCorruptionTypeBase):
     """Evaluate classification accuracy on validation images of ImageNet
     against motion blur corruption (from camera motion in the Z direction)."""
+
     resource: Tuple[str, ...] = variable(
         (
             "z_motion_blur",
@@ -270,6 +279,7 @@ class ImageNet3DCCZMotionBlur(ImageNetSingleCorruptionTypeBase):
 class ImageNet3DCCISONoise(ImageNetSingleCorruptionTypeBase):
     """Evaluate classification accuracy on validation images of ImageNet
     against ISO noise corruption."""
+
     resource: Tuple[str, ...] = variable(
         (
             "iso_noise",
@@ -288,6 +298,7 @@ class ImageNet3DCCISONoise(ImageNetSingleCorruptionTypeBase):
 class ImageNet3DCCBitError(ImageNetSingleCorruptionTypeBase):
     """Evaluate classification accuracy on validation images of ImageNet
     against bit error corruption."""
+
     resource: Tuple[str, ...] = variable(
         (
             "bit_error",
@@ -306,6 +317,7 @@ class ImageNet3DCCBitError(ImageNetSingleCorruptionTypeBase):
 class ImageNet3DCCH256ABR(ImageNetSingleCorruptionTypeBase):
     """Evaluate classification accuracy on validation images of ImageNet
     against average bit rate compression artifact corruption."""
+
     resource: Tuple[str, ...] = variable(
         (
             "h265_abr",
@@ -324,6 +336,7 @@ class ImageNet3DCCH256ABR(ImageNetSingleCorruptionTypeBase):
 class ImageNet3DCCH256CRF(ImageNetSingleCorruptionTypeBase):
     """Evaluate classification accuracy on validation images of ImageNet
     against constant rate factor compression artifact corruption."""
+
     resource: Tuple[str, ...] = variable(
         (
             "h265_crf",
