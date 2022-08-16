@@ -14,7 +14,6 @@ import pickle
 
 import numpy as np
 import torchvision.transforms as tv_transforms
-import torch
 
 import shifthappens.data.base as sh_data
 import shifthappens.data.torch as sh_data_torch
