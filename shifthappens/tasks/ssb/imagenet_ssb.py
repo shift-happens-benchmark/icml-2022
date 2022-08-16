@@ -169,5 +169,3 @@ def get_imagenet_ssb_datasets(test_transform, imagenet21k_root, osr_split_path):
 sh_benchmark.register_task(
     name="SSB", relative_data_folder="imagenet21k_p", standalone=True
 )
-
-print('Hello')
