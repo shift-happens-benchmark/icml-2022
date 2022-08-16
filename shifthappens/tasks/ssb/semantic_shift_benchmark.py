@@ -58,8 +58,6 @@ class SSB(Task, OODScoreTaskMixin):
         ), f'ImageNet-21K data not downloaded not found in {imagenet_21k_root} \n Please download and process according to:' \
            ' https://github.com/Alibaba-MIIL/ImageNet21K/blob/main/dataset_preprocessing/processing_script.sh'
 
-        mean = (0.485, 0.456, 0.406)
-        std = (0.229, 0.224, 0.225)
 
         test_transform = tv_transforms.Compose(
             [
