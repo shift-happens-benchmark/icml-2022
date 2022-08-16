@@ -1,5 +1,4 @@
 import numpy as np
-import torch
 import os
 import pickle
 from copy import deepcopy
