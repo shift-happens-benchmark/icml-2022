@@ -61,15 +61,6 @@ class SSB(Task, OODScoreTaskMixin):
         mean = (0.485, 0.456, 0.406)
         std = (0.229, 0.224, 0.225)
 
-        # test_transform = tv_transforms.Compose([
-        #     tv_transforms.Resize(256),
-        #     tv_transforms.CenterCrop(224),
-        #     tv_transforms.ToTensor(),
-        #     tv_transforms.Normalize(
-        #         mean=torch.tensor(mean),
-        #         std=torch.tensor(std))
-        # ])
-
         test_transform = tv_transforms.Compose(
             [
                 tv_transforms.ToTensor(),
