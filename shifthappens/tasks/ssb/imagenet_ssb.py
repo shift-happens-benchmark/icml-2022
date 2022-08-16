@@ -5,7 +5,6 @@ from copy import deepcopy
 
 from torch.utils.data import Dataset
 from torchvision.datasets.folder import default_loader
-from shifthappens import benchmark as sh_benchmark
 
 
 class ImageNetSubsetDataset(Dataset):
