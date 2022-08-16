@@ -96,10 +96,10 @@ class ImageNetSingleCorruptionTypeBase(Task):
             all_predicted_labels_list.append(predictions.class_labels)
         all_predicted_labels = np.concatenate(all_predicted_labels_list, 0)
 
-        accuracy = (
-            all_predicted_labels
-            == np.array(self.ch_dataset.targets)[: len(all_predicted_labels)]
-        )
+        accuracy = np.equal(
+            all_predicted_labels,
+            np.array(self.ch_dataset.targets)[: len(all_predicted_labels)],
+        ).mean()
 
         return TaskResult(
             accuracy=accuracy,
@@ -449,7 +449,7 @@ class ImageNetCSeparateCorruptions(Task):
 
         return TaskResult(
             **results,
-            accuracy=np.mean(accuracies).item(),
-            mce=np.mean(mces).item(),
+            accuracy=np.mean(np.array(accuracies)),
+            mce=np.mean(np.array(mces)),
             summary_metrics={Metric.Robustness: "accuracy"},
         )
