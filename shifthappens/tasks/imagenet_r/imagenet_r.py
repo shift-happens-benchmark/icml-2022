@@ -80,7 +80,7 @@ class ImageNetR(Task):
 
         accuracy = np.equal(
             all_predicted_labels, np.array(self.ch_dataset.targets)
-        ).mean
+        ).mean()
 
         return TaskResult(
             accuracy=accuracy, summary_metrics={Metric.Robustness: "accuracy"}
