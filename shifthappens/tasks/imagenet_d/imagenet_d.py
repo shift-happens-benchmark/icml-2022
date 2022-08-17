@@ -3,7 +3,6 @@ import os
 from typing import Optional
 from typing import Tuple
 
-import map_classes
 import numpy as np
 import torch
 import torchvision.datasets as tv_datasets
@@ -19,6 +18,7 @@ from shifthappens.models.base import PredictionTargets
 from shifthappens.tasks.base import abstract_variable
 from shifthappens.tasks.base import Task
 from shifthappens.tasks.base import variable
+from shifthappens.tasks.imagenet_d import map_classes
 from shifthappens.tasks.metrics import Metric
 from shifthappens.tasks.task_result import TaskResult
 
