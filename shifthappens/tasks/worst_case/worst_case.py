@@ -189,5 +189,5 @@ class WorstCase(Task):
                     "W100CRat5",
                 )
             },
-            **metrics,
+            **metrics,  # type: ignore
         )

@@ -101,7 +101,7 @@ def worst_balanced_two_class_binary_accuracy(probs, new_labels) -> np.float64:
     return worst_item[1]
 
 
-def standard_balanced_topk_accuracy(preds, new_labels, k) -> np.ndarray:
+def standard_balanced_topk_accuracy(preds, new_labels, k) -> np.float64:
     """
     Computes the balanced topk accuracy.
 
@@ -145,7 +145,7 @@ def worst_class_topk_accuracy(preds, new_labels, k) -> float:
 
 def worst_balanced_n_classes_accuracy(
     classwise_accuracies_dict: dict, n: int
-) -> np.ndarray:
+) -> np.float64:
     """
     Computes the balanced accuracy among the worst n classes, based on their
     per-class accuracies.
