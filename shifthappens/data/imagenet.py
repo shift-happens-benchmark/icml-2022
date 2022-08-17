@@ -15,7 +15,7 @@ import shifthappens.data.torch as sh_data_torch
 from shifthappens.data.base import DataLoader
 
 #: Must be set to ImageNet validation set path (either absolute or relative to working directory).
-ImageNetValidationData = "shifthappens/imagenet"
+ImageNetValidationData = "/mnt/qb/datasets/ImageNet2012/val/"
 
 #: Must be set to models' results caching directory (either absolute or relative to working directory). If the folder does not exist, it will be created.
 ImageNetValidationPredictionsCache = "shifthappens/cache"

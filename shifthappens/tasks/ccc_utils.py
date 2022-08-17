@@ -336,6 +336,7 @@ class ApplyTransforms(data.Dataset):
         """
     def __init__(self, data_dir, n1, n2, s1, s2, subset_size, frost_dir):
         d = noise_transforms()
+        self.data_dir = data_dir
         self.n1_frost, self.n2_frost = False, False
         if n1 == "frost":
             self.n1_frost = True
