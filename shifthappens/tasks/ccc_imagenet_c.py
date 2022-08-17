@@ -338,7 +338,7 @@ def fog(x, severity=1):
     return np.clip(x * max_val / (max_val + c[0]), 0, 1) * 255
 
 
-def frost(x, severity=1):
+def frost(x, severity=1, data_dir=None):
     if 'frost' not in interpolation_function_dict.keys():
         f = interpolate.interp1d([0, 1, 2, 3, 4, 5], [(1.0, 0.0),
                                                       (1, 0.4),
@@ -357,7 +357,7 @@ def frost(x, severity=1):
     filename = \
         ['./frost/frost1.png', './frost/frost2.png', './frost/frost3.png', './frost/frost4.jpg', './frost/frost5.jpg',
          './frost/frost6.jpg'][idx]
-    filename = os.path.abspath(filename)
+    filename = os.path.abspath(os.path.join(data_dir, filename))
     frost = cv2.imread(os.path.abspath(filename))
     # frost = cv2.cv.LoadImage(os.path.abspath(filename), CV_LOAD_IMAGE_COLOR)
     # randomly crop and convert to rgb

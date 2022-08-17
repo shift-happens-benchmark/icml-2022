@@ -12,8 +12,12 @@ import random
 import pickle
 import itertools
 
+from io import BytesIO
+import requests
+
 from shifthappens.tasks.ccc_imagenet_c import noise_transforms
 from shifthappens.tasks.ccc_lmdb import ImageFolderLMDB, dset2lmdb
+
 
 
 def path_to_dataset(path, root):
@@ -118,6 +122,27 @@ def traverse_graph(cost_dict, path_dict, arr, i, j, target_val):
 
 
 
+def get_frost_images(data_dir):
+    """
+          Downloads frost images from the ImageNet-C repo.
+
+          Parameters
+          ----------
+          data_dir : str
+              where the images will be saved
+          target_dir : str
+    """
+    url = 'https://raw.githubusercontent.com/hendrycks/robustness/master/ImageNet-C/create_c/'
+    frost_images_path = os.path.join(data_dir, "frost")
+    frost_images = set(["frost1.png", "frost2.png", "frost3.png", "frost4.jpg", "frost5.jpg", "frost6.jpg"])
+    if not os.path.exists(frost_images_path):
+        os.mkdir(frost_images_path)
+
+    for image_name in frost_images.difference(set(os.listdir(frost_images_path))):
+        response = requests.get(url + image_name)
+        img = Image.open(BytesIO(response.content))
+        img.save(os.path.join(frost_images_path, image_name))
+
 
 class WalkLoader(data.Dataset):
     """
@@ -175,6 +200,7 @@ class WalkLoader(data.Dataset):
             # 'jpeg' # these noises aren't used for baseline accuracy=20
         ]
 
+        get_frost_images("./")
         pickle_path = os.path.join(self.target_dir, "ccc_accuracy_matrix.pickle")
         if not os.path.exists(pickle_path):
             url = "https://nc.mlcloud.uni-tuebingen.de/index.php/s/izTMnXkaHoNBZT4/download/ccc_accuracy_matrix.pickle"
@@ -185,7 +211,6 @@ class WalkLoader(data.Dataset):
         else:
             with open(pickle_path, 'rb') as f:
                 accuracy_matrix = pickle.load(f)
-
 
         noise_list = list(itertools.product(self.single_noises, self.single_noises))
 
@@ -217,9 +242,7 @@ class WalkLoader(data.Dataset):
         while self.noise1 == self.noise2:
             self.noise2 = random.choice(self.single_noises)
 
-
         self.lastrun = 0
-
 
     def generate_dataset(self):
         total_generated = 0
@@ -240,6 +263,12 @@ class WalkLoader(data.Dataset):
                 os.mkdir(path)
 
             if not (os.path.exists(os.path.join(path, 'lock.mdb')) and os.path.exists(os.path.join(path, 'data.mdb'))):
+                generated_subset = ApplyTransforms(self.data_dir, n1, n2, s1, s2, self.subset_size)
+                dset2lmdb(generated_subset, path)
+
+            try:
+                cur_data = ImageFolderLMDB(db_path=path, transform=None)
+            except:
                 generated_subset = ApplyTransforms(self.data_dir, n1, n2, s1, s2, self.subset_size)
                 dset2lmdb(generated_subset, path)
 
@@ -306,6 +335,11 @@ class ApplyTransforms(data.Dataset):
     def __init__(self, data_dir, n1, n2, s1, s2, subset_size):
         d = noise_transforms()
         self.data_dir = data_dir
+        self.n1_frost, self.n2_frost = False, False
+        if n1 == "frost":
+            self.n1_frost = True
+        if n2 == "frost":
+            self.n2_frost = True
         self.n1 = d[n1]
         self.n2 = d[n2]
         self.s1 = s1
@@ -341,13 +375,18 @@ class ApplyTransforms(data.Dataset):
         img = self.trn(img)
 
         if self.s1 > 0:
-            img = self.n1(img, self.s1)
+            if self.n1_frost:
+                img = self.n1(img, self.s1, self.data_dir)
+            else:
+                img = self.n1(img, self.s1)
             img = Image.fromarray(np.uint8(img))
         if self.s2 > 0:
-            img = self.n2(img, self.s2)
+            if self.n1_frost:
+                img = self.n2(img, self.s2, self.data_dir)
+            else:
+                img = self.n2(img, self.s2)
+            img = Image.fromarray(np.uint8(img))
 
-        if self.s2 > 0:
-            img = Image.fromarray(np.uint8(img))
         output = io.BytesIO()
         img.save(output, format='JPEG', quality=85, optimize=True)
         corrupted_img = output.getvalue()
@@ -355,5 +394,3 @@ class ApplyTransforms(data.Dataset):
 
     def __len__(self):
         return len(self.paths)
-
-
