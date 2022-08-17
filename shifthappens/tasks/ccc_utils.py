@@ -381,7 +381,7 @@ class ApplyTransforms(data.Dataset):
                 img = self.n1(img, self.s1)
             img = Image.fromarray(np.uint8(img))
         if self.s2 > 0:
-            if self.n1_frost:
+            if self.n2_frost:
                 img = self.n2(img, self.s2, self.data_dir)
             else:
                 img = self.n2(img, self.s2)

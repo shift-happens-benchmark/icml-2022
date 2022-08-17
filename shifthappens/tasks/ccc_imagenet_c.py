@@ -357,7 +357,8 @@ def frost(x, severity=1, data_dir=None):
     filename = \
         ['./frost/frost1.png', './frost/frost2.png', './frost/frost3.png', './frost/frost4.jpg', './frost/frost5.jpg',
          './frost/frost6.jpg'][idx]
-    filename = os.path.abspath(os.path.join(data_dir, filename))
+    # filename = os.path.abspath(os.path.join(data_dir, filename))
+    filename = os.path.join(data_dir, filename)
     frost = cv2.imread(os.path.abspath(filename))
     # frost = cv2.cv.LoadImage(os.path.abspath(filename), CV_LOAD_IMAGE_COLOR)
     # randomly crop and convert to rgb
