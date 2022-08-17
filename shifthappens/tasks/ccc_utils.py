@@ -263,13 +263,13 @@ class WalkLoader(data.Dataset):
                 os.mkdir(path)
 
             if not (os.path.exists(os.path.join(path, 'lock.mdb')) and os.path.exists(os.path.join(path, 'data.mdb'))):
-                generated_subset = ApplyTransforms(self.data_dir, n1, n2, s1, s2, self.subset_size)
+                generated_subset = ApplyTransforms(self.data_dir, n1, n2, s1, s2, self.subset_size, self.target_dir)
                 dset2lmdb(generated_subset, path)
 
             try:
                 cur_data = ImageFolderLMDB(db_path=path, transform=None)
             except:
-                generated_subset = ApplyTransforms(self.data_dir, n1, n2, s1, s2, self.subset_size)
+                generated_subset = ApplyTransforms(self.data_dir, n1, n2, s1, s2, self.subset_size, self.target_dir)
                 dset2lmdb(generated_subset, path)
 
             remainder = self.frequency
@@ -327,14 +327,15 @@ class ApplyTransforms(data.Dataset):
                 denotes the severity of noise #2
             subset_size: int
                 of the images in data_dir, how many should we use?
+            frost_dir: str
+                directory of the frost images, used to noise images with frost
             Returns
             -------
             Dataset Object
 
         """
-    def __init__(self, data_dir, n1, n2, s1, s2, subset_size):
+    def __init__(self, data_dir, n1, n2, s1, s2, subset_size, frost_dir):
         d = noise_transforms()
-        self.data_dir = data_dir
         self.n1_frost, self.n2_frost = False, False
         if n1 == "frost":
             self.n1_frost = True
@@ -344,6 +345,7 @@ class ApplyTransforms(data.Dataset):
         self.n2 = d[n2]
         self.s1 = s1
         self.s2 = s2
+        self.frost_dir = frost_dir
 
         self.trn = tv_transforms.Compose([tv_transforms.Resize(256), tv_transforms.CenterCrop(224)])
         all_paths = []
@@ -376,13 +378,13 @@ class ApplyTransforms(data.Dataset):
 
         if self.s1 > 0:
             if self.n1_frost:
-                img = self.n1(img, self.s1, self.data_dir)
+                img = self.n1(img, self.s1, self.frost_dir)
             else:
                 img = self.n1(img, self.s1)
             img = Image.fromarray(np.uint8(img))
         if self.s2 > 0:
             if self.n2_frost:
-                img = self.n2(img, self.s2, self.data_dir)
+                img = self.n2(img, self.s2, self.frost_dir)
             else:
                 img = self.n2(img, self.s2)
             img = Image.fromarray(np.uint8(img))
