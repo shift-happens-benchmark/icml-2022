@@ -78,9 +78,10 @@ def get_imagenet_validation_loader(max_batch_size=128) -> DataLoader:
 
 def get_cached_predictions(cls) -> dict:
     """
-    Checks whether there exist cached results for the model's class and if so, returns them.
-    Note that the path to ImageNet validation set
-    :py:data:`shifthappens.data.imagenet.ImageNetValidationData` must be specified.
+    Checks whether there exist cached results for the model's class and if
+    so, returns them. Note that the path to ImageNet validation set
+    :py:attr:`shifthappens.config.imagenet_validation_path
+    <shifthappens.config.Config.imagenet_validation_path>` must be specified.
 
     Args:
         cls: Model's class. Used for specifying folder name.
