@@ -38,7 +38,7 @@ def _check_imagenet_folder():
             ]
         )
         == 1000
-    ), "ImageNetValidationData folder contains less or more folders than ImageNet classes."
+    ), f"{shifthappens.config.imagenet_validation_path} folder contains less folders than ImageNet classes."
 
 
 def get_imagenet_validation_loader(max_batch_size=128) -> DataLoader:
