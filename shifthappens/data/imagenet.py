@@ -28,8 +28,16 @@ def _check_imagenet_folder():
         "Files not found at location specified in shifthappens.config.imagenet_validation_path."
     )
     assert (
-        len([d_ for d_ in os.listdir(shifthappens.config.imagenet_validation_path)
-             if os.path.isdir(os.path.join(shifthappens.config.imagenet_validation_path, d_))]) == 1000
+        len(
+            [
+                d_
+                for d_ in os.listdir(shifthappens.config.imagenet_validation_path)
+                if os.path.isdir(
+                    os.path.join(shifthappens.config.imagenet_validation_path, d_)
+                )
+            ]
+        )
+        == 1000
     ), "ImageNetValidationData folder contains less or more folders than ImageNet classes."
 
 

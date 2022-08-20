@@ -8,7 +8,7 @@ For each dataset, we provide 'seen' and 'unseen' class splits. Furthermore, for 
 
 The ImageNet evaluation is implemented here. To run, first: 
 * Download and process ImageNet-21K-P, [details for which can be found here](https://github.com/Alibaba-MIIL/ImageNet21K). 
-* Set paths to ImageNet-21K-P and the regular ImageNet dataset in ```shifthappens/tasks/ssb/imagenet_ssb.py``` (in ```SSB.resource```) and ```shifthappens/data/imagenet.py``` (in ```ImageNetValidationData```)
+* Set paths to ImageNet-21K-P and the regular ImageNet dataset in ```shifthappens/config.py```.
 
 Finally, run:
 
@@ -30,7 +30,6 @@ sh_benchmark.evaluate_model(
 
 For more example from other evaluations in the Semantic Shift Benchmark, see [here](https://www.robots.ox.ac.uk/~vgg/research/osr/#ssb_suite).
 
-![image](assets/ssb_imagenet.png)
 
 ## Citation
 
