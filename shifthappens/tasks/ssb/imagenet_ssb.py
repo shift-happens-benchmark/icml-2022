@@ -20,7 +20,6 @@ class ImageNetSubsetDataset(Dataset):
         root_dirs = [os.path.join(root, c) for c in self.classes]
 
         samples = ["image not found"] * len(root_dirs) * 50
-        print(len(samples))
         labels = [-1] * len(root_dirs) * 50
         for i, r_c_pair in enumerate(zip(root_dirs, self.classes)):
             r, c = r_c_pair
