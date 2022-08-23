@@ -92,6 +92,3 @@ class CCC(Task):
 
 
 if __name__ == "__main__":
-    from shifthappens.models.torchvision import ResNet50
-
-    sh_benchmark.evaluate_model(ResNet50(), "../../../../../test_data")
