@@ -91,4 +91,3 @@ class CCC(Task):
         )
 
 
-if __name__ == "__main__":
