@@ -15,8 +15,8 @@ import itertools
 from io import BytesIO
 import requests
 
-from shifthappens.tasks.ccc_imagenet_c import noise_transforms
-from shifthappens.tasks.ccc_lmdb import ImageFolderLMDB, dset2lmdb
+from shifthappens.tasks.ccc.ccc_imagenet_c import noise_transforms
+from shifthappens.tasks.ccc.ccc_lmdb import ImageFolderLMDB, dset2lmdb
 
 
 
@@ -133,8 +133,11 @@ def get_frost_images(data_dir):
           target_dir : str
     """
     url = 'https://raw.githubusercontent.com/hendrycks/robustness/master/ImageNet-C/create_c/'
+    if not os.path.exists(data_dir):
+        os.makedirs(data_dir, exist_ok=True)
+
     frost_images_path = os.path.join(data_dir, "frost")
-    frost_images = set(["frost1.png", "frost2.png", "frost3.png", "frost4.jpg", "frost5.jpg", "frost6.jpg"])
+    frost_images = {"frost1.png", "frost2.png", "frost3.png", "frost4.jpg", "frost5.jpg", "frost6.jpg"}
     if not os.path.exists(frost_images_path):
         os.mkdir(frost_images_path)
 
@@ -200,7 +203,6 @@ class WalkLoader(data.Dataset):
             # 'jpeg' # these noises aren't used for baseline accuracy=20
         ]
 
-        get_frost_images("./")
         pickle_path = os.path.join(self.target_dir, "ccc_accuracy_matrix.pickle")
         if not os.path.exists(pickle_path):
             url = "https://nc.mlcloud.uni-tuebingen.de/index.php/s/izTMnXkaHoNBZT4/download/ccc_accuracy_matrix.pickle"
@@ -211,6 +213,7 @@ class WalkLoader(data.Dataset):
         else:
             with open(pickle_path, 'rb') as f:
                 accuracy_matrix = pickle.load(f)
+        get_frost_images(self.target_dir)
 
         noise_list = list(itertools.product(self.single_noises, self.single_noises))
 
@@ -266,15 +269,22 @@ class WalkLoader(data.Dataset):
                 generated_subset = ApplyTransforms(self.data_dir, n1, n2, s1, s2, self.subset_size, self.target_dir)
                 dset2lmdb(generated_subset, path)
 
+            test_transform = tv_transforms.Compose(
+                [
+                    tv_transforms.ToTensor(),
+                    tv_transforms.Lambda(lambda x: x.permute(1, 2, 0)),
+                ]
+            )
+
             try:
-                cur_data = ImageFolderLMDB(db_path=path, transform=None)
+                cur_data = ImageFolderLMDB(db_path=path, transform=test_transform)
             except:
                 generated_subset = ApplyTransforms(self.data_dir, n1, n2, s1, s2, self.subset_size, self.target_dir)
                 dset2lmdb(generated_subset, path)
 
             remainder = self.frequency
             while remainder > 0:
-                cur_data = ImageFolderLMDB(db_path=path, transform=None)
+                cur_data = ImageFolderLMDB(db_path=path, transform=test_transform)
                 inds = np.random.permutation(len(cur_data))[:remainder]
                 cur_data = torch.utils.data.Subset(cur_data, inds)
                 remainder -= len(cur_data)
