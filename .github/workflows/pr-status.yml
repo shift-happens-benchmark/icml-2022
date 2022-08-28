@@ -57,14 +57,14 @@ jobs:
         # trim
         STATUS=$(echo $STATUS | xargs echo -n)
         RESULT=$(head -n -1 <<< $RESULT)
-        # Escape underscores such that they are correctly rendered in markdown.
-        RESULT=$(echo $RESULT | sed 's/_/\\_/g')
         # remove second to last line
         RESULTA=$(head -n -2 <<< $RESULT)
         RESULTB=$(tail -n1 <<< $RESULT)
         NL=$'\n'
         RESULT="$RESULTA${NL}||||||${NL}$RESULTB"
         RESULT="$RESULT${NL}${NL}$STATUS"
+        # Escape underscores such that they are correctly rendered in markdown.
+        RESULT=$(sed 's/_/\\_/g' <<< $RESULT)
         RESULT="${RESULT//'%'/'%25'}"
         RESULT="${RESULT//$'\n'/'%0A'}"
         RESULT="${RESULT//$'\r'/'%0D'}"
