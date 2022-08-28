@@ -42,10 +42,14 @@ jobs:
         }
         python -m pip install --upgrade pip setuptools wheel
         retry-with-backoff pip install -r requirements_dev.txt
+    - id: files
+      uses: jitterbit/get-changed-files@v1
+      with:
+        format: 'csv'
     - name: documentation
       id: documentation
       run: |
-        RESULT=$(git diff --name-only origin/main | grep .py$ | xargs ls 2>/dev/null | xargs interrogate -f 0 -v)
+        RESULT=$(${{ steps.files.outputs.added_modified }} | tr ',' '\n' | grep .py$ | xargs ls 2>/dev/null | xargs interrogate -f 0 -v)
         RESULT=$(tail -n +3 <<< $RESULT)
         STATUS=$(tail -n1 <<< $RESULT)
         STATUS=$(sed 's/-//g' <<< $STATUS)
