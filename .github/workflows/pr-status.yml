@@ -50,13 +50,15 @@ jobs:
     - name: documentation
       id: documentation
       run: |
-        RESULT=$(tr ${{ steps.files.outputs.added_modified }} ',' '\n' | grep .py$ | xargs ls 2>/dev/null | xargs interrogate -f 0 -v)
+        RESULT=$(echo ${{ steps.files.outputs.added_modified }} | tr ',' '\n' | grep .py$ | xargs ls 2>/dev/null | xargs interrogate -f 0 -v)
         RESULT=$(tail -n +3 <<< $RESULT)
         STATUS=$(tail -n1 <<< $RESULT)
         STATUS=$(sed 's/-//g' <<< $STATUS)
         # trim
         STATUS=$(echo $STATUS | xargs echo -n)
         RESULT=$(head -n -1 <<< $RESULT)
+        # Escape underscores such that they are correctly rendered in markdown.
+        RESULT=$(echo $RESULT | tr '_' '\_')
         # remove second to last line
         RESULTA=$(head -n -2 <<< $RESULT)
         RESULTB=$(tail -n1 <<< $RESULT)
