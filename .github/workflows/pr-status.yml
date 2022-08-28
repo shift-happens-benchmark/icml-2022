@@ -58,7 +58,7 @@ jobs:
         STATUS=$(echo $STATUS | xargs echo -n)
         RESULT=$(head -n -1 <<< $RESULT)
         # Escape underscores such that they are correctly rendered in markdown.
-        # RESULT=$(echo $RESULT | tr '_' '\_')
+        RESULT=$(echo $RESULT | sed 's/_/\\_/g')
         # remove second to last line
         RESULTA=$(head -n -2 <<< $RESULT)
         RESULTB=$(tail -n1 <<< $RESULT)
