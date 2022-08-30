@@ -529,6 +529,3 @@ def noise_transforms():
     d['jpeg'] = jpeg_compression
     return d
 
-
-if __name__ == '__main__':
-    pass
