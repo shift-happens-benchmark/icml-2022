@@ -9,7 +9,7 @@ import torchvision.datasets.utils as tv_utils
 from torchvision import datasets as tv_datasets
 
 from shifthappens import benchmark as sh_benchmark
-from shifthappens.data import imagenet
+from shifthappens.config import imagenet_validation_path
 from shifthappens.models import base as sh_models
 from shifthappens.tasks.base import Task
 from shifthappens.tasks.metrics import Metric
@@ -144,7 +144,7 @@ class ImageNetM(Task):
         else:
             # Create mapping from torch DataLoader order to filename
             self._filename_to_pred_index = {}
-            iif = tv_datasets.ImageFolder(root=imagenet.ImageNetValidationData)
+            iif = tv_datasets.ImageFolder(root=imagenet_validation_path)
             for i, (filename, _) in enumerate(iif.samples):
                 im_filename = os.path.normpath(os.path.basename(filename))
                 self._filename_to_pred_index[im_filename] = i
