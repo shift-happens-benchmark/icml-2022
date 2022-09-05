@@ -83,7 +83,11 @@ class ObjectNet(Task):
 
         test_transform = tv_transforms.Compose(
             [
-                tv_transforms.Pad(-2),
+                tv_transforms.Pad(
+                    -2
+                ),  # every image in ObjectNet has 1px red border (check for details https://objectnet.dev/download.html);
+                # however, we printed image with tv_transforms.Pad(-1) and
+                # border remained that's why we use -2px here
                 tv_transforms.ToTensor(),
                 tv_transforms.Lambda(lambda x: x.permute(1, 2, 0)),
             ]
