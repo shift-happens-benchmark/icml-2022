@@ -86,7 +86,9 @@ class ImageNetPatchTarget(Task):
             all_predicted_labels_list.append(predictions.class_labels)
         all_preds = np.concatenate(all_predicted_labels_list, 0)
 
-        accuracy = (all_preds == np.array(self.ch_dataset.targets)[: len(all_preds)]).mean()
+        accuracy = (
+            all_preds == np.array(self.ch_dataset.targets)[: len(all_preds)]
+        ).mean()
         return TaskResult(
             accuracy=accuracy,
             mce=1.0 - accuracy,
@@ -288,7 +290,7 @@ class ImageNetPatchCorruptions(Task):
 
         return TaskResult(
             **results,
-            accuracy=np.mean(accuracies).item(),
-            mce=np.mean(mces).item(),
+            accuracy=np.mean(np.array(accuracies)),
+            mce=np.mean(np.array(mces)),
             summary_metrics={Metric.Robustness: "accuracy"},
         )
