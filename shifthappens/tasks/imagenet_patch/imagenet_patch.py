@@ -86,7 +86,7 @@ class ImageNetPatchTarget(Task):
             all_predicted_labels_list.append(predictions.class_labels)
         all_preds = np.concatenate(all_predicted_labels_list, 0)
 
-        accuracy = all_preds == np.array(self.ch_dataset.targets)[: len(all_preds)]
+        accuracy = (all_preds == np.array(self.ch_dataset.targets)[: len(all_preds)]).mean()
         return TaskResult(
             accuracy=accuracy,
             mce=1.0 - accuracy,
