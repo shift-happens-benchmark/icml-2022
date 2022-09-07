@@ -31,11 +31,10 @@ from shifthappens import benchmark as sh_benchmark
 from shifthappens.data.base import DataLoader
 from shifthappens.models import base as sh_models
 from shifthappens.models.base import PredictionTargets
-from shifthappens.tasks.base import Task
 from shifthappens.tasks.base import parameter
+from shifthappens.tasks.base import Task
 from shifthappens.tasks.metrics import Metric
 from shifthappens.tasks.task_result import TaskResult
-
 
 """
 change threshold to set the minimum number of images per subset
