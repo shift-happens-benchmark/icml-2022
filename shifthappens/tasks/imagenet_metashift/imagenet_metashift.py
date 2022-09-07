@@ -32,21 +32,15 @@ from shifthappens.data.base import DataLoader
 from shifthappens.models import base as sh_models
 from shifthappens.models.base import PredictionTargets
 from shifthappens.tasks.base import Task
+from shifthappens.tasks.base import parameter
 from shifthappens.tasks.metrics import Metric
 from shifthappens.tasks.task_result import TaskResult
 
-"""Use False to generate the MetaDataset for all ~200 classes [Warning: Very Large].
-"""
-ONLY_SELECTED_CLASSES = True
-
-"""check class_info.txt to select classes
-"""
-SELECTED_CLASSES = ["airplane", "elephant", "cat", "dog", "horse"]
 
 """
 change threshold to set the minimum number of images per subset
 """
-IMGAGE_SUBSET_SIZE_THRESHOLD = 25
+IMAGE_SUBSET_SIZE_THRESHOLD = 25
 
 CLASS_HIERARCHY_JSON = (
     "https://zenodo.org/record/6804766/files/class_hierarchy.json?download=1"
@@ -80,8 +74,15 @@ class ImageNetMetaShift(Task):
         (
             "images.zip",
             "https://nlp.stanford.edu/data/gqa/images.zip",
+            "ce0e89c03830722434d7f20a41b05342",
         )
     ]
+
+    only_selected_classes: bool = parameter(
+        default=True,
+        options=(True, False),
+        description="Use False to generate the MetaDataset for all ~200 classes [Warning: Very Large].",
+    )
 
     def parse_node_str(self, node_str):
         """parse the node into class and context string"""
@@ -135,10 +136,9 @@ class ImageNetMetaShift(Task):
                 os.symlink(
                     os.path.abspath(src_image_path), os.path.abspath(dst_image_path)
                 )
-
         return
 
-    def preprocess_groups(self, subject_classes=SELECTED_CLASSES):
+    def preprocess_groups(self, subject_classes):
         """preprocess for each group:
 
         load condidate subsets for each group
@@ -156,11 +156,11 @@ class ImageNetMetaShift(Task):
         group_name_counter = Counter()
         for node_name in node_name_to_img_id.keys():
             # Apply a threshold: e.g., 25
-            imageID_set = node_name_to_img_id[node_name]
-            imageID_set = imageID_set - trainsg_dupes
-            node_name_to_img_id[node_name] = imageID_set
-            if len(imageID_set) >= IMGAGE_SUBSET_SIZE_THRESHOLD:
-                group_name_counter[node_name] = len(imageID_set)
+            image_id_set = node_name_to_img_id[node_name]
+            image_id_set = image_id_set - trainsg_dupes
+            node_name_to_img_id[node_name] = image_id_set
+            if len(image_id_set) >= IMAGE_SUBSET_SIZE_THRESHOLD:
+                group_name_counter[node_name] = len(image_id_set)
             else:
                 pass
 
@@ -171,7 +171,7 @@ class ImageNetMetaShift(Task):
         for node_name, imageID_set_len in most_common_list:
             subject_str, tag = self.parse_node_str(node_name)
 
-            if ONLY_SELECTED_CLASSES and subject_str not in subject_classes:
+            if self.only_selected_classes and subject_str not in subject_classes:
                 continue
 
             subject_group_summary_dict[subject_str][node_name] = imageID_set_len
@@ -280,16 +280,25 @@ class ImageNetMetaShift(Task):
 
         # Download the pre-processed and cleaned version of Visual Genome by GQA.
         if not os.path.exists(os.path.join(dataset_folder, "allImages", "images")):
-            for file_name, url in self.resources:
+            for file_name, url, md5 in self.resources:
                 sh_utils.download_and_extract_archive(
-                    url, os.path.join(dataset_folder, "allImages"), None, file_name
+                    url, os.path.join(dataset_folder, "allImages"), md5, file_name
                 )
 
         self.META_DATASET_FOLDER = os.path.join(dataset_folder, "generated")
         if os.path.exists(self.META_DATASET_FOLDER):
             shutil.rmtree(self.META_DATASET_FOLDER)
 
-        self.preprocess_groups()
+        if self.only_selected_classes:
+            selected_classes = ["airplane", "elephant", "cat", "dog", "horse"]
+        else:
+            class_info_path = os.path.join(dataset_folder, "class_info.txt")
+            selected_classes = [
+                str(class_name).rstrip("\n")
+                for class_name in open(class_info_path).readlines()
+            ]
+
+        self.preprocess_groups(selected_classes)
 
         test_transform = tv_transforms.Compose(
             [
@@ -317,7 +326,7 @@ class ImageNetMetaShift(Task):
 
         # generate the imagenet label to class mapping
         self.imagenet_labels = {}
-        for i in SELECTED_CLASSES:
+        for i in selected_classes:
             self.imagenet_labels[i] = self.find_imagenet_node(
                 i, self.imagenet_label_data
             )
@@ -354,3 +363,4 @@ class ImageNetMetaShift(Task):
         return TaskResult(
             accuracy=accuracy, summary_metrics={Metric.Robustness: "accuracy"}
         )
+
