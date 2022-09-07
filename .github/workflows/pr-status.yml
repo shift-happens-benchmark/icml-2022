@@ -48,7 +48,7 @@ jobs:
     - name: documentation
       id: documentation
       run: |
-        RESULT=$(echo ${{ steps.changed-files.outputs.modified_files }} | tr ',' '\n' | grep .py$ | xargs ls 2>/dev/null | xargs interrogate -f 0 -v)
+        RESULT=$(echo ${{ steps.changed-files.outputs.modified_files }} | tr ',' '\n' | grep '.py$' | xargs ls 2>/dev/null | xargs interrogate -f 0 -v)
         RESULT=$(tail -n +3 <<< $RESULT)
         STATUS=$(tail -n1 <<< $RESULT)
         STATUS=$(sed 's/-//g' <<< $STATUS)
