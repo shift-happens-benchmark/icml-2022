@@ -363,4 +363,3 @@ class ImageNetMetaShift(Task):
         return TaskResult(
             accuracy=accuracy, summary_metrics={Metric.Robustness: "accuracy"}
         )
-
