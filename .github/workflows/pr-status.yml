@@ -2,9 +2,8 @@ name: PR Status
 
 # Controls when the workflow will run
 on:
-  pull_request_target:
-    branches:    
-      - main
+  pull_request:
+    branches: [main]
     
 jobs:
   documentation-status:
