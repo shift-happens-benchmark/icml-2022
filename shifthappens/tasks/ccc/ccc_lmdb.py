@@ -2,15 +2,13 @@
 Code copied from: https://github.com/rmccorm4/PyTorch-LMDB
 """
 import os
-import six
 
 import lmdb
-from PIL import Image
-
-import torch.utils.data as data
-from torch.utils.data import DataLoader
-
 import pyarrow as pa
+import six
+import torch.utils.data as data
+from PIL import Image
+from torch.utils.data import DataLoader
 
 
 class ImageFolderLMDB(data.Dataset):

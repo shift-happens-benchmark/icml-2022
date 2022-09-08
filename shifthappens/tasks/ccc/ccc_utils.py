@@ -1,22 +1,21 @@
-import os
 import io
-import pandas as pd
+import itertools
+import os
+import pickle
+import random
+from io import BytesIO
 
 import numpy as np
+import pandas as pd
+import requests
+import torch
+import torch.utils.data as data
+import torchvision.transforms as tv_transforms
 from PIL import Image
 
-import torch
-import torchvision.transforms as tv_transforms
-import torch.utils.data as data
-import random
-import pickle
-import itertools
-
-from io import BytesIO
-import requests
-
 from shifthappens.tasks.ccc.ccc_imagenet_c import noise_transforms
-from shifthappens.tasks.ccc.ccc_lmdb import ImageFolderLMDB, dset2lmdb
+from shifthappens.tasks.ccc.ccc_lmdb import dset2lmdb
+from shifthappens.tasks.ccc.ccc_lmdb import ImageFolderLMDB
 
 
 def path_to_dataset(path, root):
