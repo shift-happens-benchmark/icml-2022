@@ -1,3 +1,5 @@
+"""Class for storing a task's registration for the benchmark."""
+
 from dataclasses import dataclass
 from typing import Type
 

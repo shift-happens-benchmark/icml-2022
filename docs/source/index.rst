@@ -94,7 +94,6 @@ Please note that it is **not required** to post the final dataset by the submiss
 It is sufficient to start working on final dataset collections after the acceptance notification until the camera ready deadline.
 
 Additional information about submission dates and the submission format can be found in :doc:`call_for_papers`.
-Also, please consider our :doc:`call_for_reviewers`.
 
 
 Prizes and Travel Grants
@@ -141,8 +140,8 @@ Thanks a lot to the Program Committee for reviewing and contributing to shaping 
     :maxdepth: 2
     :hidden:
 
+    Schedule <schedule>
     Call for Submissions <call_for_papers>
-    Call for Reviewers <call_for_reviewers>
     Benchmark API Docs <api>
     Accepted Papers <papers>
 

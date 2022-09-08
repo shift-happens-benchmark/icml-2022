@@ -62,9 +62,19 @@ class DataLoader:
 
     @property
     def max_batch_size(self):
+        """Maximum allowed batch size that the dataloader will satisfy for request
+        through the :py:func:`iterate` function."""
         return self.__max_batch_size
 
     def iterate(self, batch_size) -> Iterator[List[np.ndarray]]:
+        """Iterate through the dataloader and return batches of data.
+
+        Args:
+            batch_size: Maximum batch size the function that requests the data can handle.
+
+        Yields:
+            The dataset split up in batches.
+        """
         if self.max_batch_size is not None:
             batch_size = min(batch_size, self.max_batch_size)
 

@@ -48,9 +48,6 @@ SI-Score.
 The Semantic Shift Benchmark.
 	Sagar Vaze, Kai Han, Andrea Vedaldi, Andrew Zisserman.
 
-Wild-Time: A Benchmark of in-the-Wild Distribution Shift over Time.
-	Huaxiu Yao, Caroline Choi, Yoonho Lee, Pang Wei Koh, Chelsea Finn.
-
 Track 2: Extended abstracts
 ---------------------------
 
@@ -62,5 +59,6 @@ OOD-CV: A Benchmark for Robustness to Individual Nuisances in Real-World Out-of-
 
 Towards Systematic Robustness for Scalable Visual Recognition.
 	Mohamed Omran, Bernt Schiele.
-
-
+	
+Wild-Time: A Benchmark of in-the-Wild Distribution Shift over Time.
+	Huaxiu Yao, Caroline Choi, Yoonho Lee, Pang Wei Koh, Chelsea Finn.
