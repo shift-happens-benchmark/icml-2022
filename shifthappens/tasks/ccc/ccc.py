@@ -89,5 +89,3 @@ class CCC(Task):
         return TaskResult(
             accuracy=accuracy, summary_metrics={Metric.Robustness: "accuracy"}
         )
-
-
