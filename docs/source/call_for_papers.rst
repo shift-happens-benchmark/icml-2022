@@ -3,21 +3,13 @@ Call for Submissions
 
 .. note::
 
-  We offer up to 5 free registrations to the ICML as prizes for outstanding submissions!
-  
-  We extended the submission deadlines:
-  
-  All submissions (either an extended abstract, or a full submission in form of a technical report proof-of-concept implementation)
-  are due on **June 9** (previously: June 3).
-  For authors of the `Neurips Datasets & Benchmarks Track submissions <https://neurips.cc/Conferences/2022/CallForDatasetsBenchmarks#:~:text=Abstract%20submission%20deadline%3A%20Monday%2C%20June,2022%2001%3A00%20PM%20PDT.>`__, we offer another deadline extension until **June 9**.
-  
-  Submit your contribution `on OpenReview <https://openreview.net/group?id=ICML.cc/2022/Workshop/Shift_Happens>`_. In case of technical issues, please contact us at `shifthappens@bethgelab.org <mailto:shifthappens@bethgelab.org>`__.
+  Submissions are now **closed**. Please see the updated information below for the camera-ready submission templates.
 
 TL;DR
 ^^^^^
 
-We accept the following submission types:
-Full submissions and extended abstracts (`example <https://drive.google.com/file/d/1bRp0Pp2ek_KbuQILyNPuOgJcUD3EuCR3/view?usp=sharing>`__).
+We accept the following submission types: Full submissions and extended abstracts.
+A latex template (modified from the official ICML template) for **camera-ready papers and extended abstracts** can be found `here <https://www.overleaf.com/read/fscgdbvctmqs>`_).
 
 **Full submissions** consist of:
 

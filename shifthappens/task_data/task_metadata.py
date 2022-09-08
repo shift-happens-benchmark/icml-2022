@@ -1,3 +1,5 @@
+"""Class for storing a task's metadata."""
+
 from dataclasses import dataclass
 
 
