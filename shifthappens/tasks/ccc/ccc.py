@@ -12,8 +12,8 @@ import numpy as np
 
 import shifthappens.data.torch as sh_data_torch
 from shifthappens import benchmark as sh_benchmark
+from shifthappens.config import imagenet_validation_path
 from shifthappens.data.base import DataLoader
-from shifthappens.data.imagenet import ImageNetValidationData
 from shifthappens.models import base as sh_models
 from shifthappens.models.base import PredictionTargets
 from shifthappens.tasks.base import parameter
@@ -54,7 +54,7 @@ class CCC(Task):
 
     def setup(self):
         self.loader = WalkLoader(
-            ImageNetValidationData,
+            imagenet_validation_path,
             self.data_root,
             self.seed,
             self.frequency,
