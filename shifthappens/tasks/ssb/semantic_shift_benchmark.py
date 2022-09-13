@@ -115,6 +115,7 @@ class _SSB(Task, OODScoreTaskMixin):
 @dataclasses.dataclass
 class SSBEasy(_SSB):
     """SSB Easy subset"""
+
     subset_type: str = variable("easy")
 
 
@@ -124,4 +125,5 @@ class SSBEasy(_SSB):
 @dataclasses.dataclass
 class SSBHard(_SSB):
     """SSB Hard subset"""
+
     subset_type: str = variable("hard")

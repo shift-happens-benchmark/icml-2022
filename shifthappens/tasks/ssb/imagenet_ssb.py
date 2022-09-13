@@ -6,6 +6,10 @@ import shifthappens.config
 
 
 class ImageNetSubsetDataset(Dataset):
+    """
+    This wrapper is required for loading correct classes for every subset.
+    """
+
     def __init__(self, root, classes_to_keep, transform):
 
         self.root = root
