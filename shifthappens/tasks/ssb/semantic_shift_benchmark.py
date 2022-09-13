@@ -26,7 +26,15 @@ from shifthappens.tasks.utils import fpr_at_tpr
 
 @dataclasses.dataclass
 class _SSB(Task, OODScoreTaskMixin):
+    """
+    Prepares the ImageNet evaluation from the Semantic Shift Benchmark for open-set recognition (OSR)
 
+    Downloads SSB OSR splits to Task.data_root
+    Assumes ImageNet-21KP validation splits are downloaded to shifthappens.config.imagenet21k_preprocessed_validation_path
+    To download the ImageNet21k-P data:
+            Follow instructions at https://github.com/Alibaba-MIIL/ImageNet21K/blob/main/dataset_preprocessing/processing_instructions.md
+            Ensure data is from the Winter21 ImageNet release
+    """
     OSR_URL = "https://github.com/sgvaze/osr_closed_set_all_you_need/raw/main/data/open_set_splits/imagenet_osr_splits_winter21.pkl"
 
     subset_type: str = abstract_variable()
@@ -34,6 +42,7 @@ class _SSB(Task, OODScoreTaskMixin):
     max_batch_size: int = 256
 
     def setup(self):
+        """Asserts data is downloaded and sets up open-set dataset"""
         osr_split_path = os.path.join(
             self.data_root, "imagenet_osr_splits_winter21.pkl"
         )
