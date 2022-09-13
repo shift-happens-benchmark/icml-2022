@@ -83,7 +83,7 @@ def assert_data_downloaded(osr_split: dict, imagenet21k_root: str):
 
     paths = os.listdir(imagenet21k_root)
     assert all([x in paths for x in all_wnids]), (
-        f"ImageNet-21K-P data not downloaded not found in {shifthappens.config.imagenet21k_preprocessed_validation_path} "
+        f"ImageNet-21K-P (winter 21 version) data not downloaded not found in {shifthappens.config.imagenet21k_preprocessed_validation_path} "
         f"\n Please download processed data according to:"
         "https://github.com/Alibaba-MIIL/ImageNet21K/blob/main/dataset_preprocessing/processing_instructions.md"
         f"\n Or download raw data and processes it according to:"
