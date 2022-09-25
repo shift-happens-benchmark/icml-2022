@@ -5,7 +5,8 @@ on:
   pull_request:
     branches:    
       - main
-    
+
+
 jobs:
   documentation-status:
     runs-on: ubuntu-latest
