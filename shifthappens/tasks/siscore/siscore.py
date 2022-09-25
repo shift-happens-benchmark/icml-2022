@@ -137,8 +137,6 @@ class SISCOREVariantBase(Task):
             == np.array(self.ch_dataset.targets)[: len(all_predicted_labels)]
         ).mean()
 
-        # TODO(jessicayung): return more fine-grained metric as well,
-        # i.e. accuracy per object size/rotation angle etc.
 
         print(f"Accuracy: {np.mean(accuracy)}")
         return TaskResult(
