@@ -53,8 +53,8 @@ jobs:
       id: documentation
       run: |
         RESULT=$(echo ${{ steps.changed-files.outputs.all_changed_files }} | tr ',' '\n' | grep .py$ | xargs --no-run-if-empty interrogate -f 0 -v)
-        if [ ! -z "$RESULT" ]; then
-          RESULT="Documentation coverage did not change as no python file was changed."
+        if [ -z "${RESULT// }" ]; then
+          RESULT="Coverage did not change as no python file was changed."
         else
           RESULT=$(tail -n +3 <<< $RESULT)
           STATUS=$(tail -n1 <<< $RESULT)
