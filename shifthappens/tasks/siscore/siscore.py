@@ -137,7 +137,6 @@ class SISCOREVariantBase(Task):
             == np.array(self.ch_dataset.targets)[: len(all_predicted_labels)]
         ).mean()
 
-
         print(f"Accuracy: {np.mean(accuracy)}")
         return TaskResult(
             accuracy=accuracy,
