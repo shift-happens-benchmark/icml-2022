@@ -20,6 +20,8 @@ jobs:
       with:
         ref: main
     - uses: actions/checkout@v3
+      with:
+        fetch-depth: 0  # OR "2" -> To retrieve the preceding commit.
     - uses: actions/cache@v1
       with:
         path: ~/.cache/pip
@@ -50,7 +52,7 @@ jobs:
     - name: documentation
       id: documentation
       run: |
-        RESULT=$(echo ${{ steps.changed-files.outputs.modified_files }} | tr ',' '\n' | grep .py$ | xargs ls 2>/dev/null | xargs interrogate -f 0 -v)
+        RESULT=$(echo ${{ steps.changed-files.outputs.all_changed_files }} | tr ',' '\n' | grep .py$ | xargs interrogate -f 0 -v)
         RESULT=$(tail -n +3 <<< $RESULT)
         STATUS=$(tail -n1 <<< $RESULT)
         STATUS=$(sed 's/-//g' <<< $STATUS)
