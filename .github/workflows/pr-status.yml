@@ -49,6 +49,7 @@ jobs:
       uses: tj-actions/changed-files@v31
       with:
         separator: ","
+        since_last_remote_commit: "true"
     - name: documentation
       id: documentation
       run: |
