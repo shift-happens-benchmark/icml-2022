@@ -52,24 +52,28 @@ jobs:
     - name: documentation
       id: documentation
       run: |
-        RESULT=$(echo ${{ steps.changed-files.outputs.all_changed_files }} | tr ',' '\n' | grep .py$ | xargs interrogate -f 0 -v)
-        RESULT=$(tail -n +3 <<< $RESULT)
-        STATUS=$(tail -n1 <<< $RESULT)
-        STATUS=$(sed 's/-//g' <<< $STATUS)
-        # trim
-        STATUS=$(echo $STATUS | xargs echo -n)
-        RESULT=$(head -n -1 <<< $RESULT)
-        # remove second to last line
-        RESULTA=$(head -n -2 <<< $RESULT)
-        RESULTB=$(tail -n1 <<< $RESULT)
-        NL=$'\n'
-        RESULT="$RESULTA${NL}||||||${NL}$RESULTB"
-        RESULT="$RESULT${NL}${NL}$STATUS"
-        # Escape underscores such that they are correctly rendered in markdown.
-        RESULT=$(sed 's/_/\\_/g' <<< $RESULT)
-        RESULT="${RESULT//'%'/'%25'}"
-        RESULT="${RESULT//$'\n'/'%0A'}"
-        RESULT="${RESULT//$'\r'/'%0D'}"
+        RESULT=$(echo ${{ steps.changed-files.outputs.all_changed_files }} | tr ',' '\n' | grep .py$ | xargs --no-run-if-empty interrogate -f 0 -v)
+        if [ ! -z "$RESULT" ]; then
+          RESULT="Documentation coverage did not change as no python file was changed."
+        else
+          RESULT=$(tail -n +3 <<< $RESULT)
+          STATUS=$(tail -n1 <<< $RESULT)
+          STATUS=$(sed 's/-//g' <<< $STATUS)
+          # trim
+          STATUS=$(echo $STATUS | xargs echo -n)
+          RESULT=$(head -n -1 <<< $RESULT)
+          # remove second to last line
+          RESULTA=$(head -n -2 <<< $RESULT)
+          RESULTB=$(tail -n1 <<< $RESULT)
+          NL=$'\n'
+          RESULT="$RESULTA${NL}||||||${NL}$RESULTB"
+          RESULT="$RESULT${NL}${NL}$STATUS"
+          # Escape underscores such that they are correctly rendered in markdown.
+          RESULT=$(sed 's/_/\\_/g' <<< $RESULT)
+          RESULT="${RESULT//'%'/'%25'}"
+          RESULT="${RESULT//$'\n'/'%0A'}"
+          RESULT="${RESULT//$'\r'/'%0D'}"
+        fi
         echo "::set-output name=result::$RESULT"
     - name: comment documentation result on PR
       uses: thollander/actions-comment-pull-request@v1
