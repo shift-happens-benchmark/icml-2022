@@ -7,7 +7,6 @@ The ImageNet-matched-MetaShift is a collection of 5,040 sets of images from 261 
 where all the labels are a subset of the ImageNet-1k.
 Each class in the ImageNet-matched Metashift contains 2301.6 images on average,
 and 19.3 subsets capturing images in different contexts.
-
 """
 
 import dataclasses
