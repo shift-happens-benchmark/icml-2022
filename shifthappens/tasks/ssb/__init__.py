@@ -1,1 +1,1 @@
-"""Semantic Shift Benchmark tasks (easy & hard subsets)"""
+"""The Semantic Shift Benchmark task (easy & hard subsets)."""
