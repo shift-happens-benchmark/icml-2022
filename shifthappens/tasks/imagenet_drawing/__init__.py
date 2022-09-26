@@ -1,0 +1,1 @@
+"""The ImageNet-Drawing task."""
