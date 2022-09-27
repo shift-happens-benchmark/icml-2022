@@ -12,8 +12,8 @@ import numpy as np
 
 import shifthappens.data.torch as sh_data_torch
 from shifthappens import benchmark as sh_benchmark
+from shifthappens.config import imagenet_validation_path
 from shifthappens.data.base import DataLoader
-from shifthappens.data.imagenet import ImageNetValidationData
 from shifthappens.models import base as sh_models
 from shifthappens.models.base import PredictionTargets
 from shifthappens.tasks.base import parameter
@@ -26,6 +26,11 @@ from shifthappens.tasks.task_result import TaskResult
 @sh_benchmark.register_task(name="CCC", relative_data_folder="ccc", standalone=True)
 @dataclasses.dataclass
 class CCC(Task):
+    """
+    The main task class for the CCC task.
+    This task only implements the data reading portion of the dataset.
+    """
+
     seed: int = parameter(
         default=43,
         options=(43, 44, 45),
@@ -53,8 +58,10 @@ class CCC(Task):
     )
 
     def setup(self):
+        """Load and prepare the data."""
+
         self.loader = WalkLoader(
-            ImageNetValidationData,
+            imagenet_validation_path,
             self.data_root,
             self.seed,
             self.frequency,
@@ -86,8 +93,8 @@ class CCC(Task):
 
         accuracy = (all_predicted_labels == np.array(self.targets)).mean()
 
-        print('acc ', accuracy)
         return TaskResult(
             accuracy=accuracy, summary_metrics={Metric.Robustness: "accuracy"}
         )
+
 

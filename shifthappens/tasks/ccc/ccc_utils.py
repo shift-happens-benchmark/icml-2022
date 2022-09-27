@@ -1,66 +1,71 @@
-import os
 import io
-import pandas as pd
+import itertools
+import os
+import pickle
+import random
+from io import BytesIO
 
 import numpy as np
+import pandas as pd
+import requests
+import torch
+import torch.utils.data as data
+import torchvision.transforms as tv_transforms
 from PIL import Image
 
-import torch
-import torchvision.transforms as tv_transforms
-import torch.utils.data as data
-import random
-import pickle
-import itertools
-
-from io import BytesIO
-import requests
-
 from shifthappens.tasks.ccc.ccc_imagenet_c import noise_transforms
-from shifthappens.tasks.ccc.ccc_lmdb import ImageFolderLMDB, dset2lmdb
-
+from shifthappens.tasks.ccc.ccc_lmdb import dset2lmdb
+from shifthappens.tasks.ccc.ccc_lmdb import ImageFolderLMDB
 
 
 def path_to_dataset(path, root):
     """
-        Returns a list of directories that correspond to a given path between two noises
+    Returns a list of directories that correspond to a given path between two noises
 
-        Parameters
-        ----------
-        data_dir : list
-            each entry is a tuple of two indices that represents a severity combination
-        root : str
-            path to image dir
+    Parameters
+    ----------
+    data_dir : list
+        each entry is a tuple of two indices that represents a severity combination
+    root : str
+        path to image dir
 
-        Returns
-        -------
-        A list of directories that correpond to the path along the severities
+    Returns
+    -------
+    A list of directories that correpond to the path along the severities
     """
     dir_list = []
     for i in range(len(path)):
-        dir_list.append(os.path.join(root, "s1_" + str(float(path[i][0]) / 4) + "s2_" + str(float(path[i][1]) / 4)))
+        dir_list.append(
+            os.path.join(
+                root,
+                "s1_" + str(float(path[i][0]) / 4) + "s2_" + str(float(path[i][1]) / 4),
+            )
+        )
     return dir_list
 
 
 def find_path(arr, target_val):
     """
-        Finds a path going from one noise to another, such that the average accuracy of the subsets on the path is close to target_val
+    Finds a path going from one noise to another, such that the average accuracy of the subsets on the path is close to target_val
 
-        Parameters
-        ----------
-        arr : numpy array
-            each entry is an accuracy of a pretrained ResNet-50 classifier on a severity combination
-        target_val : float
-            the desired accuracy of the subsets along the path
+    Parameters
+    ----------
+    arr : numpy array
+        each entry is an accuracy of a pretrained ResNet-50 classifier on a severity combination
+    target_val : float
+        the desired accuracy of the subsets along the path
 
-        Returns
-        -------
-        A list of indices, that correspond to a path through the severity combinations
+    Returns
+    -------
+    A list of indices, that correspond to a path through the severity combinations
     """
     cur_max = 99999999999
     cost_dict = {}
     path_dict = {}
     for i in range(1, arr.shape[0]):
-        cost_dict, path_dict = traverse_graph(cost_dict, path_dict, arr, i, 0, target_val)
+        cost_dict, path_dict = traverse_graph(
+            cost_dict, path_dict, arr, i, 0, target_val
+        )
 
     for i in range(1, arr.shape[0]):
         cur_cost = abs(cost_dict[(i, 0)] / len(path_dict[(i, 0)]) - target_val)
@@ -73,25 +78,25 @@ def find_path(arr, target_val):
 
 def traverse_graph(cost_dict, path_dict, arr, i, j, target_val):
     """
-        Path finding helper function.
+    Path finding helper function.
 
-        Parameters
-        ----------
-        cost_dict : dictionary containing floats
-            each entry corresponds to the optimal cost for a path that starts at index (i,j) (cost is a float that contains the total weight of the path)
-        path_dict : dictionary containing floats
-            each entry corresponds to the optimal path that starts at index (i,j) (a path is a list of indices)
-        arr : numpy array
-            each entry is an accuracy of a pretrained ResNet-50 classifier on a severity combination
-        i : int
-            current row index
-        j : int
-            current column index
-        target_val : float
-            the desired accuracy of the subsets along the path
-        Returns
-        -------
-        Two dictionaries, that correspond to the optimal cost for a path that starts at index (i,j), and their respective paths (list of indices)
+    Parameters
+    ----------
+    cost_dict : dictionary containing floats
+        each entry corresponds to the optimal cost for a path that starts at index (i,j) (cost is a float that contains the total weight of the path)
+    path_dict : dictionary containing floats
+        each entry corresponds to the optimal path that starts at index (i,j) (a path is a list of indices)
+    arr : numpy array
+        each entry is an accuracy of a pretrained ResNet-50 classifier on a severity combination
+    i : int
+        current row index
+    j : int
+        current column index
+    target_val : float
+        the desired accuracy of the subsets along the path
+    Returns
+    -------
+    Two dictionaries, that correspond to the optimal cost for a path that starts at index (i,j), and their respective paths (list of indices)
     """
     if j >= arr.shape[1]:
         if (i, j) not in cost_dict.keys():
@@ -106,12 +111,21 @@ def traverse_graph(cost_dict, path_dict, arr, i, j, target_val):
         return cost_dict, path_dict
 
     if (i - 1, j) not in cost_dict.keys():
-        cost_dict, path_dict = traverse_graph(cost_dict, path_dict, arr, i - 1, j, target_val)
+        cost_dict, path_dict = traverse_graph(
+            cost_dict, path_dict, arr, i - 1, j, target_val
+        )
     if (i, j + 1) not in cost_dict.keys():
-        cost_dict, path_dict = traverse_graph(cost_dict, path_dict, arr, i, j + 1, target_val)
+        cost_dict, path_dict = traverse_graph(
+            cost_dict, path_dict, arr, i, j + 1, target_val
+        )
 
-    if abs(((cost_dict[(i - 1, j)] + arr[i][j]) / (len(path_dict[i - 1, j]) + 1)) - target_val) < abs(
-            ((cost_dict[(i, j + 1)] + arr[i][j]) / (len(path_dict[i, j + 1]) + 1)) - target_val):
+    if abs(
+        ((cost_dict[(i - 1, j)] + arr[i][j]) / (len(path_dict[i - 1, j]) + 1))
+        - target_val
+    ) < abs(
+        ((cost_dict[(i, j + 1)] + arr[i][j]) / (len(path_dict[i, j + 1]) + 1))
+        - target_val
+    ):
         cost_dict[(i, j)] = cost_dict[(i - 1, j)] + arr[i][j]
         path_dict[(i, j)] = [(i, j)] + path_dict[(i - 1, j)]
     else:
@@ -121,23 +135,29 @@ def traverse_graph(cost_dict, path_dict, arr, i, j, target_val):
     return cost_dict, path_dict
 
 
-
 def get_frost_images(data_dir):
     """
-          Downloads frost images from the ImageNet-C repo.
+    Downloads frost images from the ImageNet-C repo.
 
-          Parameters
-          ----------
-          data_dir : str
-              where the images will be saved
-          target_dir : str
+    Parameters
+    ----------
+    data_dir : str
+        where the images will be saved
+    target_dir : str
     """
-    url = 'https://raw.githubusercontent.com/hendrycks/robustness/master/ImageNet-C/create_c/'
+    url = "https://raw.githubusercontent.com/hendrycks/robustness/master/ImageNet-C/create_c/"
     if not os.path.exists(data_dir):
         os.makedirs(data_dir, exist_ok=True)
 
     frost_images_path = os.path.join(data_dir, "frost")
-    frost_images = {"frost1.png", "frost2.png", "frost3.png", "frost4.jpg", "frost5.jpg", "frost6.jpg"}
+    frost_images = {
+        "frost1.png",
+        "frost2.png",
+        "frost3.png",
+        "frost4.jpg",
+        "frost5.jpg",
+        "frost6.jpg",
+    }
     if not os.path.exists(frost_images_path):
         os.mkdir(frost_images_path)
 
@@ -149,30 +169,29 @@ def get_frost_images(data_dir):
 
 class WalkLoader(data.Dataset):
     """
-        Generates a continuous walk through noises, at a desired baseline accuracy.
+    Generates a continuous walk through noises, at a desired baseline accuracy.
 
-        Parameters
-        ----------
-        data_dir : str
-            path to image dir (these are the images that the noises will be applied to)
-        target_dir : str
-            path to put generated files in
-        seed: int
-            seed for the random number generator
-        frequency: int
-            denotes how many images will be sampled from each subset
-        base_amount: int
-            this is about the entire size of the dataset (but not actually, because we need to start and end on the same noise)
-        accuracy: int
-            desired baseline accuracy to be used
-        subset_size: int
-            of the images in data_dir, how many should we use?
-        Returns
-        -------
-        WalkLoader
-            the generate function generates files, but if they already exist (or it finished generating files), returns a Dataset Object
+    Parameters
+    ----------
+    data_dir : str
+        path to image dir (these are the images that the noises will be applied to)
+    target_dir : str
+        path to put generated files in
+    seed: int
+        seed for the random number generator
+    frequency: int
+        denotes how many images will be sampled from each subset
+    base_amount: int
+        this is about the entire size of the dataset (but not actually, because we need to start and end on the same noise)
+    accuracy: int
+        desired baseline accuracy to be used
+    subset_size: int
+        of the images in data_dir, how many should we use?
     """
-    def __init__(self, data_dir, target_dir, seed, frequency, base_amount, accuracy, subset_size):
+
+    def __init__(
+        self, data_dir, target_dir, seed, frequency, base_amount, accuracy, subset_size
+    ):
         self.data_dir = data_dir
         self.target_dir = target_dir
         self.seed = seed
@@ -247,10 +266,10 @@ class WalkLoader(data.Dataset):
             url = "https://nc.mlcloud.uni-tuebingen.de/index.php/s/izTMnXkaHoNBZT4/download/ccc_accuracy_matrix.pickle"
             accuracy_matrix = pd.read_pickle(url)
             os.makedirs(self.target_dir, exist_ok=True)
-            with open(pickle_path, 'wb') as f:
+            with open(pickle_path, "wb") as f:
                 pickle.dump(accuracy_matrix, f)
         else:
-            with open(pickle_path, 'rb') as f:
+            with open(pickle_path, "rb") as f:
                 accuracy_matrix = pickle.load(f)
         get_frost_images(self.target_dir)
 
@@ -287,25 +306,39 @@ class WalkLoader(data.Dataset):
         self.lastrun = 0
 
     def generate_dataset(self):
+        """Generates files, but if they already exist (or it finished generating files), returns a Dataset Object."""
         total_generated = 0
         all_data = None
 
         while True:
             temp_path = self.walk_datasets[self.walk_ind]
-            severities = os.path.normpath(os.path.basename(temp_path)) # takes name of upper dir
+            severities = os.path.normpath(
+                os.path.basename(temp_path)
+            )  # takes name of upper dir
             n1 = self.noise1
             n2 = self.noise2
 
-            severities_split = severities.split('_')
+            severities_split = severities.split("_")
             s1 = float(severities_split[1][:-2])
             s2 = float(severities_split[2])
 
-            path = os.path.join(self.target_dir, 'n1_' + str(n1) + '_n2_' + str(n2)) + '_s1_' + str(s1) + '_s2_' + str(s2)
+            path = (
+                os.path.join(self.target_dir, "n1_" + str(n1) + "_n2_" + str(n2))
+                + "_s1_"
+                + str(s1)
+                + "_s2_"
+                + str(s2)
+            )
             if not os.path.exists(path):
                 os.mkdir(path)
 
-            if not (os.path.exists(os.path.join(path, 'lock.mdb')) and os.path.exists(os.path.join(path, 'data.mdb'))):
-                generated_subset = ApplyTransforms(self.data_dir, n1, n2, s1, s2, self.subset_size, self.target_dir)
+            if not (
+                os.path.exists(os.path.join(path, "lock.mdb"))
+                and os.path.exists(os.path.join(path, "data.mdb"))
+            ):
+                generated_subset = ApplyTransforms(
+                    self.data_dir, n1, n2, s1, s2, self.subset_size, self.target_dir
+                )
                 dset2lmdb(generated_subset, path)
 
             test_transform = tv_transforms.Compose(
@@ -317,8 +350,10 @@ class WalkLoader(data.Dataset):
 
             try:
                 cur_data = ImageFolderLMDB(db_path=path, transform=test_transform)
-            except:
-                generated_subset = ApplyTransforms(self.data_dir, n1, n2, s1, s2, self.subset_size, self.target_dir)
+            except BaseException:
+                generated_subset = ApplyTransforms(
+                    self.data_dir, n1, n2, s1, s2, self.subset_size, self.target_dir
+                )
                 dset2lmdb(generated_subset, path)
 
             remainder = self.frequency
@@ -351,7 +386,9 @@ class WalkLoader(data.Dataset):
                         self.noise2 = random.choice(self.single_noises)
 
                 self.walk = self.walk_dict[(self.noise1, self.noise2)]
-                data_path = os.path.join(self.target_dir, "n1_" + self.noise1 + "_n2_" + self.noise2)
+                data_path = os.path.join(
+                    self.target_dir, "n1_" + self.noise1 + "_n2_" + self.noise2
+                )
                 self.walk_datasets = path_to_dataset(self.walk, data_path)
                 self.walk_ind = 0
             else:
@@ -360,29 +397,30 @@ class WalkLoader(data.Dataset):
 
 class ApplyTransforms(data.Dataset):
     """
-            Applies the desired noise transforms to a dataset. In our case, we apply 2 ImageNet-C noises at 2 severities
+    Applies the desired noise transforms to a dataset. In our case, we apply 2 ImageNet-C noises at two severities.
 
-            Parameters
-            ----------
-            data_dir : str
-                path to image dir (these are the images that the noises will be applied to)
-            n1 : function
-                noise function #1
-            n2 : function
-                noise function #2
-            s1: int
-                denotes the severity of noise #1
-            s2: int
-                denotes the severity of noise #2
-            subset_size: int
-                of the images in data_dir, how many should we use?
-            frost_dir: str
-                directory of the frost images, used to noise images with frost
-            Returns
-            -------
-            Dataset Object
+    Parameters
+    ----------
+    data_dir : str
+        path to image dir (these are the images that the noises will be applied to)
+    n1 : function
+        noise function #1
+    n2 : function
+        noise function #2
+    s1: int
+        denotes the severity of noise #1
+    s2: int
+        denotes the severity of noise #2
+    subset_size: int
+        of the images in data_dir, how many should we use?
+    frost_dir: str
+        directory of the frost images, used to noise images with frost
+    Returns
+    -------
+    Dataset Object
 
-        """
+    """
+
     def __init__(self, data_dir, n1, n2, s1, s2, subset_size, frost_dir):
         d = noise_transforms()
         self.data_dir = data_dir
@@ -397,7 +435,9 @@ class ApplyTransforms(data.Dataset):
         self.s2 = s2
         self.frost_dir = frost_dir
 
-        self.trn = tv_transforms.Compose([tv_transforms.Resize(256), tv_transforms.CenterCrop(224)])
+        self.trn = tv_transforms.Compose(
+            [tv_transforms.Resize(256), tv_transforms.CenterCrop(224)]
+        )
         all_paths = []
 
         for path, dirs, files in os.walk(self.data_dir):
@@ -411,7 +451,9 @@ class ApplyTransforms(data.Dataset):
 
         target_list = []
         for cur_path in self.paths:
-            cur_class = os.path.normpath(os.path.basename(os.path.abspath(os.path.join(cur_path, os.pardir)))) # takes name of parent dir
+            cur_class = os.path.normpath(
+                os.path.basename(os.path.abspath(os.path.join(cur_path, os.pardir)))
+            )  # takes name of parent dir
             cur_class = all_classes.index(cur_class)
             target_list.append(cur_class)
 
@@ -421,9 +463,9 @@ class ApplyTransforms(data.Dataset):
         path = self.paths[index]
         target = self.targets[index]
 
-        with open(path, 'rb') as f:
+        with open(path, "rb") as f:
             img = Image.open(f)
-            img = img.convert('RGB')
+            img = img.convert("RGB")
         img = self.trn(img)
 
         if self.s1 > 0:
@@ -440,7 +482,7 @@ class ApplyTransforms(data.Dataset):
             img = Image.fromarray(np.uint8(img))
 
         output = io.BytesIO()
-        img.save(output, format='JPEG', quality=85, optimize=True)
+        img.save(output, format="JPEG", quality=85, optimize=True)
         corrupted_img = output.getvalue()
         return corrupted_img, target
 

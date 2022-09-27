@@ -1,4 +1,4 @@
-"""Example for a Shift Happens task: ImageNet-R"""
+"""A Task for evaluating the classification accuracy on ImageNet-R."""
 
 import dataclasses
 import os
@@ -24,15 +24,25 @@ from shifthappens.tasks.task_result import TaskResult
 )
 @dataclasses.dataclass
 class ImageNetR(Task):
+    """Measures the classification accuracy on ImageNet-R [1], a dataset
+    containing different renditions of 200 classes of ImageNet (30000 samples in total).
+
+    [1] The Many Faces of Robustness: A Critical Analysis of Out-of-Distribution Generalization.
+        Dan Hendrycks, Steven Basart, Norman Mu, Saurav Kadavath, Frank Wang, Evan Dorundo, Rahul Desai,
+        Tyler Zhu, Samyak Parajuli, Mike Guo, Dawn Song, Jacob Steinhardt and Justin Gilmer. 2021.
+    """
+
     resources = [
         (
             "imagenet-r.tar",
             "https://people.eecs.berkeley.edu/~hendrycks/imagenet-r.tar",
-            "A61312130A589D0CA1A8FCA1F2BD3337",
+            "a61312130a589d0ca1a8fca1f2bd3337",
         )
     ]
 
     def setup(self):
+        """Load and prepare the data."""
+
         dataset_folder = os.path.join(self.data_root, "imagenet-r")
         if not os.path.exists(dataset_folder):
             # download data
@@ -68,14 +78,10 @@ class ImageNetR(Task):
             all_predicted_labels_list.append(predictions.class_labels)
         all_predicted_labels = np.concatenate(all_predicted_labels_list, 0)
 
-        accuracy = all_predicted_labels == np.array(self.ch_dataset.targets)
+        accuracy = np.equal(
+            all_predicted_labels, np.array(self.ch_dataset.targets)
+        ).mean()
 
         return TaskResult(
             accuracy=accuracy, summary_metrics={Metric.Robustness: "accuracy"}
         )
-
-
-if __name__ == "__main__":
-    from shifthappens.models.torchvision import ResNet18
-
-    sh_benchmark.evaluate_model(ResNet18(device="cpu", max_batch_size=128), "data")

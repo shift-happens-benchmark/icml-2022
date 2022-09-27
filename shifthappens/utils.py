@@ -1,3 +1,5 @@
+"""Utility functions that are needed for the entire package."""
+
 import errno
 import os
 import sys
