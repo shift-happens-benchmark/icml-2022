@@ -18,6 +18,8 @@ import os
 import os.path
 import warnings
 from io import BytesIO
+from typing import Callable
+from typing import Dict
 
 import cv2
 import numpy as np
@@ -35,7 +37,7 @@ warnings.simplefilter("ignore", UserWarning)
 
 # /////////////// Data Loader ///////////////
 
-interpolation_function_dict = dict()
+interpolation_function_dict: Dict[str, Callable] = dict()
 
 IMG_EXTENSIONS = [".jpg", ".jpeg", ".png", ".ppm", ".bmp", ".pgm"]
 
@@ -599,20 +601,8 @@ def elastic_transform(image, severity=1):
 
 
 def noise_transforms():
-    d = {}
-    d["gaussian_noise"] = gaussian_noise
-    d["shot_noise"] = shot_noise
-    d["impulse_noise"] = impulse_noise
-    d["defocus_blur"] = defocus_blur
-    d["glass_blur"] = glass_blur
-    d["motion_blur"] = motion_blur
-    d["zoom_blur"] = zoom_blur
-    d["snow"] = snow
-    d["frost"] = frost
-    d["fog"] = fog
-    d["brightness"] = brightness
-    d["contrast"] = contrast
-    d["elastic"] = elastic_transform
-    d["pixelate"] = pixelate
-    d["jpeg"] = jpeg_compression
+    d = {"gaussian_noise": gaussian_noise, "shot_noise": shot_noise, "impulse_noise": impulse_noise,
+         "defocus_blur": defocus_blur, "glass_blur": glass_blur, "motion_blur": motion_blur, "zoom_blur": zoom_blur,
+         "snow": snow, "frost": frost, "fog": fog, "brightness": brightness, "contrast": contrast,
+         "elastic": elastic_transform, "pixelate": pixelate, "jpeg": jpeg_compression}
     return d

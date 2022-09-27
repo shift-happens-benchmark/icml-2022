@@ -314,7 +314,7 @@ class WalkLoader(data.Dataset):
 
             try:
                 cur_data = ImageFolderLMDB(db_path=path, transform=test_transform)
-            except:
+            except BaseException:
                 generated_subset = ApplyTransforms(
                     self.data_dir, n1, n2, s1, s2, self.subset_size, self.target_dir
                 )
