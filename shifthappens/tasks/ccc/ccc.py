@@ -26,6 +26,9 @@ from shifthappens.tasks.task_result import TaskResult
 @sh_benchmark.register_task(name="CCC", relative_data_folder="ccc", standalone=True)
 @dataclasses.dataclass
 class CCC(Task):
+    """The main task class for the CCC task.
+    This task only implements the data reading portion of the dataset."""
+
     seed: int = parameter(
         default=42,
         options=(42,),

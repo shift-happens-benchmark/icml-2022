@@ -162,7 +162,7 @@ def clipped_zoom(img, zoom_factor):
 
 
 # /////////////// Distortions ///////////////
-def gaussian_noise(x, severity=1):
+def _gaussian_noise(x, severity=1):
     if "gaussian noise" not in interpolation_function_dict.keys():
         f = interpolate.interp1d(
             [0, 1, 2, 3, 4, 5],
@@ -180,7 +180,7 @@ def gaussian_noise(x, severity=1):
     return np.clip(x + np.random.normal(size=x.shape, scale=c), 0, 1) * 255
 
 
-def shot_noise(x, severity=1):
+def _shot_noise(x, severity=1):
     if "shot noise" not in interpolation_function_dict.keys():
         f = interpolate.interp1d(
             [0, 1, 2, 3, 4, 5],
@@ -209,7 +209,7 @@ def shot_noise(x, severity=1):
     return np.clip(np.random.poisson(x * c) / c, 0, 1) * 255
 
 
-def impulse_noise(x, severity=1):
+def _impulse_noise(x, severity=1):
     if "impulse noise" not in interpolation_function_dict.keys():
         f = interpolate.interp1d(
             [0, 1, 2, 3, 4, 5], [0, 0.03, 0.06, 0.09, 0.17, 0.27], axis=0, kind="linear"
@@ -224,7 +224,7 @@ def impulse_noise(x, severity=1):
     return np.clip(x, 0, 1) * 255
 
 
-def glass_blur(x, severity=1):
+def _glass_blur(x, severity=1):
     if "glass blur" not in interpolation_function_dict.keys():
         f = interpolate.interp1d(
             [0, 1, 2, 3, 4, 5],
@@ -262,7 +262,7 @@ def glass_blur(x, severity=1):
     return np.clip(gaussian(x / 255.0, sigma=c[0], multichannel=True), 0, 1) * 255
 
 
-def defocus_blur(x, severity=1):
+def _defocus_blur(x, severity=1):
     if "defocus blur" not in interpolation_function_dict.keys():
         f = interpolate.interp1d(
             [0, 1, 2, 3, 4, 5],
@@ -287,7 +287,7 @@ def defocus_blur(x, severity=1):
     return np.clip(channels, 0, 1) * 255
 
 
-def motion_blur(x, severity=1):
+def _motion_blur(x, severity=1):
     if "motion blur" not in interpolation_function_dict.keys():
         f = interpolate.interp1d(
             [0, 1, 2, 3, 4, 5],
@@ -315,7 +315,7 @@ def motion_blur(x, severity=1):
         return np.clip(np.array([x, x, x]).transpose((1, 2, 0)), 0, 255)
 
 
-def zoom_blur(x, severity=1):
+def _zoom_blur(x, severity=1):
     if "zoom blur" not in interpolation_function_dict.keys():
         f = interpolate.interp1d(
             [0, 1, 2, 3, 4, 5],
@@ -346,7 +346,7 @@ def zoom_blur(x, severity=1):
     return np.clip(x, 0, 1) * 255
 
 
-def fog(x, severity=1):
+def _fog(x, severity=1):
     if "fog" not in interpolation_function_dict.keys():
         f = interpolate.interp1d(
             [0, 1, 2, 3, 4, 5],
@@ -365,7 +365,7 @@ def fog(x, severity=1):
     return np.clip(x * max_val / (max_val + c[0]), 0, 1) * 255
 
 
-def frost(x, severity=1, data_dir=None):
+def _frost(x, severity=1, data_dir=None):
     if "frost" not in interpolation_function_dict.keys():
         f = interpolate.interp1d(
             [0, 1, 2, 3, 4, 5],
@@ -402,7 +402,7 @@ def frost(x, severity=1, data_dir=None):
     return np.clip(c[0] * np.array(x) + c[1] * frost, 0, 255)
 
 
-def snow(x, severity=1):
+def _snow(x, severity=1):
     if "snow" not in interpolation_function_dict.keys():
         f = interpolate.interp1d(
             [0, 1, 2, 3, 4, 5],
@@ -454,7 +454,7 @@ def snow(x, severity=1):
     return np.clip(x + snow_layer + np.rot90(snow_layer, k=2), 0, 1) * 255
 
 
-def contrast(x, severity=1):
+def _contrast(x, severity=1):
     if "contrast" not in interpolation_function_dict.keys():
         f = interpolate.interp1d(
             [0, 1, 2, 3, 4, 5], [1.0, 0.4, 0.3, 0.2, 0.1, 0.05], axis=0, kind="linear"
@@ -469,7 +469,7 @@ def contrast(x, severity=1):
     return np.clip((x - means) * c + means, 0, 1) * 255
 
 
-def brightness(x, c):
+def _brightness(x, c):
     if "brightness" not in interpolation_function_dict.keys():
         f = interpolate.interp1d(
             [0, 1, 2, 3, 4, 5], [0.0, 0.1, 0.2, 0.3, 0.4, 0.5], kind="linear"
@@ -487,7 +487,7 @@ def brightness(x, c):
     return np.clip(x, 0, 1) * 255
 
 
-def jpeg_compression(x, severity=1):
+def _jpeg_compression(x, severity=1):
     if "jpeg" not in interpolation_function_dict.keys():
         f = interpolate.interp1d(
             [0, 1, 2, 3, 4, 5], [85, 25, 18, 15, 10, 7], axis=0, kind="linear"
@@ -505,7 +505,7 @@ def jpeg_compression(x, severity=1):
     return x
 
 
-def pixelate(x, severity=1):
+def _pixelate(x, severity=1):
     if "pixelate" not in interpolation_function_dict.keys():
         f = interpolate.interp1d(
             [0, 1, 2, 3, 4, 5], [1.0, 0.6, 0.5, 0.4, 0.3, 0.25], axis=0, kind="linear"
@@ -520,7 +520,7 @@ def pixelate(x, severity=1):
     return x
 
 
-def elastic_transform(image, severity=1):
+def _elastic_transform(image, severity=1):
     if "elastic_transform" not in interpolation_function_dict.keys():
         f = interpolate.interp1d(
             [0, 1, 2, 3, 4, 5],
@@ -600,22 +600,22 @@ def elastic_transform(image, severity=1):
 # /////////////// End Distortions ///////////////
 
 
-def noise_transforms():
-    d = {
-        "gaussian_noise": gaussian_noise,
-        "shot_noise": shot_noise,
-        "impulse_noise": impulse_noise,
-        "defocus_blur": defocus_blur,
-        "glass_blur": glass_blur,
-        "motion_blur": motion_blur,
-        "zoom_blur": zoom_blur,
-        "snow": snow,
-        "frost": frost,
-        "fog": fog,
-        "brightness": brightness,
-        "contrast": contrast,
-        "elastic": elastic_transform,
-        "pixelate": pixelate,
-        "jpeg": jpeg_compression,
+def noise_transforms() -> Dict[str, Callable]:
+    """Returns a dictionary of noise transforms."""
+    return {
+        "gaussian_noise": _gaussian_noise,
+        "shot_noise": _shot_noise,
+        "impulse_noise": _impulse_noise,
+        "defocus_blur": _defocus_blur,
+        "glass_blur": _glass_blur,
+        "motion_blur": _motion_blur,
+        "zoom_blur": _zoom_blur,
+        "snow": _snow,
+        "frost": _frost,
+        "fog": _fog,
+        "brightness": _brightness,
+        "contrast": _contrast,
+        "elastic": _elastic_transform,
+        "pixelate": _pixelate,
+        "jpeg": _jpeg_compression,
     }
-    return d
