@@ -77,7 +77,7 @@ def dumps_pyarrow(obj):
 
 
 def dset2lmdb(dataset, outpath, write_frequency=5000):
-    data_loader = DataLoader(dataset, num_workers=16, collate_fn=lambda x: x)
+    data_loader = DataLoader(dataset, collate_fn=lambda x: x)
 
     lmdb_path = os.path.expanduser(outpath)
     isdir = os.path.isdir(lmdb_path)
@@ -93,8 +93,8 @@ def dset2lmdb(dataset, outpath, write_frequency=5000):
     )
 
     txn = db.begin(write=True)
-    for idx, data in enumerate(data_loader):
-        image, label = data[0]
+    for idx, sample in enumerate(data_loader):
+        image, label = sample[0]
         txn.put("{}".format(idx).encode("ascii"), dumps_pyarrow((image, label)))
         if idx % write_frequency == 0:
             print("[%d/%d]" % (idx, len(data_loader)))
@@ -103,7 +103,7 @@ def dset2lmdb(dataset, outpath, write_frequency=5000):
 
     # finish iterating through dataset
     txn.commit()
-    keys = ["{}".format(k).encode("ascii") for k in range(idx + 1)]
+    keys = ["{}".format(k).encode("ascii") for k in range(len(data_loader))]
     with db.begin(write=True) as txn:
         txn.put(b"__keys__", dumps_pyarrow(keys))
         txn.put(b"__len__", dumps_pyarrow(len(keys)))
