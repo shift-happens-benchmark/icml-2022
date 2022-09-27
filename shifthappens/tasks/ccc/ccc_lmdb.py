@@ -35,7 +35,6 @@ class ImageFolderLMDB(data.Dataset):
         self.target_transform = target_transform
 
     def __getitem__(self, index):
-        img, target = None, None
         env = self.env
         with env.begin(write=False) as txn:
             byteflow = txn.get(self.keys[index])

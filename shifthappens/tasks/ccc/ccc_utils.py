@@ -187,10 +187,6 @@ class WalkLoader(data.Dataset):
         desired baseline accuracy to be used
     subset_size: int
         of the images in data_dir, how many should we use?
-    Returns
-    -------
-    WalkLoader
-        the generate function generates files, but if they already exist (or it finished generating files), returns a Dataset Object
     """
 
     def __init__(
@@ -219,11 +215,11 @@ class WalkLoader(data.Dataset):
             "snow",
             "frost",
             "fog",
-            # 'brightness', # these noises aren't used for baseline accuracy=20
+            # "brightness", # these noises aren't used for baseline accuracy=20
             "contrast",
             "elastic",
             "pixelate",
-            # 'jpeg' # these noises aren't used for baseline accuracy=20
+            # "jpeg" # these noises aren't used for baseline accuracy=20
         ]
 
         pickle_path = os.path.join(self.target_dir, "ccc_accuracy_matrix.pickle")
@@ -271,6 +267,7 @@ class WalkLoader(data.Dataset):
         self.lastrun = 0
 
     def generate_dataset(self):
+        """Generates files, but if they already exist (or it finished generating files), returns a Dataset Object."""
         total_generated = 0
         all_data = None
 

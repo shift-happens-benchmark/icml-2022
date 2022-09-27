@@ -56,7 +56,7 @@ def is_image_file(filename):
 # /////////////// Distortion Helpers ///////////////
 
 
-def disk(radius, alias_blur=0.1, dtype=np.float32):
+def _disk(radius, alias_blur=0.1, dtype=np.float32):
     if radius <= 8:
         L = np.arange(-8, 8 + 1)
         ksize = (3, 3)
@@ -80,14 +80,15 @@ wandlibrary.MagickMotionBlurImage.argtypes = (
 )  # angle
 
 
-# Extend wand.image.Image class to include method signature
 class MotionImage(WandImage):
+    """Extend wand.image.Image class to include method signature"""
+
     def motion_blur(self, radius=0.0, sigma=0.0, angle=0.0):
         wandlibrary.MagickMotionBlurImage(self.wand, radius, sigma, angle)
 
 
 # modification of https://github.com/FLHerne/mapgen/blob/master/diamondsquare.py
-def plasma_fractal(mapsize=256, wibbledecay=3):
+def _plasma_fractal(mapsize=256, wibbledecay=3):
     """
     Generate a heightmap using diamond-square algorithm.
     Return square 2d array, side length 'mapsize', of floats in range 0-255.
@@ -99,10 +100,10 @@ def plasma_fractal(mapsize=256, wibbledecay=3):
     stepsize = mapsize
     wibble = 100
 
-    def wibbledmean(array):
+    def _wibbledmean(array):
         return array / 4 + wibble * np.random.uniform(-wibble, wibble, array.shape)
 
-    def fillsquares():
+    def _fillsquares():
         """For each square of points stepsize apart,
         calculate middle value as mean of points + wibble"""
         cornerref = maparray[0:mapsize:stepsize, 0:mapsize:stepsize]
@@ -110,9 +111,9 @@ def plasma_fractal(mapsize=256, wibbledecay=3):
         squareaccum += np.roll(squareaccum, shift=-1, axis=1)
         maparray[
             stepsize // 2 : mapsize : stepsize, stepsize // 2 : mapsize : stepsize
-        ] = wibbledmean(squareaccum)
+        ] = _wibbledmean(squareaccum)
 
-    def filldiamonds():
+    def _filldiamonds():
         """For each diamond of points stepsize apart,
         calculate middle value as mean of points + wibble"""
         mapsize = maparray.shape[0]
@@ -123,19 +124,19 @@ def plasma_fractal(mapsize=256, wibbledecay=3):
         ldrsum = drgrid + np.roll(drgrid, 1, axis=0)
         lulsum = ulgrid + np.roll(ulgrid, -1, axis=1)
         ltsum = ldrsum + lulsum
-        maparray[0:mapsize:stepsize, stepsize // 2 : mapsize : stepsize] = wibbledmean(
+        maparray[0:mapsize:stepsize, stepsize // 2 : mapsize : stepsize] = _wibbledmean(
             ltsum
         )
         tdrsum = drgrid + np.roll(drgrid, 1, axis=1)
         tulsum = ulgrid + np.roll(ulgrid, -1, axis=0)
         ttsum = tdrsum + tulsum
-        maparray[stepsize // 2 : mapsize : stepsize, 0:mapsize:stepsize] = wibbledmean(
+        maparray[stepsize // 2 : mapsize : stepsize, 0:mapsize:stepsize] = _wibbledmean(
             ttsum
         )
 
     while stepsize >= 2:
-        fillsquares()
-        filldiamonds()
+        _fillsquares()
+        _filldiamonds()
         stepsize //= 2
         wibble /= wibbledecay
 
@@ -143,7 +144,7 @@ def plasma_fractal(mapsize=256, wibbledecay=3):
     return maparray / maparray.max()
 
 
-def clipped_zoom(img, zoom_factor):
+def _clipped_zoom(img, zoom_factor):
     h = img.shape[0]
     # ceil crop height(= crop width)
     ch = int(np.ceil(h / zoom_factor))
@@ -277,7 +278,7 @@ def _defocus_blur(x, severity=1):
     c = f(severity)
 
     x = np.array(x) / 255.0
-    kernel = disk(radius=c[0], alias_blur=c[1])
+    kernel = _disk(radius=c[0], alias_blur=c[1])
 
     channels = []
     for d in range(3):
@@ -340,7 +341,7 @@ def _zoom_blur(x, severity=1):
     x = (np.array(x) / 255.0).astype(np.float32)
     out = np.zeros_like(x)
     for zoom_factor in c:
-        out += clipped_zoom(x, zoom_factor)
+        out += _clipped_zoom(x, zoom_factor)
 
     x = (x + out) / (len(c) + 1)
     return np.clip(x, 0, 1) * 255
@@ -361,7 +362,7 @@ def _fog(x, severity=1):
     c = f(severity)
     x = np.array(x) / 255.0
     max_val = x.max()
-    x += c[0] * plasma_fractal(wibbledecay=c[1])[:224, :224][..., np.newaxis]
+    x += c[0] * _plasma_fractal(wibbledecay=c[1])[:224, :224][..., np.newaxis]
     return np.clip(x * max_val / (max_val + c[0]), 0, 1) * 255
 
 
@@ -428,7 +429,7 @@ def _snow(x, severity=1):
         size=x.shape[:2], loc=c[0], scale=c[1]
     )  # [:2] for monochrome
 
-    snow_layer = clipped_zoom(snow_layer[..., np.newaxis], c[2])
+    snow_layer = _clipped_zoom(snow_layer[..., np.newaxis], c[2])
     snow_layer[snow_layer < c[3]] = 0
 
     snow_layer = PILImage.fromarray(
