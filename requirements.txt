@@ -2,14 +2,3 @@ numpy
 torch
 torchvision
 surgeon_pytorch
-pandas
-lmdb
-pyarrow
-six
-Pillow
-requests
-opencv-python
-scikit-image
-scipy
-Wand
-scikit-learn
