@@ -185,23 +185,62 @@ class WalkLoader(data.Dataset):
         np.random.seed(self.seed)
         accuracy_dict = {}
         walk_dict = {}
-        self.single_noises = [
-            'gaussian_noise',
-            'shot_noise',
-            'impulse_noise',
-            'defocus_blur',
-            'glass_blur',
-            'motion_blur',
-            'zoom_blur',
-            'snow',
-            'frost',
-            'fog',
-            # 'brightness', # these noises aren't used for baseline accuracy=20
-            'contrast',
-            'elastic',
-            'pixelate',
-            # 'jpeg' # these noises aren't used for baseline accuracy=20
-        ]
+
+        assert accuracy in [0, 20, 40]
+        if accuracy == 40:
+            self.single_noises = [
+                'gaussian_noise',
+                'shot_noise',
+                'impulse_noise',
+                'defocus_blur',
+                'glass_blur',
+                'motion_blur',
+                'zoom_blur',
+                'snow',
+                'frost',
+                'fog',
+                # 'brightness', # these noises aren't used for baseline accuracy=40
+                'contrast',
+                'elastic',
+                'pixelate',
+                'jpeg'
+            ]
+        if accuracy == 20:
+            self.single_noises = [
+                'gaussian_noise',
+                'shot_noise',
+                'impulse_noise',
+                'defocus_blur',
+                'glass_blur',
+                'motion_blur',
+                'zoom_blur',
+                'snow',
+                'frost',
+                'fog',
+                # 'brightness', # these noises aren't used for baseline accuracy=20
+                'contrast',
+                'elastic',
+                'pixelate',
+                # 'jpeg' # these noises aren't used for baseline accuracy=20
+            ]
+        if accuracy == 0:
+            self.single_noises = [
+                'gaussian_noise',
+                'shot_noise',
+                'impulse_noise',
+                # 'defocus_blur', # these noises aren't used for baseline accuracy=0
+                # 'glass_blur', # these noises aren't used for baseline accuracy=0
+                # 'motion_blur', # these noises aren't used for baseline accuracy=0
+                # 'zoom_blur', # these noises aren't used for baseline accuracy=0
+                # 'snow', # these noises aren't used for baseline accuracy=0
+                # 'frost', # these noises aren't used for baseline accuracy=0
+                # 'fog', # these noises aren't used for baseline accuracy=0
+                # 'brightness', # these noises aren't used for baseline accuracy=0
+                'contrast',
+                # 'elastic', # these noises aren't used for baseline accuracy=0
+                # 'pixelate', # these noises aren't used for baseline accuracy=0
+                # 'jpeg' # these noises aren't used for baseline accuracy=0
+            ]
 
         pickle_path = os.path.join(self.target_dir, "ccc_accuracy_matrix.pickle")
         if not os.path.exists(pickle_path):

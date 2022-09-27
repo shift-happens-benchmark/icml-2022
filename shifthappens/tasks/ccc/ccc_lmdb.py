@@ -78,6 +78,20 @@ def dumps_pyarrow(obj):
 
 
 def dset2lmdb(dataset, outpath, write_frequency=5000):
+    """
+        Saves a given dataset in LMDB format
+
+        Parameters
+        ----------
+        dataset :
+            DataSet object that you want to save
+        outpath : str
+            path to save generated files
+        write_frequency: int
+            write frequency
+        Returns
+        -------
+    """
     data_loader = DataLoader(dataset, num_workers=16, collate_fn=lambda x: x)
 
     lmdb_path = os.path.expanduser(outpath)

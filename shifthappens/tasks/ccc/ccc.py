@@ -27,28 +27,28 @@ from shifthappens.tasks.task_result import TaskResult
 @dataclasses.dataclass
 class CCC(Task):
     seed: int = parameter(
-        default=42,
-        options=(42,),
+        default=43,
+        options=(43, 44, 45),
         description="random seed used in the dataset building process",
     )
     frequency: int = parameter(
-        default=5,
-        options=(5,),
+        default=5000,
+        options=(5000, 10000, 20000),
         description="represents how many images are sampled from each subset",
     )
     base_amount: int = parameter(
-        default=1500,
-        options=(1500,),
+        default=750000,
+        options=(750000,),
         description="represents how large the base dataset is",
     )
     accuracy: int = parameter(
-        default=50,
-        options=(50,),
+        default=20,
+        options=(0, 20, 40),
         description="represents the baseline accuracy of walk",
     )
     subset_size: int = parameter(
-        default=20,
-        options=(20,),
+        default=20000,
+        options=(5000, 20000, 50000),
         description="represents the sample size of images sampled from ImageNet validation",
     )
 
@@ -86,8 +86,8 @@ class CCC(Task):
 
         accuracy = (all_predicted_labels == np.array(self.targets)).mean()
 
+        print('acc ', accuracy)
         return TaskResult(
             accuracy=accuracy, summary_metrics={Metric.Robustness: "accuracy"}
         )
-
 
