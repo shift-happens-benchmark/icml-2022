@@ -361,7 +361,7 @@ class WalkLoader(data.Dataset):
 
 class ApplyTransforms(data.Dataset):
     """
-    Applies the desired noise transforms to a dataset. In our case, we apply 2 ImageNet-C noises at 2 severities
+    Applies the desired noise transforms to a dataset. In our case, we apply 2 ImageNet-C noises at two severities.
 
     Parameters
     ----------
