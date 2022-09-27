@@ -601,8 +601,21 @@ def elastic_transform(image, severity=1):
 
 
 def noise_transforms():
-    d = {"gaussian_noise": gaussian_noise, "shot_noise": shot_noise, "impulse_noise": impulse_noise,
-         "defocus_blur": defocus_blur, "glass_blur": glass_blur, "motion_blur": motion_blur, "zoom_blur": zoom_blur,
-         "snow": snow, "frost": frost, "fog": fog, "brightness": brightness, "contrast": contrast,
-         "elastic": elastic_transform, "pixelate": pixelate, "jpeg": jpeg_compression}
+    d = {
+        "gaussian_noise": gaussian_noise,
+        "shot_noise": shot_noise,
+        "impulse_noise": impulse_noise,
+        "defocus_blur": defocus_blur,
+        "glass_blur": glass_blur,
+        "motion_blur": motion_blur,
+        "zoom_blur": zoom_blur,
+        "snow": snow,
+        "frost": frost,
+        "fog": fog,
+        "brightness": brightness,
+        "contrast": contrast,
+        "elastic": elastic_transform,
+        "pixelate": pixelate,
+        "jpeg": jpeg_compression,
+    }
     return d
