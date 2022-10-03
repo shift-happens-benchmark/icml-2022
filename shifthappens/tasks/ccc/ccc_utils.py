@@ -18,7 +18,7 @@ from shifthappens.tasks.ccc.ccc_lmdb import dset2lmdb
 from shifthappens.tasks.ccc.ccc_lmdb import ImageFolderLMDB
 
 
-def path_to_dataset(path, root):
+def path_to_dataset(data_dir, root):
     """
     Returns a list of directories that correspond to a given path between two noises
 
@@ -31,14 +31,17 @@ def path_to_dataset(path, root):
 
     Returns
     -------
-    A list of directories that correpond to the path along the severities
+    A list of directories that corresponds to the path along the severities
     """
     dir_list = []
-    for i in range(len(path)):
+    for i in range(len(data_dir)):
         dir_list.append(
             os.path.join(
                 root,
-                "s1_" + str(float(path[i][0]) / 4) + "s2_" + str(float(path[i][1]) / 4),
+                "s1_"
+                + str(float(data_dir[i][0]) / 4)
+                + "s2_"
+                + str(float(data_dir[i][1]) / 4),
             )
         )
     return dir_list
@@ -199,7 +202,14 @@ class WalkLoader(data.Dataset):
         self.base_amount = base_amount
         self.accuracy = accuracy
         self.subset_size = subset_size
-
+        self.save_dir = os.path.join(
+            self.target_dir,
+            str(accuracy),
+            str(seed),
+            str(frequency),
+            str(base_amount),
+            str(subset_size),
+        )
         random.seed(self.seed)
         np.random.seed(self.seed)
         accuracy_dict = {}
@@ -208,45 +218,45 @@ class WalkLoader(data.Dataset):
         assert accuracy in [0, 20, 40]
         if accuracy == 40:
             self.single_noises = [
-                'gaussian_noise',
-                'shot_noise',
-                'impulse_noise',
-                'defocus_blur',
-                'glass_blur',
-                'motion_blur',
-                'zoom_blur',
-                'snow',
-                'frost',
-                'fog',
+                "gaussian_noise",
+                "shot_noise",
+                "impulse_noise",
+                "defocus_blur",
+                "glass_blur",
+                "motion_blur",
+                "zoom_blur",
+                "snow",
+                "frost",
+                "fog",
                 # 'brightness', # these noises aren't used for baseline accuracy=40
-                'contrast',
-                'elastic',
-                'pixelate',
-                'jpeg'
+                "contrast",
+                "elastic",
+                "pixelate",
+                "jpeg",
             ]
         if accuracy == 20:
             self.single_noises = [
-                'gaussian_noise',
-                'shot_noise',
-                'impulse_noise',
-                'defocus_blur',
-                'glass_blur',
-                'motion_blur',
-                'zoom_blur',
-                'snow',
-                'frost',
-                'fog',
+                "gaussian_noise",
+                "shot_noise",
+                "impulse_noise",
+                "defocus_blur",
+                "glass_blur",
+                "motion_blur",
+                "zoom_blur",
+                "snow",
+                "frost",
+                "fog",
                 # 'brightness', # these noises aren't used for baseline accuracy=20
-                'contrast',
-                'elastic',
-                'pixelate',
+                "contrast",
+                "elastic",
+                "pixelate",
                 # 'jpeg' # these noises aren't used for baseline accuracy=20
             ]
         if accuracy == 0:
             self.single_noises = [
-                'gaussian_noise',
-                'shot_noise',
-                'impulse_noise',
+                "gaussian_noise",
+                "shot_noise",
+                "impulse_noise",
                 # 'defocus_blur', # these noises aren't used for baseline accuracy=0
                 # 'glass_blur', # these noises aren't used for baseline accuracy=0
                 # 'motion_blur', # these noises aren't used for baseline accuracy=0
@@ -255,7 +265,7 @@ class WalkLoader(data.Dataset):
                 # 'frost', # these noises aren't used for baseline accuracy=0
                 # 'fog', # these noises aren't used for baseline accuracy=0
                 # 'brightness', # these noises aren't used for baseline accuracy=0
-                'contrast',
+                "contrast",
                 # 'elastic', # these noises aren't used for baseline accuracy=0
                 # 'pixelate', # these noises aren't used for baseline accuracy=0
                 # 'jpeg' # these noises aren't used for baseline accuracy=0
@@ -272,9 +282,9 @@ class WalkLoader(data.Dataset):
             with open(pickle_path, "rb") as f:
                 accuracy_matrix = pickle.load(f)
         get_frost_images(self.target_dir)
+        os.makedirs(self.save_dir, exist_ok=True)
 
         noise_list = list(itertools.product(self.single_noises, self.single_noises))
-
         for i in range(len(noise_list)):
             noise1, noise2 = noise_list[i]
             if noise1 == noise2:
@@ -289,7 +299,7 @@ class WalkLoader(data.Dataset):
         cur_noises = random.choice(keys)
 
         walk = walk_dict[cur_noises]
-        data_path = os.path.join(self.target_dir, "n1_" + noise1 + "_n2_" + noise2)
+        data_path = os.path.join(self.save_dir, "n1_" + noise1 + "_n2_" + noise2)
         walk_datasets = path_to_dataset(walk, data_path)
 
         self.walk_dict = walk_dict
@@ -323,7 +333,7 @@ class WalkLoader(data.Dataset):
             s2 = float(severities_split[2])
 
             path = (
-                os.path.join(self.target_dir, "n1_" + str(n1) + "_n2_" + str(n2))
+                os.path.join(self.save_dir, "n1_" + str(n1) + "_n2_" + str(n2))
                 + "_s1_"
                 + str(s1)
                 + "_s2_"
@@ -337,9 +347,9 @@ class WalkLoader(data.Dataset):
                 and os.path.exists(os.path.join(path, "data.mdb"))
             ):
                 generated_subset = ApplyTransforms(
-                    self.data_dir, n1, n2, s1, s2, self.subset_size, self.target_dir
+                    self.data_dir, n1, n2, s1, s2, self.subset_size, self.save_dir
                 )
-                dset2lmdb(generated_subset, path)
+                dset2lmdb(generated_subset, path, self.subset_size)
 
             test_transform = tv_transforms.Compose(
                 [
@@ -352,9 +362,9 @@ class WalkLoader(data.Dataset):
                 cur_data = ImageFolderLMDB(db_path=path, transform=test_transform)
             except BaseException:
                 generated_subset = ApplyTransforms(
-                    self.data_dir, n1, n2, s1, s2, self.subset_size, self.target_dir
+                    self.data_dir, n1, n2, s1, s2, self.subset_size, self.save_dir
                 )
-                dset2lmdb(generated_subset, path)
+                dset2lmdb(generated_subset, path, self.subset_size)
 
             remainder = self.frequency
             while remainder > 0:
@@ -387,7 +397,7 @@ class WalkLoader(data.Dataset):
 
                 self.walk = self.walk_dict[(self.noise1, self.noise2)]
                 data_path = os.path.join(
-                    self.target_dir, "n1_" + self.noise1 + "_n2_" + self.noise2
+                    self.save_dir, "n1_" + self.noise1 + "_n2_" + self.noise2
                 )
                 self.walk_datasets = path_to_dataset(self.walk, data_path)
                 self.walk_ind = 0

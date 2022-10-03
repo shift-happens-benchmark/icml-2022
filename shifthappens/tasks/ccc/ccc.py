@@ -33,12 +33,12 @@ class CCC(Task):
 
     seed: int = parameter(
         default=43,
-        options=(43, 44, 45),
+        options=(43,),
         description="random seed used in the dataset building process",
     )
     frequency: int = parameter(
         default=5000,
-        options=(5000, 10000, 20000),
+        options=(5000, 20000),
         description="represents how many images are sampled from each subset",
     )
     base_amount: int = parameter(
@@ -52,8 +52,8 @@ class CCC(Task):
         description="represents the baseline accuracy of walk",
     )
     subset_size: int = parameter(
-        default=20000,
-        options=(5000, 20000, 50000),
+        default=5000,
+        options=(5000, 50000),
         description="represents the sample size of images sampled from ImageNet validation",
     )
 
@@ -92,9 +92,7 @@ class CCC(Task):
         all_predicted_labels = np.concatenate(all_predicted_labels_list, 0)
 
         accuracy = (all_predicted_labels == np.array(self.targets)).mean()
-
+        print(f"Accuracy: {accuracy}")
         return TaskResult(
             accuracy=accuracy, summary_metrics={Metric.Robustness: "accuracy"}
         )
-
-

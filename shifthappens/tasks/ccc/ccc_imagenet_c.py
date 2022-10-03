@@ -39,7 +39,7 @@ warnings.simplefilter("ignore", UserWarning)
 
 # /////////////// Data Loader ///////////////
 
-interpolation_function_dict: Dict[str, Callable] = dict()
+interpolation_function_dict: dict[str, Callable] = dict()
 
 
 def is_image_file(filename):
@@ -604,7 +604,7 @@ def __elastic_transform(image, severity=1):
 # /////////////// End Distortions ///////////////
 
 
-def noise_transforms() -> Dict[str, Callable]:
+def noise_transforms() -> dict[str, Callable]:
     """Returns a dictionary of noise transforms."""
     return {
         "gaussian_noise": __gaussian_noise,

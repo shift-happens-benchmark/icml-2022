@@ -7,6 +7,7 @@ import lmdb
 import pyarrow as pa
 import six
 import torch.utils.data as data
+import tqdm
 from PIL import Image
 from torch.utils.data import DataLoader
 
@@ -75,49 +76,52 @@ def dumps_pyarrow(obj):
     return pa.serialize(obj).to_buffer()
 
 
-def dset2lmdb(dataset, outpath, write_frequency=5000):
-    data_loader = DataLoader(dataset, collate_fn=lambda x: x)
+def dset2lmdb(dataset, outpath, subset_size):
     """
-        Saves a given dataset in LMDB format
+    Saves a given dataset in LMDB format
 
-        Parameters
-        ----------
-        dataset :
-            DataSet object that you want to save
-        outpath : str
-            path to save generated files
-        write_frequency: int
-            write frequency
-        Returns
-        -------
+    Parameters
+    ----------
+    dataset :
+        DataSet object that you want to save
+    outpath : str
+        path to save generated files
+    subset_size: int
+        amount of images in dataset
     """
-    data_loader = DataLoader(dataset, num_workers=16, collate_fn=lambda x: x)
+    data_loader = DataLoader(dataset, num_workers=0, collate_fn=lambda x: x)
 
     lmdb_path = os.path.expanduser(outpath)
     isdir = os.path.isdir(lmdb_path)
 
-    print("Generate LMDB to %s" % lmdb_path)
+    if subset_size == 50000:
+        map_size = 2048 * 2048 * 512  # allocates 2GB
+    elif subset_size == 5000:
+        map_size = 2048 * 2048 * 128  # allocates 512MB
+    else:
+        map_size = 2048 * 2048 * 2048 * 256  # allocates 1TB
+
     db = lmdb.open(
         lmdb_path,
         subdir=isdir,
-        map_size=1099511627776 * 2,
+        map_size=map_size,
         readonly=False,
         meminit=False,
         map_async=True,
     )
 
     txn = db.begin(write=True)
-    for idx, sample in enumerate(data_loader):
+    for idx, sample in tqdm.tqdm(
+        enumerate(data_loader),
+        total=len(dataset),
+        desc="Generate LMDB to %s" % lmdb_path,
+    ):
         image, label = sample[0]
-        txn.put("{}".format(idx).encode("ascii"), dumps_pyarrow((image, label)))
-        if idx % write_frequency == 0:
-            print("[%d/%d]" % (idx, len(data_loader)))
-            txn.commit()
-            txn = db.begin(write=True)
+        txn.put(f"{idx}".encode("ascii"), dumps_pyarrow((image, label)))
 
     # finish iterating through dataset
     txn.commit()
-    keys = ["{}".format(k).encode("ascii") for k in range(len(data_loader))]
+    keys = [f"{k}".encode("ascii") for k in range(len(data_loader))]
     with db.begin(write=True) as txn:
         txn.put(b"__keys__", dumps_pyarrow(keys))
         txn.put(b"__len__", dumps_pyarrow(len(keys)))
