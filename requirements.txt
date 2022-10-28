@@ -2,3 +2,4 @@ numpy
 torch
 torchvision
 surgeon_pytorch
+tqdm
