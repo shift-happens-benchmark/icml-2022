@@ -130,10 +130,10 @@ def evaluate_model(
 
     Examples:
         >>> import shifthappens.benchmark
-        >>> from shifthappens.models.torchvision import resnet18
+        >>> from shifthappens.models.torchvision import ResNet18
         >>> # import existing model or create a custom one inherited from
         >>> # shifthappens.models.base.Model and ModelMixin's
-        >>> model = resnet18()
+        >>> model = ResNet18()
         >>> shifthappens.benchmark.evaluate_model(model, "path_to_store_tasks_data")
     """
 
