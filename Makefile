@@ -14,6 +14,10 @@ upload:
 test:
 	python -m pytest -vvv
 
+mypy:
+	mypy --install-types --non-interactive shifthappens/
+	mypy -p shifthappens
+
 format:
 	black shifthappens/
 	isort shifthappens/
