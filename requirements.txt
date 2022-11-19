@@ -2,3 +2,7 @@ numpy
 torch
 torchvision
 surgeon_pytorch
+lmbd
+pyarrow
+pandas
+pillow

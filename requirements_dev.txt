@@ -10,3 +10,5 @@ sphinx_autodoc_typehints==1.18.1
 sphinx_copybutton==0.5.0
 pydata_sphinx_theme==0.8.1
 interrogate==1.5.0
+pandas-stubs==1.5.1.221024
+types-Pillow==9.3.0.1
