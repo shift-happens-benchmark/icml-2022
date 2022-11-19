@@ -65,6 +65,8 @@ class ImageNetSingleCorruptionTypeBase(Task):
     max_batch_size: Optional[int] = None
 
     def setup(self):
+        """Setup task."""
+
         folder_name, archive_name, url = self.resource
 
         dataset_folder = os.path.join(self.data_root, folder_name, str(self.severity))
@@ -382,6 +384,8 @@ class ImageNet3DCCSeparateCorruptions(Task):
     flavored_corruption_tasks: List[ImageNetSingleCorruptionTypeBase] = variable([])
 
     def setup(self):
+        """Setup task."""
+
         for corruption_task_cls in self.corruption_task_cls:
             self.flavored_corruption_tasks += list(
                 corruption_task_cls.iterate_flavours(data_root=self.data_root)

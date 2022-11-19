@@ -90,6 +90,7 @@ class SISCOREVariantBase(Task):
     max_batch_size: Optional[int] = None
 
     def setup(self):
+        """Setup dataset/task."""
         variant = self.resource
         url = f"{_BASE_URL}/{variant}.zip"
 

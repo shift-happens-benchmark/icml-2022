@@ -87,6 +87,7 @@ class MotionImage(WandImage):
     """Extend wand.image.Image class to include method signature"""
 
     def motion_blur(self, radius=0.0, sigma=0.0, angle=0.0):
+        """Apply motion blur to image."""
         wandlibrary.MagickMotionBlurImage(self.wand, radius, sigma, angle)
 
 

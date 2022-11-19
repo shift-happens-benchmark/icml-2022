@@ -1,3 +1,5 @@
+"""Class map for ImageNet-D classes."""
+
 import glob
 import os
 import re

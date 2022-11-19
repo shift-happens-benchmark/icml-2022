@@ -1,3 +1,5 @@
+"""Subsets of ImageNet21k."""
+
 import os
 
 from torch.utils.data import Dataset
@@ -51,6 +53,17 @@ class ImageNetSubsetDataset(Dataset):
 
 
 def _get_imagenet_ssb_subset(test_transform, imagenet21k_root, osr_split, subset_type):
+    """Get dataset of subset of ImageNet21k with chosen transformation.
+
+    Args:
+        test_transform: Transformation.
+        imagenet21k_root: Path to root folder of ImageNet21k dataset.
+        osr_split: Name of split.
+        subset_type: Type of subset. Either easy or hard.
+
+    Returns:
+        Dataset.
+    """
     assert subset_type in ["easy", "hard"], "subset_type must be 'easy' or 'hard'"
     print(f"Loading ImageNet21K SSB val {subset_type} set...")
 

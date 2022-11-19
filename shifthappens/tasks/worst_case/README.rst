@@ -1,4 +1,4 @@
-Example for a Shift Happens task on ImageNet
+Worst-Case
 ==============================================
 # Task Description
 This task evaluates a set of metrics, mostly related to worst-class performance, as described in [1].

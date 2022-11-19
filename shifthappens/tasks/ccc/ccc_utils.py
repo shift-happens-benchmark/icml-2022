@@ -1,3 +1,5 @@
+"""Utils for preparding and loading CCC data."""
+
 import io
 import itertools
 import os
