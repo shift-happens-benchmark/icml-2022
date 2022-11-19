@@ -18,8 +18,11 @@ class Config:
 
     __instance = None
 
-    #: The imagenet validation path.
+    #: The ImageNet validation path.
     imagenet_validation_path: str = "shifthappens/imagenet"
+
+    #: The ImageNet21k-P validation path.
+    imagenet21k_preprocessed_validation_path: str = "shifthappens/imagenet21k-p"
 
     #: The caching directory for model results (either absolute or relative to working directory). If the folder does not exist, it will be created.
     cache_directory_path: str = "shifthappens/cache"

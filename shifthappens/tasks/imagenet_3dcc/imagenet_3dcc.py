@@ -1,9 +1,18 @@
-"""A task for evaluating the classification accuracy on ImageNet-C.
+"""Shift Happens task for ImageNet-3DCC
+https://3dcommoncorruptions.epfl.ch/
 
-While the dataset is ImageNet-C the task's definition is a bit different than the usual evaluation
-paradigm: we allow the model to access (1) the unlabeled test set separately for every corruption
-and (2) allow it to make it's prediction based on a batch of samples coming from the same
-corruption type.
+There are 12 corruptions in ImageNet-3DCC. They can be categorized as follows:
+    Depth of field: Near focus, far focus
+    Camera motion: XY motion blur, Z motion blur
+    Lighting: Flash
+    Video: H256 CRF, H256 ABR, bit error
+    Weather: Fog 3D
+    Noise: ISO noise, color quantization, low light
+
+For more details on the corruptions, please see our main paper: 
+    3D Common Corruptions for Object Recognition. 
+    Kar, Oguzhan Fatih and Yeo, Teresa and Zamir, Amir.
+    https://openreview.net/pdf?id=Evar7nqAQtL
 """
 
 import dataclasses
@@ -37,12 +46,12 @@ from shifthappens.tasks.task_result import TaskResult
 @dataclasses.dataclass
 class ImageNetSingleCorruptionTypeBase(Task):
     """Evaluate the classification accuracy on a single corruption type
-    of the ImageNet-C dataset [1]. Each corruption type has 5 different
+    of the ImageNet-3DCC dataset [1]. Each corruption type has 5 different
     severity levels. The raw images (before corruptions) in this dataset
     come from the validation set of ImageNet.
 
-    [1] Benchmarking Neural Network Robustness to Common Corruptions and Perturbations.
-        Dan Hendrycks and Thomas Dietterich. 2019.
+    [1] 3D Common Corruptions for Object Recognition.
+        Kar, Oguzhan Fatih and Yeo, Teresa and Zamir, Amir.
     """
 
     resource: Tuple[str, ...] = abstract_variable()
@@ -56,20 +65,22 @@ class ImageNetSingleCorruptionTypeBase(Task):
     max_batch_size: Optional[int] = None
 
     def setup(self):
-        """Load and prepare data."""
-
-        folder_name, archive_name, url, md5 = self.resource
+        folder_name, archive_name, url = self.resource
 
         dataset_folder = os.path.join(self.data_root, folder_name, str(self.severity))
         if not os.path.exists(dataset_folder):
             # download data
             sh_utils.download_and_extract_archive(
-                url, self.data_root, md5, archive_name
+                url, self.data_root, None, archive_name
             )
 
         test_transform = tv_transforms.Compose(
             [
                 tv_transforms.ToTensor(),
+                tv_transforms.Pad(16),
+                tv_transforms.Normalize(
+                    mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225]
+                ),
                 tv_transforms.Lambda(lambda x: x.permute(1, 2, 0)),
             ]
         )
@@ -100,7 +111,6 @@ class ImageNetSingleCorruptionTypeBase(Task):
             all_predicted_labels,
             np.array(self.ch_dataset.targets)[: len(all_predicted_labels)],
         ).mean()
-
         return TaskResult(
             accuracy=accuracy,
             mce=1.0 - accuracy,
@@ -108,294 +118,240 @@ class ImageNetSingleCorruptionTypeBase(Task):
         )
 
 
-# noise corruptions
 @sh_benchmark.register_task(
-    name="ImageNet-C (Gaussian Noise)",
-    relative_data_folder="imagenet_c",
+    name="ImageNet-3DCC (Near Focus)",
+    relative_data_folder="imagenet_3dcc",
     standalone=False,
 )
 @dataclasses.dataclass
-class ImageNetCGaussianNoise(ImageNetSingleCorruptionTypeBase):
+class ImageNet3DCCNearFocus(ImageNetSingleCorruptionTypeBase):
     """Evaluate classification accuracy on validation images of ImageNet
-    perturbed with Gaussian noise."""
+    against near focus corruption."""
 
     resource: Tuple[str, ...] = variable(
         (
-            "gaussian_noise",
-            "noise.tar",
-            "https://zenodo.org/record/2235448/files/noise.tar?download=1",
-            "e80562d7f6c3f8834afb1ecf27252745",
+            "near_focus",
+            "near_focus.tar.gz",
+            "https://datasets.epfl.ch/3dcc/imagenet_3dcc/near_focus.tar.gz",
         )
     )
 
 
 @sh_benchmark.register_task(
-    name="ImageNet-C (Shot Noise)", relative_data_folder="imagenet_c", standalone=False
-)
-@dataclasses.dataclass
-class ImageNetCShotNoise(ImageNetSingleCorruptionTypeBase):
-    """Evaluate classification accuracy on validation images of ImageNet
-    perturbed with shot noise."""
-
-    resource: Tuple[str, ...] = variable(
-        (
-            "shot_noise",
-            "noise.tar",
-            "https://zenodo.org/record/2235448/files/noise.tar?download=1",
-            "e80562d7f6c3f8834afb1ecf27252745",
-        )
-    )
-
-
-@sh_benchmark.register_task(
-    name="ImageNet-C (Impulse Noise)",
-    relative_data_folder="imagenet_c",
+    name="ImageNet-3DCC (Far Focus)",
+    relative_data_folder="imagenet_3dcc",
     standalone=False,
 )
 @dataclasses.dataclass
-class ImageNetCImpulseNoise(ImageNetSingleCorruptionTypeBase):
+class ImageNet3DCCFarFocus(ImageNetSingleCorruptionTypeBase):
     """Evaluate classification accuracy on validation images of ImageNet
-    perturbed with impulse noise."""
+    against far focus corruption."""
 
     resource: Tuple[str, ...] = variable(
         (
-            "impulse_noise",
-            "noise.tar",
-            "https://zenodo.org/record/2235448/files/noise.tar?download=1",
-            "e80562d7f6c3f8834afb1ecf27252745",
+            "far_focus",
+            "far_focus.tar.gz",
+            "https://datasets.epfl.ch/3dcc/imagenet_3dcc/far_focus.tar.gz",
         )
     )
 
 
-# blur corruptions
 @sh_benchmark.register_task(
-    name="ImageNet-C (Defocus Blur)",
-    relative_data_folder="imagenet_c",
+    name="ImageNet-3DCC (Fog 3D)",
+    relative_data_folder="imagenet_3dcc",
     standalone=False,
 )
 @dataclasses.dataclass
-class ImageNetCDefocusBlur(ImageNetSingleCorruptionTypeBase):
+class ImageNet3DCCFog3D(ImageNetSingleCorruptionTypeBase):
     """Evaluate classification accuracy on validation images of ImageNet
-    perturbed by defocus blur."""
+    against fog corruption."""
 
     resource: Tuple[str, ...] = variable(
         (
-            "defocus_blur",
-            "blur.tar",
-            "https://zenodo.org/record/2235448/files/blur.tar?download=1",
-            "2d8e81fdd8e07fef67b9334fa635e45c",
+            "fog_3d",
+            "fog_3d.tar.gz",
+            "https://datasets.epfl.ch/3dcc/imagenet_3dcc/fog_3d.tar.gz",
         )
     )
 
 
 @sh_benchmark.register_task(
-    name="ImageNet-C (Glass Blur)", relative_data_folder="imagenet_c", standalone=False
-)
-@dataclasses.dataclass
-class ImageNetCGlassBlur(ImageNetSingleCorruptionTypeBase):
-    """Evaluate classification accuracy on validation images of ImageNet
-    perturbed by glass blur."""
-
-    resource: Tuple[str, ...] = variable(
-        (
-            "glass_blur",
-            "blur.tar",
-            "https://zenodo.org/record/2235448/files/blur.tar?download=1",
-            "2d8e81fdd8e07fef67b9334fa635e45c",
-        )
-    )
-
-
-@sh_benchmark.register_task(
-    name="ImageNet-C (Motion Blur)", relative_data_folder="imagenet_c", standalone=False
-)
-@dataclasses.dataclass
-class ImageNetCMotionBlur(ImageNetSingleCorruptionTypeBase):
-    """Evaluate classification accuracy on validation images of ImageNet
-    perturbed by motion blur."""
-
-    resource: Tuple[str, ...] = variable(
-        (
-            "motion_blur",
-            "blur.tar",
-            "https://zenodo.org/record/2235448/files/blur.tar?download=1",
-            "2d8e81fdd8e07fef67b9334fa635e45c",
-        )
-    )
-
-
-@sh_benchmark.register_task(
-    name="ImageNet-C (Zoom Blur)", relative_data_folder="imagenet_c", standalone=False
-)
-@dataclasses.dataclass
-class ImageNetCZoomBlur(ImageNetSingleCorruptionTypeBase):
-    """Evaluate classification accuracy on validation images of ImageNet
-    perturbed by zoom blur."""
-
-    resource: Tuple[str, ...] = variable(
-        (
-            "zoom_blur",
-            "blur.tar",
-            "https://zenodo.org/record/2235448/files/blur.tar?download=1",
-            "2d8e81fdd8e07fef67b9334fa635e45c",
-        )
-    )
-
-
-# weather corruptions
-@sh_benchmark.register_task(
-    name="ImageNet-C (Brightness)", relative_data_folder="imagenet_c", standalone=False
-)
-@dataclasses.dataclass
-class ImageNetCBrightness(ImageNetSingleCorruptionTypeBase):
-    """Evaluate classification accuracy on validation images of ImageNet
-    perturbed by brightness changes."""
-
-    resource: Tuple[str, ...] = variable(
-        (
-            "brightness",
-            "weather.tar",
-            "https://zenodo.org/record/2235448/files/weather.tar?download=1",
-            "33ffea4db4d93fe4a428c40a6ce0c25d",
-        )
-    )
-
-
-@sh_benchmark.register_task(
-    name="ImageNet-C (Frost)", relative_data_folder="imagenet_c", standalone=False
-)
-@dataclasses.dataclass
-class ImageNetCFrost(ImageNetSingleCorruptionTypeBase):
-    """Evaluate classification accuracy on validation images of ImageNet
-    perturbed with frost."""
-
-    resource: Tuple[str, ...] = variable(
-        (
-            "frost",
-            "weather.tar",
-            "https://zenodo.org/record/2235448/files/weather.tar?download=1",
-            "33ffea4db4d93fe4a428c40a6ce0c25d",
-        )
-    )
-
-
-@sh_benchmark.register_task(
-    name="ImageNet-C (Snow)", relative_data_folder="imagenet_c", standalone=False
-)
-@dataclasses.dataclass
-class ImageNetCSnow(ImageNetSingleCorruptionTypeBase):
-    """Evaluate classification accuracy on validation images of ImageNet
-    perturbed with snow."""
-
-    resource: Tuple[str, ...] = variable(
-        (
-            "snow",
-            "weather.tar",
-            "https://zenodo.org/record/2235448/files/weather.tar?download=1",
-            "33ffea4db4d93fe4a428c40a6ce0c25d",
-        )
-    )
-
-
-@sh_benchmark.register_task(
-    name="ImageNet-C (Fog)", relative_data_folder="imagenet_c", standalone=False
-)
-@dataclasses.dataclass
-class ImageNetCFog(ImageNetSingleCorruptionTypeBase):
-    """Evaluate classification accuracy on validation images of ImageNet
-    perturbed with fog."""
-
-    resource: Tuple[str, ...] = variable(
-        (
-            "fog",
-            "weather.tar",
-            "https://zenodo.org/record/2235448/files/weather.tar?download=1",
-            "33ffea4db4d93fe4a428c40a6ce0c25d",
-        )
-    )
-
-
-# digital corruptions
-@sh_benchmark.register_task(
-    name="ImageNet-C (Contrast)", relative_data_folder="imagenet_c", standalone=False
-)
-@dataclasses.dataclass
-class ImageNetCContrast(ImageNetSingleCorruptionTypeBase):
-    """Evaluate classification accuracy on validation images of ImageNet
-    perturbed by contrast changes."""
-
-    resource: Tuple[str, ...] = variable(
-        (
-            "contrast",
-            "digital.tar",
-            "https://zenodo.org/record/2235448/files/digital.tar?download=1",
-            "89157860d7b10d5797849337ca2e5c03",
-        )
-    )
-
-
-@sh_benchmark.register_task(
-    name="ImageNet-C (Elastic Transform)",
-    relative_data_folder="imagenet_c",
+    name="ImageNet-3DCC (Flash)",
+    relative_data_folder="imagenet_3dcc",
     standalone=False,
 )
 @dataclasses.dataclass
-class ImageNetCElasticTransform(ImageNetSingleCorruptionTypeBase):
+class ImageNet3DCCFlash(ImageNetSingleCorruptionTypeBase):
     """Evaluate classification accuracy on validation images of ImageNet
-    perturbed by an elastic transformation."""
+    against flash corruption."""
 
     resource: Tuple[str, ...] = variable(
         (
-            "elastic_transform",
-            "digital.tar",
-            "https://zenodo.org/record/2235448/files/digital.tar?download=1",
-            "89157860d7b10d5797849337ca2e5c03",
+            "flash",
+            "flash.tar.gz",
+            "https://datasets.epfl.ch/3dcc/imagenet_3dcc/flash.tar.gz",
         )
     )
 
 
 @sh_benchmark.register_task(
-    name="ImageNet-C (Pixelate)", relative_data_folder="imagenet_c", standalone=False
+    name="ImageNet-3DCC (Color Quant)",
+    relative_data_folder="imagenet_3dcc",
+    standalone=False,
 )
 @dataclasses.dataclass
-class ImageNetCPixelate(ImageNetSingleCorruptionTypeBase):
+class ImageNet3DCCColorQuant(ImageNetSingleCorruptionTypeBase):
     """Evaluate classification accuracy on validation images of ImageNet
-    perturbed by pixelation."""
+    against color quantization corruption."""
 
     resource: Tuple[str, ...] = variable(
         (
-            "pixelate",
-            "digital.tar",
-            "https://zenodo.org/record/2235448/files/digital.tar?download=1",
-            "89157860d7b10d5797849337ca2e5c03",
+            "color_quant",
+            "color_quant.tar.gz",
+            "https://datasets.epfl.ch/3dcc/imagenet_3dcc/color_quant.tar.gz",
         )
     )
 
 
 @sh_benchmark.register_task(
-    name="ImageNet-C (JPEG)", relative_data_folder="imagenet_c", standalone=False
+    name="ImageNet-3DCC (Low Light)",
+    relative_data_folder="imagenet_3dcc",
+    standalone=False,
 )
 @dataclasses.dataclass
-class ImageNetCJPEG(ImageNetSingleCorruptionTypeBase):
+class ImageNet3DCCLowLight(ImageNetSingleCorruptionTypeBase):
     """Evaluate classification accuracy on validation images of ImageNet
-    perturbed by JPEG compression."""
+    against low light corruption."""
 
     resource: Tuple[str, ...] = variable(
         (
-            "jpeg_compression",
-            "digital.tar",
-            "https://zenodo.org/record/2235448/files/digital.tar?download=1",
-            "89157860d7b10d5797849337ca2e5c03",
+            "low_light",
+            "low_light.tar.gz",
+            "https://datasets.epfl.ch/3dcc/imagenet_3dcc/low_light.tar.gz",
         )
     )
 
 
 @sh_benchmark.register_task(
-    name="ImageNet-C", relative_data_folder="imagenet_c", standalone=True
+    name="ImageNet-3DCC (XY Motion Blur)",
+    relative_data_folder="imagenet_3dcc",
+    standalone=False,
 )
 @dataclasses.dataclass
-class ImageNetCSeparateCorruptions(Task):
-    """Classification task on the ImageNet-C dataset where models might use all images
+class ImageNet3DCCXYMotionBlur(ImageNetSingleCorruptionTypeBase):
+    """Evaluate classification accuracy on validation images of ImageNet
+    against motion blur corruption (from camera motion in the XY direction)."""
+
+    resource: Tuple[str, ...] = variable(
+        (
+            "xy_motion_blur",
+            "xy_motion_blur.tar.gz",
+            "https://datasets.epfl.ch/3dcc/imagenet_3dcc/xy_motion_blur.tar.gz",
+        )
+    )
+
+
+@sh_benchmark.register_task(
+    name="ImageNet-3DCC (Z Motion Blur)",
+    relative_data_folder="imagenet_3dcc",
+    standalone=False,
+)
+@dataclasses.dataclass
+class ImageNet3DCCZMotionBlur(ImageNetSingleCorruptionTypeBase):
+    """Evaluate classification accuracy on validation images of ImageNet
+    against motion blur corruption (from camera motion in the Z direction)."""
+
+    resource: Tuple[str, ...] = variable(
+        (
+            "z_motion_blur",
+            "z_motion_blur.tar.gz",
+            "https://datasets.epfl.ch/3dcc/imagenet_3dcc/z_motion_blur.tar.gz",
+        )
+    )
+
+
+@sh_benchmark.register_task(
+    name="ImageNet-3DCC (ISO Noise)",
+    relative_data_folder="imagenet_3dcc",
+    standalone=False,
+)
+@dataclasses.dataclass
+class ImageNet3DCCISONoise(ImageNetSingleCorruptionTypeBase):
+    """Evaluate classification accuracy on validation images of ImageNet
+    against ISO noise corruption."""
+
+    resource: Tuple[str, ...] = variable(
+        (
+            "iso_noise",
+            "iso_noise.tar.gz",
+            "https://datasets.epfl.ch/3dcc/imagenet_3dcc/iso_noise.tar.gz",
+        )
+    )
+
+
+@sh_benchmark.register_task(
+    name="ImageNet-3DCC (Bit Error)",
+    relative_data_folder="imagenet_3dcc",
+    standalone=False,
+)
+@dataclasses.dataclass
+class ImageNet3DCCBitError(ImageNetSingleCorruptionTypeBase):
+    """Evaluate classification accuracy on validation images of ImageNet
+    against bit error corruption."""
+
+    resource: Tuple[str, ...] = variable(
+        (
+            "bit_error",
+            "bit_error.tar.gz",
+            "https://datasets.epfl.ch/3dcc/imagenet_3dcc/bit_error.tar.gz",
+        )
+    )
+
+
+@sh_benchmark.register_task(
+    name="ImageNet-3DCC (H265 ABR)",
+    relative_data_folder="imagenet_3dcc",
+    standalone=False,
+)
+@dataclasses.dataclass
+class ImageNet3DCCH256ABR(ImageNetSingleCorruptionTypeBase):
+    """Evaluate classification accuracy on validation images of ImageNet
+    against average bit rate compression artifact corruption."""
+
+    resource: Tuple[str, ...] = variable(
+        (
+            "h265_abr",
+            "h265_abr.tar.gz",
+            "https://datasets.epfl.ch/3dcc/imagenet_3dcc/h265_abr.tar.gz",
+        )
+    )
+
+
+@sh_benchmark.register_task(
+    name="ImageNet-3DCC (H265 CRF)",
+    relative_data_folder="imagenet_3dcc",
+    standalone=False,
+)
+@dataclasses.dataclass
+class ImageNet3DCCH256CRF(ImageNetSingleCorruptionTypeBase):
+    """Evaluate classification accuracy on validation images of ImageNet
+    against constant rate factor compression artifact corruption."""
+
+    resource: Tuple[str, ...] = variable(
+        (
+            "h265_crf",
+            "h265_crf.tar.gz",
+            "https://datasets.epfl.ch/3dcc/imagenet_3dcc/h265_crf.tar.gz",
+        )
+    )
+
+
+@sh_benchmark.register_task(
+    name="ImageNet-3DCC", relative_data_folder="imagenet_3dcc", standalone=True
+)
+@dataclasses.dataclass
+class ImageNet3DCCSeparateCorruptions(Task):
+    """Classification task on the ImageNet-3DCC dataset where models might use all images
     from one corruption type to adapt in advance.
     """
 
@@ -405,16 +361,27 @@ class ImageNetCSeparateCorruptions(Task):
         description="maximum size of batches fed to the model during evaluation",
     )
 
-    # TODO: Add all corruption types here
+    # Add corruption types to be evaluated here
     corruption_task_cls: Tuple[Type[ImageNetSingleCorruptionTypeBase], ...] = variable(
-        (ImageNetCZoomBlur,)
+        (
+            ImageNet3DCCNearFocus,
+            ImageNet3DCCFarFocus,
+            ImageNet3DCCFog3D,
+            ImageNet3DCCFlash,
+            ImageNet3DCCColorQuant,
+            ImageNet3DCCLowLight,
+            ImageNet3DCCXYMotionBlur,
+            ImageNet3DCCZMotionBlur,
+            ImageNet3DCCISONoise,
+            ImageNet3DCCBitError,
+            ImageNet3DCCH256ABR,
+            ImageNet3DCCH256CRF,
+        )
     )
 
     flavored_corruption_tasks: List[ImageNetSingleCorruptionTypeBase] = variable([])
 
     def setup(self):
-        """Load and prepare data for all child tasks."""
-
         for corruption_task_cls in self.corruption_task_cls:
             self.flavored_corruption_tasks += list(
                 corruption_task_cls.iterate_flavours(data_root=self.data_root)
@@ -446,7 +413,6 @@ class ImageNetCSeparateCorruptions(Task):
 
             accuracies.append(corruption_result.accuracy)
             mces.append(corruption_result.mce)
-
         return TaskResult(
             **results,
             accuracy=np.mean(np.array(accuracies)),
