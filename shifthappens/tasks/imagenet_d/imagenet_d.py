@@ -1,3 +1,5 @@
+"""ImageNet-D task."""
+
 import dataclasses
 import os
 from typing import Optional

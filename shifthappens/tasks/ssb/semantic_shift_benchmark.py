@@ -1,3 +1,5 @@
+"""Semantic shift benchmark."""
+
 import dataclasses
 import os
 import pickle

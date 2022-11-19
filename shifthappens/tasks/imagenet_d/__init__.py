@@ -1,3 +1,1 @@
-"""
-Python package for Imagenet-D dataset.
-"""
+"""Imagenet-D task."""
