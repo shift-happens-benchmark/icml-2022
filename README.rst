@@ -165,3 +165,17 @@ The Many Faces of Robustness: A Critical Analysis of Out-of-Distribution General
     journal={ICCV},
     year={2021}
   }
+
+Objectnet: A large-scale bias-controlled dataset for pushing the limits of object recognition models.
+  Andrei Barbu, David Mayo, Julian Alverio, William Luo, Christopher Wang,
+  Dan Gutfreund, Josh Tenenbaum and Boris Katz
+
+.. code::
+
+  @article{barbu2019objectnet,
+    title={Objectnet: A large-scale bias-controlled dataset for pushing the limits of object recognition models},
+    author={Barbu, Andrei and Mayo, David and Alverio, Julian and Luo, William and Wang, Christopher and Gutfreund, Dan and Tenenbaum, Josh and Katz, Boris},
+    journal={Advances in neural information processing systems},
+    volume={32},
+    year={2019}
+ }
