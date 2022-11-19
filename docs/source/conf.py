@@ -121,7 +121,7 @@ html_theme_options = {
     "show_prev_next": False,
 }
 
-html_logo = None
+html_logo = "logo.png"
 
 # Remove the search field for now
 html_sidebars = {"**": ["sidebar-nav-bs.html"]}
