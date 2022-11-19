@@ -20,7 +20,8 @@ import os
 import os.path
 import warnings
 from io import BytesIO
-from typing import Callable, Dict
+from typing import Callable
+from typing import Dict
 
 import cv2
 import numpy as np
