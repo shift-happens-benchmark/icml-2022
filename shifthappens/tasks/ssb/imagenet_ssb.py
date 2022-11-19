@@ -54,13 +54,13 @@ class ImageNetSubsetDataset(Dataset):
 
 def _get_imagenet_ssb_subset(test_transform, imagenet21k_root, osr_split, subset_type):
     """Get dataset of subset of ImageNet21k with chosen transformation.
-    
+
     Args:
         test_transform: Transformation.
         imagenet21k_root: Path to root folder of ImageNet21k dataset.
         osr_split: Name of split.
         subset_type: Type of subset. Either easy or hard.
-    
+
     Returns:
         Dataset.
     """
