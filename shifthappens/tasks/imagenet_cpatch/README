@@ -1,0 +1,42 @@
+Evaluating Models on ImageNet Images with Corrupted Patches
+==============================================
+
+# Task Description
+Adding evaluation task under natural patch corruption [1]
+
+
+## Dataset Creation
+The patches of raw images from ImageNet-1k validation dataset are naturally corrupted.
+
+Following [2], 15 corruption types in ImageNet-C dataset [2] are considered, each of which has 5 different
+severity levels.
+
+
+## Evaluation Metrics
+1) Standard Classification Accuracy: the accuracy on raw images of ImageNet-1k validation dataset
+2) Fooling rate: the percentrage of misclassified images 
+
+
+## Expected Insights/Relevance
+The robustness to natural patch corruption
+
+## Data
+The images of ImageNet-1k validation dataset is assumed.
+
+## License
+Only for research purposes
+
+## Acknowledgement
+Our code is based on [2]
+
+1. Evaluating Model Robustness to Patch Perturbations. 
+   Jindong Gu, Volker Tresp, Yao Qin. 2022
+
+   See our full paper:
+   Are Vision Transformers Robust to Patch Perturbations?
+   Jindong Gu, Volker Tresp, Yao Qin. ECCV, 2022
+
+2. Benchmarking Neural Network Robustness to Common Corruptions and Perturbations.
+   Dan Hendrycks and Thomas Dietterich. ICLR 2019.
+
+
