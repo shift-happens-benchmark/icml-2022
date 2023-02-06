@@ -1,1 +1,0 @@
-"""ImageNet-CPatch task."""
