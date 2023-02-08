@@ -2,6 +2,7 @@
 
 from shifthappens.tasks import ccc  # noqa: F401
 from shifthappens.tasks import imagenet_c  # noqa: F401
+from shifthappens.tasks import imagenet_cpatch  # noqa: F401
 from shifthappens.tasks import imagenet_cartoon  # noqa: F401
 from shifthappens.tasks import imagenet_d  # noqa: F401
 from shifthappens.tasks import imagenet_drawing  # noqa: F401
