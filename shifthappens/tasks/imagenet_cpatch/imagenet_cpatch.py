@@ -30,7 +30,7 @@ from shifthappens.tasks.task_result import TaskResult
 
 
 @dataclasses.dataclass
-class ImageNetSingleCorruptionTypeBase(Task):
+class ImageNetCPatchSingleCorruptionTypeBase(Task):
     """Evaluate the classification accuracy on a single corruption type
      of the ImageNet_CPatch dataset [1,2]. Each corruption type has 5 different
      severity levels. The raw images (before corruptions) in this dataset
@@ -112,7 +112,7 @@ class ImageNetSingleCorruptionTypeBase(Task):
     standalone=False,
 )
 @dataclasses.dataclass
-class ImageNetCGaussianNoise(ImageNetSingleCorruptionTypeBase):
+class ImageNetCPatchGaussianNoise(ImageNetCPatchSingleCorruptionTypeBase):
     """Evaluate classification accuracy on validation images of ImageNet
     perturbed with patch-wise Gaussian noise."""
 
@@ -132,7 +132,7 @@ class ImageNetCGaussianNoise(ImageNetSingleCorruptionTypeBase):
     standalone=False,
 )
 @dataclasses.dataclass
-class ImageNetCShotNoise(ImageNetSingleCorruptionTypeBase):
+class ImageNetCPatchShotNoise(ImageNetCPatchSingleCorruptionTypeBase):
     """Evaluate classification accuracy on validation images of ImageNet
     perturbed with patch-wise shot noise."""
 
@@ -152,7 +152,7 @@ class ImageNetCShotNoise(ImageNetSingleCorruptionTypeBase):
     standalone=False,
 )
 @dataclasses.dataclass
-class ImageNetCImpulseNoise(ImageNetSingleCorruptionTypeBase):
+class ImageNetCPatchImpulseNoise(ImageNetCPatchSingleCorruptionTypeBase):
     """Evaluate classification accuracy on validation images of ImageNet
     perturbed with patch-wise impulse noise."""
 
@@ -173,7 +173,7 @@ class ImageNetCImpulseNoise(ImageNetSingleCorruptionTypeBase):
     standalone=False,
 )
 @dataclasses.dataclass
-class ImageNetCDefocusBlur(ImageNetSingleCorruptionTypeBase):
+class ImageNetCPatchDefocusBlur(ImageNetCPatchSingleCorruptionTypeBase):
     """Evaluate classification accuracy on validation images of ImageNet
     perturbed by patch-wise defocus blur."""
 
@@ -193,7 +193,7 @@ class ImageNetCDefocusBlur(ImageNetSingleCorruptionTypeBase):
     standalone=False,
 )
 @dataclasses.dataclass
-class ImageNetCGlassBlur(ImageNetSingleCorruptionTypeBase):
+class ImageNetCPatchGlassBlur(ImageNetCPatchSingleCorruptionTypeBase):
     """Evaluate classification accuracy on validation images of ImageNet
     perturbed by patch-wise glass blur."""
 
@@ -213,7 +213,7 @@ class ImageNetCGlassBlur(ImageNetSingleCorruptionTypeBase):
     standalone=False,
 )
 @dataclasses.dataclass
-class ImageNetCMotionBlur(ImageNetSingleCorruptionTypeBase):
+class ImageNetCPatchMotionBlur(ImageNetCPatchSingleCorruptionTypeBase):
     """Evaluate classification accuracy on validation images of ImageNet
     perturbed by patch-wise motion blur."""
 
@@ -233,7 +233,7 @@ class ImageNetCMotionBlur(ImageNetSingleCorruptionTypeBase):
     standalone=False,
 )
 @dataclasses.dataclass
-class ImageNetCZoomBlur(ImageNetSingleCorruptionTypeBase):
+class ImageNetCPatchZoomBlur(ImageNetCPatchSingleCorruptionTypeBase):
     """Evaluate classification accuracy on validation images of ImageNet
     perturbed by patch-wise zoom blur."""
 
@@ -254,7 +254,7 @@ class ImageNetCZoomBlur(ImageNetSingleCorruptionTypeBase):
     standalone=False,
 )
 @dataclasses.dataclass
-class ImageNetCBrightness(ImageNetSingleCorruptionTypeBase):
+class ImageNetCPatchBrightness(ImageNetCPatchSingleCorruptionTypeBase):
     """Evaluate classification accuracy on validation images of ImageNet
     perturbed by patch-wise brightness changes."""
 
@@ -274,7 +274,7 @@ class ImageNetCBrightness(ImageNetSingleCorruptionTypeBase):
     standalone=False,
 )
 @dataclasses.dataclass
-class ImageNetCFrost(ImageNetSingleCorruptionTypeBase):
+class ImageNetCPatchFrost(ImageNetCPatchSingleCorruptionTypeBase):
     """Evaluate classification accuracy on validation images of ImageNet
     perturbed with patch-wise frost."""
 
@@ -294,7 +294,7 @@ class ImageNetCFrost(ImageNetSingleCorruptionTypeBase):
     standalone=False,
 )
 @dataclasses.dataclass
-class ImageNetCSnow(ImageNetSingleCorruptionTypeBase):
+class ImageNetCPatchSnow(ImageNetCPatchSingleCorruptionTypeBase):
     """Evaluate classification accuracy on validation images of ImageNet
     perturbed with patch-wise snow."""
 
@@ -314,7 +314,7 @@ class ImageNetCSnow(ImageNetSingleCorruptionTypeBase):
     standalone=False,
 )
 @dataclasses.dataclass
-class ImageNetCFog(ImageNetSingleCorruptionTypeBase):
+class ImageNetCPatchFog(ImageNetCPatchSingleCorruptionTypeBase):
     """Evaluate classification accuracy on validation images of ImageNet
     perturbed with patch-wise fog."""
 
@@ -335,7 +335,7 @@ class ImageNetCFog(ImageNetSingleCorruptionTypeBase):
     standalone=False,
 )
 @dataclasses.dataclass
-class ImageNetCContrast(ImageNetSingleCorruptionTypeBase):
+class ImageNetCPatchContrast(ImageNetCPatchSingleCorruptionTypeBase):
     """Evaluate classification accuracy on validation images of ImageNet
     perturbed by patch-wise contrast changes."""
 
@@ -355,7 +355,7 @@ class ImageNetCContrast(ImageNetSingleCorruptionTypeBase):
     standalone=False,
 )
 @dataclasses.dataclass
-class ImageNetCElasticTransform(ImageNetSingleCorruptionTypeBase):
+class ImageNetCPatchElasticTransform(ImageNetCPatchSingleCorruptionTypeBase):
     """Evaluate classification accuracy on validation images of ImageNet
     perturbed by a patch-wise elastic transformation."""
 
@@ -375,7 +375,7 @@ class ImageNetCElasticTransform(ImageNetSingleCorruptionTypeBase):
     standalone=False,
 )
 @dataclasses.dataclass
-class ImageNetCPixelate(ImageNetSingleCorruptionTypeBase):
+class ImageNetCPatchPixelate(ImageNetCPatchSingleCorruptionTypeBase):
     """Evaluate classification accuracy on validation images of ImageNet
     perturbed by patch-wise pixelation."""
 
@@ -395,7 +395,7 @@ class ImageNetCPixelate(ImageNetSingleCorruptionTypeBase):
     standalone=False,
 )
 @dataclasses.dataclass
-class ImageNetCJPEG(ImageNetSingleCorruptionTypeBase):
+class ImageNetCPatchJPEG(ImageNetCPatchSingleCorruptionTypeBase):
     """Evaluate classification accuracy on validation images of ImageNet
     perturbed by patch-wise JPEG compression."""
 
@@ -410,10 +410,10 @@ class ImageNetCJPEG(ImageNetSingleCorruptionTypeBase):
 
 
 @sh_benchmark.register_task(
-    name="ImageNet_CPatch", relative_data_folder="imagenet_cpatch", standalone=True
+    name="ImageNetCPatch", relative_data_folder="imagenet_cpatch", standalone=True
 )
 @dataclasses.dataclass
-class ImageNetCSeparateCorruptions(Task):
+class ImageNetCPatchSeparateCorruptions(Task):
     """Classification task on the ImageNet_CPatch dataset where models might use all images
     from one corruption type to adapt in advance.
     """
@@ -424,12 +424,14 @@ class ImageNetCSeparateCorruptions(Task):
         description="maximum size of batches fed to the model during evaluation",
     )
 
-    # TODO: Add all corruption types here
-    corruption_task_cls: Tuple[Type[ImageNetSingleCorruptionTypeBase], ...] = variable(
-        (ImageNetCZoomBlur,)
+    corruption_task_cls: Tuple[Type[ImageNetCPatchSingleCorruptionTypeBase], ...] = variable(
+        (ImageNetCPatchGaussianNoise, ImageNetCPatchShotNoise, ImageNetCPatchImpulseNoise, ImageNetCPatchDefocusBlur,
+        ImageNetCPatchGlassBlur, ImageNetCPatchMotionBlur, ImageNetCPatchZoomBlur, ImageNetCPatchBrightness,
+        ImageNetCPatchFrost, ImageNetCPatchSnow, ImageNetCPatchFog, ImageNetCPatchContrast, ImageNetCPatchPixelate,
+        ImageNetCPatchJPEG)
     )
 
-    flavored_corruption_tasks: List[ImageNetSingleCorruptionTypeBase] = variable([])
+    flavored_corruption_tasks: List[ImageNetCPatchSingleCorruptionTypeBase] = variable([])
 
     def setup(self):
         """Load and prepare data for all child tasks."""
