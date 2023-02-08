@@ -32,14 +32,14 @@ from shifthappens.tasks.task_result import TaskResult
 @dataclasses.dataclass
 class ImageNetSingleCorruptionTypeBase(Task):
     """Evaluate the classification accuracy on a single corruption type
-    of the ImageNet_CPatch dataset [1,2]. Each corruption type has 5 different
-    severity levels. The raw images (before corruptions) in this dataset
-    come from the validation set of ImageNet.
+     of the ImageNet_CPatch dataset [1,2]. Each corruption type has 5 different
+     severity levels. The raw images (before corruptions) in this dataset
+     come from the validation set of ImageNet.
 
-   [1] Evaluating Model Robustness to Patch Perturbations. 
-   Jindong Gu, Volker Tresp, Yao Qin. 2022
-   [2] Are Vision Transformers Robust to Patch Perturbations?
-   Jindong Gu, Volker Tresp, Yao Qin. ECCV, 2022
+    [1] Evaluating Model Robustness to Patch Perturbations.
+    Jindong Gu, Volker Tresp, Yao Qin. 2022
+    [2] Are Vision Transformers Robust to Patch Perturbations?
+    Jindong Gu, Volker Tresp, Yao Qin. ECCV, 2022
     """
 
     resource: Tuple[str, ...] = abstract_variable()
@@ -127,7 +127,9 @@ class ImageNetCGaussianNoise(ImageNetSingleCorruptionTypeBase):
 
 
 @sh_benchmark.register_task(
-    name="ImageNet_CPatch (Shot Noise)", relative_data_folder="imagenet_cpatch", standalone=False
+    name="ImageNet_CPatch (Shot Noise)",
+    relative_data_folder="imagenet_cpatch",
+    standalone=False,
 )
 @dataclasses.dataclass
 class ImageNetCShotNoise(ImageNetSingleCorruptionTypeBase):
@@ -186,7 +188,9 @@ class ImageNetCDefocusBlur(ImageNetSingleCorruptionTypeBase):
 
 
 @sh_benchmark.register_task(
-    name="ImageNet_CPatch (Glass Blur)", relative_data_folder="imagenet_cpatch", standalone=False
+    name="ImageNet_CPatch (Glass Blur)",
+    relative_data_folder="imagenet_cpatch",
+    standalone=False,
 )
 @dataclasses.dataclass
 class ImageNetCGlassBlur(ImageNetSingleCorruptionTypeBase):
@@ -204,7 +208,9 @@ class ImageNetCGlassBlur(ImageNetSingleCorruptionTypeBase):
 
 
 @sh_benchmark.register_task(
-    name="ImageNet_CPatch (Motion Blur)", relative_data_folder="imagenet_cpatch", standalone=False
+    name="ImageNet_CPatch (Motion Blur)",
+    relative_data_folder="imagenet_cpatch",
+    standalone=False,
 )
 @dataclasses.dataclass
 class ImageNetCMotionBlur(ImageNetSingleCorruptionTypeBase):
@@ -222,7 +228,9 @@ class ImageNetCMotionBlur(ImageNetSingleCorruptionTypeBase):
 
 
 @sh_benchmark.register_task(
-    name="ImageNet_CPatch (Zoom Blur)", relative_data_folder="imagenet_cpatch", standalone=False
+    name="ImageNet_CPatch (Zoom Blur)",
+    relative_data_folder="imagenet_cpatch",
+    standalone=False,
 )
 @dataclasses.dataclass
 class ImageNetCZoomBlur(ImageNetSingleCorruptionTypeBase):
@@ -241,7 +249,9 @@ class ImageNetCZoomBlur(ImageNetSingleCorruptionTypeBase):
 
 # weather corruptions
 @sh_benchmark.register_task(
-    name="ImageNet_CPatch (Brightness)", relative_data_folder="imagenet_cpatch", standalone=False
+    name="ImageNet_CPatch (Brightness)",
+    relative_data_folder="imagenet_cpatch",
+    standalone=False,
 )
 @dataclasses.dataclass
 class ImageNetCBrightness(ImageNetSingleCorruptionTypeBase):
@@ -259,7 +269,9 @@ class ImageNetCBrightness(ImageNetSingleCorruptionTypeBase):
 
 
 @sh_benchmark.register_task(
-    name="ImageNet_CPatch (Frost)", relative_data_folder="imagenet_cpatch", standalone=False
+    name="ImageNet_CPatch (Frost)",
+    relative_data_folder="imagenet_cpatch",
+    standalone=False,
 )
 @dataclasses.dataclass
 class ImageNetCFrost(ImageNetSingleCorruptionTypeBase):
@@ -277,7 +289,9 @@ class ImageNetCFrost(ImageNetSingleCorruptionTypeBase):
 
 
 @sh_benchmark.register_task(
-    name="ImageNet_CPatch (Snow)", relative_data_folder="imagenet_cpatch", standalone=False
+    name="ImageNet_CPatch (Snow)",
+    relative_data_folder="imagenet_cpatch",
+    standalone=False,
 )
 @dataclasses.dataclass
 class ImageNetCSnow(ImageNetSingleCorruptionTypeBase):
@@ -295,7 +309,9 @@ class ImageNetCSnow(ImageNetSingleCorruptionTypeBase):
 
 
 @sh_benchmark.register_task(
-    name="ImageNet_CPatch (Fog)", relative_data_folder="imagenet_cpatch", standalone=False
+    name="ImageNet_CPatch (Fog)",
+    relative_data_folder="imagenet_cpatch",
+    standalone=False,
 )
 @dataclasses.dataclass
 class ImageNetCFog(ImageNetSingleCorruptionTypeBase):
@@ -314,7 +330,9 @@ class ImageNetCFog(ImageNetSingleCorruptionTypeBase):
 
 # digital corruptions
 @sh_benchmark.register_task(
-    name="ImageNet_CPatch (Contrast)", relative_data_folder="imagenet_cpatch", standalone=False
+    name="ImageNet_CPatch (Contrast)",
+    relative_data_folder="imagenet_cpatch",
+    standalone=False,
 )
 @dataclasses.dataclass
 class ImageNetCContrast(ImageNetSingleCorruptionTypeBase):
@@ -352,7 +370,9 @@ class ImageNetCElasticTransform(ImageNetSingleCorruptionTypeBase):
 
 
 @sh_benchmark.register_task(
-    name="ImageNet_CPatch (Pixelate)", relative_data_folder="imagenet_cpatch", standalone=False
+    name="ImageNet_CPatch (Pixelate)",
+    relative_data_folder="imagenet_cpatch",
+    standalone=False,
 )
 @dataclasses.dataclass
 class ImageNetCPixelate(ImageNetSingleCorruptionTypeBase):
@@ -370,7 +390,9 @@ class ImageNetCPixelate(ImageNetSingleCorruptionTypeBase):
 
 
 @sh_benchmark.register_task(
-    name="ImageNet_CPatch (JPEG)", relative_data_folder="imagenet_cpatch", standalone=False
+    name="ImageNet_CPatch (JPEG)",
+    relative_data_folder="imagenet_cpatch",
+    standalone=False,
 )
 @dataclasses.dataclass
 class ImageNetCJPEG(ImageNetSingleCorruptionTypeBase):
