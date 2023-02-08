@@ -1,4 +1,4 @@
-sphinx
-pydata-sphinx-theme
-sphinx-copybutton
-sphinx-autodoc-typehints
+sphinx<6.0
+pydata-sphinx-theme==0.12.0
+sphinx-copybutton==0.5.1
+sphinx-autodoc-typehints==1.22
