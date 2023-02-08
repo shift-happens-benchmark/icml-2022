@@ -424,14 +424,30 @@ class ImageNetCPatchSeparateCorruptions(Task):
         description="maximum size of batches fed to the model during evaluation",
     )
 
-    corruption_task_cls: Tuple[Type[ImageNetCPatchSingleCorruptionTypeBase], ...] = variable(
-        (ImageNetCPatchGaussianNoise, ImageNetCPatchShotNoise, ImageNetCPatchImpulseNoise, ImageNetCPatchDefocusBlur,
-        ImageNetCPatchGlassBlur, ImageNetCPatchMotionBlur, ImageNetCPatchZoomBlur, ImageNetCPatchBrightness,
-        ImageNetCPatchFrost, ImageNetCPatchSnow, ImageNetCPatchFog, ImageNetCPatchContrast, ImageNetCPatchPixelate,
-        ImageNetCPatchJPEG)
+    corruption_task_cls: Tuple[
+        Type[ImageNetCPatchSingleCorruptionTypeBase], ...
+    ] = variable(
+        (
+            ImageNetCPatchGaussianNoise,
+            ImageNetCPatchShotNoise,
+            ImageNetCPatchImpulseNoise,
+            ImageNetCPatchDefocusBlur,
+            ImageNetCPatchGlassBlur,
+            ImageNetCPatchMotionBlur,
+            ImageNetCPatchZoomBlur,
+            ImageNetCPatchBrightness,
+            ImageNetCPatchFrost,
+            ImageNetCPatchSnow,
+            ImageNetCPatchFog,
+            ImageNetCPatchContrast,
+            ImageNetCPatchPixelate,
+            ImageNetCPatchJPEG,
+        )
     )
 
-    flavored_corruption_tasks: List[ImageNetCPatchSingleCorruptionTypeBase] = variable([])
+    flavored_corruption_tasks: List[ImageNetCPatchSingleCorruptionTypeBase] = variable(
+        []
+    )
 
     def setup(self):
         """Load and prepare data for all child tasks."""
