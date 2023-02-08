@@ -17,10 +17,6 @@ jobs:
     steps:
     - uses: actions/checkout@v3
       with:
-        ref: main
-        fetch-depth: 0
-    - uses: actions/checkout@v3
-      with:
         fetch-depth: 0
     - uses: actions/cache@v1
       with:
@@ -46,7 +42,7 @@ jobs:
         python -m pip install --upgrade pip setuptools wheel
         retry-with-backoff pip install -r requirements_dev.txt
     - id: changed-files
-      uses: tj-actions/changed-files@v31
+      uses: tj-actions/changed-files
       with:
         separator: ","
         since_last_remote_commit: "true"
