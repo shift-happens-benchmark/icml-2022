@@ -35,13 +35,13 @@ class WorstCase(Task):
         [
             "worstcase",
             "restricted_superclass.csv",
-            "https://anonymous.4open.science/r/worst_classes-B94C/restricted_superclass.csv",
+            "https://raw.githubusercontent.com/j-cb/worst_classes/master/restricted_superclass.csv",
             None,
         ],
         [
             "worstcase",
             "new_labels.csv",
-            "https://anonymous.4open.science/r/worst_classes-B94C/new_labels.csv",
+            "https://raw.githubusercontent.com/j-cb/worst_classes/master/new_labels.csv",
             None,
         ],
     )
