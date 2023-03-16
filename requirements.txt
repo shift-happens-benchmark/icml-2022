@@ -6,3 +6,7 @@ lmdb
 pyarrow
 pandas
 pillow
+opencv-python
+scikit-learn
+scikit-image
+Wand
