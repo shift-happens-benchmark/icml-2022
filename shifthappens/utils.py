@@ -1,12 +1,16 @@
 """Utility functions that are needed for the entire package."""
 
 import errno
+import json
 import os
 import sys
 import time
 import urllib.error
 from itertools import product
-from typing import Optional
+from typing import Dict, Optional, Union
+
+from shifthappens.task_data import task_metadata
+from shifthappens.tasks.task_result import TaskResult
 
 
 def dict_product(d):
@@ -135,3 +139,13 @@ def download_and_extract_archive(
     archive = os.path.join(data_folder, filename)
     print(f"Extracting {archive} to {data_folder}")
     tv_utils.extract_archive(archive, data_folder, remove_finished)
+
+def serialize_model_results(results: Dict[task_metadata.TaskMetadata, Union[TaskResult, None]]) -> str:
+    return json.dumps({key.serialize_task_metadata():value.serialize_task_result() for (key,value) in results.items() if value != None})
+
+def deserialize_model_results(results_str) -> Dict[task_metadata.TaskMetadata, TaskResult]:
+    results_json_dict = json.loads(results_str)
+    results = {}
+    for (key,value) in results_json_dict.items():
+        results[task_metadata.TaskMetadata.deserialize_task_metadata(key)] = TaskResult.deserialize_task_result(value)
+    return results

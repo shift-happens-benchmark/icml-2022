@@ -1,6 +1,7 @@
 """Class for storing a task's metadata."""
 
 from dataclasses import dataclass
+import json
 
 
 @dataclass(frozen=True, eq=True)
@@ -22,5 +23,22 @@ class TaskMetadata:
     relative_data_folder: str
     standalone: bool = True
 
+    def serialize_task_metadata(self) -> str:
+        metadata_dict = {
+            'name': self.name,
+            'relative_data_folder': self.relative_data_folder,
+            'standalone': self.standalone
+        }
+        return json.dumps(metadata_dict)
+
+    @staticmethod
+    def deserialize_task_metadata(metadata_str: str):
+        metadata_dict = json.loads(metadata_str)
+        metadata = TaskMetadata(
+            name=metadata_dict['name'],
+            relative_data_folder= metadata_dict['relative_data_folder'],
+            standalone=metadata_dict['standalone']
+        )
+        return metadata
 
 _TASK_METADATA_FIELD = "__task_metadata__"
