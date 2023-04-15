@@ -141,9 +141,15 @@ def download_and_extract_archive(
     tv_utils.extract_archive(archive, data_folder, remove_finished)
 
 def serialize_model_results(results: Dict[task_metadata.TaskMetadata, Union[TaskResult, None]]) -> str:
+    """
+    Converts evaluation results of a model into json objects.
+    """
     return json.dumps({key.serialize_task_metadata():value.serialize_task_result() for (key,value) in results.items() if value != None})
 
 def deserialize_model_results(results_str) -> Dict[task_metadata.TaskMetadata, TaskResult]:
+    """
+    Converts json objects to a dictionary with (TaskMetadata, TaskResult) as (key, value)
+    """
     results_json_dict = json.loads(results_str)
     results = {}
     for (key,value) in results_json_dict.items():

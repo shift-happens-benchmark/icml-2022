@@ -24,6 +24,9 @@ class TaskMetadata:
     standalone: bool = True
 
     def serialize_task_metadata(self) -> str:
+        """
+        Serialize TaskMetadata object into json string.
+        """
         metadata_dict = {
             'name': self.name,
             'relative_data_folder': self.relative_data_folder,
@@ -33,6 +36,9 @@ class TaskMetadata:
 
     @staticmethod
     def deserialize_task_metadata(metadata_str: str):
+        """
+        Deserialize valid json string into TaskMetadata object.
+        """
         metadata_dict = json.loads(metadata_str)
         metadata = TaskMetadata(
             name=metadata_dict['name'],
