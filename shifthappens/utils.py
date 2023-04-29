@@ -144,7 +144,7 @@ def serialize_model_results(results: Dict[task_metadata.TaskMetadata, Union[Task
     """
     Converts evaluation results of a model into json objects.
     """
-    return json.dumps({key.serialize_task_metadata():value.serialize_task_result() for (key,value) in results.items() if value != None})
+    return json.dumps({key.serialize_task_metadata(): value.serialize_task_result() for (key, value) in results.items() if value is not None})
 
 def deserialize_model_results(results_str) -> Dict[task_metadata.TaskMetadata, TaskResult]:
     """
@@ -152,6 +152,6 @@ def deserialize_model_results(results_str) -> Dict[task_metadata.TaskMetadata, T
     """
     results_json_dict = json.loads(results_str)
     results = {}
-    for (key,value) in results_json_dict.items():
+    for (key, value) in results_json_dict.items():
         results[task_metadata.TaskMetadata.deserialize_task_metadata(key)] = TaskResult.deserialize_task_result(value)
     return results

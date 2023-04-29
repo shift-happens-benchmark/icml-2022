@@ -69,7 +69,7 @@ class TaskResult:
         """
         Serializes summary metrics of the objects into a string.
         """
-        return str({key.name:value for (key, value) in self.summary_metrics.items()})
+        return str({key.name: value for (key, value) in self.summary_metrics.items()})
 
 
     def serialize_task_result(self) -> str:
@@ -83,13 +83,13 @@ class TaskResult:
         return str(result_dict)
 
     @staticmethod
-    def deserialize_summary_metrics(summary_metrics_str:str) -> Dict[Metric, Union[str, Tuple[str, ...]]]:
+    def deserialize_summary_metrics(summary_metrics_str: str) -> Dict[Metric, Union[str, Tuple[str, ...]]]:
         """
         Deserializes valid string into summary_metrics.
         """
         summary_metrics = eval(summary_metrics_str)
         result = {}
-        for (key,value) in summary_metrics.items():
+        for (key, value) in summary_metrics.items():
             result[Metric.__members__.get(key)] = value
         return result
 

@@ -42,7 +42,7 @@ class TaskMetadata:
         metadata_dict = json.loads(metadata_str)
         metadata = TaskMetadata(
             name=metadata_dict['name'],
-            relative_data_folder= metadata_dict['relative_data_folder'],
+            relative_data_folder=metadata_dict['relative_data_folder'],
             standalone=metadata_dict['standalone']
         )
         return metadata
