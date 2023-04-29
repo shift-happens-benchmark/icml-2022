@@ -28,9 +28,9 @@ class TaskMetadata:
         Serialize TaskMetadata object into json string.
         """
         metadata_dict = {
-            'name': self.name,
-            'relative_data_folder': self.relative_data_folder,
-            'standalone': self.standalone
+            "name": self.name,
+            "relative_data_folder": self.relative_data_folder,
+            "standalone": self.standalone,
         }
         return json.dumps(metadata_dict)
 
@@ -41,10 +41,11 @@ class TaskMetadata:
         """
         metadata_dict = json.loads(metadata_str)
         metadata = TaskMetadata(
-            name=metadata_dict['name'],
-            relative_data_folder=metadata_dict['relative_data_folder'],
-            standalone=metadata_dict['standalone']
+            name=metadata_dict["name"],
+            relative_data_folder=metadata_dict["relative_data_folder"],
+            standalone=metadata_dict["standalone"],
         )
         return metadata
+
 
 _TASK_METADATA_FIELD = "__task_metadata__"
