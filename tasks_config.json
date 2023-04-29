@@ -1,0 +1,40 @@
+{
+    "out_file_location": "/mnt/qb/work/bethge/<<username>>/<<path>>",
+    "relative_data_folder": "/mnt/qb/work/bethge/<<username>>/<<path>>",
+    "tasks": [
+        "imagenet_c",
+        "ccc",
+        "imagenet_3dcc",
+        "imagenet_cartoon",
+        "imagenet_d",
+        "imagenet_drawing",
+        "imagenet_m",
+        "imagenet_metashift",
+        "imagenet_patch",
+        "imagenet_r",
+        "objectnet",
+        "raccoons_ood",
+        "siscore",
+        "ssb",
+        "worst_case"
+    ],
+    "model": "ResNet18",
+    "import_lines": {
+        "imagenet_c": "from shifthappens.tasks.imagenet_c.imagenet_c import ImageNetCSeparateCorruptions",
+        "ccc": "from shifthappens.tasks.ccc.ccc import CCC",
+        "imagenet_3dcc": "from shifthappens.tasks.imagenet_3dcc.imagenet_3dcc import ImageNet3DCCSeparateCorruptions",
+        "imagenet_cartoon": "from shifthappens.tasks.imagenet_cartoon.imagenet_cartoon import ImageNetCartoon",
+        "imagenet_d": "from shifthappens.tasks.imagenet_d.imagenet_d import *",
+        "imagenet_drawing": "from shifthappens.tasks.imagenet_drawing.imagenet_drawing import ImageNetDrawing",
+        "imagenet_m": "from shifthappens.tasks.imagenet_m.imagenet_m import ImageNetM",
+        "imagenet_metashift": "from shifthappens.tasks.imagenet_metashift.imagenet_metashift import ImageNetMetaShift",
+        "imagenet_patch": "from shifthappens.tasks.imagenet_patch.imagenet_patch import ImageNetPatchCorruptions",
+        "imagenet_r": "from shifthappens.tasks.imagenet_r.imagenet_r import ImageNetR",
+        "objectnet": "from shifthappens.tasks.objectnet.objectnet import ObjectNet",
+        "raccoons_ood": "from shifthappens.tasks.raccoons_ood.raccoons_ood import RaccOOD",
+        "siscore": "from shifthappens.tasks.siscore.siscore import *",
+        "ssb": "from shifthappens.tasks.ssb.semantic_shift_benchmark import *",
+        "worst_case": "from shifthappens.tasks.worst_case.worst_case import WorstCase",
+        "ResNet18": "from shifthappens.models.torchvision import ResNet18"
+    }
+}

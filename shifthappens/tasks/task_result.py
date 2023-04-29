@@ -64,3 +64,44 @@ class TaskResult:
             return self[item]
         else:
             return super().__getattribute__(item)
+
+    def serialize_summary_metrics(self) -> str:
+        """
+        Serializes summary metrics of the objects into a string.
+        """
+        return str({key.name: value for (key, value) in self.summary_metrics.items()})
+
+    def serialize_task_result(self) -> str:
+        """
+        Serializes TaskResult object into a string.
+        """
+        result_dict = {
+            "summary_metrics": self.serialize_summary_metrics(),
+            "metrics": str(self._metrics),
+        }
+        return str(result_dict)
+
+    @staticmethod
+    def deserialize_summary_metrics(
+        summary_metrics_str: str,
+    ) -> Dict[Metric, Union[str, Tuple[str, ...]]]:
+        """
+        Deserializes valid string into summary_metrics.
+        """
+        summary_metrics = eval(summary_metrics_str)
+        result = {}
+        for key, value in summary_metrics.items():
+            result[Metric.__members__.get(key)] = value
+        return result
+
+    @staticmethod
+    def deserialize_task_result(task_result_str: str):
+        """
+        Deserializes valid string into a TaskResult object.
+        """
+        result_dict = eval(task_result_str)
+        metrics = eval(result_dict["metrics"])
+        summary_metrics = TaskResult.deserialize_summary_metrics(
+            result_dict["summary_metrics"]
+        )
+        return TaskResult(summary_metrics=summary_metrics, **metrics)
