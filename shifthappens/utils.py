@@ -140,6 +140,7 @@ def download_and_extract_archive(
     print(f"Extracting {archive} to {data_folder}")
     tv_utils.extract_archive(archive, data_folder, remove_finished)
 
+
 def serialize_model_results(
     results: Dict[task_metadata.TaskMetadata, Union[TaskResult, None]]
 ) -> str:
